@@ -1,14 +1,29 @@
 (in-package #:cl-notebook)
 
+(define-file-handler "static")
+
 (define-closing-handler (root) ()
   (with-html-output-to-string (s nil :prologue t :indent t)
     (:html
      (:head
       (:script :type "text/javascript" :src "/js/base.js")
-      (:script :type "text/javascript" :src "/js/main.js"))
+      (:script :type "text/javascript" :src "/js/main.js")
+      (:link :rel "stylesheet" :href "static/codemirror-3.22/lib/codemirror.css")
+      (:link :rel "stylesheet" :href "static/codemirror-3.22/addon/dialog/dialog.css")
+      ;; (:script :type "text/javascript" :src "static/js/codemirror-compressed.js")
+      (:script :type "text/javascript" :src "static/codemirror-3.22/lib/codemirror.js")
+      (:script :type "text/javascript" :src "static/codemirror-3.22/mode/commonlisp/commonlisp.js")
+      (:script :type "text/javascript" :src "static/codemirror-3.22/addon/edit/closebrackets.js")
+      (:script :type "text/javascript" :src "static/codemirror-3.22/addon/edit/matchbrackets.js")
+      (:script :type "text/javascript" :src "static/codemirror-3.22/addon/search/search.js")
+      (:script :type "text/javascript" :src "static/codemirror-3.22/addon/search/searchcursor.js")
+      (:script :type "text/javascript" :src "static/codemirror-3.22/addon/search/match-highlighter.js")
+      (:script :type "text/javascript" :src "static/codemirror-3.22/addon/selection/active-line.js")
+      (:script :type "text/javascript" :src "static/codemirror-3.22/addon/selection/mark-selection.js")
+      (:script :type "text/javascript" :src "static/codemirror-3.22/addon/dialog/dialog.js"))
      (:body
       (:h1 "Hello!")
-      (:textarea :class "cell")
+      (:textarea :class "cell" :style "display: none;")
       (:pre :class "result")))))
 
 (define-json-handler (eval) (thing)
@@ -17,7 +32,7 @@
 	(hash () 
 	  :request thing 
 	  :result-type (mapcar #'type-of res) 
-	  :result res))
+	  :result (mapcar (lambda (a) (format nil "~a" a)) res)))
     (error (e)
       (hash ()
 	:request thing
@@ -36,6 +51,11 @@
 	  (setf (@ new-content inner-h-t-m-l) markup)
 	  (loop while (@ new-content first-child)
 	     do (chain elem (append-child (@ new-content first-child))))))
+
+      (defun escape (string)
+	(chain string
+	       (replace "<" "&lt;")
+	       (replace ">" "&gt;")))
 
       (defun dom-set (elem markup)
 	(setf (@ elem inner-h-t-m-l) markup))
@@ -95,23 +115,26 @@
 	  (chain req (set-request-header "Connection" "close"))
 	  (chain req (send encoded-params))))))
 
-(define-closing-handler (js/main.js :content-type "application/javascrip") ()
-  (ps (dom-ready 
+(define-closing-handler (js/main.js :content-type "application/javascript") ()
+  (ps (defun server/eval (thing target-elem)
+	(post "/eval" (create :thing thing)
+	      (lambda (raw) 
+		(let ((res (string->obj raw)))
+		  (dom-set (by-selector ".result") 
+			   (join (loop for r in (@ res :result)
+				    for out = (if (object? r) (obj->string r) (escape r))
+				    for tp in (@ res "resultType")
+				    collect (who-ps-html (:p out (:span :class "type" " :: " tp))))))))))
+
+      (defvar *mirror* nil)
+      
+      (dom-ready 
        (lambda ()
-	 (chain console (log "something!"))
-	 (let ((repl (by-selector ".cell")))
-	   (chain repl (add-event-listener 
-			:keydown (lambda (event)
-				   (when (and (@ event ctrl-key) (= 13 (@ event key-code)))
-				     (post "/eval" (create :thing (@ this value))
-					   (lambda (raw) 
-					     (let ((res (string->obj raw)))
-					       (chain console (log res))
-					       (dom-set (by-selector ".result") 
-							(join 
-							 (loop for r in (@ res :result)
-							    for out = (if (object? r) (obj->string r) r)
-							    for tp in (@ res "resultType")
-							    collect (who-ps-html (:p out (:span :class "type" " :: " tp))))))))))))))))))
+	 (let ((repl (by-selector ".cell"))
+	       (options (create "lineNumbers" t
+				"matchBrackets" t
+				"autoCloseBrackets" t
+				"extraKeys" (create "Ctrl-Enter" (lambda (cmd) (server/eval (chain *mirror* (get-value)) (by-selector ".result")))))))
+	   (setf *mirror* (chain -code-mirror (from-text-area repl options))))))))
 
 (defvar *server* (bt:make-thread (lambda () (start 4242))))
