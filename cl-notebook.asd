@@ -5,7 +5,7 @@
   :description "Describe cl-notebook here"
   :author "Your Name <your.name@example.com>"
   :license "Specify license here"
-  :depends-on (#:alexandria #:anaphora #:house #:fact-base #:parenscript #:cl-who #:cl-css)
+  :depends-on (#:alexandria #:anaphora #:house #:fact-base #:parenscript #:cl-who #:cl-css #:cl-mop)
   :components ((:file "package")
 	       (:file "util")
                (:file "cl-notebook")))

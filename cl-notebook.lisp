@@ -10,7 +10,6 @@
       (:script :type "text/javascript" :src "/js/main.js")
       (:link :rel "stylesheet" :href "static/codemirror-3.22/lib/codemirror.css")
       (:link :rel "stylesheet" :href "static/codemirror-3.22/addon/dialog/dialog.css")
-      ;; (:script :type "text/javascript" :src "static/js/codemirror-compressed.js")
       (:script :type "text/javascript" :src "static/codemirror-3.22/lib/codemirror.js")
       (:script :type "text/javascript" :src "static/codemirror-3.22/mode/commonlisp/commonlisp.js")
       (:script :type "text/javascript" :src "static/codemirror-3.22/addon/edit/closebrackets.js")
@@ -28,11 +27,16 @@
 
 (define-json-handler (eval) (thing)
   (handler-case
-      (let ((res (multiple-value-list (eval (read-from-string thing)))))
+      (let* ((res nil)
+	     (stdio 
+	      (with-output-to-string (s) 
+		(let ((*standard-output* s))
+		  (setf res (multiple-value-list (eval (read-from-string thing))))))))
 	(hash () 
 	  :request thing 
 	  :result-type (mapcar #'type-of res) 
-	  :result (mapcar (lambda (a) (format nil "~a" a)) res)))
+	  :result (mapcar (lambda (a) (format nil "~a" a)) res)
+	  :output stdio))
     (error (e)
       (hash ()
 	:request thing
@@ -120,6 +124,7 @@
 	(post "/eval" (create :thing thing)
 	      (lambda (raw) 
 		(let ((res (string->obj raw)))
+		  (chain console (log raw))
 		  (dom-set (by-selector ".result") 
 			   (join (loop for r in (@ res :result)
 				    for out = (if (object? r) (obj->string r) (escape r))
