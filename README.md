@@ -3,7 +3,7 @@
 
 > Tools, of course, can be the subtlest of traps.
 > One day I know I must smash the ~~emerald~~ Emacs.
-> - *with apologies to Neil Gaiman*
+> *with apologies to Neil Gaiman*
 
 # Do not use this yet. Seriously.
 ######Just walk away for a little while 'till I get it running properly.
