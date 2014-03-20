@@ -8,14 +8,21 @@
       (:script :type "text/javascript" :src "/js/main.js"))
      (:body
       (:h1 "Hello!")
-      (:input)))))
+      (:textarea :class "cell")
+      (:pre :class "result")))))
 
 (define-json-handler (eval) (thing)
-  (let ((res (eval (read-from-string thing))))
-    (hash () 
-      :request thing 
-      :result-type (type-of res) 
-      :result res)))
+  (handler-case
+      (let ((res (multiple-value-list (eval (read-from-string thing)))))
+	(hash () 
+	  :request thing 
+	  :result-type (mapcar #'type-of res) 
+	  :result res))
+    (error (e)
+      (hash ()
+	:request thing
+	:result-type (list "error")
+	:result (list (cl-mop:to-alist e))))))
 
 (define-closing-handler (js/base.js :content-type "application/javascrip") ()
   (ps (defun dom-ready (callback)
@@ -23,6 +30,15 @@
 
       (defun by-selector (selector)
 	(chain document (query-selector selector)))
+
+      (defun dom-append (elem markup)
+	(let ((new-content (chain document (create-element "div"))))
+	  (setf (@ new-content inner-h-t-m-l) markup)
+	  (loop while (@ new-content first-child)
+	     do (chain elem (append-child (@ new-content first-child))))))
+
+      (defun dom-set (elem markup)
+	(setf (@ elem inner-h-t-m-l) markup))
 
       (defun by-selector* (selector)
 	(chain document (query-selector-all selector)))
@@ -35,11 +51,16 @@
 	(eql (chain -object prototype to-string (call obj)) type-string))
       (defun object? (obj) (type? obj "[object Object]"))
 
+      (defun join (strings &optional (separator "")) (chain strings (join separator)))
+
       (defun encode (string)
 	(encode-u-r-i-component string))
+     
+      (defun string->obj (string)
+	(chain -j-s-o-n (parse string)))
 
       (defun obj->string (object)
-	(chain -j-s-o-n-s (stringify object)))
+	(chain -j-s-o-n (stringify object)))
 
       (defun obj->params (object)
 	(let ((res (new (-array))))
@@ -78,12 +99,19 @@
   (ps (dom-ready 
        (lambda ()
 	 (chain console (log "something!"))
-	 (chain (by-selector "input") 
-		(add-event-listener 
-		 :keydown (lambda (event)
-			    (when (= 13 (@ event key-code))
-			      (post "/eval" (create :thing (@ (by-selector "input") value))
-				    (lambda (res)
-				      (chain console (log res))))))))))))
+	 (let ((repl (by-selector ".cell")))
+	   (chain repl (add-event-listener 
+			:keydown (lambda (event)
+				   (when (and (@ event ctrl-key) (= 13 (@ event key-code)))
+				     (post "/eval" (create :thing (@ this value))
+					   (lambda (raw) 
+					     (let ((res (string->obj raw)))
+					       (chain console (log res))
+					       (dom-set (by-selector ".result") 
+							(join 
+							 (loop for r in (@ res :result)
+							    for out = (if (object? r) (obj->string r) r)
+							    for tp in (@ res "resultType")
+							    collect (who-ps-html (:p out (:span :class "type" " :: " tp))))))))))))))))))
 
 (defvar *server* (bt:make-thread (lambda () (start 4242))))
