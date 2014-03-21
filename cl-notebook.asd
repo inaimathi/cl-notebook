@@ -8,5 +8,6 @@
   :depends-on (#:alexandria #:anaphora #:house #:fact-base #:parenscript #:cl-who #:cl-css #:cl-mop)
   :components ((:file "package")
 	       (:file "util")
+	       (:file "front-end")
                (:file "cl-notebook")))
 
