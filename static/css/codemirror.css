@@ -1,5 +1,7 @@
 /* BASICS */
 
+body { margin: 0px; }
+
 .CodeMirror {
     /* Set height, width, borders, and global font properties here */
     border: 1px solid #ccc;
