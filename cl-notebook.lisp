@@ -65,4 +65,9 @@
       :request thing
       :result (html-tree-to-string (read-from-string thing)))))
 
-(defvar *server* (bt:make-thread (lambda () (start 4242))))
+(defun main (&optional argv) 
+  (declare (ignore argv))
+  (start 4242))
+
+;; (defvar *server* (bt:make-thread (lambda () (start 4242))))
+
