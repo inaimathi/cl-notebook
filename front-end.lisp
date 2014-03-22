@@ -80,7 +80,6 @@
 	(post uri params
 	      (lambda (raw)
 		(let ((res (string->obj raw)))
-		  (chain console (log raw))
 		  (callback res)))))))
 
 (define-closing-handler (js/main.js :content-type "application/javascript") ()
@@ -89,9 +88,12 @@
       (+ (if (@ result :output) (who-ps-html (:p :class "stdout" (@ result :output))) "")
 	 (join
 	  (loop for form-res in (@ result :result)
-	     append (loop for (tp val) in form-res
-		       if (= tp :error) collect (who-ps-html (:p :class "error" (obj->string val)))
-		       else collect (who-ps-html (:p val " :: " tp)))))))
+	     append (who-ps-html
+		     (:div :class "result-set"
+			   (join
+			    (loop for (tp val) in form-res
+			       if (= tp :error) collect (who-ps-html (:p :class "error" (obj->string val)))
+			       else collect (who-ps-html (:p val " :: " tp))))))))))
 
     (defun server/eval (thing target-elem)
       (post/json "/eval" (create :thing thing)

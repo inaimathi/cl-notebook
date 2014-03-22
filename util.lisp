@@ -20,7 +20,7 @@
 (defun ignored-error-prop? (pair)
   (member (first pair) 
 	  (list :args :control-string :second-relative :print-banner
-		:references :format-control :format-arguments)))
+		:references :format-control :format-arguments :offset)))
 
 (defun front-end-error (form e)
   (let ((err-alist (loop for (a . b) in (cl-mop:to-alist e) collect (cons (->keyword a) b))))
