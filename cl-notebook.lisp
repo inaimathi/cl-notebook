@@ -25,36 +25,40 @@
       (:textarea :class "cell" :style "display: none;")
       (:pre :class "result")))))
 
+(defun eval-from-string (str)
+  (let ((len (length str))
+	(start 0))
+    (loop for (s-exp next) = (multiple-value-list (capturing-error (read-from-string str nil nil :start start)))
+       do (setf start next)
+
+       if (typep s-exp 'error) collect (list 'error s-exp) into res-list and do (return res-list)
+       else collect (let ((res (multiple-value-list (eval s-exp))))
+		      (loop for v in res collect (list (type-label v) (format nil "~s" v)))) into res-list 
+       
+       when (and next (= len next)) do (return (car (last res-list))))))
+
+(defun eval-capturing-stdout (string)
+  (let* ((res nil)
+	 (stdio (with-output-to-string (*standard-output*)
+		  (setf res (eval-from-string string)))))
+    (values res stdio)))
+
+;; TODO - figure out why this explodes on read errors
 (define-json-handler (eval) (thing)
-  (handler-case
-      (let* ((res nil)
-	     (stdio 
-	      (with-output-to-string (*standard-output*)
-		(setf res (multiple-value-list (eval (read-from-string thing)))))))
-	(hash () 
+  (with-js-error
+    (multiple-value-bind (res stdio) (eval-capturing-stdout thing)
+	(hash ()
 	  :request thing 
-	  :result-type (mapcar #'type-of res) 
-	  :result (mapcar (lambda (a) (format nil "~a" a)) res)
-	  :output stdio))
-    (error (e)
-      (hash ()
-	:request thing
-	:result-type "error"
-	:result (cl-mop:to-alist e)))))
+	  :result res
+	  :output stdio))))
 
 (defun html-tree-to-string (html-tree)
   (cadar (cl-who::tree-to-commands (list html-tree) nil)))
 
 (define-json-handler (whoify) (thing)
-  (handler-case
-      (hash ()
-	:request thing
-	:result-type "text/html"
-	:result (html-tree-to-string (read-from-string thing)))
-    (error (e)
-      (hash ()
-	:request thing
-	:result-type "error"
-	:result (cl-mop:to-alist e)))))
+  (with-js-error
+    (hash ()
+      :request thing
+      :result (html-tree-to-string (read-from-string thing)))))
 
 (defvar *server* (bt:make-thread (lambda () (start 4242))))
