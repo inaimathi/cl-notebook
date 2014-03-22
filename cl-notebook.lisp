@@ -25,39 +25,36 @@
       (:textarea :class "cell" :style "display: none;")
       (:pre :class "result")))))
 
+(defun eval-for-js (s-exp)
+  (capturing-error (format nil "~a" s-exp)
+    (let ((res (multiple-value-list (ignoring-warnings (eval s-exp)))))
+      (loop for v in res collect (list (type-label v) (format nil "~s" v))))))
+
 (defun eval-from-string (str)
   (let ((len (length str))
 	(start 0))
     (loop for (s-exp next) = (multiple-value-list (capturing-error nil (read-from-string str nil nil :start start)))
-       for (evaled eval-error?) = (multiple-value-list
-				   (capturing-error (format nil "~a" s-exp)
-				     (let ((res (multiple-value-list (eval s-exp))))
-				       (loop for v in res 
-					  collect (list (type-label v) (format nil "~s" v))))))
-       do (setf start next)
-
-       if (eq next :error)
-         collect s-exp into res-list
-       else
-	 collect evaled into res-list
+       for (evaled eval-error?) = (unless (eq next :error) (multiple-value-list (eval-for-js s-exp)))
+       if (eq next :error) collect s-exp into res-list
+       else collect evaled into res-list
 	 
+       do (setf start next)
        when (or (eq next :error) (eq eval-error? :error)) do (return res-list)
        when (and next (numberp next) (= len next)) do (return (last res-list)))))
 
 (defun eval-capturing-stdout (string)
   (let* ((res nil)
-	 (stdio (with-output-to-string (*standard-output*)
-		  (setf res (eval-from-string string)))))
-    (values res stdio)))
+	 (stdout (with-output-to-string (*standard-output*)
+		   (setf res (eval-from-string string)))))
+    (values res stdout)))
 
-;; TODO - figure out why this explodes on read errors
-(define-json-handler (eval) (thing)
+(define-json-handler (eval) ((thing :string))
   (with-js-error
-    (multiple-value-bind (res stdio) (eval-capturing-stdout thing)
-	(hash ()
-	  :request thing 
-	  :result res
-	  :output stdio))))
+    (multiple-value-bind (res stdout) (eval-capturing-stdout thing)
+      (hash ()
+	:request thing 
+	:result res
+	:stdout stdout))))
 
 (defun html-tree-to-string (html-tree)
   (cadar (cl-who::tree-to-commands (list html-tree) nil)))

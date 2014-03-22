@@ -20,10 +20,12 @@
 (defun ignored-error-prop? (pair)
   (member (first pair) 
 	  (list :args :control-string :second-relative :print-banner
-		:references :format-control :format-arguments :offset)))
+		:references :format-control :format-arguments :offset
+		:stream)))
 
 (defun front-end-error (form e)
-  (let ((err-alist (loop for (a . b) in (cl-mop:to-alist e) collect (cons (->keyword a) b))))
+  (let ((err-alist (loop for (a . b) in (cl-mop:to-alist e) 
+		      collect (cons (->keyword a) b))))
     `((error 
        ((error-type . ,(type-of e))
 	,@(let ((f-tmp (cdr (assoc :format-control err-alist)))
@@ -34,9 +36,16 @@
 		(list (cons :form form)))
 	,@(remove-if #'ignored-error-prop? err-alist))))))
 
+(defmacro ignoring-warnings (&body body)
+  `(locally
+       (declare #+sbcl(sb-ext:muffle-conditions sb-kernel:redefinition-warning))
+     (handler-bind
+	 (#+sbcl(sb-kernel:redefinition-warning #'muffle-warning))
+       ,@body)))
+
 (defmacro capturing-error (form &body body)
   `(handler-case
-       (progn ,@body)
+       (ignoring-warnings ,@body)
      (error (e) (values (front-end-error ,form e) :error))))
 
 (defmacro with-js-error (&body body)

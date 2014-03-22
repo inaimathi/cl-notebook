@@ -85,7 +85,7 @@
 (define-closing-handler (js/main.js :content-type "application/javascript") ()
   (ps 
     (defun result-template (result)
-      (+ (if (@ result :output) (who-ps-html (:p :class "stdout" (@ result :output))) "")
+      (+ (if (@ result :output) (who-ps-html (:p :class "stdout" (@ result :stdout))) "")
 	 (join
 	  (loop for form-res in (@ result :result)
 	     append (who-ps-html
@@ -96,8 +96,10 @@
 			       else collect (who-ps-html (:p val " :: " tp))))))))))
 
     (defun server/eval (thing target-elem)
+      (chain console (log "SERVER/EVAL" thing target-elem))
       (post/json "/eval" (create :thing thing)
 	    (lambda (res) 
+	      (chain console (log "SERVER/EVAL-CALLBACK" thing res))
 	      (dom-set target-elem (result-template res)))))
 
     (defun server/whoify (thing target-elem)
