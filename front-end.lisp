@@ -85,16 +85,13 @@
 
 (define-closing-handler (js/main.js :content-type "application/javascript") ()
   (ps 
-
-    (defun error-template (err)
-      )
-
     (defun result-template (result)
-      (+ (who-ps-html (:p :class "stdout" (@ result :output)))
+      (+ (if (@ result :output) (who-ps-html (:p :class "stdout" (@ result :output))) "")
 	 (join
-	  (loop for (tp val) in (@ result :result)
-	     if (= tp :error) collect (who-ps-html (:p :class "error" (obj->string val)))
-	     else collect (who-ps-html (:p val " :: " tp))))))
+	  (loop for form-res in (@ result :result)
+	     append (loop for (tp val) in form-res
+		       if (= tp :error) collect (who-ps-html (:p :class "error" (obj->string val)))
+		       else collect (who-ps-html (:p val " :: " tp)))))))
 
     (defun server/eval (thing target-elem)
       (post/json "/eval" (create :thing thing)
@@ -123,6 +120,7 @@
 		       "lineNumbers" t 
 		       "matchBrackets" t
 		       "autoCloseBrackets" t
+		       "viewportMargin" -infinity
 		       "extraKeys" (editor-keys (lambda () (chain mirror (get-value)))))))
 	(setf mirror (chain -code-mirror (from-text-area target-textarea options)))
 	mirror))

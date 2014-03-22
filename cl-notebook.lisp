@@ -8,7 +8,7 @@
      (:head
       (:script :type "text/javascript" :src "/js/base.js")
       (:script :type "text/javascript" :src "/js/main.js")
-      (:link :rel "stylesheet" :href "static/codemirror-3.22/lib/codemirror.css")
+      (:link :rel "stylesheet" :href "static/css/codemirror.css")
       (:link :rel "stylesheet" :href "static/codemirror-3.22/addon/dialog/dialog.css")
       (:script :type "text/javascript" :src "static/codemirror-3.22/lib/codemirror.js")
       (:script :type "text/javascript" :src "static/codemirror-3.22/mode/commonlisp/commonlisp.js")
@@ -28,14 +28,21 @@
 (defun eval-from-string (str)
   (let ((len (length str))
 	(start 0))
-    (loop for (s-exp next) = (multiple-value-list (capturing-error (read-from-string str nil nil :start start)))
+    (loop for (s-exp next) = (multiple-value-list (capturing-error nil (read-from-string str nil nil :start start)))
+       for (evaled eval-error?) = (multiple-value-list
+				   (capturing-error (format nil "~a" s-exp)
+				     (let ((res (multiple-value-list (eval s-exp))))
+				       (loop for v in res 
+					  collect (list (type-label v) (format nil "~s" v))))))
        do (setf start next)
 
-       if (typep s-exp 'error) collect (list 'error s-exp) into res-list and do (return res-list)
-       else collect (let ((res (multiple-value-list (eval s-exp))))
-		      (loop for v in res collect (list (type-label v) (format nil "~s" v)))) into res-list 
-       
-       when (and next (= len next)) do (return (car (last res-list))))))
+       if (eq next :error)
+         collect s-exp into res-list
+       else
+	 collect evaled into res-list
+	 
+       when (or (eq next :error) (eq eval-error? :error)) do (return res-list)
+       when (and next (numberp next) (= len next)) do (return (last res-list)))))
 
 (defun eval-capturing-stdout (string)
   (let* ((res nil)

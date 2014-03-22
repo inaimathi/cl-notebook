@@ -17,23 +17,30 @@
 		  collect v))
        ,tbl)))
 
-(defmacro capturing-error (&body body)
-  `(handler-case
-       (progn ,@body)
-     (error (e) e)))
-
 (defun ignored-error-prop? (pair)
-  (member (->keyword (first pair)) 
+  (member (first pair) 
 	  (list :args :control-string :second-relative :print-banner
 		:references :format-control :format-arguments)))
+
+(defun front-end-error (form e)
+  (let ((err-alist (loop for (a . b) in (cl-mop:to-alist e) collect (cons (->keyword a) b))))
+    `((error 
+       ((error-type . ,(type-of e))
+	,@(let ((f-tmp (cdr (assoc :format-control err-alist)))
+		(f-args (cdr (assoc :format-arguments err-alist))))
+	       (when (and f-tmp f-args)
+		 (list (cons :error-message (apply #'format nil f-tmp f-args)))))
+	,@(when form
+		(list (cons :form form)))
+	,@(remove-if #'ignored-error-prop? err-alist))))))
+
+(defmacro capturing-error (form &body body)
+  `(handler-case
+       (progn ,@body)
+     (error (e) (values (front-end-error ,form e) :error))))
 
 (defmacro with-js-error (&body body)
   `(handler-case
        (progn ,@body)
-     (error (e)
-       (hash ()
-	 :result (list (list :error
-			     (cons (cons 'error-type (type-of e))
-				   (remove-if #'ignored-error-prop?
-					      (cl-mop:to-alist e)))))))))
+     (error (e) (hash () :result (front-end-error nil e)))))
 
