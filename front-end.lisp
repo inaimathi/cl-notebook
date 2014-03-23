@@ -1,13 +1,19 @@
 (in-package :cl-notebook)
 
-(define-closing-handler (js/base.js :content-type "application/javascrip") ()
+(define-closing-handler (js/base.js :content-type "application/javascript") ()
   (ps (defun dom-ready (callback)
 	(chain document (add-event-listener "DOMContentLoaded" callback)))
 
-      (defun vals (obj)
-	(let ((res (new (-array))))
-	  (for-in (k obj) (chain res (push (aref obj k))))
-	  res))
+      (defun identity (thing) thing)
+
+      (defun map (fn thing)
+	(if (object? thing)
+	    (let ((res (-array)))
+	      (for-in (k thing) (chain res (push (fn (aref thing k) k))))
+	      res)
+	    (loop for elem in thing collect (fn elem))))
+
+      (defun vals (obj) (map identity obj))
       
       (defun by-selector (selector)
 	(chain document (query-selector selector)))
@@ -22,7 +28,7 @@
 	    res)))
 	   
       (defun set-page-hash (hash-object)
-	(setf (@ window location hash) (=obj->params hash-object)))
+	(setf (@ window location hash) (obj->params hash-object)))
 
       (defun dom-append (elem markup)
 	(let ((new-content (chain document (create-element "div"))))
@@ -61,11 +67,12 @@
 	(chain -j-s-o-n (stringify object)))
 
       (defun obj->params (object)
-	(let ((res (new (-array))))
-	  (for-in (k object) 
-		  (let ((val (aref object k)))
-		    (chain res (push (+ (encode k) "=" (encode (if (object? val) (obj->string val) val)))))))
-	  (chain res (join "&"))))
+	(join 
+	 (map (lambda (v k) 
+		(+ (encode k) "=" 
+		   (encode (if (object? v) (obj->string v) v))))
+	      object)
+	 "&"))
 
       (defun get (uri params callback)
 	(let ((req (new (-x-m-l-http-request))))
@@ -128,39 +135,31 @@
 	  (:p))
 	 (join
 	  (loop for entry in (notebook-objects notebook)
-	     when (== (@ entry :type) :cell)
+	     when (equal (@ entry :type) :cell)
 	     collect (cell-template entry)))))
     
     (defun server/eval (thing target-elem)
-      (chain console (log "SERVER/EVAL" thing target-elem))
+      (console.log "SERVER/EVAL" thing target-elem)
       (post/json "/eval" (create :thing thing)
 	    (lambda (res) 
-	      (chain console (log "SERVER/EVAL-CALLBACK" thing res))
+	      (console.log "SERVER/EVAL-CALLBACK" thing res)
 	      (dom-set target-elem (result-template res)))))
 
     (defun server/whoify (thing target-elem)
       (post/json "/whoify" (create :thing thing)
 		 (lambda (res)
-		   (chain console (log "WHOIFIED" res))
+		   (console.log "WHOIFIED" res)
 		   (dom-set target-elem (@ res :result)))))
 
     (defun server/notebook/current (name callback)
       (post/json "/notebook/current" (create :book name)
 		 (lambda (res)
-		   (chain console (log "SHOWING BOOK" res))
+		   (console.log "SHOWING BOOK" res)
 		   (callback res))))
 
     (defun server/notebook/eval-to-cell (cell-id contents)
       (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)
 		 #'notebook!))
-
-    (defun editor-keys (cell-id content-thunk eval-target)
-      (create "Ctrl-Enter" 
-	      (lambda (cmd)
-		(server/notebook/eval-to-cell cell-id (content-thunk)))
-	      "Ctrl-Space"
-	      (lambda (cmd)
-		(chain console (log "CTRL-SPACE!")))))
     
     (defun mirror! (cell-id)
       (let* ((mirror)
@@ -169,10 +168,13 @@
 		       "matchBrackets" t
 		       "autoCloseBrackets" t
 		       "viewportMargin" -infinity
-		       "extraKeys" (editor-keys
-				    cell-id
-				    (lambda () (chain mirror (get-value)))
-				    (by-selector (+ "#cell-" cell-id " .cell-value"))))))
+		       "extraKeys" 
+		       (create "Ctrl-Enter"
+			       (lambda (cmd)
+				 (server/notebook/eval-to-cell 
+				  cell-id
+				  (by-selector (+ "#cell-" cell-id " .cell-value"))))
+			       "Ctrl-Space" "autocomplete"))))
 	(setf 
 	 mirror 
 	 (chain -code-mirror 
@@ -196,6 +198,7 @@
 
     (defun notebook-facts (notebook) (@ notebook :facts))
     (defun notebook-objects (notebook) (@ notebook :objects))
+    (defun notebook-cells (notebook))
 
     (defun notebook! (raw)
       (let ((book (vals (notebook-condense raw))))
@@ -203,10 +206,10 @@
 	      (create :facts raw
 		      :objects book
 		      :name (loop for (a b c) in raw
-			       when (== b "notebookName")
+			       when (equal b "notebookName")
 			       do (return c))))
 	(dom-set (by-selector "body") (notebook-template *notebook*))
-	(loop for entry in book when (== (@ entry :type) :cell) do (mirror! (@ entry :id)))))
+	(loop for entry in book when (equal (@ entry :type) :cell) do (mirror! (@ entry :id)))))
 
     (defun new-cell ()
       (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type :code)

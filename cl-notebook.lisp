@@ -30,6 +30,7 @@
       (:script :type "text/javascript" :src "/js/main.js")
       (:link :rel "stylesheet" :href "static/css/codemirror.css")
       (:link :rel "stylesheet" :href "static/codemirror-3.22/addon/dialog/dialog.css")
+      (:link :rel "stylesheet" :href "static/codemirror-3.22/addon/hint/show-hint.css")
       (:script :type "text/javascript" :src "static/codemirror-3.22/lib/codemirror.js")
       (:script :type "text/javascript" :src "static/codemirror-3.22/mode/commonlisp/commonlisp.js")
       (:script :type "text/javascript" :src "static/codemirror-3.22/addon/edit/closebrackets.js")
@@ -39,6 +40,8 @@
       (:script :type "text/javascript" :src "static/codemirror-3.22/addon/search/match-highlighter.js")
       (:script :type "text/javascript" :src "static/codemirror-3.22/addon/selection/active-line.js")
       (:script :type "text/javascript" :src "static/codemirror-3.22/addon/selection/mark-selection.js")
+      (:script :type "text/javascript" :src "static/codemirror-3.22/addon/hint/show-hint.js")
+      (:script :type "text/javascript" :src "static/codemirror-3.22/addon/hint/anyword-hint.js")
       (:script :type "text/javascript" :src "static/codemirror-3.22/addon/dialog/dialog.js"))
      (:body
       (:h1 "Hello!")
