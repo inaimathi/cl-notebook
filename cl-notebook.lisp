@@ -1,6 +1,26 @@
 (in-package #:cl-notebook)
 
-(define-file-handler "static")
+(defvar *notebooks* 
+  (make-hash-table :test 'equal))
+
+(defmethod new-cell! ((book fact-base) &optional (cell-type :code))
+  (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:contents "") (:value ""))))
+
+(defmethod remove-notebook! (name)
+  (remhash name *notebooks*))
+
+(defun new-notebook! (name)
+  (let ((book (make-fact-base :indices '(:a :b :c :ab) :id name)))
+    (insert! (list 0 :notebook-name name) book)
+    (new-cell! book)
+    (unless (gethash name *notebooks*)
+      (setf (gethash name *notebooks*) book))))
+
+(defun load-notebook! (name)
+  (setf (gethash name *notebooks*) (load! name :indices '(:a :b :c :ab))))
+
+(defun get-notebook (name)
+  (gethash name *notebooks*))
 
 (define-closing-handler (root) ()
   (with-html-output-to-string (s nil :prologue t :indent t)
@@ -25,7 +45,7 @@
       (:textarea :class "cell" :style "display: none;")
       (:pre :class "result")))))
 
-(defun eval-for-js (s-exp)
+(defun single-eval-for-js (s-exp)
   (capturing-error (format nil "~a" s-exp)
     (let ((res (multiple-value-list (ignoring-warnings (eval s-exp)))))
       (loop for v in res collect (list (type-label v) (format nil "~s" v))))))
@@ -34,7 +54,7 @@
   (let ((len (length str))
 	(start 0))
     (loop for (s-exp next) = (multiple-value-list (capturing-error nil (read-from-string str nil nil :start start)))
-       for (evaled eval-error?) = (unless (eq next :error) (multiple-value-list (eval-for-js s-exp)))
+       for (evaled eval-error?) = (unless (eq next :error) (multiple-value-list (single-eval-for-js s-exp)))
        if (eq next :error) collect s-exp into res-list
        else collect evaled into res-list
 	 
@@ -48,26 +68,53 @@
 		   (setf res (eval-from-string string)))))
     (values res stdout)))
 
-(define-json-handler (eval) ((thing :string))
+(defun js-eval (thing)
   (with-js-error
     (multiple-value-bind (res stdout) (eval-capturing-stdout thing)
-      (hash ()
-	:request thing 
-	:result res
-	:stdout stdout))))
+      (alist
+       :request thing 
+       :result res
+       :stdout stdout))))
+
+(define-json-handler (eval) ((thing :string))
+  (js-eval thing))
 
 (defun html-tree-to-string (html-tree)
   (cadar (cl-who::tree-to-commands (list html-tree) nil)))
 
-(define-json-handler (whoify) (thing)
+(defun js-whoify (thing)
   (with-js-error
-    (hash ()
-      :request thing
-      :result (html-tree-to-string (read-from-string thing)))))
+    (alist
+     :request thing
+     :result (html-tree-to-string (read-from-string thing)))))
+
+(define-json-handler (whoify) ((thing :string))
+  (js-whoify thing))
+
+(define-json-handler (notebook/current) ((book :notebook))
+  (current book))
+
+(define-json-handler (notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
+  (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
+	(val-fact (first (lookup book :a cell-id :b :value)))
+	(res (js-eval contents)))
+    (when (and cont-fact val-fact res)
+      (delete! cont-fact book)
+      (delete! val-fact book)
+      (insert! (list cell-id :contents contents) book)
+      (insert! (list cell-id :value res) book)
+      (current book))))
+
+(define-json-handler (notebook/new-cell) ((book :notebook) (cell-type :cell-type))
+  (new-cell! book cell-type)
+  (current book))
+
+(define-json-handler (notebook/kill-cell) ((book :notebook) (cell-id :integer))
+  (loop for f in (lookup book :a cell-id) do (delete! f book))
+  (current book))
 
 (defun main (&optional argv) 
   (declare (ignore argv))
+  (define-file-handler "static")
+  (load-notebook! "test-book")
   (start 4242))
-
-;; (defvar *server* (bt:make-thread (lambda () (start 4242))))
-
