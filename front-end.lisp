@@ -133,10 +133,7 @@
 	  (:h3 (notebook-name notebook))
 	  (:button :onclick "newCell()" "+")
 	  (:p))
-	 (join
-	  (loop for entry in (notebook-objects notebook)
-	     when (equal (@ entry :type) :cell)
-	     collect (cell-template entry)))))
+	 (join (map (lambda (cell) (cell-template cell)) (notebook-cells notebook)))))
     
     (defun server/eval (thing target-elem)
       (console.log "SERVER/EVAL" thing target-elem)
@@ -173,7 +170,7 @@
 			       (lambda (cmd)
 				 (server/notebook/eval-to-cell 
 				  cell-id
-				  (by-selector (+ "#cell-" cell-id " .cell-value"))))
+				  (chain mirror (get-value))))
 			       "Ctrl-Space" "autocomplete"))))
 	(setf 
 	 mirror 
@@ -198,10 +195,18 @@
 
     (defun notebook-facts (notebook) (@ notebook :facts))
     (defun notebook-objects (notebook) (@ notebook :objects))
-    (defun notebook-cells (notebook))
+    (defun notebook-cell-ordering (notebook)
+      (loop for (a b c) in (notebook-facts notebook)
+	 when (equal b :cell-order) do (return c)
+	 when (and (equal b :cell) (null c)) collect a into implicit-ord
+	 finally (return (chain implicit-ord (reverse)))))
+    (defun notebook-cells (notebook)
+      (let ((ord (notebook-cell-ordering notebook))
+	    (obj (notebook-objects notebook)))
+	(map (lambda (id) (aref obj id)) ord)))
 
     (defun notebook! (raw)
-      (let ((book (vals (notebook-condense raw))))
+      (let ((book (notebook-condense raw)))
 	(setf *notebook* 
 	      (create :facts raw
 		      :objects book
@@ -209,7 +214,7 @@
 			       when (equal b "notebookName")
 			       do (return c))))
 	(dom-set (by-selector "body") (notebook-template *notebook*))
-	(loop for entry in book when (equal (@ entry :type) :cell) do (mirror! (@ entry :id)))))
+	(map (lambda (cell) (mirror! (@ cell :id))) (notebook-cells *notebook*))))
 
     (defun new-cell ()
       (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type :code)
