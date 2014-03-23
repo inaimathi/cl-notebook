@@ -169,8 +169,7 @@
 		       (create "Ctrl-Enter"
 			       (lambda (cmd)
 				 (server/notebook/eval-to-cell 
-				  cell-id
-				  (chain mirror (get-value))))
+				  cell-id (chain mirror (get-value))))
 			       "Ctrl-Space" "autocomplete"))))
 	(setf 
 	 mirror 

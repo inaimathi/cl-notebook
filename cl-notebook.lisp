@@ -26,6 +26,7 @@
   (with-html-output-to-string (s nil :prologue t :indent t)
     (:html
      (:head
+      (:title "cl-notebook")
       (:script :type "text/javascript" :src "/js/base.js")
       (:script :type "text/javascript" :src "/js/main.js")
       (:link :rel "stylesheet" :href "static/css/codemirror.css")
@@ -75,7 +76,6 @@
   (with-js-error
     (multiple-value-bind (res stdout) (eval-capturing-stdout thing)
       (alist
-       :request thing 
        :result res
        :stdout stdout))))
 
@@ -87,9 +87,7 @@
 
 (defun js-whoify (thing)
   (with-js-error
-    (alist
-     :request thing
-     :result (html-tree-to-string (read-from-string thing)))))
+    (alist :result (html-tree-to-string (read-from-string thing)))))
 
 (define-json-handler (whoify) ((thing :string))
   (js-whoify thing))
