@@ -147,11 +147,14 @@
 		      :cell-order ord))))
 
     (defun cell-markup-template (cell)
-      (with-slots (id value) cell
+      (with-slots (id contents value language) cell
 	(who-ps-html 
-	 (:li :class "cell" :id (+ "cell-" id) :cell-id id :ondragend "reorderCells(event)"
+	 (:li :class "cell" :id (+ "cell-" id) :cell-id id 
+	      :onclick (+ "showEditor(" id ")")
+	      :ondragend "reorderCells(event)"
 	      (:button :onclick (+ "killCell(" id ")") "-")
-	      value))))
+	      (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
+	      (@ value :result)))))
 
     (defun cell-code-template (cell)
       (with-slots (id contents value language) cell
@@ -169,7 +172,8 @@
     (defun notebook-template (notebook)
       (who-ps-html 
 	  (:h3 (notebook-name notebook))
-	  (:button :onclick "newCell()" "+")
+	  (:button :onclick "newCell()" "+code")
+	  (:button :onclick "newCell('markup')" "+markup")
 	  (:p)
 	  (:ul :class "cells"
 	       (join (map (lambda (cell) (cell-template cell))
@@ -190,7 +194,24 @@
     (defun server/notebook/eval-to-cell (cell-id contents)
       (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)
 		 #'notebook!))
+
+    (defun cell-selector (cell &rest children)
+      (+ "#cell-" (@ cell id)
+	 (if children 
+	     (+ " " (join children " "))
+	     "")))
     
+    (defun show-editor (cell-id)
+      (console.log "SHOW-EDITOR" cell-id)
+      (setf (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden) nil))
+
+    (defun hide-editor (cell-id)
+      (setf (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden) t))
+
+    (defun toggle-editor (cell-id)
+      (setf (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden)
+	    (not (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden))))
+
     (defun mirror! (cell-id)
       (let* ((mirror)
 	     (options (create 
@@ -254,10 +275,15 @@
 			       do (return c))))
 	(dom-set (by-selector "body") (notebook-template *notebook*))
 	(nativesortable (by-selector "ul.cells"))
-	(map (lambda (cell) (mirror! (@ cell :id))) (notebook-cells *notebook*))))
+	(map (lambda (cell) 
+	       (with-slots (id cell-type) cell
+		 (mirror! id)
+		 (unless (equal cell-type :code)
+		   (setf (@ (by-selector (+ "#cell-" id " .CodeMirror")) hidden) t))))
+	     (notebook-cells *notebook*))))
     
-    (defun new-cell ()
-      (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type :code)
+    (defun new-cell (&optional (cell-type :code))
+      (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type)
 		 #'notebook!))
     
     (defun kill-cell (cell-id)

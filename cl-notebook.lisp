@@ -55,6 +55,14 @@
     (let ((res (multiple-value-list (ignoring-warnings (eval s-exp)))))
       (loop for v in res collect (list (type-label v) (format nil "~s" v))))))
 
+(defun read-all-from-string (str)
+  (let ((len (length str))
+	(start 0))
+    (loop for (s-exp next) = (multiple-value-list (read-from-string str nil nil :start start))
+       do (setf start next)
+       collect s-exp
+       until (or (not (numberp next)) (= len next)))))
+
 (defun eval-from-string (str)
   (let ((len (length str))
 	(start 0))
@@ -84,11 +92,14 @@
   (js-eval thing))
 
 (defun html-tree-to-string (html-tree)
-  (cadar (cl-who::tree-to-commands (list html-tree) nil)))
+  (cadar (cl-who::tree-to-commands 
+	  (if (keywordp (car html-tree))
+	      (list html-tree)
+	      html-tree) nil)))
 
 (defun js-whoify (thing)
   (with-js-error
-    (alist :result (html-tree-to-string (read-from-string thing)))))
+    (alist :result (html-tree-to-string (read-all-from-string thing)))))
 
 (define-json-handler (whoify) ((thing :string))
   (js-whoify thing))
@@ -97,9 +108,12 @@
   (current book))
 
 (define-json-handler (notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
-  (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
-	(val-fact (first (lookup book :a cell-id :b :value)))
-	(res (js-eval contents)))
+  (let* ((cont-fact (first (lookup book :a cell-id :b :contents)))
+	 (val-fact (first (lookup book :a cell-id :b :value)))
+	 (cell-type (caddar (lookup book :a cell-id :b :cell-type)))
+	 (res (case cell-type
+		(:markup (js-whoify contents))
+		(t (js-eval contents)))))
     (when (and cont-fact val-fact res)
       (delete! cont-fact book)
       (delete! val-fact book)
