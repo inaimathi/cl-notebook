@@ -11,7 +11,7 @@
 
 (defun new-notebook! (name)
   (let ((book (make-fact-base :indices '(:a :b :c :ab) :id name)))
-    (insert! (list 0 :notebook-name name) book)
+    (insert! book (list 0 :notebook-name name))
     (new-cell! book)
     (unless (gethash name *notebooks*)
       (setf (gethash name *notebooks*) book))))
@@ -115,10 +115,10 @@
 		(:markup (js-whoify contents))
 		(t (js-eval contents)))))
     (when (and cont-fact val-fact res)
-      (delete! cont-fact book)
-      (delete! val-fact book)
-      (insert! (list cell-id :contents contents) book)
-      (insert! (list cell-id :value res) book)
+      (delete! book cont-fact)
+      (delete! book val-fact)
+      (insert! book (list cell-id :contents contents))
+      (insert! book (list cell-id :value res))
       (current book))))
 
 (define-json-handler (notebook/new-cell) ((book :notebook) (cell-type :cell-type))
@@ -127,12 +127,12 @@
 
 (define-json-handler (notebook/reorder-cells) ((book :notebook) (cell-order :json))
   (awhen (lookup book :b :cell-order)
-    (delete! (car it) book))
+    (delete! book (car it)))
   (multi-insert! book `((:cell-order ,cell-order)))
   (alist :result :ok))
 
 (define-json-handler (notebook/kill-cell) ((book :notebook) (cell-id :integer))
-  (loop for f in (lookup book :a cell-id) do (delete! f book))
+  (loop for f in (lookup book :a cell-id) do (delete! book f))
   (current book))
 
 (defun main (&optional argv) 
