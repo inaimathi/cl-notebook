@@ -13,6 +13,19 @@
 	      res)
 	    (loop for elem in thing collect (fn elem))))
 
+      (defun filter (fn thing)
+	
+	(loop for elem in thing when (fn elem) collect elem))
+
+      (defun append-new (list-a list-b)
+	(let ((s (new (-set list-a))))
+	  (chain 
+	   list-a 
+	   (concat
+	    (loop for elem in list-b
+	       unless (chain s (has elem))
+	       collect elem)))))
+
       (defun vals (obj) (map identity obj))
 
       (defun prevent (ev) (chain ev (prevent-default)))
@@ -199,14 +212,21 @@
 	res))
 
     (defun notebook-name (notebook) (@ notebook :name))
-    
+
     (defun notebook-facts (notebook) (@ notebook :facts))
     (defun notebook-objects (notebook) (@ notebook :objects))
     (defun notebook-cell-ordering (notebook)
-      (loop for (a b c) in (notebook-facts notebook)
-	 when (equal b "cellOrder") do (return c)
-	 when (and (equal b :cell) (null c)) collect a into implicit-ord
-	 finally (return (chain implicit-ord (reverse)))))
+      (let* ((ord (new (-array)))
+	     (obj (notebook-objects notebook))
+	     (in-obj? (lambda (id) (in id obj)))
+	     (implicit (new (-array))))
+	(loop for (a b c) in (notebook-facts notebook)
+	   when (equal b "cellOrder") do (setf ord c)
+	   when (and (equal b :cell) (null c))
+	   do (chain implicit (push a)))
+	(append-new 
+	 (filter in-obj? ord) 
+	 (chain implicit (reverse)))))
     (defun notebook-cells (notebook)
       (let ((ord (notebook-cell-ordering notebook))
 	    (obj (notebook-objects notebook)))

@@ -19,4 +19,18 @@ You need to install the [`house` server](https://github.com/Inaimathi/house), th
 
 The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/), so you should then be able to hop into a lisp and do `(ql:quickload :cl-notebook)`.
 
+### License
 
+AGPL3
+
+### Credits
+
+This project uses
+- [`nativesortable`](https://github.com/bgrins/nativesortable)
+- [Code Mirror](http://codemirror.net/)
+- [`anaphora`](http://www.cliki.net/anaphora)
+- [`alexandria`](http://common-lisp.net/project/alexandria/)
+- [`parenscript`](http://common-lisp.net/project/parenscript/)
+- [`cl-who`](http://weitz.de/cl-who/)
+- [`quicklisp`](http://www.quicklisp.org/beta/)
+- [`buildapp`](http://www.xach.com/lisp/buildapp/)
