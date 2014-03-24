@@ -146,13 +146,25 @@
 	      (create :book (notebook-name *notebook*) 
 		      :cell-order ord))))
 
-    (defun cell-template (cell)
-      (with-slots (id contents value) cell
+    (defun cell-markup-template (cell)
+      (with-slots (id value) cell
+	(who-ps-html 
+	 (:li :class "cell" :id (+ "cell-" id) :cell-id id :ondragend "reorderCells(event)"
+	      (:button :onclick (+ "killCell(" id ")") "-")
+	      value))))
+
+    (defun cell-code-template (cell)
+      (with-slots (id contents value language) cell
 	(who-ps-html 
 	 (:li :class "cell" :id (+ "cell-" id) :cell-id id :ondragend "reorderCells(event)" 
 	      (:button :onclick (+ "killCell(" id ")") "-")
-	      (:textarea :class "cell-contents" contents)
+	      (:textarea :class "cell-contents" :language (or language "commonlisp")  contents)
 	      (:pre :class "cell-value" (result-template value))))))
+
+    (defun cell-template (cell)
+      (case (@ cell cell-type)
+	(:code (cell-code-template cell))
+	(:markup (cell-markup-template cell))))
     
     (defun notebook-template (notebook)
       (who-ps-html 
@@ -243,7 +255,7 @@
 	(dom-set (by-selector "body") (notebook-template *notebook*))
 	(nativesortable (by-selector "ul.cells"))
 	(map (lambda (cell) (mirror! (@ cell :id))) (notebook-cells *notebook*))))
-
+    
     (defun new-cell ()
       (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type :code)
 		 #'notebook!))
