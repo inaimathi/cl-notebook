@@ -29,6 +29,7 @@
       (:title "cl-notebook")
       (:script :type "text/javascript" :src "/js/base.js")
       (:script :type "text/javascript" :src "/js/main.js")
+      (:script :type "text/javascript" :src "static/js/native-sortable.js")
       (:link :rel "stylesheet" :href "static/css/codemirror.css")
       (:link :rel "stylesheet" :href "static/codemirror-3.22/addon/dialog/dialog.css")
       (:link :rel "stylesheet" :href "static/codemirror-3.22/addon/hint/show-hint.css")
@@ -109,6 +110,12 @@
 (define-json-handler (notebook/new-cell) ((book :notebook) (cell-type :cell-type))
   (new-cell! book cell-type)
   (current book))
+
+(define-json-handler (notebook/reorder-cells) ((book :notebook) (cell-order :json))
+  (awhen (lookup book :b :cell-order)
+    (delete! (car it) book))
+  (multi-insert! book `((:cell-order ,cell-order)))
+  (alist :result :ok))
 
 (define-json-handler (notebook/kill-cell) ((book :notebook) (cell-id :integer))
   (loop for f in (lookup book :a cell-id) do (delete! f book))

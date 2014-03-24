@@ -14,15 +14,21 @@
 	    (loop for elem in thing collect (fn elem))))
 
       (defun vals (obj) (map identity obj))
+
+      (defun prevent (ev) (chain ev (prevent-default)))
       
       (defun by-selector (selector)
 	(chain document (query-selector selector)))
+      (defun by-selector-all (selector)
+	(chain document (query-selector-all selector)))
+
+      (defun rest (array) (chain array (slice 1)))
 
       (defun get-page-hash ()
 	(let ((hash (@ window location hash))
 	      (res (create)))
 	  (when hash
-	    (loop for pair in (chain (=rest hash) (split "&"))
+	    (loop for pair in (chain (rest hash) (split "&"))
 	       for (k v) = (chain pair (split "="))
 	       do (setf (aref res (decode-u-r-i k)) (decode-u-r-i v)))
 	    res)))
@@ -43,9 +49,6 @@
 
       (defun dom-set (elem markup)
 	(setf (@ elem inner-h-t-m-l) markup))
-
-      (defun by-selector* (selector)
-	(chain document (query-selector-all selector)))
 
       (defun number? (obj) (string= "number" (typeof obj)))
       (defun string? (obj) (string= "string" (typeof obj)))
@@ -93,7 +96,8 @@
 		  (when (and (equal (@ req ready-state) 4)
 			     (equal (@ req status) 200))
 		    (let ((result (@ req response-text)))
-		      (callback result)))))
+		      (when (function? callback)
+			(callback result))))))
 	  (chain req (open :POST uri t))
 	  (chain req (set-request-header "Content-type" "application/x-www-form-urlencoded"))
 	  (chain req (set-request-header "Content-length" (length encoded-params)))
@@ -120,39 +124,43 @@
 				 if (= tp :error) collect (who-ps-html (:p :class "error" (obj->string val)))
 				 else collect (who-ps-html (:p val " :: " tp)))))))))))
 
+    (defun reorder-cells (ev)
+      (prevent ev)
+      (let ((ord (obj->string
+		  (loop for elem in (by-selector-all ".cell")
+		     collect (parse-int (chain elem (get-attribute :cell-id)))))))
+	(post "/notebook/reorder-cells" 
+	      (create :book (notebook-name *notebook*) 
+		      :cell-order ord))))
+
     (defun cell-template (cell)
       (with-slots (id contents value) cell
 	(who-ps-html 
-	 (:div :class "cell" :id (+ "cell-" id)
-	       (:button :onclick (+ "killCell(" id ")") "-")
-	       (:textarea :class "cell-contents" contents)
-	       (:pre :class "cell-value" (result-template value))))))
+	 (:li :class "cell" :id (+ "cell-" id) :cell-id id :ondragend "reorderCells(event)" 
+	      (:button :onclick (+ "killCell(" id ")") "-")
+	      (:textarea :class "cell-contents" contents)
+	      (:pre :class "cell-value" (result-template value))))))
     
     (defun notebook-template (notebook)
-      (+ (who-ps-html 
+      (who-ps-html 
 	  (:h3 (notebook-name notebook))
 	  (:button :onclick "newCell()" "+")
-	  (:p))
-	 (join (map (lambda (cell) (cell-template cell)) (notebook-cells notebook)))))
+	  (:p)
+	  (:ul :class "cells"
+	       (join (map (lambda (cell) (cell-template cell))
+			  (notebook-cells notebook))))))
     
     (defun server/eval (thing target-elem)
-      (console.log "SERVER/EVAL" thing target-elem)
       (post/json "/eval" (create :thing thing)
-	    (lambda (res) 
-	      (console.log "SERVER/EVAL-CALLBACK" thing res)
-	      (dom-set target-elem (result-template res)))))
+	    (lambda (res) (dom-set target-elem (result-template res)))))
 
     (defun server/whoify (thing target-elem)
       (post/json "/whoify" (create :thing thing)
-		 (lambda (res)
-		   (console.log "WHOIFIED" res)
-		   (dom-set target-elem (@ res :result)))))
+		 (lambda (res) (dom-set target-elem (@ res :result)))))
 
     (defun server/notebook/current (name callback)
       (post/json "/notebook/current" (create :book name)
-		 (lambda (res)
-		   (console.log "SHOWING BOOK" res)
-		   (callback res))))
+		 (lambda (res) (callback res))))
 
     (defun server/notebook/eval-to-cell (cell-id contents)
       (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)
@@ -191,12 +199,12 @@
 	res))
 
     (defun notebook-name (notebook) (@ notebook :name))
-
+    
     (defun notebook-facts (notebook) (@ notebook :facts))
     (defun notebook-objects (notebook) (@ notebook :objects))
     (defun notebook-cell-ordering (notebook)
       (loop for (a b c) in (notebook-facts notebook)
-	 when (equal b :cell-order) do (return c)
+	 when (equal b "cellOrder") do (return c)
 	 when (and (equal b :cell) (null c)) collect a into implicit-ord
 	 finally (return (chain implicit-ord (reverse)))))
     (defun notebook-cells (notebook)
@@ -213,6 +221,7 @@
 			       when (equal b "notebookName")
 			       do (return c))))
 	(dom-set (by-selector "body") (notebook-template *notebook*))
+	(nativesortable (by-selector "ul.cells"))
 	(map (lambda (cell) (mirror! (@ cell :id))) (notebook-cells *notebook*))))
 
     (defun new-cell ()
@@ -225,4 +234,5 @@
 
     (dom-ready 
      (lambda ()
+       (set-page-hash (create :book "test-book"))
        (server/notebook/current "test-book" #'notebook!)))))
