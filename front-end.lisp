@@ -1,5 +1,23 @@
 (in-package :cl-notebook)
 
+(define-closing-handler (css/notebook.css :content-type "text/css") ()
+  (cl-css:css
+   `((.cells :list-style-type none :margin 0px :padding 0px)
+     (".cells .cell" :padding 5px :margin-bottom 10px)
+     (".cells .cell.code" :background-color "#eee")
+
+     (.result :border "1px solid #ccc" :background-color "#fff" :margin 0px :margin-top 5px :padding 0px)
+     (".result .stdout" :margin 0px :padding 5px :color "#8b2252" :background-color "#efefef")
+     (.result-values :list-style-type none :margin 0px :padding 0px)
+     (".result-values li" :padding 5px)
+     (".result .result-values .type" :color "#228b22")
+     (".result .result-values .error" :background-color "#fdd" :color "#933")
+
+     (.error-contents :list-style-type none :margin 0px :padding 0px)
+     (".error-contents .error-type" :font-weight bolder)
+     (".error-contents .error-property" :font-style oblique)
+     (".error-contents .error-property .label" :display inline-block :margin-right 5px))))
+
 (define-closing-handler (js/base.js :content-type "application/javascript") ()
   (ps 
     ;; basic functional stuff
@@ -135,18 +153,33 @@
 (define-closing-handler (js/main.js :content-type "application/javascript") ()
   (ps
     ;; DOM templates
-    (defun result-template (result)
-      (when result
-	(+ (if (@ result :stdout) (who-ps-html (:p :class "stdout" (@ result :stdout))) "")
-	   (join
-	    (loop for form-res in (@ result :result)
-	       append (who-ps-html
-		       (:div :class "result-set"
-			     (join
-			      (loop for (tp val) in form-res
-				 if (= tp :error) collect (who-ps-html (:p :class "error" (obj->string val)))
-				 else collect (who-ps-html (:p val " :: " tp)))))))))))
+    (defun error-template (err)
+      (who-ps-html
+       (:ul :class "error-contents"
+	    (:li :class "error-type" (@ err "errorType"))
+	    (:li :class "error-form" (@ err "form"))
+	    (join (map 
+		   (lambda (v k) 
+		     (if (not (or (= k "errorType") (= k "form")))
+			 (who-ps-html 
+			  (:li :class "error-property" 
+			       (:span :class "label" k ":") v))
+			 ""))
+		   err)))))
 
+    (defun result-template (result)
+      (join
+       (loop for form-res in (@ result :result)
+	  append (who-ps-html
+		  (:pre :class "result"
+			(if (@ result :stdout) (who-ps-html (:p :class "stdout" (@ result :stdout))) "")
+			(:ul :class "result-values"
+			     (loop for (tp val) in form-res
+				if (= tp :error) 
+				  collect (who-ps-html (:li :class "error" (error-template val)))
+				else 
+				  collect (who-ps-html (:li (:span :class "value" val) (:span :class "type" " :: " tp))))))))))
+    
     (defun reorder-cells (ev)
       (prevent ev)
       (let ((ord (obj->string
@@ -159,20 +192,20 @@
     (defun cell-markup-template (cell)
       (with-slots (id contents value language) cell
 	(who-ps-html 
-	 (:li :class "cell" :id (+ "cell-" id) :cell-id id 
+	 (:li :class "cell markup" :id (+ "cell-" id) :cell-id id 
 	      :onclick (+ "showEditor(" id ")")
 	      :ondragend "reorderCells(event)"
-	      (:button :onclick (+ "killCell(" id ")") "-")
+	      (:div :class "controls" (:button :onclick (+ "killCell(" id ")") "-"))
 	      (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
 	      (@ value :result)))))
 
     (defun cell-code-template (cell)
       (with-slots (id contents value language) cell
 	(who-ps-html 
-	 (:li :class "cell" :id (+ "cell-" id) :cell-id id :ondragend "reorderCells(event)" 
+	 (:li :class "cell code" :id (+ "cell-" id) :cell-id id :ondragend "reorderCells(event)" 
 	      (:button :onclick (+ "killCell(" id ")") "-")
 	      (:textarea :class "cell-contents" :language (or language "commonlisp")  contents)
-	      (:pre :class "cell-value" (result-template value))))))
+	      (result-template value)))))
 
     (defun cell-template (cell)
       (case (@ cell cell-type)

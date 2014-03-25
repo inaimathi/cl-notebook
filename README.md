@@ -13,7 +13,15 @@
 
 An in-browser editor for my own idiosyncratic use editing/presentation/etc use. Maybe it'll be useful to you too, but I wouldn't hold my breath.
 
-### 
+### TODO
+
+- front-end cleanup.
+	- Possibly move it into a separate project?
+	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.
+	- Style everything so it looks pretty
+	- The markup videos should have `esc` bound to `hide-editor` for their cell
+- Clean up cell-type (should be something specific like `:common-lisp` or `:cl-who`, rather than `:code` vs `:markup` with each branching into specific dialects)
+- full `cl-who` power in the who blocks (this is going to involve `eval` again, I'm afraid, but I want to be able to stitch lisp code into `cl-who` blocks, otherwise they're not really much better than `markdown`)
 
 ### Usage
 

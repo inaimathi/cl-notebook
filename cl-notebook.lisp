@@ -27,13 +27,15 @@
     (:html
      (:head
       (:title "cl-notebook")
-      (:script :type "text/javascript" :src "/js/base.js")
-      (:script :type "text/javascript" :src "/js/main.js")
-      (:script :type "text/javascript" :src "/static/js/native-sortable.js")
-
+      
+      (:link :rel "stylesheet" :href "/css/notebook.css")
       (:link :rel "stylesheet" :href "/static/css/codemirror.css")
       (:link :rel "stylesheet" :href "/static/css/dialog.css")
       (:link :rel "stylesheet" :href "/static/css/show-hint.css")
+
+      (:script :type "text/javascript" :src "/js/base.js")
+      (:script :type "text/javascript" :src "/js/main.js")
+      (:script :type "text/javascript" :src "/static/js/native-sortable.js")
 
       (:script :type "text/javascript" :src "/static/js/codemirror.js")
       (:script :type "text/javascript" :src "/static/js/modes/commonlisp.js")
