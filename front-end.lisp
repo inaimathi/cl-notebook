@@ -1,130 +1,140 @@
 (in-package :cl-notebook)
 
 (define-closing-handler (js/base.js :content-type "application/javascript") ()
-  (ps (defun dom-ready (callback)
-	(chain document (add-event-listener "DOMContentLoaded" callback)))
+  (ps 
+    ;; basic functional stuff
+    (defun identity (thing) thing)
 
-      (defun identity (thing) thing)
+    (defun rest (array) (chain array (slice 1)))
 
-      (defun map (fn thing)
-	(if (object? thing)
-	    (let ((res (-array)))
-	      (for-in (k thing) (chain res (push (fn (aref thing k) k))))
-	      res)
-	    (loop for elem in thing collect (fn elem))))
+    (defun map (fn thing)
+      (if (object? thing)
+	  (let ((res (-array)))
+	    (for-in (k thing) (chain res (push (fn (aref thing k) k))))
+	    res)
+	  (loop for elem in thing collect (fn elem))))
 
-      (defun filter (fn thing)
-	
-	(loop for elem in thing when (fn elem) collect elem))
+    (defun filter (fn thing)	
+      (loop for elem in thing when (fn elem) collect elem))
 
-      (defun append-new (list-a list-b)
-	(let ((s (new (-set list-a))))
-	  (chain 
-	   list-a 
-	   (concat
-	    (loop for elem in list-b
-	       unless (chain s (has elem))
-	       collect elem)))))
+    (defun append-new (list-a list-b)
+      (let ((s (new (-set list-a))))
+	(chain 
+	 list-a 
+	 (concat
+	  (loop for elem in list-b
+	     unless (chain s (has elem))
+	     collect elem)))))
 
-      (defun vals (obj) (map identity obj))
+    (defun join (strings &optional (separator "")) (chain strings (join separator)))
 
-      (defun prevent (ev) (chain ev (prevent-default)))
-      
-      (defun by-selector (selector)
-	(chain document (query-selector selector)))
-      (defun by-selector-all (selector)
-	(chain document (query-selector-all selector)))
+    ;; basic hash stuff
+    (defun vals (obj) (map identity obj))
 
-      (defun rest (array) (chain array (slice 1)))
+    ;; basic DOM/event stuff
+    (defun prevent (ev) (chain ev (prevent-default)))
 
-      (defun get-page-hash ()
-	(let ((hash (@ window location hash))
-	      (res (create)))
-	  (when hash
-	    (loop for pair in (chain (rest hash) (split "&"))
-	       for (k v) = (chain pair (split "="))
-	       do (setf (aref res (decode-u-r-i k)) (decode-u-r-i v)))
-	    res)))
-	   
-      (defun set-page-hash (hash-object)
-	(setf (@ window location hash) (obj->params hash-object)))
+    (defun dom-ready (callback)
+      (chain document (add-event-listener "DOMContentLoaded" callback)))
 
-      (defun dom-append (elem markup)
-	(let ((new-content (chain document (create-element "div"))))
-	  (setf (@ new-content inner-h-t-m-l) markup)
-	  (loop while (@ new-content first-child)
-	     do (chain elem (append-child (@ new-content first-child))))))
+    (defun by-selector (selector)
+      (chain document (query-selector selector)))
+    (defun by-selector-all (selector)
+      (chain document (query-selector-all selector)))
 
-      (defun escape (string)
-	(chain string
-	       (replace "<" "&lt;")
-	       (replace ">" "&gt;")))
+    (defun escape (string)
+      (chain string
+	     (replace "<" "&lt;")
+	     (replace ">" "&gt;")))
 
-      (defun dom-set (elem markup)
-	(setf (@ elem inner-h-t-m-l) markup))
+    (defun dom-append (elem markup)
+      (let ((new-content (chain document (create-element "div"))))
+	(setf (@ new-content inner-h-t-m-l) markup)
+	(loop while (@ new-content first-child)
+	   do (chain elem (append-child (@ new-content first-child))))))
 
-      (defun number? (obj) (string= "number" (typeof obj)))
-      (defun string? (obj) (string= "string" (typeof obj)))
-      (defun function? (obj) (string= "function" (typeof obj)))
+    (defun dom-set (elem markup)
+      (setf (@ elem inner-h-t-m-l) markup))
 
-      (defun type? (obj type-string)
-	(eql (chain -object prototype to-string (call obj)) type-string))
-      (defun object? (obj) (type? obj "[object Object]"))
+    ;; basic type stuff
+    (defun number? (obj) (string= "number" (typeof obj)))
+    (defun string? (obj) (string= "string" (typeof obj)))
+    (defun function? (obj) (string= "function" (typeof obj)))
 
-      (defun join (strings &optional (separator "")) (chain strings (join separator)))
+    (defun type? (obj type-string)
+      (eql (chain -object prototype to-string (call obj)) type-string))
+    (defun object? (obj) (type? obj "[object Object]"))
 
-      (defun encode (string)
-	(encode-u-r-i-component string))
-     
-      (defun string->obj (string)
-	(chain -j-s-o-n (parse string)))
+    ;; basic encoding/decoding stuff
+    (defun encode (string)
+      (encode-u-r-i-component string))
 
-      (defun obj->string (object)
-	(chain -j-s-o-n (stringify object)))
+    (defun decode (string)
+      (decode-u-r-i string))
+    
+    (defun string->obj (string)
+      (chain -j-s-o-n (parse string)))
 
-      (defun obj->params (object)
-	(join 
-	 (map (lambda (v k) 
-		(+ (encode k) "=" 
-		   (encode (if (object? v) (obj->string v) v))))
-	      object)
-	 "&"))
+    (defun obj->string (object)
+      (chain -j-s-o-n (stringify object)))
 
-      (defun get (uri params callback)
-	(let ((req (new (-x-m-l-http-request))))
-	  (setf (@ req onreadystatechange)
-		(lambda ()
-		  (when (and (equal (@ req ready-state) 4)
-			     (equal (@ req status) 200))
-		    (let ((result (@ req response-text)))
-		      (callback result)))))
-	  (chain req (open :GET (if params (+ uri "?" (obj->params params)) uri) t))
-	  (chain req (send))))
+    (defun obj->params (object)
+      (join 
+       (map (lambda (v k) 
+	      (+ (encode k) "=" 
+		 (encode (if (object? v) (obj->string v) v))))
+	    object)
+       "&"))
 
-      (defun post (uri params callback)
-	(let ((req (new (-x-m-l-http-request)))
-	      (encoded-params (obj->params params)))
-	  (setf (@ req onreadystatechange)
-		(lambda ()
-		  (when (and (equal (@ req ready-state) 4)
-			     (equal (@ req status) 200))
-		    (let ((result (@ req response-text)))
-		      (when (function? callback)
-			(callback result))))))
-	  (chain req (open :POST uri t))
-	  (chain req (set-request-header "Content-type" "application/x-www-form-urlencoded"))
-	  (chain req (set-request-header "Content-length" (length encoded-params)))
-	  (chain req (set-request-header "Connection" "close"))
-	  (chain req (send encoded-params))))
+    ;; basic AJAX stuff
+    (defun get-page-hash ()
+      (let ((hash (@ window location hash))
+	    (res (create)))
+	(when hash
+	  (loop for pair in (chain (rest hash) (split "&"))
+	     for (k v) = (chain pair (split "="))
+	     do (setf (aref res (decode k)) (decode v)))
+	  res)))
+    
+    (defun set-page-hash (hash-object)
+      (setf (@ window location hash) (obj->params hash-object)))
 
-      (defun post/json (uri params callback)
-	(post uri params
-	      (lambda (raw)
-		(let ((res (string->obj raw)))
-		  (callback res)))))))
+    (defun get (uri params callback)
+      (let ((req (new (-x-m-l-http-request))))
+	(setf (@ req onreadystatechange)
+	      (lambda ()
+		(when (and (equal (@ req ready-state) 4)
+			   (equal (@ req status) 200))
+		  (let ((result (@ req response-text)))
+		    (callback result)))))
+	(chain req (open :GET (if params (+ uri "?" (obj->params params)) uri) t))
+	(chain req (send))))
+
+    (defun post (uri params callback)
+      (let ((req (new (-x-m-l-http-request)))
+	    (encoded-params (obj->params params)))
+	(setf (@ req onreadystatechange)
+	      (lambda ()
+		(when (and (equal (@ req ready-state) 4)
+			   (equal (@ req status) 200))
+		  (let ((result (@ req response-text)))
+		    (when (function? callback)
+		      (callback result))))))
+	(chain req (open :POST uri t))
+	(chain req (set-request-header "Content-type" "application/x-www-form-urlencoded"))
+	(chain req (set-request-header "Content-length" (length encoded-params)))
+	(chain req (set-request-header "Connection" "close"))
+	(chain req (send encoded-params))))
+
+    (defun post/json (uri params callback)
+      (post uri params
+	    (lambda (raw)
+	      (let ((res (string->obj raw)))
+		(callback res)))))))
 
 (define-closing-handler (js/main.js :content-type "application/javascript") ()
   (ps
+    ;; DOM templates
     (defun result-template (result)
       (when result
 	(+ (if (@ result :stdout) (who-ps-html (:p :class "stdout" (@ result :stdout))) "")
@@ -178,7 +188,9 @@
 	  (:ul :class "cells"
 	       (join (map (lambda (cell) (cell-template cell))
 			  (notebook-cells notebook))))))
-    
+
+
+    ;; AJAX calls
     (defun server/eval (thing target-elem)
       (post/json "/eval" (create :thing thing)
 	    (lambda (res) (dom-set target-elem (result-template res)))))
@@ -195,12 +207,15 @@
       (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)
 		 #'notebook!))
 
-    (defun cell-selector (cell &rest children)
-      (+ "#cell-" (@ cell id)
-	 (if children 
-	     (+ " " (join children " "))
-	     "")))
+    (defun new-cell (&optional (cell-type :code))
+      (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type)
+		 #'notebook!))
     
+    (defun kill-cell (cell-id)
+      (post/json "/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)
+		 #'notebook!))
+
+    ;; CodeMirror utilities    
     (defun show-editor (cell-id)
       (console.log "SHOW-EDITOR" cell-id)
       (setf (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden) nil))
@@ -232,7 +247,8 @@
 		 (by-selector (+ "#cell-" cell-id " .cell-contents"))
 		 options)))
 	mirror))
-    
+
+    ;; Notebook-related
     (defvar *notebook*)
 
     (defun notebook-condense (notebook)
@@ -281,14 +297,6 @@
 		 (unless (equal cell-type :code)
 		   (setf (@ (by-selector (+ "#cell-" id " .CodeMirror")) hidden) t))))
 	     (notebook-cells *notebook*))))
-    
-    (defun new-cell (&optional (cell-type :code))
-      (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type)
-		 #'notebook!))
-    
-    (defun kill-cell (cell-id)
-      (post/json "/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)
-		 #'notebook!))
 
     (dom-ready 
      (lambda ()
