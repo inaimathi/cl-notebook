@@ -1,307 +1,361 @@
-((5135 16482 657636000) :INSERT (0 :NOTEBOOK-NAME "test-book"))
-((5135 16482 657928000) :INSERT (1 :CELL NIL))
-((5135 16482 657941000) :INSERT (1 :CELL-TYPE :CODE))
-((5135 16482 657948000) :INSERT (1 :CONTENTS ""))
-((5135 16482 657954000) :INSERT (1 :VALUE ""))
-((5135 16493 487382000) :DELETE (1 :CONTENTS ""))
-((5135 16493 487466000) :DELETE (1 :VALUE ""))
-((5135 16493 487476000) :INSERT (1 :CONTENTS "(+ 2 3)"))
-((5135 16493 487481000) :INSERT
- (1 :VALUE ((:REQUEST . "(+ 2 3)") (:RESULT ((INTEGER "5"))) (:STDOUT . ""))))
-((5135 16495 181936000) :INSERT (2 :CELL NIL))
-((5135 16495 181946000) :INSERT (2 :CELL-TYPE :CODE))
-((5135 16495 181949000) :INSERT (2 :CONTENTS ""))
-((5135 16495 181951000) :INSERT (2 :VALUE ""))
-((5135 16495 736701000) :INSERT (3 :CELL NIL))
-((5135 16495 736711000) :INSERT (3 :CELL-TYPE :CODE))
-((5135 16495 736715000) :INSERT (3 :CONTENTS ""))
-((5135 16495 736718000) :INSERT (3 :VALUE ""))
-((5135 16501 813479000) :DELETE (2 :CONTENTS ""))
-((5135 16501 813493000) :DELETE (2 :VALUE ""))
-((5135 16501 813498000) :INSERT (2 :CONTENTS "(format t \"~a\" :true)"))
-((5135 16501 813503000) :INSERT
- (2 :VALUE
-  ((:REQUEST . "(format t \"~a\" :true)") (:RESULT ((NULL "NIL")))
-   (:STDOUT . "TRUE"))))
-((5135 16511 73800000) :DELETE (3 :CONTENTS ""))
-((5135 16511 73825000) :DELETE (3 :VALUE ""))
-((5135 16511 73836000) :INSERT (3 :CONTENTS "(format \"blah\")"))
-((5135 16511 73844000) :INSERT
- (3 :VALUE
-  ((:REQUEST . "(format \"blah\")")
-   (:RESULT
-    ((ERROR
-      ((ERROR-TYPE . SB-INT:SIMPLE-PROGRAM-ERROR)
-       (:ERROR-MESSAGE . "invalid number of arguments: 1")
-       (:FORM . "(FORMAT blah)")))))
-   (:STDOUT . ""))))
-((5135 49392 726144000) :INSERT (1 :CONTENTS "(+ 2 8)"))
-((5135 49392 726252000) :INSERT
- (1 :VALUE ((:REQUEST . "(+ 2 8)") (:RESULT ((INTEGER "10"))) (:STDOUT . ""))))
-((5135 54681 191927000) :INSERT (4 :CELL NIL))
-((5135 54681 191958000) :INSERT (4 :CELL-TYPE :CODE))
-((5135 54681 191962000) :INSERT (4 :CONTENTS ""))
-((5135 54681 191970000) :INSERT (4 :VALUE ""))
-((5135 54689 393457000) :INSERT (4 :CONTENTS "[object HTMLPreElement]"))
-((5135 54689 393463000) :INSERT
- (4 :VALUE
-  ((:REQUEST . "[object HTMLPreElement]")
-   (:RESULT
-    ((ERROR
-      ((ERROR-TYPE . UNBOUND-VARIABLE) (:FORM . "[OBJECT")
-       (:NAME . COMMON-LISP-USER::[OBJECT)))))
-   (:STDOUT . ""))))
-((5135 54800 412135000) :INSERT (4 :CONTENTS "[object HTMLPreElement]"))
-((5135 54800 412139000) :INSERT
- (4 :VALUE
-  ((:REQUEST . "[object HTMLPreElement]")
-   (:RESULT
-    ((ERROR
-      ((ERROR-TYPE . UNBOUND-VARIABLE) (:FORM . "[OBJECT")
-       (:NAME . COMMON-LISP-USER::[OBJECT)))))
-   (:STDOUT . ""))))
-((5135 54819 43099000) :INSERT (4 :CONTENTS "[object HTMLPreElement]"))
-((5135 54819 43103000) :INSERT
- (4 :VALUE
-  ((:REQUEST . "[object HTMLPreElement]")
-   (:RESULT
-    ((ERROR
-      ((ERROR-TYPE . UNBOUND-VARIABLE) (:FORM . "[OBJECT")
-       (:NAME . COMMON-LISP-USER::[OBJECT)))))
-   (:STDOUT . ""))))
-((5135 54902 733116000) :INSERT (4 :CONTENTS "(+ 2 3)"))
-((5135 54902 733123000) :INSERT
- (4 :VALUE ((:REQUEST . "(+ 2 3)") (:RESULT ((INTEGER "5"))) (:STDOUT . ""))))
-((5135 54908 362509000) :INSERT (4 :CONTENTS "(+ 2 3 4 5)"))
-((5135 54908 362513000) :INSERT
- (4 :VALUE
-  ((:REQUEST . "(+ 2 3 4 5)") (:RESULT ((INTEGER "14"))) (:STDOUT . ""))))
-((5135 56782 879958000) :INSERT (5 :CELL NIL))
-((5135 56782 879971000) :INSERT (5 :CELL-TYPE :CODE))
-((5135 56782 879975000) :INSERT (5 :CONTENTS ""))
-((5135 56782 879977000) :INSERT (5 :VALUE ""))
-((5135 56788 68884000) :INSERT (5 :CONTENTS "(+ 7 8 9)"))
-((5135 56788 68889000) :INSERT
- (5 :VALUE
-  ((:REQUEST . "(+ 7 8 9)") (:RESULT ((INTEGER "24"))) (:STDOUT . ""))))
-((5135 60866 71889000) :INSERT (4 :CONTENTS "(+ 2 3 4 5 6)"))
-((5135 60866 71893000) :INSERT
- (4 :VALUE ((:RESULT ((INTEGER "20"))) (:STDOUT . ""))))
-((5135 61011 86809000) :INSERT (4 :CONTENTS "(+ 2 3 4 5 6 7)"))
-((5135 61011 86815000) :INSERT
- (4 :VALUE
-  ((:REQUEST . "(+ 2 3 4 5 6 7)") (:RESULT ((INTEGER "27"))) (:STDOUT . ""))))((5136 79072 41603000) :INSERT (6 :CELL NIL))
-((5136 79072 41706000) :INSERT (6 :CELL-TYPE :CODE))
-((5136 79072 41710000) :INSERT (6 :CONTENTS ""))
-((5136 79072 41714000) :INSERT (6 :VALUE ""))
-((5136 79073 276033000) :DELETE (6 :VALUE ""))
-((5136 79073 276107000) :DELETE (6 :CONTENTS ""))
-((5136 79073 276126000) :DELETE (6 :CELL-TYPE :CODE))
-((5136 79073 276135000) :DELETE (6 :CELL NIL))
-((5136 79099 879514000) :DELETE (4 :CONTENTS ""))
-((5136 79099 879529000) :DELETE (4 :VALUE ""))
-((5136 79099 879534000) :INSERT (4 :CONTENTS "(+ 1 2 3 4 5)"))
-((5136 79099 879538000) :INSERT
- (4 :VALUE ((:RESULT ((INTEGER "15"))) (:STDOUT . ""))))
-((5136 79107 348227000) :INSERT (7 :CELL NIL))
-((5136 79107 348241000) :INSERT (7 :CELL-TYPE :CODE))
-((5136 79107 348245000) :INSERT (7 :CONTENTS ""))
-((5136 79107 348249000) :INSERT (7 :VALUE ""))
-((5136 79110 970426000) :INSERT (8 :CELL NIL))
-((5136 79110 970447000) :INSERT (8 :CELL-TYPE :MARKUP))
-((5136 79110 970453000) :INSERT (8 :CONTENTS ""))
-((5136 79110 970460000) :INSERT (8 :VALUE ""))
-((5136 79118 644297000) :DELETE (8 :CONTENTS ""))
-((5136 79118 644317000) :DELETE (8 :VALUE ""))
-((5136 79118 644325000) :INSERT (8 :CONTENTS "(:h3 \"Blah blah blah\")"))
-((5136 79118 644331000) :INSERT
- (8 :VALUE ((:RESULT . "<h3>Blah blah blah</h3>"))))
-((5136 79128 523279000) :DELETE (4 :CONTENTS "(+ 1 2 3 4 5)"))
-((5136 79128 523302000) :DELETE
- (4 :VALUE ((:RESULT ((INTEGER "15"))) (:STDOUT . ""))))
-((5136 79128 523311000) :INSERT (4 :CONTENTS "(+ 2 3)"))
-((5136 79128 523318000) :INSERT
- (4 :VALUE ((:RESULT ((INTEGER "5"))) (:STDOUT . ""))))
-((5136 79132 168471000) :DELETE (3 :CONTENTS "(format \"blah\")"))
-((5136 79132 168490000) :DELETE
- (3 :VALUE
-  ((:REQUEST . "(format \"blah\")")
-   (:RESULT
-    ((ERROR
-      ((COMMON-LISP-USER::ERROR-TYPE . SB-INT:SIMPLE-PROGRAM-ERROR)
-       (:ERROR-MESSAGE . "invalid number of arguments: 1")
-       (:FORM . "(FORMAT blah)")))))
-   (:STDOUT . ""))))
-((5136 79132 168498000) :INSERT (3 :CONTENTS "(format \"blah\")"))
-((5136 79132 168503000) :INSERT
- (3 :VALUE
-  ((:RESULT
-    ((ERROR
-      ((ERROR-TYPE . SB-INT:SIMPLE-PROGRAM-ERROR)
-       (:ERROR-MESSAGE . "invalid number of arguments: 1")
-       (:FORM . "(FORMAT blah)")))))
-   (:STDOUT . ""))))
-((5136 79135 367359000) :DELETE (3 :CONTENTS "(format \"blah\")"))
-((5136 79135 367381000) :DELETE
- (3 :VALUE
-  ((:RESULT
-    ((ERROR
-      ((ERROR-TYPE . SB-INT:SIMPLE-PROGRAM-ERROR)
-       (:ERROR-MESSAGE . "invalid number of arguments: 1")
-       (:FORM . "(FORMAT blah)")))))
-   (:STDOUT . ""))))
-((5136 79135 367391000) :INSERT (3 :CONTENTS "(format \"blah\")"))
-((5136 79135 367398000) :INSERT
- (3 :VALUE
-  ((:RESULT
-    ((ERROR
-      ((ERROR-TYPE . SB-INT:SIMPLE-PROGRAM-ERROR)
-       (:ERROR-MESSAGE . "invalid number of arguments: 1")
-       (:FORM . "(FORMAT blah)")))))
-   (:STDOUT . ""))))
-((5136 79139 495374000) :DELETE (2 :CONTENTS "(format t \"~a\" :true)"))
-((5136 79139 495394000) :DELETE
- (2 :VALUE
-  ((:REQUEST . "(format t \"~a\" :true)") (:RESULT ((NULL "NIL")))
-   (:STDOUT . "TRUE"))))
-((5136 79139 495403000) :INSERT (2 :CONTENTS "(format t \"~a\" :true)"))
-((5136 79139 495409000) :INSERT
- (2 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . "TRUE"))))
-((5136 79143 323424000) :DELETE (2 :CONTENTS "(format t \"~a\" :true)"))
-((5136 79143 323442000) :DELETE
- (2 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . "TRUE"))))
-((5136 79143 323449000) :INSERT (2 :CONTENTS "(format t \"~a\" :true)"))
-((5136 79143 323455000) :INSERT
- (2 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . "TRUE"))))
-((5136 79151 687026000) :DELETE (4 :CONTENTS "(+ 2 3)"))
-((5136 79151 687042000) :DELETE
- (4 :VALUE ((:RESULT ((INTEGER "5"))) (:STDOUT . ""))))
-((5136 79151 687050000) :INSERT (4 :CONTENTS "(+ 2 3)"))
-((5136 79151 687054000) :INSERT
- (4 :VALUE ((:RESULT ((INTEGER "5"))) (:STDOUT . ""))))
-((5136 79153 335020000) :DELETE
- (4 :VALUE ((:RESULT ((INTEGER "5"))) (:STDOUT . ""))))
-((5136 79153 335035000) :DELETE (4 :CONTENTS "(+ 2 3)"))
-((5136 79153 335044000) :DELETE (4 :CELL NIL))
-((5136 79153 335052000) :DELETE (4 :CELL-TYPE :CODE))
-((5136 79153 335059000) :DELETE (4 :CONTENTS "[object HTMLPreElement]"))
-((5136 79153 335070000) :DELETE
- (4 :VALUE
-  ((:REQUEST . "[object HTMLPreElement]")
-   (:RESULT
-    ((ERROR
-      ((COMMON-LISP-USER::ERROR-TYPE . UNBOUND-VARIABLE) (:FORM . "[OBJECT")
-       (:NAME . COMMON-LISP-USER::[OBJECT)))))
-   (:STDOUT . ""))))
-((5136 79153 335079000) :DELETE (4 :CONTENTS "[object HTMLPreElement]"))
-((5136 79153 335090000) :DELETE
- (4 :VALUE
-  ((:REQUEST . "[object HTMLPreElement]")
-   (:RESULT
-    ((ERROR
-      ((COMMON-LISP-USER::ERROR-TYPE . UNBOUND-VARIABLE) (:FORM . "[OBJECT")
-       (:NAME . COMMON-LISP-USER::[OBJECT)))))
-   (:STDOUT . ""))))
-((5136 79153 335098000) :DELETE (4 :CONTENTS "[object HTMLPreElement]"))
-((5136 79153 335105000) :DELETE
- (4 :VALUE
-  ((:REQUEST . "[object HTMLPreElement]")
-   (:RESULT
-    ((ERROR
-      ((COMMON-LISP-USER::ERROR-TYPE . UNBOUND-VARIABLE) (:FORM . "[OBJECT")
-       (:NAME . COMMON-LISP-USER::[OBJECT)))))
-   (:STDOUT . ""))))
-((5136 79153 335112000) :DELETE (4 :CONTENTS "(+ 2 3)"))
-((5136 79153 335118000) :DELETE
- (4 :VALUE ((:REQUEST . "(+ 2 3)") (:RESULT ((INTEGER "5"))) (:STDOUT . ""))))
-((5136 79153 335123000) :DELETE (4 :CONTENTS "(+ 2 3 4 5)"))
-((5136 79153 335129000) :DELETE
- (4 :VALUE
-  ((:REQUEST . "(+ 2 3 4 5)") (:RESULT ((INTEGER "14"))) (:STDOUT . ""))))
-((5136 79153 335135000) :DELETE (4 :CONTENTS "(+ 2 3 4 5 6)"))
-((5136 79153 335141000) :DELETE
- (4 :VALUE ((:RESULT ((INTEGER "20"))) (:STDOUT . ""))))
-((5136 79153 335147000) :DELETE (4 :CONTENTS "(+ 2 3 4 5 6 7)"))
-((5136 79153 335152000) :DELETE
- (4 :VALUE
-  ((:REQUEST . "(+ 2 3 4 5 6 7)") (:RESULT ((INTEGER "27"))) (:STDOUT . ""))))
-((5136 79154 338885000) :DELETE (5 :CELL NIL))
-((5136 79154 338904000) :DELETE (5 :CELL-TYPE :CODE))
-((5136 79154 338911000) :DELETE (5 :CONTENTS ""))
-((5136 79154 338918000) :DELETE (5 :VALUE ""))
-((5136 79154 338924000) :DELETE (5 :CONTENTS "(+ 7 8 9)"))
-((5136 79154 338930000) :DELETE
- (5 :VALUE
-  ((:REQUEST . "(+ 7 8 9)") (:RESULT ((INTEGER "24"))) (:STDOUT . ""))))
-((5136 79155 424142000) :DELETE (7 :VALUE ""))
-((5136 79155 424158000) :DELETE (7 :CONTENTS ""))
-((5136 79155 424165000) :DELETE (7 :CELL-TYPE :CODE))
-((5136 79155 424171000) :DELETE (7 :CELL NIL))
-((5136 79157 29137000) :INSERT (9 :CELL NIL))
-((5136 79157 29148000) :INSERT (9 :CELL-TYPE :CODE))
-((5136 79157 29152000) :INSERT (9 :CONTENTS ""))
-((5136 79157 29154000) :INSERT (9 :VALUE ""))
-((5136 79161 17217000) :DELETE (9 :CONTENTS ""))
-((5136 79161 17230000) :DELETE (9 :VALUE ""))
-((5136 79161 17235000) :INSERT (9 :CONTENTS "(+ 2 3)"))
-((5136 79161 17240000) :INSERT
- (9 :VALUE ((:RESULT ((INTEGER "5"))) (:STDOUT . ""))))
-((5136 79165 478838000) :DELETE (2 :CONTENTS "(format t \"~a\" :true)"))
-((5136 79165 478863000) :DELETE
- (2 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . "TRUE"))))
-((5136 79165 478875000) :INSERT (2 :CONTENTS "(format t \"~a\" :true)"))
-((5136 79165 478883000) :INSERT
- (2 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . "TRUE"))))
-((5136 79175 940000000) :INSERT (10 :CELL-ORDER (1 8 2 3 9)))
-((5136 79186 239660000) :DELETE (8 :CONTENTS "(:h3 \"Blah blah blah\")"))
-((5136 79186 239677000) :DELETE
- (8 :VALUE ((:RESULT . "<h3>Blah blah blah</h3>"))))
-((5136 79186 239684000) :INSERT
- (8 :CONTENTS "(:h3 \"Blah blah blah\")
+((5137 81915 776845000) :INSERT (0 :NOTEBOOK-NAME "test-book"))
+((5137 81915 794555000) :INSERT (1 :CELL NIL))
+((5137 81915 794570000) :INSERT (1 :CELL-TYPE :CODE))
+((5137 81915 794574000) :INSERT (1 :CONTENTS ""))
+((5137 81915 794577000) :INSERT (1 :VALUE ""))
+((5137 81990 763180000) :INSERT (2 :CELL NIL))
+((5137 81990 763199000) :INSERT (2 :CELL-TYPE :MARKUP))
+((5137 81990 763204000) :INSERT (2 :CONTENTS ""))
+((5137 81990 763211000) :INSERT (2 :VALUE ""))
+((5137 81992 111880000) :INSERT (3 :CELL-ORDER (2 1)))
+((5137 81994 545952000) :DELETE (2 :CONTENTS ""))
+((5137 81994 546046000) :DELETE (2 :VALUE ""))
+((5137 81994 546058000) :INSERT
+ (2 :CONTENTS "(:h1 \"Headings!\")
 
-(:p \"MWAHAHAHAHA!\")"))
-((5136 79186 239689000) :INSERT
- (8 :VALUE ((:RESULT . "<h3>Blah blah blah</h3><p>MWAHAHAHAHA!</p>"))))
-((5136 79195 963063000) :DELETE (1 :CONTENTS "(+ 2 3)"))
-((5136 79195 963085000) :DELETE
- (1 :VALUE ((:REQUEST . "(+ 2 3)") (:RESULT ((INTEGER "5"))) (:STDOUT . ""))))
-((5136 79195 963100000) :INSERT (1 :CONTENTS "(+ 2 3 4 5)"))
-((5136 79195 963107000) :INSERT
+(:h2 \"Smaller headings!\")
+
+(:p \"Paragraphs!\")
+
+(:img :src \"/static/img/derpy-prepares-for-work.gif\" :style \":width 250px\")"))
+((5137 81994 546064000) :INSERT
+ (2 :VALUE
+  ((:RESULT
+    . "<h1>Headings!</h1><h2>Smaller headings!</h2><p>Paragraphs!</p><img src='/static/img/derpy-prepares-for-work.gif' style=':width 250px' />"))))
+((5137 82004 899274000) :DELETE
+ (2 :CONTENTS "(:h1 \"Headings!\")
+
+(:h2 \"Smaller headings!\")
+
+(:p \"Paragraphs!\")
+
+(:img :src \"/static/img/derpy-prepares-for-work.gif\" :style \":width 250px\")"))
+((5137 82004 899297000) :DELETE
+ (2 :VALUE
+  ((:RESULT
+    . "<h1>Headings!</h1><h2>Smaller headings!</h2><p>Paragraphs!</p><img src='/static/img/derpy-prepares-for-work.gif' style=':width 250px' />"))))
+((5137 82004 899308000) :INSERT
+ (2 :CONTENTS "(:h1 \"Headings!\")
+
+(:h2 \"Smaller headings!\")
+
+(:p \"Paragraphs!\")
+
+(:img :src \"/static/img/derpy-prepares-for-work.gif\" :style \"width: 250px;\")"))
+((5137 82004 899315000) :INSERT
+ (2 :VALUE
+  ((:RESULT
+    . "<h1>Headings!</h1><h2>Smaller headings!</h2><p>Paragraphs!</p><img src='/static/img/derpy-prepares-for-work.gif' style='width: 250px;' />"))))
+((5137 82006 890042000) :INSERT (4 :CELL NIL))
+((5137 82006 890054000) :INSERT (4 :CELL-TYPE :MARKUP))
+((5137 82006 890060000) :INSERT (4 :CONTENTS ""))
+((5137 82006 890065000) :INSERT (4 :VALUE ""))
+((5137 82008 465142000) :DELETE (3 :CELL-ORDER (2 1)))
+((5137 82008 465186000) :INSERT (5 :CELL-ORDER (2 4 1)))
+((5137 82021 302635000) :DELETE (4 :CONTENTS ""))
+((5137 82021 302650000) :DELETE (4 :VALUE ""))
+((5137 82021 302659000) :INSERT
+ (4 :CONTENTS "(:h3 \"Ok, serious notes here...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter\")))
+
+(:br)"))
+((5137 82021 302684000) :INSERT
+ (4 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes here...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter</a></li></ul><br />"))))
+((5137 82030 806603000) :DELETE (5 :CELL-ORDER (2 4 1)))
+((5137 82030 806628000) :INSERT (6 :CELL-ORDER (2 1 4)))
+((5137 82037 998946000) :DELETE (1 :CONTENTS ""))
+((5137 82037 998964000) :DELETE (1 :VALUE ""))
+((5137 82037 998972000) :INSERT
+ (1 :CONTENTS ";; code!
+
+(+ 2 3 4 5)"))
+((5137 82037 998982000) :INSERT
  (1 :VALUE ((:RESULT ((INTEGER "14"))) (:STDOUT . ""))))
-((5136 79199 892589000) :DELETE
- (1 :VALUE ((:RESULT ((INTEGER "14"))) (:STDOUT . ""))))
-((5136 79199 892609000) :DELETE (1 :CONTENTS "(+ 2 3 4 5)"))
-((5136 79199 892617000) :DELETE (1 :CELL NIL))
-((5136 79199 892627000) :DELETE (1 :CELL-TYPE :CODE))
-((5136 79199 892635000) :DELETE (1 :CONTENTS "(+ 2 8)"))
-((5136 79199 892643000) :DELETE
- (1 :VALUE ((:REQUEST . "(+ 2 8)") (:RESULT ((INTEGER "10"))) (:STDOUT . ""))))
-((5136 79201 17775000) :INSERT (11 :CELL NIL))
-((5136 79201 17787000) :INSERT (11 :CELL-TYPE :CODE))
-((5136 79201 17791000) :INSERT (11 :CONTENTS ""))
-((5136 79201 17794000) :INSERT (11 :VALUE ""))
-((5136 79207 1330000) :DELETE (11 :CONTENTS ""))
-((5136 79207 1342000) :DELETE (11 :VALUE ""))
-((5136 79207 1347000) :INSERT (11 :CONTENTS "(+ 2 3 4)"))
-((5136 79207 1350000) :INSERT
- (11 :VALUE ((:RESULT ((INTEGER "9"))) (:STDOUT . ""))))
-((5136 79217 373455000) :DELETE (11 :CONTENTS "(+ 2 3 4)"))
-((5136 79217 373469000) :DELETE
- (11 :VALUE ((:RESULT ((INTEGER "9"))) (:STDOUT . ""))))
-((5136 79217 373475000) :INSERT (11 :CONTENTS "(values 2 3 4)"))
-((5136 79217 373480000) :INSERT
- (11 :VALUE
-  ((:RESULT ((INTEGER "2") (INTEGER "3") (INTEGER "4"))) (:STDOUT . ""))))
-((5136 79225 860502000) :DELETE (11 :CONTENTS "(values 2 3 4)"))
-((5136 79225 860518000) :DELETE
- (11 :VALUE
-  ((:RESULT ((INTEGER "2") (INTEGER "3") (INTEGER "4"))) (:STDOUT . ""))))
-((5136 79225 860524000) :INSERT (11 :CONTENTS "(+ 2 :test 4)"))
-((5136 79225 860529000) :INSERT
- (11 :VALUE
+((5137 82044 83313000) :INSERT (7 :CELL NIL))
+((5137 82044 83323000) :INSERT (7 :CELL-TYPE :CODE))
+((5137 82044 83326000) :INSERT (7 :CONTENTS ""))
+((5137 82044 83335000) :INSERT (7 :VALUE ""))
+((5137 82046 914493000) :DELETE (6 :CELL-ORDER (2 1 4)))
+((5137 82046 914511000) :INSERT (8 :CELL-ORDER (2 1 4 7)))
+((5137 82051 152379000) :DELETE (8 :CELL-ORDER (2 1 4 7)))
+((5137 82051 152399000) :INSERT (9 :CELL-ORDER (2 1 7 4)))
+((5137 82063 29256000) :DELETE (7 :CONTENTS ""))
+((5137 82063 29271000) :DELETE (7 :VALUE ""))
+((5137 82063 29277000) :INSERT
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5137 82063 29281000) :INSERT
+ (7 :VALUE
   ((:RESULT
     ((ERROR
-      ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
        (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
-       (:FORM . "(+ 2 TEST 4)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+       (:FORM . "(+ 2 3 4 TEST)") (:DATUM . :TEST)
+       (:EXPECTED-TYPE . NUMBER)))))
    (:STDOUT . ""))))
+((5137 82067 515719000) :INSERT (10 :CELL NIL))
+((5137 82067 515731000) :INSERT (10 :CELL-TYPE :CODE))
+((5137 82067 515734000) :INSERT (10 :CONTENTS ""))
+((5137 82067 515738000) :INSERT (10 :VALUE ""))
+((5137 82071 562068000) :DELETE (9 :CELL-ORDER (2 1 7 4)))
+((5137 82071 562083000) :INSERT (11 :CELL-ORDER (2 1 7 10 4)))
+((5137 82129 200144000) :DELETE (10 :CONTENTS ""))
+((5137 82129 200166000) :DELETE (10 :VALUE ""))
+((5137 82129 200175000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+;; Also, we capture *standard-output*!
+
+(+ 2 3)
+(+ 3 4)
+(format t \"This is a STDOUT message!\")
+(+ 4 5)
+(+ 6 :test)"))
+((5137 82129 200184000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((NULL "NIL")) ((INTEGER "9"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . "This is a STDOUT message!"))))
+((5137 82151 791938000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+;; Also, we capture *standard-output*!
+
+(+ 2 3)
+(+ 3 4)
+(format t \"This is a STDOUT message!\")
+(+ 4 5)
+(+ 6 :test)"))
+((5137 82151 791962000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((NULL "NIL")) ((INTEGER "9"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . "This is a STDOUT message!"))))
+((5137 82151 791971000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(+ 6 :test)"))
+((5137 82151 791979000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5137 82155 12627000) :INSERT (12 :CELL NIL))
+((5137 82155 12637000) :INSERT (12 :CELL-TYPE :MARKUP))
+((5137 82155 12640000) :INSERT (12 :CONTENTS ""))
+((5137 82155 12642000) :INSERT (12 :VALUE ""))
+((5137 82158 276233000) :DELETE (12 :VALUE ""))
+((5137 82158 276246000) :DELETE (12 :CONTENTS ""))
+((5137 82158 276252000) :DELETE (12 :CELL-TYPE :MARKUP))
+((5137 82158 276257000) :DELETE (12 :CELL NIL))
+((5137 82160 214971000) :INSERT (13 :CELL NIL))
+((5137 82160 214992000) :INSERT (13 :CELL-TYPE :CODE))
+((5137 82160 214999000) :INSERT (13 :CONTENTS ""))
+((5137 82160 215005000) :INSERT (13 :VALUE ""))
+((5137 82162 935333000) :DELETE (11 :CELL-ORDER (2 1 7 10 4)))
+((5137 82162 935349000) :INSERT (14 :CELL-ORDER (2 1 7 10 13 4)))
+((5137 82226 623914000) :DELETE (13 :CONTENTS ""))
+((5137 82226 623933000) :DELETE (13 :VALUE ""))
+((5137 82226 623941000) :INSERT
+ (13 :CONTENTS ";; We capture *standard-output*!
+
+(format t \"Something something dark side\")"))
+((5137 82226 623948000) :INSERT
+ (13 :VALUE
+  ((:RESULT ((NULL "NIL"))) (:STDOUT . "Something something dark side"))))
+((5137 82244 813041000) :DELETE
+ (13 :CONTENTS ";; We capture *standard-output*!
+
+(format t \"Something something dark side\")"))
+((5137 82244 813058000) :DELETE
+ (13 :VALUE
+  ((:RESULT ((NULL "NIL"))) (:STDOUT . "Something something dark side"))))
+((5137 82244 813065000) :INSERT
+ (13 :CONTENTS ";; We capture *standard-output*!
+
+(format t \"Something something ~%dark side~%\")"))
+((5137 82244 813070000) :INSERT
+ (13 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Something something 
+dark side
+"))))
+((5137 82266 647011000) :DELETE
+ (13 :CONTENTS ";; We capture *standard-output*!
+
+(format t \"Something something ~%dark side~%\")"))
+((5137 82266 647037000) :DELETE
+ (13 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Something something 
+dark side
+"))))
+((5137 82266 647050000) :INSERT
+ (13 :CONTENTS ";; We capture *standard-output*!
+
+(format t \"Something something dark side.~%Also, multilines work.\")"))
+((5137 82266 647059000) :INSERT
+ (13 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Something something dark side.
+Also, multilines work."))))
+((5137 82288 963853000) :DELETE
+ (13 :CONTENTS ";; We capture *standard-output*!
+
+(format t \"Something something dark side.~%Also, multilines work.\")"))
+((5137 82288 963870000) :DELETE
+ (13 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Something something dark side.
+Also, multilines work."))))
+((5137 82288 963878000) :INSERT
+ (13 :CONTENTS ";; We capture *standard-output*!
+
+(format t \"Something something dark side.~%Also, multilines work here.~%Although if you print tons of lines, the output will get long.\")"))
+((5137 82288 963885000) :INSERT
+ (13 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Something something dark side.
+Also, multilines work here.
+Although if you print tons of lines, the output will get long."))))
+((5137 82300 702851000) :DELETE
+ (4 :CONTENTS "(:h3 \"Ok, serious notes here...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter\")))
+
+(:br)"))
+((5137 82300 702907000) :DELETE
+ (4 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes here...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter</a></li></ul><br />"))))
+((5137 82300 702964000) :INSERT
+ (4 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter\")))
+
+(:br)"))
+((5137 82300 702991000) :INSERT
+ (4 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter</a></li></ul><br />"))))

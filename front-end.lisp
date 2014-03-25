@@ -16,7 +16,7 @@
      (.error-contents :list-style-type none :margin 0px :padding 0px)
      (".error-contents .error-type" :font-weight bolder)
      (".error-contents .error-property" :font-style oblique)
-     (".error-contents .error-property .label" :display inline-block :margin-right 5px))))
+     (".error-contents .error-property .label" :display inline-block :margin-right 5px :font-size small))))
 
 (define-closing-handler (js/base.js :content-type "application/javascript") ()
   (ps 
@@ -168,17 +168,18 @@
 		   err)))))
 
     (defun result-template (result)
-      (join
-       (loop for form-res in (@ result :result)
-	  append (who-ps-html
-		  (:pre :class "result"
-			(if (@ result :stdout) (who-ps-html (:p :class "stdout" (@ result :stdout))) "")
-			(:ul :class "result-values"
-			     (loop for (tp val) in form-res
-				if (= tp :error) 
+      (when result ;; yes, seriously. New cells don't have these
+	(join
+	 (loop for form-res in (@ result :result)
+	    append (who-ps-html
+		    (:pre :class "result"
+			  (if (@ result :stdout) (who-ps-html (:p :class "stdout" (@ result :stdout))) "")
+			  (:ul :class "result-values"
+			       (loop for (tp val) in form-res
+				  if (= tp :error) 
 				  collect (who-ps-html (:li :class "error" (error-template val)))
-				else 
-				  collect (who-ps-html (:li (:span :class "value" val) (:span :class "type" " :: " tp))))))))))
+				  else 
+				  collect (who-ps-html (:li (:span :class "value" val) (:span :class "type" " :: " tp)))))))))))
     
     (defun reorder-cells (ev)
       (prevent ev)
