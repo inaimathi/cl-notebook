@@ -13,6 +13,8 @@
 
 An in-browser editor for my own idiosyncratic use editing/presentation/etc use. Maybe it'll be useful to you too, but I wouldn't hold my breath.
 
+### 
+
 ### Usage
 
 You need to install the [`house` server](https://github.com/Inaimathi/house), the [`fact-base` triple-store](https://github.com/Inaimathi/fact-base), [`cl-mop`](https://github.com/Inaimathi/cl-mop) and [this repo](https://github.com/Inaimathi/cl-notebook) by cloning them.
@@ -21,7 +23,11 @@ The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/)
 
 ### License
 
-AGPL3
+[AGPL3](https://www.gnu.org/licenses/agpl-3.0.html) (also found in the included copying.txt)
+
+*Short version:*
+
+Do whatever you like, BUT afford the same freedoms to anyone you give this software or derivative works (yes, this includes the new stuff you do) to, and anyone you expose it to as a service.
 
 ### Credits
 
