@@ -214,8 +214,8 @@
 
     (defun cell-template (cell)
       (case (@ cell cell-type)
-	(:code (cell-code-template cell))
-	(:markup (cell-markup-template cell))))
+	("commonLisp" (cell-code-template cell))
+	("clWho" (cell-markup-template cell))))
     
     (defun notebook-template (notebook)
       (who-ps-html 
@@ -242,7 +242,7 @@
       (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)
 		 #'notebook!))
 
-    (defun new-cell (&optional (cell-type :code))
+    (defun new-cell (&optional (cell-type :common-lisp))
       (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type)
 		 #'notebook!))
     
@@ -329,7 +329,7 @@
 	(map (lambda (cell) 
 	       (with-slots (id cell-type) cell
 		 (mirror! id)
-		 (unless (equal cell-type :code)
+		 (when (equal cell-type "clWho")
 		   (setf (@ (by-selector (+ "#cell-" id " .CodeMirror")) hidden) t))))
 	     (notebook-cells *notebook*))))
 

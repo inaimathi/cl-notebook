@@ -3,7 +3,7 @@
 (defvar *notebooks* 
   (make-hash-table :test 'equal))
 
-(defmethod new-cell! ((book fact-base) &key (cell-type :code) (contents "") (value ""))
+(defmethod new-cell! ((book fact-base) &key (cell-type :common-lisp) (contents "") (value ""))
   (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:contents ,contents) (:value ,value))))
 
 (defmethod remove-notebook! (name)
@@ -13,7 +13,7 @@
   (let ((book (make-fact-base :indices '(:a :b :c :ab) :id name)))
     (insert-new! book :notebook-name name)
     (let ((cont (format nil "(:h1 \"~a\")" name)))
-      (new-cell! book :cell-type :markup :contents cont :value (js-whoify cont)))
+      (new-cell! book :cell-type :cl-who :contents cont :value (js-whoify cont)))
     (unless (gethash name *notebooks*)
       (setf (gethash name *notebooks*) book))))
 
@@ -104,13 +104,20 @@
 (define-json-handler (notebook/current) ((book :notebook))
   (current book))
 
+(defmethod js-ev (cell-type (contents string))
+  (alist :result contents :stdout ""))
+
+(defmethod js-ev ((cell-type (eql :cl-who)) (contents string))
+  (js-whoify contents))
+
+(defmethod js-ev ((cell-type (eql :common-lisp)) (contents string))
+  (js-eval contents))
+
 (define-json-handler (notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
   (let* ((cont-fact (first (lookup book :a cell-id :b :contents)))
 	 (val-fact (first (lookup book :a cell-id :b :value)))
 	 (cell-type (caddar (lookup book :a cell-id :b :cell-type)))
-	 (res (case cell-type
-		(:markup (js-whoify contents))
-		(t (js-eval contents)))))
+	 (res (js-ev cell-type contents)))
     (when (and cont-fact val-fact res)
       (delete! book cont-fact)
       (delete! book val-fact)

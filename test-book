@@ -1,10 +1,10 @@
 ((5137 81915 776845000) :INSERT (0 :NOTEBOOK-NAME "test-book"))
 ((5137 81915 794555000) :INSERT (1 :CELL NIL))
-((5137 81915 794570000) :INSERT (1 :CELL-TYPE :CODE))
+((5137 81915 794570000) :INSERT (1 :CELL-TYPE :COMMON-LISP))
 ((5137 81915 794574000) :INSERT (1 :CONTENTS ""))
 ((5137 81915 794577000) :INSERT (1 :VALUE ""))
 ((5137 81990 763180000) :INSERT (2 :CELL NIL))
-((5137 81990 763199000) :INSERT (2 :CELL-TYPE :MARKUP))
+((5137 81990 763199000) :INSERT (2 :CELL-TYPE :CL-WHO))
 ((5137 81990 763204000) :INSERT (2 :CONTENTS ""))
 ((5137 81990 763211000) :INSERT (2 :VALUE ""))
 ((5137 81992 111880000) :INSERT (3 :CELL-ORDER (2 1)))
@@ -47,7 +47,7 @@
   ((:RESULT
     . "<h1>Headings!</h1><h2>Smaller headings!</h2><p>Paragraphs!</p><img src='/static/img/derpy-prepares-for-work.gif' style='width: 250px;' />"))))
 ((5137 82006 890042000) :INSERT (4 :CELL NIL))
-((5137 82006 890054000) :INSERT (4 :CELL-TYPE :MARKUP))
+((5137 82006 890054000) :INSERT (4 :CELL-TYPE :CL-WHO))
 ((5137 82006 890060000) :INSERT (4 :CONTENTS ""))
 ((5137 82006 890065000) :INSERT (4 :VALUE ""))
 ((5137 82008 465142000) :DELETE (3 :CELL-ORDER (2 1)))
@@ -110,7 +110,7 @@
 ((5137 82037 998982000) :INSERT
  (1 :VALUE ((:RESULT ((INTEGER "14"))) (:STDOUT . ""))))
 ((5137 82044 83313000) :INSERT (7 :CELL NIL))
-((5137 82044 83323000) :INSERT (7 :CELL-TYPE :CODE))
+((5137 82044 83323000) :INSERT (7 :CELL-TYPE :COMMON-LISP))
 ((5137 82044 83326000) :INSERT (7 :CONTENTS ""))
 ((5137 82044 83335000) :INSERT (7 :VALUE ""))
 ((5137 82046 914493000) :DELETE (6 :CELL-ORDER (2 1 4)))
@@ -133,7 +133,7 @@
        (:EXPECTED-TYPE . NUMBER)))))
    (:STDOUT . ""))))
 ((5137 82067 515719000) :INSERT (10 :CELL NIL))
-((5137 82067 515731000) :INSERT (10 :CELL-TYPE :CODE))
+((5137 82067 515731000) :INSERT (10 :CELL-TYPE :COMMON-LISP))
 ((5137 82067 515734000) :INSERT (10 :CONTENTS ""))
 ((5137 82067 515738000) :INSERT (10 :VALUE ""))
 ((5137 82071 562068000) :DELETE (9 :CELL-ORDER (2 1 7 4)))
@@ -192,15 +192,15 @@
        (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
    (:STDOUT . ""))))
 ((5137 82155 12627000) :INSERT (12 :CELL NIL))
-((5137 82155 12637000) :INSERT (12 :CELL-TYPE :MARKUP))
+((5137 82155 12637000) :INSERT (12 :CELL-TYPE :CL-WHO))
 ((5137 82155 12640000) :INSERT (12 :CONTENTS ""))
 ((5137 82155 12642000) :INSERT (12 :VALUE ""))
 ((5137 82158 276233000) :DELETE (12 :VALUE ""))
 ((5137 82158 276246000) :DELETE (12 :CONTENTS ""))
-((5137 82158 276252000) :DELETE (12 :CELL-TYPE :MARKUP))
+((5137 82158 276252000) :DELETE (12 :CELL-TYPE :CL-WHO))
 ((5137 82158 276257000) :DELETE (12 :CELL NIL))
 ((5137 82160 214971000) :INSERT (13 :CELL NIL))
-((5137 82160 214992000) :INSERT (13 :CELL-TYPE :CODE))
+((5137 82160 214992000) :INSERT (13 :CELL-TYPE :COMMON-LISP))
 ((5137 82160 214999000) :INSERT (13 :CONTENTS ""))
 ((5137 82160 215005000) :INSERT (13 :VALUE ""))
 ((5137 82162 935333000) :DELETE (11 :CELL-ORDER (2 1 7 10 4)))
@@ -518,7 +518,7 @@ Although if you print tons of lines, the output will get long."))))
  (13 :CONTENTS ";; We capture *standard-output*!
 
 (format t \"Something something dark side.~%Also, multilines work here.~%Although if you print tons of lines, the output will get long.\")"))
-((5137 86139 227672000) :DELETE (13 :CELL-TYPE :CODE))
+((5137 86139 227672000) :DELETE (13 :CELL-TYPE :COMMON-LISP))
 ((5137 86139 227678000) :DELETE (13 :CELL NIL))
 ((5137 86171 453156000) :DELETE
  (10 :CONTENTS
@@ -601,3 +601,912 @@ Though it will get long if you have lots of lines..."))))
    (:STDOUT . "Also, we capture *standard-output*!
 Yes, even multiline *standard-output*!
 Though it will get long if you have lots of lines..."))))
+((5138 1047 194509000) :DELETE
+ (1 :CONTENTS ";; code!
+
+(+ 2 3 4 5)"))
+((5138 1047 194536000) :DELETE
+ (1 :VALUE ((:RESULT ((INTEGER "14"))) (:STDOUT . ""))))
+((5138 1047 194544000) :INSERT
+ (1 :CONTENTS ";; code!
+
+(format t \"Blah!\")
+
+(+ 2 3 4 5)"))
+((5138 1047 194548000) :INSERT
+ (1 :VALUE ((:RESULT ((INTEGER "14"))) (:STDOUT . "Blah!"))))
+((5138 1060 568207000) :INSERT (15 :CELL NIL))
+((5138 1060 568218000) :INSERT (15 :CELL-TYPE :COMMON-LISP))
+((5138 1060 568221000) :INSERT (15 :CONTENTS ""))
+((5138 1060 568224000) :INSERT (15 :VALUE ""))
+((5138 1063 941108000) :DELETE (14 :CELL-ORDER (2 1 7 10 13 4)))
+((5138 1063 941125000) :INSERT (16 :CELL-ORDER (2 1 7 10 15 4)))
+((5138 1069 165847000) :DELETE (16 :CELL-ORDER (2 1 7 10 15 4)))
+((5138 1069 165861000) :INSERT (17 :CELL-ORDER (2 1 7 15 10 4)))
+((5138 1076 72281000) :DELETE (17 :CELL-ORDER (2 1 7 15 10 4)))
+((5138 1076 72295000) :INSERT (18 :CELL-ORDER (2 1 15 7 10 4)))
+((5138 1084 630810000) :DELETE
+ (1 :CONTENTS ";; code!
+
+(format t \"Blah!\")
+
+(+ 2 3 4 5)"))
+((5138 1084 630825000) :DELETE
+ (1 :VALUE ((:RESULT ((INTEGER "14"))) (:STDOUT . "Blah!"))))
+((5138 1084 630831000) :INSERT
+ (1 :CONTENTS ";; code!
+
+(+ 2 3 4 5)"))
+((5138 1084 630836000) :INSERT
+ (1 :VALUE ((:RESULT ((INTEGER "14"))) (:STDOUT . ""))))
+((5138 1110 87087000) :DELETE (15 :CONTENTS ""))
+((5138 1110 87107000) :DELETE (15 :VALUE ""))
+((5138 1110 87116000) :INSERT
+ (15 :CONTENTS
+  "(format t \"Standard output capture!~%Yes, even with multiple lines!\")"))
+((5138 1110 87123000) :INSERT
+ (15 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Standard output capture!
+Yes, even with multiple lines!"))))
+((5138 1118 75317000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(format t \"Also, we capture *standard-output*!~%Yes, even multiline *standard-output*!~%Though it will get long if you have lots of lines...\")
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(+ 6 :test)"))
+((5138 1118 75341000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((NULL "NIL")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . "Also, we capture *standard-output*!
+Yes, even multiline *standard-output*!
+Though it will get long if you have lots of lines..."))))
+((5138 1118 75352000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(+ 6 :test)"))
+((5138 1118 75359000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 4178 894699000) :INSERT (19 :CELL NIL))
+((5138 4178 894742000) :INSERT (19 :CELL-TYPE :CL-WHO))
+((5138 4178 894745000) :INSERT (19 :CONTENTS ""))
+((5138 4178 894748000) :INSERT (19 :VALUE ""))
+((5138 4310 868099000) :DELETE
+ (4 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter\")))
+
+(:br)"))
+((5138 4310 868162000) :DELETE
+ (4 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter</a></li></ul><br />"))))
+((5138 4310 868199000) :INSERT
+ (4 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter\")))
+
+(:br)"))
+((5138 4310 868219000) :INSERT
+ (4 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter</a></li></ul><br />"))))
+((5138 4317 258558000) :DELETE
+ (4 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter\")))
+
+(:br)"))
+((5138 4317 258601000) :DELETE
+ (4 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter</a></li></ul><br />"))))
+((5138 4317 258635000) :INSERT
+ (4 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\")))
+
+(:br)"))
+((5138 4317 258653000) :INSERT
+ (4 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul><br />"))))
+((5138 4408 818414000) :DELETE (19 :VALUE ""))
+((5138 4408 818429000) :DELETE (19 :CONTENTS ""))
+((5138 4408 818435000) :DELETE (19 :CELL-TYPE :CL-WHO))
+((5138 4408 818441000) :DELETE (19 :CELL NIL))
+((5138 4430 875508000) :DELETE
+ (4 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\")))
+
+(:br)"))
+((5138 4430 875564000) :DELETE
+ (4 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul><br />"))))
+((5138 4430 875598000) :INSERT
+ (4 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\")))
+
+(:br)"))
+((5138 4430 875616000) :INSERT
+ (4 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul><br />"))))
+((5138 5181 116724000) :DELETE
+ (4 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\")))
+
+(:br)"))
+((5138 5181 116909000) :DELETE
+ (4 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul><br />"))))
+((5138 5181 116957000) :INSERT
+ (4 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\")))
+
+(:br)"))
+((5138 5181 116994000) :INSERT
+ (4 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul><br />"))))
+((5138 5506 233942000) :DELETE (18 :CELL-ORDER (2 1 15 7 10 4)))
+((5138 5506 234122000) :INSERT (20 :CELL-ORDER (2 1 15 7 10 4)))
+((5138 5507 507985000) :DELETE
+ (4 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\")))
+
+(:br)"))
+((5138 5507 508029000) :DELETE
+ (4 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul><br />"))))
+((5138 5507 508063000) :INSERT
+ (4 :CONTENTS "(flet ((section (name &rest uri/name-pairs)
+		(htm (:p (:b name)
+			 (:ul (loop for (uri name) on uri/name-pairs by #'cddr
+				    do (htm (:li (:a :href uri name)))))))))
+  (section \"Terrain generation\"
+	   \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+	   \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+	   \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+	   \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+	   \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+	   \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+	   \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\"))"))
+((5138 5507 508074000) :INSERT
+ (4 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . UNDEFINED-FUNCTION)
+       (:FORM . "(WITH-HTML-OUTPUT-TO-STRING (S)
+ (FLET ((SECTION (NAME &REST URI/NAME-PAIRS)
+          (HTM
+           (P (B NAME)
+            (UL
+             (LOOP FOR (URI NAME) ON URI/NAME-PAIRS BY #'CDDR
+                   DO (HTM (LI (A HREF URI NAME)))))))))
+   (SECTION Terrain generation
+    http://en.wikipedia.org/wiki/Maze_generation_algorithm
+    Maze generation on wikipedia
+    http://www.roguebasin.com/index.php?title=Articles#Map Rogue Basin page
+    http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm
+    Dungeon Building Algorithm
+    http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python
+    Dungeon Builder in Python
+    http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
+    Cellular Automata for Terrain http://pixelenvy.ca/wa/ca_cave.html
+    More cellular automata for terrain
+    http://www.roguebasin.com/index.php?title=Abstract_Dungeons
+    Abstract dungeons from RogueBasin
+    http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern
+    Cavern delving
+    http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation
+    BSP Dungeon gen)))")
+       (:NAME . S)))))
+   (:STDOUT . ""))))
+((5138 5867 403836000) :INSERT (21 :CELL NIL))
+((5138 5867 403856000) :INSERT (21 :CELL-TYPE :COMMON-LISP))
+((5138 5867 403859000) :INSERT (21 :CONTENTS ""))
+((5138 5867 403861000) :INSERT (21 :VALUE ""))
+((5138 6443 164392000) :DELETE
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5138 6443 164594000) :DELETE
+ (7 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 2 3 4 TEST)") (:DATUM . :TEST)
+       (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 6443 164620000) :INSERT
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5138 6443 164664000) :INSERT
+ (7 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 2 3 4 TEST)") (:DATUM . :TEST)
+       (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 6449 957359000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(+ 6 :test)"))
+((5138 6449 957378000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 6449 957384000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3 5)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(+ 6 :test)"))
+((5138 6449 957389000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "10")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 6454 401629000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3 5)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(+ 6 :test)"))
+((5138 6454 401656000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "10")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 6454 401667000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(+ 6 :test)"))
+((5138 6454 401676000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 6462 218406000) :DELETE
+ (4 :CONTENTS "(flet ((section (name &rest uri/name-pairs)
+		(htm (:p (:b name)
+			 (:ul (loop for (uri name) on uri/name-pairs by #'cddr
+				    do (htm (:li (:a :href uri name)))))))))
+  (section \"Terrain generation\"
+	   \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+	   \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+	   \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+	   \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+	   \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+	   \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+	   \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\"))"))
+((5138 6462 218449000) :DELETE
+ (4 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . UNDEFINED-FUNCTION)
+       (:FORM . "(WITH-HTML-OUTPUT-TO-STRING (S)
+ (FLET ((SECTION (NAME &REST URI/NAME-PAIRS)
+          (HTM
+           (P (B NAME)
+            (UL
+             (LOOP FOR (URI NAME) ON URI/NAME-PAIRS BY #'CDDR
+                   DO (HTM (LI (A HREF URI NAME)))))))))
+   (SECTION Terrain generation
+    http://en.wikipedia.org/wiki/Maze_generation_algorithm
+    Maze generation on wikipedia
+    http://www.roguebasin.com/index.php?title=Articles#Map Rogue Basin page
+    http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm
+    Dungeon Building Algorithm
+    http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python
+    Dungeon Builder in Python
+    http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
+    Cellular Automata for Terrain http://pixelenvy.ca/wa/ca_cave.html
+    More cellular automata for terrain
+    http://www.roguebasin.com/index.php?title=Abstract_Dungeons
+    Abstract dungeons from RogueBasin
+    http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern
+    Cavern delving
+    http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation
+    BSP Dungeon gen)))")
+       (:NAME . S)))))
+   (:STDOUT . ""))))
+((5138 6462 218463000) :INSERT
+ (4 :CONTENTS "(flet ((section (name &rest uri/name-pairs)
+		(htm (:p (:b name)
+			 (:ul (loop for (uri name) on uri/name-pairs by #'cddr
+				    do (htm (:li (:a :href uri name)))))))))
+  (section \"Terrain generation\"
+	   \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+	   \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+	   \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+	   \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+	   \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+	   \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+	   \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\"))"))
+((5138 6462 218481000) :INSERT (4 :VALUE ((:RESULT (CL-WHO::*INDENT* NIL)))))
+((5138 6468 824945000) :DELETE
+ (4 :CONTENTS "(flet ((section (name &rest uri/name-pairs)
+		(htm (:p (:b name)
+			 (:ul (loop for (uri name) on uri/name-pairs by #'cddr
+				    do (htm (:li (:a :href uri name)))))))))
+  (section \"Terrain generation\"
+	   \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+	   \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+	   \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+	   \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+	   \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+	   \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+	   \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\"))"))
+((5138 6468 824982000) :DELETE (4 :VALUE ((:RESULT (CL-WHO::*INDENT* NIL)))))
+((5138 6468 824988000) :INSERT
+ (4 :CONTENTS "(flet ((section (name &rest uri/name-pairs)
+		(htm (:p (:b name)
+			 (:ul (loop for (uri name) on uri/name-pairs by #'cddr
+				    do (htm (:li (:a :href uri name)))))))))
+  (section \"Terrain generation\"
+	   \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+	   \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+	   \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+	   \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+	   \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+	   \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+	   \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\"))"))
+((5138 6468 825001000) :INSERT (4 :VALUE ((:RESULT (CL-WHO::*INDENT* NIL)))))
+((5138 6474 635420000) :DELETE (21 :CONTENTS ""))
+((5138 6474 635439000) :DELETE (21 :VALUE ""))
+((5138 6474 635445000) :INSERT (21 :CONTENTS "(+ 2 3)"))
+((5138 6474 635451000) :INSERT
+ (21 :VALUE ((:RESULT ((INTEGER "5"))) (:STDOUT . ""))))
+((5138 6489 960879000) :INSERT (22 :CELL NIL))
+((5138 6489 960890000) :INSERT (22 :CELL-TYPE :CL-WHO))
+((5138 6489 960900000) :INSERT (22 :CONTENTS ""))
+((5138 6489 960902000) :INSERT (22 :VALUE ""))
+((5138 6495 81992000) :DELETE (22 :CONTENTS ""))
+((5138 6495 82007000) :DELETE (22 :VALUE ""))
+((5138 6495 82012000) :INSERT
+ (22 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\")))
+
+(:br)"))
+((5138 6495 82033000) :INSERT
+ (22 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul><br />"))))
+((5138 6634 841194000) :DELETE
+ (4 :CONTENTS "(flet ((section (name &rest uri/name-pairs)
+		(htm (:p (:b name)
+			 (:ul (loop for (uri name) on uri/name-pairs by #'cddr
+				    do (htm (:li (:a :href uri name)))))))))
+  (section \"Terrain generation\"
+	   \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+	   \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+	   \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+	   \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+	   \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+	   \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+	   \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\"))"))
+((5138 6634 841235000) :DELETE (4 :VALUE ((:RESULT (CL-WHO::*INDENT* NIL)))))
+((5138 6634 841243000) :INSERT
+ (4 :CONTENTS "(flet ((section (name &rest uri/name-pairs)
+		(htm (:p (:b name)
+			 (:ul (loop for (uri name) on uri/name-pairs by #'cddr
+				    do (htm (:li (:a :href uri name)))))))))
+  (section \"Terrain generation\"
+	   \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+	   \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+	   \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+	   \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+	   \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+	   \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+	   \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\"))"))
+((5138 6634 841261000) :INSERT (4 :VALUE ((:RESULT (CL-WHO::*INDENT* NIL)))))
+((5138 7189 324591000) :DELETE
+ (4 :CONTENTS "(flet ((section (name &rest uri/name-pairs)
+		(htm (:p (:b name)
+			 (:ul (loop for (uri name) on uri/name-pairs by #'cddr
+				    do (htm (:li (:a :href uri name)))))))))
+  (section \"Terrain generation\"
+	   \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+	   \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+	   \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+	   \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+	   \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+	   \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+	   \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\"))"))
+((5138 7189 324638000) :DELETE (4 :VALUE ((:RESULT (CL-WHO::*INDENT* NIL)))))
+((5138 7189 324644000) :INSERT
+ (4 :CONTENTS "(flet ((section (name &rest uri/name-pairs)
+		(htm (:p (:b name)
+			 (:ul (loop for (uri name) on uri/name-pairs by #'cddr
+				    do (htm (:li (:a :href uri name)))))))))
+  (section \"Terrain generation\"
+	   \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+	   \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+	   \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+	   \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+	   \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+	   \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+	   \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\"))"))
+((5138 7189 324655000) :INSERT (4 :VALUE ((:RESULT (CL-WHO::*INDENT* NIL)))))
+((5138 7238 693155000) :DELETE (4 :VALUE ((:RESULT (CL-WHO::*INDENT* NIL)))))
+((5138 7238 693168000) :DELETE
+ (4 :CONTENTS "(flet ((section (name &rest uri/name-pairs)
+		(htm (:p (:b name)
+			 (:ul (loop for (uri name) on uri/name-pairs by #'cddr
+				    do (htm (:li (:a :href uri name)))))))))
+  (section \"Terrain generation\"
+	   \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+	   \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+	   \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+	   \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+	   \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+	   \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+	   \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+	   \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\"))"))
+((5138 7238 693187000) :DELETE (4 :CELL NIL))
+((5138 7238 693193000) :DELETE (4 :CELL-TYPE :CL-WHO))
+((5138 7240 200754000) :DELETE
+ (21 :VALUE ((:RESULT ((INTEGER "5"))) (:STDOUT . ""))))
+((5138 7240 200767000) :DELETE (21 :CONTENTS "(+ 2 3)"))
+((5138 7240 200773000) :DELETE (21 :CELL NIL))
+((5138 7240 200777000) :DELETE (21 :CELL-TYPE :COMMON-LISP))
+((5138 7271 469793000) :INSERT (23 :CELL NIL))
+((5138 7271 469804000) :INSERT (23 :CELL-TYPE :CL-WHO))
+((5138 7271 469807000) :INSERT (23 :CONTENTS ""))
+((5138 7271 469810000) :INSERT (23 :VALUE ""))
+((5138 7278 947372000) :DELETE (20 :CELL-ORDER (2 1 15 7 10 4)))
+((5138 7278 947496000) :INSERT (24 :CELL-ORDER (2 1 15 7 10 22 23)))
+((5138 7283 331235000) :DELETE (24 :CELL-ORDER (2 1 15 7 10 22 23)))
+((5138 7283 331312000) :INSERT (25 :CELL-ORDER (2 1 15 7 10 23 22)))
+((5138 7287 373057000) :DELETE (25 :CELL-ORDER (2 1 15 7 10 23 22)))
+((5138 7287 373097000) :INSERT (26 :CELL-ORDER (2 1 15 23 7 10 22)))
+((5138 7291 597487000) :DELETE (26 :CELL-ORDER (2 1 15 23 7 10 22)))
+((5138 7291 597502000) :INSERT (27 :CELL-ORDER (2 1 15 23 7 22 10)))
+((5138 7296 855904000) :DELETE (27 :CELL-ORDER (2 1 15 23 7 22 10)))
+((5138 7296 855918000) :INSERT (28 :CELL-ORDER (2 23 1 15 7 22 10)))
+((5138 7299 664125000) :DELETE (28 :CELL-ORDER (2 23 1 15 7 22 10)))
+((5138 7299 664139000) :INSERT (29 :CELL-ORDER (23 2 1 15 7 22 10)))
+((5138 7311 669608000) :DELETE (23 :CONTENTS ""))
+((5138 7311 669623000) :DELETE (23 :VALUE ""))
+((5138 7311 669628000) :INSERT (23 :CONTENTS "(:h1 \"test-book\")"))
+((5138 7311 669633000) :INSERT (23 :VALUE ((:RESULT . "<h1>test-book</h1>"))))
+((5138 8871 985589000) :DELETE (29 :CELL-ORDER (23 2 1 15 7 22 10)))
+((5138 8871 985822000) :INSERT (30 :CELL-ORDER (23 2 1 15 7 10 22)))

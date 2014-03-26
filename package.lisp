@@ -13,4 +13,4 @@
 
 (define-http-type (:cell-type)
     :type-expression `(intern (string-upcase ,parameter) :keyword)
-    :lookup-assertion `(member ,parameter '(:code :markup)))
+    :lookup-assertion `(member ,parameter '(:common-lisp :cl-who)))
