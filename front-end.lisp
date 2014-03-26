@@ -6,12 +6,11 @@
      (".cells .cell" :padding 5px :margin-bottom 10px)
      (".cells .cell.code" :background-color "#eee")
 
-     (.result :border "1px solid #ccc" :background-color "#fff" :margin 0px :margin-top 5px :padding 0px)
-     (".result .stdout" :margin 0px :padding 5px :color "#8b2252" :background-color "#efefef")
-     (.result-values :list-style-type none :margin 0px :padding 0px)
-     (".result-values li" :padding 5px)
-     (".result .result-values .type" :color "#228b22")
-     (".result .result-values .error" :background-color "#fdd" :color "#933")
+     (.result :border "1px solid #ccc" :background-color "#fff" :list-style-type none :margin 0px :margin-top 5px :padding 0px)
+     (.stdout :margin 0px :padding 5px :color "#8b2252" :background-color "#efefef")
+     (".result li" :padding 5px)
+     (".result .type" :color "#228b22")
+     (".result .error" :background-color "#fdd" :color "#933")
 
      (.error-contents :list-style-type none :margin 0px :padding 0px)
      (".error-contents .error-type" :font-weight bolder)
@@ -31,6 +30,13 @@
 	    (for-in (k thing) (chain res (push (fn (aref thing k) k))))
 	    res)
 	  (loop for elem in thing collect (fn elem))))
+
+    (defun fold (fn memo thing)
+      (let ((m memo))
+	(if (object? thing)
+	    (for-in (k thing) (setf m (fn (aref thing k) m)))
+	    (loop for elem in thing do (setf m (fn elem m))))
+	m))
 
     (defun filter (fn thing)	
       (loop for elem in thing when (fn elem) collect elem))
@@ -169,17 +175,15 @@
 
     (defun result-template (result)
       (when result ;; yes, seriously. New cells don't have these
-	(join
-	 (loop for form-res in (@ result :result)
-	    append (who-ps-html
-		    (:pre :class "result"
-			  (if (@ result :stdout) (who-ps-html (:p :class "stdout" (@ result :stdout))) "")
-			  (:ul :class "result-values"
-			       (loop for (tp val) in form-res
-				  if (= tp :error) 
-				  collect (who-ps-html (:li :class "error" (error-template val)))
-				  else 
-				  collect (who-ps-html (:li (:span :class "value" val) (:span :class "type" " :: " tp)))))))))))
+	(who-ps-html
+	 (:pre
+	  (+ (if (@ result :stdout) (who-ps-html (:p :class "stdout" (@ result :stdout))) "")
+	     (join (loop for form-res in (@ result :result)
+		      append (who-ps-html
+			      (:ul :class "result"
+				   (join (loop for (tp val) in form-res
+					    if (= tp :error) collect (who-ps-html (:li :class "error" (error-template val)))
+					    else collect (who-ps-html (:li (:span :class "value" val) (:span :class "type" " :: " tp))))))))))))))
     
     (defun reorder-cells (ev)
       (prevent ev)

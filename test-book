@@ -359,3 +359,245 @@ Although if you print tons of lines, the output will get long."))))
  (4 :VALUE
   ((:RESULT
     . "<h3>Ok, serious notes now...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter</a></li></ul><br />"))))
+((5137 85845 935315000) :DELETE
+ (2 :CONTENTS "(:h1 \"Headings!\")
+
+(:h2 \"Smaller headings!\")
+
+(:p \"Paragraphs!\")
+
+(:img :src \"/static/img/derpy-prepares-for-work.gif\" :style \"width: 250px;\")"))
+((5137 85845 935330000) :DELETE
+ (2 :VALUE
+  ((:RESULT
+    . "<h1>Headings!</h1><h2>Smaller headings!</h2><p>Paragraphs!</p><img src='/static/img/derpy-prepares-for-work.gif' style='width: 250px;' />"))))
+((5137 85845 935338000) :INSERT
+ (2 :CONTENTS "(:h1 \"Headings!\")
+
+(:h2 \"Smaller headings!\")
+
+(:p \"Paragraphs!\")
+
+(:img :src \"/static/img/derpy-prepares-for-work.gif\" :style \"width: 450px;\")"))
+((5137 85845 935343000) :INSERT
+ (2 :VALUE
+  ((:RESULT
+    . "<h1>Headings!</h1><h2>Smaller headings!</h2><p>Paragraphs!</p><img src='/static/img/derpy-prepares-for-work.gif' style='width: 450px;' />"))))
+((5137 85858 47519000) :DELETE
+ (2 :CONTENTS "(:h1 \"Headings!\")
+
+(:h2 \"Smaller headings!\")
+
+(:p \"Paragraphs!\")
+
+(:img :src \"/static/img/derpy-prepares-for-work.gif\" :style \"width: 450px;\")"))
+((5137 85858 47557000) :DELETE
+ (2 :VALUE
+  ((:RESULT
+    . "<h1>Headings!</h1><h2>Smaller headings!</h2><p>Paragraphs!</p><img src='/static/img/derpy-prepares-for-work.gif' style='width: 450px;' />"))))
+((5137 85858 47565000) :INSERT
+ (2 :CONTENTS "(:h1 \"Headings!\")
+
+(:h2 \"Smaller headings!\")
+
+(:p \"Paragraphs!\")
+
+(:img :src \"/static/img/derpy-prepares-for-work.gif\" :style \"width: 450px;\")
+
+(:p \"Pictures!\")"))
+((5137 85858 47570000) :INSERT
+ (2 :VALUE
+  ((:RESULT
+    . "<h1>Headings!</h1><h2>Smaller headings!</h2><p>Paragraphs!</p><img src='/static/img/derpy-prepares-for-work.gif' style='width: 450px;' /><p>Pictures!</p>"))))
+((5137 86048 978240000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(+ 6 :test)"))
+((5137 86048 978278000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5137 86048 978287000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(format t \"Blah!\")
+(+ 4 5)
+(+ 6 :test)"))
+((5137 86048 978294000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((NULL "NIL")) ((INTEGER "9"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . "Blah!"))))
+((5137 86085 472229000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(format t \"Blah!\")
+(+ 4 5)
+(+ 6 :test)"))
+((5137 86085 472255000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((NULL "NIL")) ((INTEGER "9"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . "Blah!"))))
+((5137 86085 472263000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(format t \"Also, we capture *standard-output*!~%Yes, even multiline *standard-output*!\")
+(+ 4 5)
+(+ 6 :test)"))
+((5137 86085 472270000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((NULL "NIL")) ((INTEGER "9"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . "Also, we capture *standard-output*!
+Yes, even multiline *standard-output*!"))))
+((5137 86122 573872000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(format t \"Also, we capture *standard-output*!~%Yes, even multiline *standard-output*!\")
+(+ 4 5)
+(+ 6 :test)"))
+((5137 86122 573888000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((NULL "NIL")) ((INTEGER "9"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . "Also, we capture *standard-output*!
+Yes, even multiline *standard-output*!"))))
+((5137 86122 573895000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(format t \"Also, we capture *standard-output*!~%Yes, even multiline *standard-output*!~%Though it will get long if you have lots of lines...\")
+(+ 4 5)
+(+ 6 :test)"))
+((5137 86122 573901000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((NULL "NIL")) ((INTEGER "9"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . "Also, we capture *standard-output*!
+Yes, even multiline *standard-output*!
+Though it will get long if you have lots of lines..."))))
+((5137 86139 227645000) :DELETE
+ (13 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Something something dark side.
+Also, multilines work here.
+Although if you print tons of lines, the output will get long."))))
+((5137 86139 227662000) :DELETE
+ (13 :CONTENTS ";; We capture *standard-output*!
+
+(format t \"Something something dark side.~%Also, multilines work here.~%Although if you print tons of lines, the output will get long.\")"))
+((5137 86139 227672000) :DELETE (13 :CELL-TYPE :CODE))
+((5137 86139 227678000) :DELETE (13 :CELL NIL))
+((5137 86171 453156000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(format t \"Also, we capture *standard-output*!~%Yes, even multiline *standard-output*!~%Though it will get long if you have lots of lines...\")
+(+ 4 5)
+(+ 6 :test)"))
+((5137 86171 453173000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((NULL "NIL")) ((INTEGER "9"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . "Also, we capture *standard-output*!
+Yes, even multiline *standard-output*!
+Though it will get long if you have lots of lines..."))))
+((5137 86171 453181000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(format t \"Also, we capture *standard-output*!~%Yes, even multiline *standard-output*!~%Though it will get long if you have lots of lines...\")
+(+ 4 5)
+(values :yes :multiple :values :also :works!)
+(+ 6 :test)"))
+((5137 86171 453188000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((NULL "NIL")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORKS!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . "Also, we capture *standard-output*!
+Yes, even multiline *standard-output*!
+Though it will get long if you have lots of lines..."))))
+((5137 86194 55659000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(format t \"Also, we capture *standard-output*!~%Yes, even multiline *standard-output*!~%Though it will get long if you have lots of lines...\")
+(+ 4 5)
+(values :yes :multiple :values :also :works!)
+(+ 6 :test)"))
+((5137 86194 55678000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((NULL "NIL")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORKS!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . "Also, we capture *standard-output*!
+Yes, even multiline *standard-output*!
+Though it will get long if you have lots of lines..."))))
+((5137 86194 55686000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(format t \"Also, we capture *standard-output*!~%Yes, even multiline *standard-output*!~%Though it will get long if you have lots of lines...\")
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(+ 6 :test)"))
+((5137 86194 55693000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((NULL "NIL")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . "Also, we capture *standard-output*!
+Yes, even multiline *standard-output*!
+Though it will get long if you have lots of lines..."))))
