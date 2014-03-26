@@ -77,15 +77,9 @@
        when (or (eq next :error) (eq eval-error? :error)) do (return res-list)
        when (and next (numberp next) (= len next)) do (return (last res-list)))))
 
-(defun eval-capturing-stdout (string)
-  (let* ((res nil)
-	 (stdout (with-output-to-string (*standard-output*)
-		   (setf res (eval-from-string string)))))
-    (values res stdout)))
-
 (defun js-eval (thing)
   (with-js-error
-    (multiple-value-bind (res stdout) (eval-capturing-stdout thing)
+    (multiple-value-bind (res stdout) (capturing-stdout (eval-from-string thing))
       (alist
        :result res
        :stdout stdout))))

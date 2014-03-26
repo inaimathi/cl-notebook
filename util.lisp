@@ -44,6 +44,13 @@
        (ignoring-warnings ,@body)
      (error (e) (values (front-end-error ,form e) :error))))
 
+(defmacro capturing-stdout (&body body)
+  (with-gensyms (res stdout)
+    `(let* ((,res nil)
+	    (,stdout (with-output-to-string (*standard-output*)
+		       (setf ,res (progn ,@body)))))
+       (values ,res ,stdout))))
+
 (defmacro with-js-error (&body body)
   `(handler-case
        (progn ,@body)
