@@ -2,9 +2,20 @@
 
 (define-closing-handler (css/notebook.css :content-type "text/css") ()
   (cl-css:css
-   `((.cells :list-style-type none :margin 0px :padding 0px)
-     (".cells .cell" :padding 5px :margin-bottom 10px)
+   `((.main-controls :margin-bottom 10px)
+
+     (.cells :list-style-type none :margin 0px :padding 0px)
+     (".cells .cell" :padding 5px :margin-bottom 10px :border-top "3px solid transparent")
      (".cells .cell.code" :background-color "#eee")
+
+     (".cell:hover" :border-top "3px solid #ccc")
+     (".cell .controls" :display none :position absolute :z-index 10 :margin-top -35px :padding 3px :background-color "#eee" 
+			:border "2px solid #ccc" :border-bottom none
+			:border-radius "5px 5px 0px 0px")
+
+     (".cell .controls button" :display none)
+     (".cell:hover .controls" :display block)
+     (".cell:hover .controls button" :display block)
 
      (.result :border "1px solid #ccc" :background-color "#fff" :list-style-type none :margin 0px :margin-top 5px :padding 0px)
      (.stdout :margin 0px :padding 5px :color "#8b2252" :background-color "#efefef")
@@ -200,7 +211,7 @@
 	 (:li :class "cell markup" :id (+ "cell-" id) :cell-id id 
 	      :onclick (+ "showEditor(" id ")")
 	      :ondragend "reorderCells(event)"
-	      (:div :class "controls" (:button :onclick (+ "killCell(" id ")") "-"))
+	      (:div :class "controls" (:button :onclick (+ "killCell(" id ")") "X"))
 	      (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
 	      (@ value :result)))))
 
@@ -208,7 +219,7 @@
       (with-slots (id contents value language) cell
 	(who-ps-html 
 	 (:li :class "cell code" :id (+ "cell-" id) :cell-id id :ondragend "reorderCells(event)" 
-	      (:button :onclick (+ "killCell(" id ")") "-")
+	      (:div :class "controls" (:button :onclick (+ "killCell(" id ")") "X"))
 	      (:textarea :class "cell-contents" :language (or language "commonlisp")  contents)
 	      (result-template value)))))
 
@@ -219,8 +230,9 @@
     
     (defun notebook-template (notebook)
       (who-ps-html 
-       (:button :onclick "newCell()" "+code")
-       (:button :onclick "newCell('markup')" "+markup")
+       (:div :class "main-controls"
+	     (:button :onclick "newCell()" "+code")
+	     (:button :onclick "newCell('markup')" "+markup"))
        (:ul :class "cells"
 	    (join (map (lambda (cell) (cell-template cell))
 		       (notebook-cells notebook))))))
