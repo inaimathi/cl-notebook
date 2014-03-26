@@ -219,14 +219,11 @@
     
     (defun notebook-template (notebook)
       (who-ps-html 
-	  (:h3 (notebook-name notebook))
-	  (:button :onclick "newCell()" "+code")
-	  (:button :onclick "newCell('markup')" "+markup")
-	  (:p)
-	  (:ul :class "cells"
-	       (join (map (lambda (cell) (cell-template cell))
-			  (notebook-cells notebook))))))
-
+       (:button :onclick "newCell()" "+code")
+       (:button :onclick "newCell('markup')" "+markup")
+       (:ul :class "cells"
+	    (join (map (lambda (cell) (cell-template cell))
+		       (notebook-cells notebook))))))
 
     ;; AJAX calls
     (defun server/eval (thing target-elem)
@@ -336,7 +333,7 @@
 		   (setf (@ (by-selector (+ "#cell-" id " .CodeMirror")) hidden) t))))
 	     (notebook-cells *notebook*))))
 
-    (dom-ready 
+    (dom-ready
      (lambda ()
        (set-page-hash (create :book "test-book"))
        (server/notebook/current "test-book" #'notebook!)))))

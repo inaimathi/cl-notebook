@@ -3,8 +3,8 @@
 (defvar *notebooks* 
   (make-hash-table :test 'equal))
 
-(defmethod new-cell! ((book fact-base) &optional (cell-type :code))
-  (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:contents "") (:value ""))))
+(defmethod new-cell! ((book fact-base) &key (cell-type :code) (contents "") (value ""))
+  (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:contents ,contents) (:value ,value))))
 
 (defmethod remove-notebook! (name)
   (remhash name *notebooks*))
@@ -12,7 +12,8 @@
 (defun new-notebook! (name)
   (let ((book (make-fact-base :indices '(:a :b :c :ab) :id name)))
     (insert-new! book :notebook-name name)
-    (new-cell! book)
+    (let ((cont (format nil "(:h1 \"~a\")" name)))
+      (new-cell! book :cell-type :markup :contents cont :value (js-whoify cont)))
     (unless (gethash name *notebooks*)
       (setf (gethash name *notebooks*) book))))
 
@@ -119,7 +120,7 @@
       (current book))))
 
 (define-json-handler (notebook/new-cell) ((book :notebook) (cell-type :cell-type))
-  (new-cell! book cell-type)
+  (new-cell! book :cell-type cell-type)
   (write-delta! book)
   (current book))
 
