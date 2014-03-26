@@ -145,6 +145,7 @@
 
 (defun main (&optional argv) 
   (declare (ignore argv))
-  (define-file-handler "static")
+  (let* ((root (asdf:system-source-directory :cl-notebook)))
+    (define-file-handler (merge-pathnames "static" root) :stem-from "static"))
   (load-notebook! "test-book")
   (start 4242))

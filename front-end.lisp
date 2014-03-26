@@ -2,14 +2,15 @@
 
 (define-closing-handler (css/notebook.css :content-type "text/css") ()
   (cl-css:css
-   `((.main-controls :margin-bottom 10px)
-
-     (.cells :list-style-type none :margin 0px :padding 0px)
-     (".cells .cell" :padding 5px :margin-bottom 10px :border-top "3px solid transparent")
+   `((body :font-family sans-serif)
+     (.main-controls :z-index 5 :position fixed :top 0px)
+     
+     (.cells :list-style-type none :margin 0px :margin-top 55px :padding 0px)
+     (".cells .cell" :padding 5px :margin-bottom 10px :border-top "3px solid transparent" :background-color "#fff")
      (".cells .cell.code" :background-color "#eee")
 
-     (".cell:hover" :border-top "3px solid #ccc")
-     (".cell .controls" :display none :position absolute :z-index 10 :margin-top -35px :padding 3px :background-color "#eee" 
+     (".cell:hover" :border-top "3px solid #ccc" :z-index 10)
+     (".cell .controls" :display none :position absolute :margin-top -35px :padding 3px :background-color "#eee" 
 			:border "2px solid #ccc" :border-bottom none
 			:border-radius "5px 5px 0px 0px")
 
@@ -51,6 +52,13 @@
 
     (defun filter (fn thing)	
       (loop for elem in thing when (fn elem) collect elem))
+
+    (defun extend (obj &rest other-objs)
+      (flet ((ext! (dest src) (map (lambda (v k) (setf (aref dest k) v)) src)))
+	(let ((res (create)))
+	  (ext! res obj)
+	  (map (lambda (obj) (ext! res obj)) other-objs)
+	  res)))
 
     (defun append-new (list-a list-b)
       (let ((s (new (-set list-a))))
@@ -264,8 +272,8 @@
 
     ;; CodeMirror utilities    
     (defun show-editor (cell-id)
-      (console.log "SHOW-EDITOR" cell-id)
-      (setf (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden) nil))
+      (setf (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden) nil)
+      (chain (aref *notebook* :objects cell-id :editor) (focus)))
 
     (defun hide-editor (cell-id)
       (setf (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden) t))
@@ -274,19 +282,31 @@
       (setf (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden)
 	    (not (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden))))
 
-    (defun mirror! (cell-id)
+    (defun cell-mirror (cell-id)
+      (aref *notebook* :objects cell-id :editor))
+    
+    (defun cell-editor-contents (cell-id)
+      (chain (cell-mirror cell-id) (get-value)))
+
+    (defun mirror-keys (cell-id &key hiding?)
+      (let ((keys (create "Ctrl-Enter"
+			  (lambda (cmd)
+			    (server/notebook/eval-to-cell
+			     cell-id (cell-editor-contents cell-id)))
+			  "Ctrl-Space" "autocomplete")))
+	(when hiding?
+	  (setf (@ keys "Esc")
+		(lambda (cmd) (hide-editor cell-id))))
+	keys))
+
+    (defun mirror! (cell-id keys)
       (let* ((mirror)
 	     (options (create 
 		       "lineNumbers" t 
 		       "matchBrackets" t
 		       "autoCloseBrackets" t
 		       "viewportMargin" -infinity
-		       "extraKeys" 
-		       (create "Ctrl-Enter"
-			       (lambda (cmd)
-				 (server/notebook/eval-to-cell 
-				  cell-id (chain mirror (get-value))))
-			       "Ctrl-Space" "autocomplete"))))
+		       "extraKeys" keys)))
 	(setf 
 	 mirror 
 	 (chain -code-mirror 
@@ -340,7 +360,11 @@
 	(nativesortable (by-selector "ul.cells"))
 	(map (lambda (cell) 
 	       (with-slots (id cell-type) cell
-		 (mirror! id)
+		 (setf (aref *notebook* :objects id :editor)
+		       (mirror! 
+			id (if (equal cell-type "clWho") 
+			       (mirror-keys id :hiding? t)
+			       (mirror-keys id))))
 		 (when (equal cell-type "clWho")
 		   (setf (@ (by-selector (+ "#cell-" id " .CodeMirror")) hidden) t))))
 	     (notebook-cells *notebook*))))
