@@ -15,7 +15,9 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 
 ### TODO
 
-- full `cl-who` power in the who blocks (this is going to involve `eval` again, I'm afraid, but I want to be able to stitch lisp code into `cl-who` blocks, otherwise they're not really much better than `markdown`)
+- Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
+- When a markup cell gets a failure as a result, it should display that error instead of sitting there like an idiot
+- An empty markup cell should be marked in some visible way (or give all markup cells default content, I guess)
 - front-end cleanup.
 	- Possibly move it into a separate project?
 	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.

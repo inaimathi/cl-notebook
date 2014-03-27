@@ -13,7 +13,7 @@
   (let ((book (make-fact-base :indices '(:a :b :c :ab) :file-name name)))
     (insert-new! book :notebook-name name)
     (let ((cont (format nil "(:h1 \"~a\")" name)))
-      (new-cell! book :cell-type :cl-who :contents cont :value (js-whoify cont)))
+      (new-cell! book :cell-type :cl-who :contents cont :value (js-eval :cl-who cont)))
     (unless (gethash name *notebooks*)
       (setf (gethash name *notebooks*) book))))
 
@@ -79,43 +79,31 @@
        when (or (eq next :error) (eq eval-error? :error)) do (return res-list)
        when (and next (numberp next) (= len next)) do (return (last res-list)))))
 
-(defun js-eval (thing)
+(defun html-tree-to-string (html-tree)
+  (eval `(with-html-output-to-string (s) ,@html-tree)))
+
+(define-json-handler (notebook/current) ((book :notebook))
+  (current book))
+
+(defmethod js-eval (cell-type (contents string))
+  (alist :result contents :stdout ""))
+
+(defmethod js-eval ((cell-type (eql :cl-who)) (contents string))
+  (with-js-error
+    (alist :result (html-tree-to-string (read-all-from-string contents)))))
+
+(defmethod js-eval ((cell-type (eql :common-lisp)) (contents string))
   (with-js-error
     (multiple-value-bind (res stdout) (capturing-stdout (eval-from-string thing))
       (alist
        :result res
        :stdout stdout))))
 
-(define-json-handler (eval) ((thing :string))
-  (js-eval thing))
-
-(defun html-tree-to-string (html-tree)
-  (eval `(with-html-output-to-string (s) ,@html-tree)))
-
-(defun js-whoify (thing)
-  (with-js-error
-    (alist :result (html-tree-to-string (read-all-from-string thing)))))
-
-(define-json-handler (whoify) ((thing :string))
-  (js-whoify thing))
-
-(define-json-handler (notebook/current) ((book :notebook))
-  (current book))
-
-(defmethod js-ev (cell-type (contents string))
-  (alist :result contents :stdout ""))
-
-(defmethod js-ev ((cell-type (eql :cl-who)) (contents string))
-  (js-whoify contents))
-
-(defmethod js-ev ((cell-type (eql :common-lisp)) (contents string))
-  (js-eval contents))
-
 (define-json-handler (notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
   (let* ((cont-fact (first (lookup book :a cell-id :b :contents)))
 	 (val-fact (first (lookup book :a cell-id :b :value)))
 	 (cell-type (caddar (lookup book :a cell-id :b :cell-type)))
-	 (res (js-ev cell-type contents)))
+	 (res (js-eval cell-type contents)))
     (when (and cont-fact val-fact res)
       (delete! book cont-fact)
       (delete! book val-fact)
