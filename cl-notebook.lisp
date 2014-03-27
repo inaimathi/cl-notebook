@@ -10,7 +10,7 @@
   (remhash name *notebooks*))
 
 (defun new-notebook! (name)
-  (let ((book (make-fact-base :indices '(:a :b :c :ab) :id name)))
+  (let ((book (make-fact-base :indices '(:a :b :c :ab) :file-name name)))
     (insert-new! book :notebook-name name)
     (let ((cont (format nil "(:h1 \"~a\")" name)))
       (new-cell! book :cell-type :cl-who :contents cont :value (js-whoify cont)))
@@ -30,6 +30,7 @@
       (:title "cl-notebook")
       
       (:link :rel "stylesheet" :href "/css/notebook.css")
+      (:link :rel "stylesheet" :href "/static/css/genericons.css")
       (:link :rel "stylesheet" :href "/static/css/codemirror.css")
       (:link :rel "stylesheet" :href "/static/css/dialog.css")
       (:link :rel "stylesheet" :href "/static/css/show-hint.css")
@@ -54,7 +55,7 @@
      (:body))))
 
 (defun single-eval-for-js (s-exp)
-  (capturing-error (format nil "~a" s-exp)
+  (capturing-error (format nil "~s" s-exp)
     (let ((res (multiple-value-list (ignoring-warnings (eval s-exp)))))
       (loop for v in res collect (list (type-label v) (format nil "~s" v))))))
 

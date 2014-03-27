@@ -18,8 +18,6 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 - front-end cleanup.
 	- Possibly move it into a separate project?
 	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.
-	- Style everything so it looks pretty (still need to do proper buttons)
-	- The markup videos should have `esc` bound to `hide-editor` for their cell
 - full `cl-who` power in the who blocks (this is going to involve `eval` again, I'm afraid, but I want to be able to stitch lisp code into `cl-who` blocks, otherwise they're not really much better than `markdown`)
 
 ### Usage
@@ -47,3 +45,4 @@ This project uses
 - [`cl-who`](http://weitz.de/cl-who/)
 - [`quicklisp`](http://www.quicklisp.org/beta/)
 - [`buildapp`](http://www.xach.com/lisp/buildapp/)
+- [Genericons](http://genericons.com/)

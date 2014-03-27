@@ -10,9 +10,11 @@
      (".cells .cell.code" :background-color "#eee")
 
      (".cell:hover" :border-top "3px solid #ccc" :z-index 10)
-     (".cell .controls" :display none :position absolute :margin-top -35px :padding 3px :background-color "#eee" 
-			:border "2px solid #ccc" :border-bottom none
-			:border-radius "5px 5px 0px 0px")
+     (".cell .controls" :display none :position absolute :margin-top -41px :padding 5px :padding-right 40px 
+			:background-color "#eee" :border "2px solid #ccc" :border-bottom none :border-radius "5px 5px 0px 0px")
+     (".cell .controls button" :height 24px :width 34px :font-size x-large :border "2px solid #ccc" :border-radius 4px :cursor pointer 
+			       :float left :margin-right 5px :color "#666")
+     (".cell .controls button:hover" :color "#000")
 
      (".cell .controls button" :display none)
      (".cell:hover .controls" :display block)
@@ -213,21 +215,27 @@
 	      (create :book (notebook-name *notebook*) 
 		      :cell-order ord))))
 
+    (defun cell-controls-template (cell)
+      (who-ps-html
+       (:div :class "controls" 
+	     (:button :class "genericon genericon-trash" 
+		      :onclick (+ "killCell(" (@ cell :id) ")") "  "))))
+
     (defun cell-markup-template (cell)
       (with-slots (id contents value language) cell
 	(who-ps-html 
 	 (:li :class "cell markup" :id (+ "cell-" id) :cell-id id 
 	      :onclick (+ "showEditor(" id ")")
 	      :ondragend "reorderCells(event)"
-	      (:div :class "controls" (:button :onclick (+ "killCell(" id ")") "X"))
+	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
 	      (@ value :result)))))
 
     (defun cell-code-template (cell)
       (with-slots (id contents value language) cell
 	(who-ps-html 
-	 (:li :class "cell code" :id (+ "cell-" id) :cell-id id :ondragend "reorderCells(event)" 
-	      (:div :class "controls" (:button :onclick (+ "killCell(" id ")") "X"))
+	 (:li :class "cell code" :id (+ "cell-" id) :cell-id id :ondragend "reorderCells(event)"
+	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp")  contents)
 	      (result-template value)))))
 
@@ -240,7 +248,8 @@
       (who-ps-html 
        (:div :class "main-controls"
 	     (:button :onclick "newCell()" "+code")
-	     (:button :onclick "newCell('markup')" "+markup"))
+	     (:button :onclick "newCell('cl-who')" "+markup")
+	     )
        (:ul :class "cells"
 	    (join (map (lambda (cell) (cell-template cell))
 		       (notebook-cells notebook))))))
@@ -372,4 +381,5 @@
     (dom-ready
      (lambda ()
        (set-page-hash (create :book "test-book"))
+       (setf document.title "test-book - cl-notebook")
        (server/notebook/current "test-book" #'notebook!)))))

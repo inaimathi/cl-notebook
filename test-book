@@ -1522,3 +1522,469 @@ Though it will get long if you have lots of lines..."))))
 ((5138 10216 863112000) :INSERT (33 :CELL-ORDER (23 2 15 1 7 10 22)))
 ((5138 10218 445689000) :DELETE (33 :CELL-ORDER (23 2 15 1 7 10 22)))
 ((5138 10218 445703000) :INSERT (34 :CELL-ORDER (23 2 1 15 7 10 22)))
+((5138 49572 29725000) :DELETE
+ (15 :CONTENTS
+  "(format t \"Standard output capture!~%Yes, even with multiple lines!\")"))
+((5138 49572 29757000) :DELETE
+ (15 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Standard output capture!
+Yes, even with multiple lines!"))))
+((5138 49572 29765000) :INSERT
+ (15 :CONTENTS
+  "(format t \"Standard output capture!~%Yes, even with multiple lines!~5\")
+(format t \"And yes, it will show you\")
+(format t \" total \")
+(format t \"output for a group of printing procs.\")"))
+((5138 49572 29771000) :INSERT
+ (15 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SB-FORMAT:FORMAT-ERROR)
+       (:FORM
+        . "(FORMAT T Standard output capture!~%Yes, even with multiple lines!~5)")
+       (:COMPLAINT . "string ended before directive was found")))))
+   (:STDOUT . ""))))
+((5138 49584 450893000) :DELETE
+ (15 :CONTENTS
+  "(format t \"Standard output capture!~%Yes, even with multiple lines!~5\")
+(format t \"And yes, it will show you\")
+(format t \" total \")
+(format t \"output for a group of printing procs.\")"))
+((5138 49584 450909000) :DELETE
+ (15 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SB-FORMAT:FORMAT-ERROR)
+       (:FORM
+        . "(FORMAT T Standard output capture!~%Yes, even with multiple lines!~5)")
+       (:COMPLAINT . "string ended before directive was found")))))
+   (:STDOUT . ""))))
+((5138 49584 450914000) :INSERT
+ (15 :CONTENTS
+  "(format t \"Standard output capture!~%Yes, even with multiple lines!~%\")
+(format t \"And yes, it will show you\")
+(format t \" total \")
+(format t \"output for a group of printing procs.\")"))
+((5138 49584 450919000) :INSERT
+ (15 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Standard output capture!
+Yes, even with multiple lines!
+And yes, it will show you total output for a group of printing procs."))))
+((5138 49653 440893000) :DELETE
+ (22 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\")))
+
+(:br)"))
+((5138 49653 440945000) :DELETE
+ (22 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul><br />"))))
+((5138 49653 440988000) :INSERT
+ (22 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:p \"This is all stuff I should read up on.\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\")))
+
+(:br)"))
+((5138 49653 441011000) :INSERT
+ (22 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><p>This is all stuff I should read up on.</p><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul><br />"))))
+((5138 66790 791240000) :DELETE
+ (15 :CONTENTS
+  "(format t \"Standard output capture!~%Yes, even with multiple lines!~%\")
+(format t \"And yes, it will show you\")
+(format t \" total \")
+(format t \"output for a group of printing procs.\")"))
+((5138 66790 791504000) :DELETE
+ (15 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Standard output capture!
+Yes, even with multiple lines!
+And yes, it will show you total output for a group of printing procs."))))
+((5138 66790 791557000) :INSERT
+ (15 :CONTENTS
+  "(format t \"Standard output capture!~%Yes, even with multiple lines!~%\")
+(format t \"And yes, it will show you\")
+(format t \" total \")
+(format t \"output for a group of printing procs.\")"))
+((5138 66790 791598000) :INSERT
+ (15 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Standard output capture!
+Yes, even with multiple lines!
+And yes, it will show you total output for a group of printing procs."))))
+((5138 66793 665058000) :DELETE
+ (15 :CONTENTS
+  "(format t \"Standard output capture!~%Yes, even with multiple lines!~%\")
+(format t \"And yes, it will show you\")
+(format t \" total \")
+(format t \"output for a group of printing procs.\")"))
+((5138 66793 665087000) :DELETE
+ (15 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Standard output capture!
+Yes, even with multiple lines!
+And yes, it will show you total output for a group of printing procs."))))
+((5138 66793 665100000) :INSERT
+ (15 :CONTENTS
+  "(format t \"Standard output capture!~%Yes, even with multiple lines!~%\")
+(format t \"And yes, it will show you\")
+(format t \" totals \")
+(format t \"output for a group of printing procs.\")"))
+((5138 66793 665109000) :INSERT
+ (15 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Standard output capture!
+Yes, even with multiple lines!
+And yes, it will show you totals output for a group of printing procs."))))
+((5138 66796 143950000) :DELETE
+ (15 :CONTENTS
+  "(format t \"Standard output capture!~%Yes, even with multiple lines!~%\")
+(format t \"And yes, it will show you\")
+(format t \" totals \")
+(format t \"output for a group of printing procs.\")"))
+((5138 66796 143981000) :DELETE
+ (15 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Standard output capture!
+Yes, even with multiple lines!
+And yes, it will show you totals output for a group of printing procs."))))
+((5138 66796 143993000) :INSERT
+ (15 :CONTENTS
+  "(format t \"Standard output capture!~%Yes, even with multiple lines!~%\")
+(format t \"And yes, it will show you\")
+(format t \" total \")
+(format t \"output for a group of printing procs.\")"))
+((5138 66796 144000000) :INSERT
+ (15 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Standard output capture!
+Yes, even with multiple lines!
+And yes, it will show you total output for a group of printing procs."))))
+((5138 76380 178827000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(+ 6 :test)"))
+((5138 76380 178866000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 76380 178876000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work! 7)
+(+ 6 :test)"))
+((5138 76380 178882000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!") (INTEGER "7"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 76384 990400000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work! 7)
+(+ 6 :test)"))
+((5138 76384 990419000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!") (INTEGER "7"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 76384 990429000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(+ 6 :test)"))
+((5138 76384 990436000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 80514 718094000) :DELETE
+ (2 :CONTENTS "(:h1 \"Headings!\")
+
+(:h2 \"Smaller headings!\")
+
+(:p \"Paragraphs!\")
+
+(:img :src \"/static/img/derpy-prepares-for-work.gif\" :style \"width: 450px;\")
+
+(:p \"Pictures!\")"))
+((5138 80514 718225000) :DELETE
+ (2 :VALUE
+  ((:RESULT
+    . "<h1>Headings!</h1><h2>Smaller headings!</h2><p>Paragraphs!</p><img src='/static/img/derpy-prepares-for-work.gif' style='width: 450px;' /><p>Pictures!</p>"))))
+((5138 80514 718242000) :INSERT
+ (2 :CONTENTS "(:h2 \"Headings!\")
+
+(:h3 \"Smaller headings!\")
+
+(:p \"Paragraphs!\")
+
+(:img :src \"/static/img/derpy-prepares-for-work.gif\" :style \"width: 450px;\")
+
+(:p \"Pictures!\")"))
+((5138 80514 718260000) :INSERT
+ (2 :VALUE
+  ((:RESULT
+    . "<h2>Headings!</h2><h3>Smaller headings!</h3><p>Paragraphs!</p><img src='/static/img/derpy-prepares-for-work.gif' style='width: 450px;' /><p>Pictures!</p>"))))
+((5138 80712 966232000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(+ 6 :test)"))
+((5138 80712 966277000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 80712 966285000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(+ 6 :test)"))
+((5138 80712 966292000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 :TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 80716 325124000) :DELETE
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5138 80716 325142000) :DELETE
+ (7 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 2 3 4 TEST)") (:DATUM . :TEST)
+       (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 80716 325150000) :INSERT
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5138 80716 325154000) :INSERT
+ (7 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 2 3 4 :TEST)") (:DATUM . :TEST)
+       (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 80733 869685000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(+ 6 :test)"))
+((5138 80733 869703000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 6 :TEST)") (:DATUM . :TEST) (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5138 80733 869710000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(format \"blah\")"))
+((5138 80733 869715000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SB-INT:SIMPLE-PROGRAM-ERROR)
+       (:ERROR-MESSAGE . "invalid number of arguments: 1")
+       (:FORM . "(FORMAT \"blah\")")))))
+   (:STDOUT . ""))))
+((5138 82023 159065000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(format \"blah\")"))
+((5138 82023 159090000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SB-INT:SIMPLE-PROGRAM-ERROR)
+       (:ERROR-MESSAGE . "invalid number of arguments: 1")
+       (:FORM . "(FORMAT \"blah\")")))))
+   (:STDOUT . ""))))
+((5138 82023 159100000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(list :no :they :are :not :the :same :as :a :list :of :values)
+(format \"blah\")"))
+((5138 82023 159109000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((CONS "(:NO :THEY :ARE :NOT :THE :SAME :AS :A :LIST :OF :VALUES)"))
+    ((ERROR
+      ((CL-NOTEBOOK::ERROR-TYPE . SB-INT:SIMPLE-PROGRAM-ERROR)
+       (:ERROR-MESSAGE . "invalid number of arguments: 1")
+       (:FORM . "(FORMAT \"blah\")")))))
+   (:STDOUT . ""))))
+((5139 14864 736517000) :DELETE (34 :CELL-ORDER (23 2 1 15 7 10 22)))
+((5139 14864 736751000) :INSERT (35 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 14870 664922000) :DELETE (35 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 14870 665027000) :INSERT (36 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 14874 470942000) :DELETE (36 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 14874 470984000) :INSERT (37 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 15098 206397000) :DELETE (37 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 15098 206412000) :INSERT (38 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 15111 989574000) :DELETE (38 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 15111 989590000) :INSERT (39 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 15119 116835000) :DELETE (39 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 15119 116849000) :INSERT (40 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 15214 775825000) :DELETE (40 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 15214 775842000) :INSERT (41 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 15217 223876000) :DELETE (41 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 15217 223898000) :INSERT (42 :CELL-ORDER (23 2 15 1 7 10 22)))
