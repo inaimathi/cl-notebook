@@ -90,10 +90,7 @@
   (js-eval thing))
 
 (defun html-tree-to-string (html-tree)
-  (cadar (cl-who::tree-to-commands 
-	  (if (keywordp (car html-tree))
-	      (list html-tree)
-	      html-tree) nil)))
+  (eval `(with-html-output-to-string (s) ,@html-tree)))
 
 (defun js-whoify (thing)
   (with-js-error
@@ -146,6 +143,7 @@
 
 (defun main (&optional argv) 
   (declare (ignore argv))
+  (in-package :cl-notebook)
   (let* ((root (asdf:system-source-directory :cl-notebook)))
     (define-file-handler (merge-pathnames "static" root) :stem-from "static"))
   (load-notebook! "test-book")
