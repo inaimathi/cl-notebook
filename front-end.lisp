@@ -10,11 +10,14 @@
      (".cells .cell.code" :background-color "#eee")
 
      (".cell:hover" :border-top "3px solid #ccc" :z-index 10)
-     (".cell .controls" :display none :position absolute :margin-top -41px :padding 5px :padding-right 40px 
+     (".cell .controls" :display none :position absolute :margin-top -41px :padding 5px
 			:background-color "#eee" :border "2px solid #ccc" :border-bottom none :border-radius "5px 5px 0px 0px")
-     (".cell .controls button" :height 24px :width 34px :font-size x-large :border "2px solid #ccc" :border-radius 4px :cursor pointer 
-			       :float left :margin-right 5px :color "#666")
-     (".cell .controls button:hover" :color "#000")
+     (".cell .controls span" :height 19px :width 31px :font-size x-large :float left :margin-right 5px :color "#666"
+			     :padding-top 5px :padding-left 3px :cursor move)
+     (".cell .controls button" 
+      :height 24px :width 34px :font-size x-large :border "2px solid #ccc" :border-radius 4px :cursor pointer 
+      :float left :margin-right 5px :color "#666")
+     (".cell .controls button:hover, .cell .controls span:hover" :color "#000")
 
      (".cell .controls button" :display none)
      (".cell:hover .controls" :display block)
@@ -218,6 +221,7 @@
     (defun cell-controls-template (cell)
       (who-ps-html
        (:div :class "controls" 
+	     (:span :class "genericon genericon-draggable")
 	     (:button :class "genericon genericon-trash" 
 		      :onclick (+ "killCell(" (@ cell :id) ")") "  "))))
 
