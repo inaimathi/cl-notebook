@@ -53,6 +53,6 @@
 
 (defmacro with-js-error (&body body)
   `(handler-case
-       (progn ,@body)
-     (error (e) (alist :result (front-end-error nil e)))))
+       (ignoring-warnings ,@body)
+     (error (e) (alist :result (front-end-error nil e) :stdout ""))))
 

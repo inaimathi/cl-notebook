@@ -208,15 +208,6 @@
 				   (join (loop for (tp val) in form-res
 					    if (= tp :error) collect (who-ps-html (:li :class "error" (error-template val)))
 					    else collect (who-ps-html (:li (:span :class "value" val) (:span :class "type" " :: " tp))))))))))))))
-    
-    (defun reorder-cells (ev)
-      (prevent ev)
-      (let ((ord (obj->string
-		  (loop for elem in (by-selector-all ".cell")
-		     collect (parse-int (chain elem (get-attribute :cell-id)))))))
-	(post "/notebook/reorder-cells" 
-	      (create :book (notebook-name *notebook*) 
-		      :cell-order ord))))
 
     (defun cell-controls-template (cell)
       (who-ps-html
@@ -233,8 +224,12 @@
 	      :ondragend "reorderCells(event)"
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
-	      (@ value :result)))))
-
+	      (if (string? (@ value :result))
+		  (@ value :result)
+		  (who-ps-html
+		   (:ul :class "result"
+			(:li :class "error" (error-template (@ value :result 0 1))))))))))
+    
     (defun cell-code-template (cell)
       (with-slots (id contents value language) cell
 	(who-ps-html 
@@ -282,6 +277,15 @@
     (defun kill-cell (cell-id)
       (post/json "/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)
 		 #'notebook!))
+
+    (defun reorder-cells (ev)
+      (prevent ev)
+      (let ((ord (obj->string
+		  (loop for elem in (by-selector-all ".cell")
+		     collect (parse-int (chain elem (get-attribute :cell-id)))))))
+	(post "/notebook/reorder-cells" 
+	      (create :book (notebook-name *notebook*) 
+		      :cell-order ord))))
 
     ;; CodeMirror utilities    
     (defun show-editor (cell-id)

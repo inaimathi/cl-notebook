@@ -86,15 +86,17 @@
   (current book))
 
 (defmethod js-eval (cell-type (contents string))
-  (alist :result contents :stdout ""))
+  (alist :result contents
+	 :stdout ""))
 
 (defmethod js-eval ((cell-type (eql :cl-who)) (contents string))
   (with-js-error
-    (alist :result (html-tree-to-string (read-all-from-string contents)))))
+    (alist :result (html-tree-to-string (read-all-from-string contents))
+	   :stdout "")))
 
 (defmethod js-eval ((cell-type (eql :common-lisp)) (contents string))
   (with-js-error
-    (multiple-value-bind (res stdout) (capturing-stdout (eval-from-string thing))
+    (multiple-value-bind (res stdout) (capturing-stdout (eval-from-string contents))
       (alist
        :result res
        :stdout stdout))))
