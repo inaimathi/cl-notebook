@@ -17,8 +17,6 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 
 - js-eval still acting oddly with respect to cl-who evaluation (sometimes returns a browser error rather than a front-end error)
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
-- When a markup cell gets a failure as a result, it should display that error instead of sitting there like an idiot
-- It should be possible to change the type of cell (currently just between `:cl-who` and `:common-lisp`, but potentially others in the future). Cell-type should only affect how the back-end attempts to interpret it.
 - When loading a notebook, the system should evaluate all existing cells in order
 - front-end cleanup.
 	- Possibly move it into a separate project?

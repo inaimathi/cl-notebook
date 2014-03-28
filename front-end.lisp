@@ -9,14 +9,19 @@
      (".cells .cell" :padding 5px :margin-bottom 10px :border-top "3px solid transparent" :background-color "#fff")
      (".cells .cell.code" :background-color "#eee")
 
-     (".cell .controls" :display none :position absolute :margin-top -41px :padding 5px
-			:background-color "#eee" :border "2px solid #ccc" :border-bottom none :border-radius "5px 5px 0px 0px")
-     (".cell .controls span" :height 19px :width 31px :font-size x-large :float left :margin-right 5px :color "#666"
-			     :padding-top 5px :padding-left 3px :cursor move)
+     (".cell .controls"
+      :display none :position absolute :margin-top -41px :padding 5px
+      :background-color "#eee" :border "2px solid #ccc" :border-bottom none :border-radius "5px 5px 0px 0px")
+     (".cell .controls span"
+      :height 19px :width 31px :font-size x-large :float left :margin-right 5px :color "#666"
+      :padding-top 5px :padding-left 3px :cursor move)
      (".cell .controls button" 
-      :height 24px :width 34px :font-size x-large :border "2px solid #ccc" :border-radius 4px :cursor pointer 
+      :height 24px :width 34px :font-size x-large 
+      :border "2px solid #ccc" :border-radius 4px :cursor pointer 
       :float left :margin-right 5px :color "#666")
      (".cell .controls button:hover, .cell .controls span:hover" :color "#000")
+     (".cell .controls select" :height 24px :font-weight bolder :color "#666" :border "2px solid #ccc" :border-radius 4px)
+     (".cell .controls select:hover" :color "#000" :background-color "#eee")
 
      (".cell .controls button" :display none)
      (".cell:hover" :border-top "3px solid #ccc" :z-index 10)
@@ -214,21 +219,32 @@
        (:div :class "controls" 
 	     (:span :class "genericon genericon-draggable")
 	     (:button :class "genericon genericon-trash" 
-		      :onclick (+ "killCell(" (@ cell :id) ")") "  "))))
+		      :onclick (+ "killCell(" (@ cell :id) ")") "  ")
+	     (:select 
+	      :onchange (+ "changeCellType(" (@ cell :id) ", this.value)")
+	      (join (loop for tp in (list :cl-who :common-lisp) 
+		       for lb in (list 'cl-who 'common-lisp) ;; curse these symbol case issues
+		       if (= (@ cell "cellType") lb)
+		         collect (who-ps-html (:option :value tp :selected "selected" tp))
+		       else 
+			 collect (who-ps-html (:option :value tp tp))))))))
 
     (defun cell-markup-template (cell)
       (with-slots (id contents value language) cell
 	(who-ps-html 
 	 (:li :class "cell markup" :id (+ "cell-" id) :cell-id id 
-	      :onclick (+ "showEditor(" id ")")
 	      :ondragend "reorderCells(event)"
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
-	      (if (string? (@ value :result))
-		  (@ value :result)
-		  (who-ps-html
-		   (:ul :class "result"
-			(:li :class "error" (error-template (@ value :result 0 1))))))))))
+	      (:div 
+	       :onclick (+ "showEditor(" id ")")
+	       (cond ((and (string? (@ value :result)) (= "" (@ value :result)))
+		      (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
+		     ((string? (@ value :result))
+		      (@ value :result))
+		     (t (who-ps-html
+			 (:ul :class "result"
+			      (:li :class "error" (error-template (@ value :result 0 1))))))))))))
     
     (defun cell-code-template (cell)
       (with-slots (id contents value language) cell
@@ -276,6 +292,11 @@
     
     (defun kill-cell (cell-id)
       (post/json "/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)
+		 #'notebook!))
+
+    (defun change-cell-type (cell-id new-type)
+      (console.log "CHANGING TYPE OF" cell-id "TO" new-type)
+      (post/json "/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)
 		 #'notebook!))
 
     (defun reorder-cells (ev)
