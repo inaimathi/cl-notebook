@@ -1988,3 +1988,951 @@ And yes, it will show you total output for a group of printing procs."))))
 ((5139 15214 775842000) :INSERT (41 :CELL-ORDER (23 2 15 1 7 10 22)))
 ((5139 15217 223876000) :DELETE (41 :CELL-ORDER (23 2 15 1 7 10 22)))
 ((5139 15217 223898000) :INSERT (42 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 48216 604048000) :DELETE (42 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 48216 604065000) :INSERT (43 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 48220 984794000) :DELETE (43 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 48220 984808000) :INSERT (44 :CELL-ORDER (23 2 15 1 10 7 22)))
+((5139 48223 249819000) :DELETE (44 :CELL-ORDER (23 2 15 1 10 7 22)))
+((5139 48223 249837000) :INSERT (45 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 48227 102241000) :DELETE (45 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 48227 102256000) :INSERT (46 :CELL-ORDER (23 2 15 1 10 7 22)))
+((5139 48231 898579000) :DELETE (46 :CELL-ORDER (23 2 15 1 10 7 22)))
+((5139 48231 898596000) :INSERT (47 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 48980 492791000) :DELETE (47 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 48980 492810000) :INSERT (48 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 49848 269978000) :INSERT (49 :CELL NIL))
+((5139 49848 270003000) :INSERT (49 :CELL-TYPE :CL-WHO))
+((5139 49848 270011000) :INSERT (49 :CONTENTS ""))
+((5139 49848 270015000) :INSERT (49 :VALUE ""))
+((5139 49894 641231000) :DELETE (49 :CONTENTS ""))
+((5139 49894 641250000) :DELETE (49 :VALUE ""))
+((5139 49894 641256000) :INSERT
+ (49 :CONTENTS "(:ul (loop repeat 10 do (htm (:li \"Something\"))))"))
+((5139 49894 641262000) :INSERT
+ (49 :VALUE
+  ((:RESULT
+    (ERROR
+     ((CL-NOTEBOOK::ERROR-TYPE . UNDEFINED-FUNCTION)
+      (:NAME . CL-NOTEBOOK::HTML-TREE-TO-STRING)))))))
+((5139 49901 224721000) :DELETE
+ (49 :CONTENTS "(:ul (loop repeat 10 do (htm (:li \"Something\"))))"))
+((5139 49901 224742000) :DELETE
+ (49 :VALUE
+  ((:RESULT
+    (ERROR
+     ((CL-NOTEBOOK::ERROR-TYPE . UNDEFINED-FUNCTION)
+      (:NAME . CL-NOTEBOOK::HTML-TREE-TO-STRING)))))))
+((5139 49901 224750000) :INSERT
+ (49 :CONTENTS "(:ul (loop repeat 10 do (htm (:li \"Something\"))))"))
+((5139 49901 224757000) :INSERT
+ (49 :VALUE
+  ((:RESULT
+    (ERROR
+     ((CL-NOTEBOOK::ERROR-TYPE . UNDEFINED-FUNCTION)
+      (:NAME . CL-NOTEBOOK::HTML-TREE-TO-STRING)))))))
+((5139 49914 40294000) :DELETE
+ (49 :CONTENTS "(:ul (loop repeat 10 do (htm (:li \"Something\"))))"))
+((5139 49914 40310000) :DELETE
+ (49 :VALUE
+  ((:RESULT
+    (ERROR
+     ((CL-NOTEBOOK::ERROR-TYPE . UNDEFINED-FUNCTION)
+      (:NAME . CL-NOTEBOOK::HTML-TREE-TO-STRING)))))))
+((5139 49914 40315000) :INSERT (49 :CONTENTS "(:ul (:li \"something\"))"))
+((5139 49914 40320000) :INSERT
+ (49 :VALUE
+  ((:RESULT
+    (ERROR
+     ((CL-NOTEBOOK::ERROR-TYPE . UNDEFINED-FUNCTION)
+      (:NAME . CL-NOTEBOOK::HTML-TREE-TO-STRING)))))))
+((5139 49959 985856000) :DELETE (49 :CONTENTS "(:ul (:li \"something\"))"))
+((5139 49959 985879000) :DELETE
+ (49 :VALUE
+  ((:RESULT
+    (ERROR
+     ((CL-NOTEBOOK::ERROR-TYPE . UNDEFINED-FUNCTION)
+      (:NAME . CL-NOTEBOOK::HTML-TREE-TO-STRING)))))))
+((5139 49959 985887000) :INSERT (49 :CONTENTS "(:ul (:li \"something\"))"))
+((5139 49959 985894000) :INSERT
+ (49 :VALUE
+  ((:RESULT
+    (ERROR
+     ((CL-NOTEBOOK::ERROR-TYPE . UNDEFINED-FUNCTION)
+      (:NAME . CL-NOTEBOOK::HTML-TREE-TO-STRING)))))))
+((5139 50071 762205000) :DELETE (49 :CONTENTS "(:ul (:li \"something\"))"))
+((5139 50071 762226000) :DELETE
+ (49 :VALUE
+  ((:RESULT
+    (ERROR
+     ((CL-NOTEBOOK::ERROR-TYPE . UNDEFINED-FUNCTION)
+      (:NAME . CL-NOTEBOOK::HTML-TREE-TO-STRING)))))))
+((5139 50071 762233000) :INSERT (49 :CONTENTS "(:ul (:li \"something\"))"))
+((5139 50071 762239000) :INSERT
+ (49 :VALUE ((:RESULT . "<ul><li>something</li></ul>"))))
+((5139 50307 588173000) :DELETE (49 :CONTENTS "(:ul (:li \"something\"))"))
+((5139 50307 588190000) :DELETE
+ (49 :VALUE ((:RESULT . "<ul><li>something</li></ul>"))))
+((5139 50307 588195000) :INSERT (49 :CONTENTS "(:ul (:li \"something\"))"))
+((5139 50307 588199000) :INSERT
+ (49 :VALUE ((:RESULT . "<ul><li>something</li></ul>"))))
+((5139 50514 541358000) :INSERT (50 :CELL NIL))
+((5139 50514 541369000) :INSERT (50 :CELL-TYPE :COMMON-LISP))
+((5139 50514 541372000) :INSERT (50 :CONTENTS ""))
+((5139 50514 541375000) :INSERT (50 :VALUE ""))
+((5139 50523 429574000) :DELETE (50 :CONTENTS ""))
+((5139 50523 429593000) :DELETE (50 :VALUE ""))
+((5139 50523 429599000) :INSERT (50 :CONTENTS "(in-package :cl-notebook)"))
+((5139 50523 429605000) :INSERT
+ (50 :VALUE
+  ((:RESULT ((PACKAGE "#<PACKAGE \"CL-NOTEBOOK\">"))) (:STDOUT . ""))))
+((5139 50548 227686000) :DELETE (49 :CONTENTS "(:ul (:li \"something\"))"))
+((5139 50548 227705000) :DELETE
+ (49 :VALUE ((:RESULT . "<ul><li>something</li></ul>"))))
+((5139 50548 227711000) :INSERT
+ (49 :CONTENTS "(:ul (loop repeat 5 do (htm (:li \"something\"))))"))
+((5139 50548 227716000) :INSERT
+ (49 :VALUE
+  ((:RESULT
+    . "<ul><li>something</li><li>something</li><li>something</li><li>something</li><li>something</li></ul>"))))
+((5139 50603 104523000) :DELETE
+ (50 :VALUE
+  ((:RESULT ((PACKAGE "#<PACKAGE \"CL-NOTEBOOK\">"))) (:STDOUT . ""))))
+((5139 50603 104548000) :DELETE (50 :CONTENTS "(in-package :cl-notebook)"))
+((5139 50603 104561000) :DELETE (50 :CELL-TYPE :COMMON-LISP))
+((5139 50603 104572000) :DELETE (50 :CELL NIL))
+((5139 50777 909711000) :DELETE
+ (49 :CONTENTS "(:ul (loop repeat 5 do (htm (:li \"something\"))))"))
+((5139 50777 909889000) :DELETE
+ (49 :VALUE
+  ((:RESULT
+    . "<ul><li>something</li><li>something</li><li>something</li><li>something</li><li>something</li></ul>"))))
+((5139 50777 909909000) :INSERT
+ (49 :CONTENTS "(:ul (loop repeat 5 do (htm (:li \"something\"))))"))
+((5139 50777 909940000) :INSERT
+ (49 :VALUE
+  ((:RESULT
+    . "<ul><li>something</li><li>something</li><li>something</li><li>something</li><li>something</li></ul>"))))
+((5139 50782 629972000) :DELETE
+ (49 :CONTENTS "(:ul (loop repeat 5 do (htm (:li \"something\"))))"))
+((5139 50782 629991000) :DELETE
+ (49 :VALUE
+  ((:RESULT
+    . "<ul><li>something</li><li>something</li><li>something</li><li>something</li><li>something</li></ul>"))))
+((5139 50782 629999000) :INSERT
+ (49 :CONTENTS "(:ul (loop repeat 2 do (htm (:li \"something\"))))"))
+((5139 50782 630005000) :INSERT
+ (49 :VALUE ((:RESULT . "<ul><li>something</li><li>something</li></ul>"))))
+((5139 50786 762992000) :DELETE
+ (49 :CONTENTS "(:ul (loop repeat 2 do (htm (:li \"something\"))))"))
+((5139 50786 763011000) :DELETE
+ (49 :VALUE ((:RESULT . "<ul><li>something</li><li>something</li></ul>"))))
+((5139 50786 763019000) :INSERT
+ (49 :CONTENTS "(:ul (loop repeat 4 do (htm (:li \"something\"))))"))
+((5139 50786 763027000) :INSERT
+ (49 :VALUE
+  ((:RESULT
+    . "<ul><li>something</li><li>something</li><li>something</li><li>something</li></ul>"))))
+((5139 50799 888671000) :DELETE
+ (49 :VALUE
+  ((:RESULT
+    . "<ul><li>something</li><li>something</li><li>something</li><li>something</li></ul>"))))
+((5139 50799 888694000) :DELETE
+ (49 :CONTENTS "(:ul (loop repeat 4 do (htm (:li \"something\"))))"))
+((5139 50799 888711000) :DELETE (49 :CELL NIL))
+((5139 50799 888723000) :DELETE (49 :CELL-TYPE :CL-WHO))
+((5139 58252 404585000) :DELETE
+ (2 :CONTENTS "(:h2 \"Headings!\")
+
+(:h3 \"Smaller headings!\")
+
+(:p \"Paragraphs!\")
+
+(:img :src \"/static/img/derpy-prepares-for-work.gif\" :style \"width: 450px;\")
+
+(:p \"Pictures!\")"))
+((5139 58252 404789000) :DELETE
+ (2 :VALUE
+  ((:RESULT
+    . "<h2>Headings!</h2><h3>Smaller headings!</h3><p>Paragraphs!</p><img src='/static/img/derpy-prepares-for-work.gif' style='width: 450px;' /><p>Pictures!</p>"))))
+((5139 58252 404810000) :INSERT
+ (2 :CONTENTS "(:h2 \"Headings!\")
+
+(:h3 \"Smaller headings!\")
+
+(:p \"Paragraphs!\")
+"))
+((5139 58252 404854000) :INSERT
+ (2 :VALUE
+  ((:RESULT
+    . "<h2>Headings!</h2><h3>Smaller headings!</h3><p>Paragraphs!</p>"))))
+((5139 61381 508877000) :INSERT (51 :CELL NIL))
+((5139 61381 508921000) :INSERT (51 :CELL-TYPE :CL-WHO))
+((5139 61381 508932000) :INSERT (51 :CONTENTS ""))
+((5139 61381 508937000) :INSERT (51 :VALUE ""))
+((5139 61540 432561000) :DELETE (51 :CONTENTS ""))
+((5139 61540 432577000) :DELETE (51 :VALUE ""))
+((5139 61540 432582000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for u in uris do (htm (:li (:a :href u (str u))))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\"))"))
+((5139 61540 432588000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p>cl-notebook dev</p><ul><li><a href='http://genericons.com/#draggable'>http://genericons.com/#draggable</a></li></ul></div>"))))
+((5139 61584 109620000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for u in uris do (htm (:li (:a :href u (str u))))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\"))"))
+((5139 61584 109650000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p>cl-notebook dev</p><ul><li><a href='http://genericons.com/#draggable'>http://genericons.com/#draggable</a></li></ul></div>"))))
+((5139 61584 109658000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u name)))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61584 109665000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p>cl-notebook dev</p><ul><li><a href='http://genericons.com/#draggable'></a></li></ul></div>"))))
+((5139 61591 372601000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u name)))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61591 372633000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p>cl-notebook dev</p><ul><li><a href='http://genericons.com/#draggable'></a></li></ul></div>"))))
+((5139 61591 372645000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name)))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61591 372656000) :INSERT
+ (51 :VALUE ((:RESULT (ERROR ((ERROR-TYPE . END-OF-FILE)))))))
+((5139 61607 658434000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name)))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61607 658457000) :DELETE
+ (51 :VALUE ((:RESULT (ERROR ((ERROR-TYPE . END-OF-FILE)))))))
+((5139 61607 658464000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u name))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61607 658472000) :INSERT
+ (51 :VALUE ((:RESULT (ERROR ((ERROR-TYPE . END-OF-FILE)))))))
+((5139 61652 215756000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u name))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61652 215777000) :DELETE
+ (51 :VALUE ((:RESULT (ERROR ((ERROR-TYPE . END-OF-FILE)))))))
+((5139 61652 215787000) :INSERT
+ (51 :CONTENTS "(flet ((section (title uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) in uris
+                               do (htm (:li (:a :href u name)))))))))
+   (section \"cl-notebook dev\"
+      '(\"http://genericons.com/#draggable\" \"Genericons\")))"))
+((5139 61652 215795000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    (ERROR
+     ((ERROR-TYPE . TYPE-ERROR) (:DATUM . "http://genericons.com/#draggable")
+      (:EXPECTED-TYPE . LIST)))))))
+((5139 61685 746921000) :DELETE
+ (51 :CONTENTS "(flet ((section (title uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) in uris
+                               do (htm (:li (:a :href u name)))))))))
+   (section \"cl-notebook dev\"
+      '(\"http://genericons.com/#draggable\" \"Genericons\")))"))
+((5139 61685 746945000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    (ERROR
+     ((ERROR-TYPE . TYPE-ERROR) (:DATUM . "http://genericons.com/#draggable")
+      (:EXPECTED-TYPE . LIST)))))))
+((5139 61685 746953000) :INSERT
+ (51 :CONTENTS "(flet ((section (title uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) in uris
+                               do (htm (:li (:a :href u name)))))))))
+   (section \"cl-notebook dev\"
+      '(\"http://genericons.com/#draggable\" \"Genericons\")))"))
+((5139 61685 746960000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    (ERROR
+     ((ERROR-TYPE . TYPE-ERROR) (:DATUM . "http://genericons.com/#draggable")
+      (:EXPECTED-TYPE . LIST)))))))
+((5139 61743 617271000) :DELETE
+ (51 :CONTENTS "(flet ((section (title uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) in uris
+                               do (htm (:li (:a :href u name)))))))))
+   (section \"cl-notebook dev\"
+      '(\"http://genericons.com/#draggable\" \"Genericons\")))"))
+((5139 61743 617293000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    (ERROR
+     ((ERROR-TYPE . TYPE-ERROR) (:DATUM . "http://genericons.com/#draggable")
+      (:EXPECTED-TYPE . LIST)))))))
+((5139 61743 617299000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for u in uris
+                               do (htm (:li (:a :href u (str u))))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\"))"))
+((5139 61743 617306000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p>cl-notebook dev</p><ul><li><a href='http://genericons.com/#draggable'>http://genericons.com/#draggable</a></li></ul></div>"))))
+((5139 61772 11088000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for u in uris
+                               do (htm (:li (:a :href u (str u))))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\"))"))
+((5139 61772 11111000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p>cl-notebook dev</p><ul><li><a href='http://genericons.com/#draggable'>http://genericons.com/#draggable</a></li></ul></div>"))))
+((5139 61772 11118000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) in uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Test\"))"))
+((5139 61772 11125000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    (ERROR
+     ((ERROR-TYPE . TYPE-ERROR) (:DATUM . "http://genericons.com/#draggable")
+      (:EXPECTED-TYPE . LIST)))))))
+((5139 61825 363604000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) in uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Test\"))"))
+((5139 61825 363628000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    (ERROR
+     ((ERROR-TYPE . TYPE-ERROR) (:DATUM . "http://genericons.com/#draggable")
+      (:EXPECTED-TYPE . LIST)))))))
+((5139 61825 363634000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Test\"))"))
+((5139 61825 363641000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p>cl-notebook dev</p><ul><li><a href='http://genericons.com/#draggable'>Test</a></li></ul></div>"))))
+((5139 61835 615130000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Test\"))"))
+((5139 61835 615150000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p>cl-notebook dev</p><ul><li><a href='http://genericons.com/#draggable'>Test</a></li></ul></div>"))))
+((5139 61835 615157000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61835 615163000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p>cl-notebook dev</p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div>"))))
+((5139 61851 956353000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (str title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61851 956399000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p>cl-notebook dev</p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div>"))))
+((5139 61851 956407000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61851 956414000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>cl-notebook dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div>"))))
+((5139 61867 311439000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61867 311461000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>cl-notebook dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div>"))))
+((5139 61867 311468000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (htm title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61867 311474000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b></b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div>"))))
+((5139 61874 865041000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (htm title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61874 865064000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b></b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div>"))))
+((5139 61874 865071000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61874 865079000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div>"))))
+((5139 61890 83832000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61890 83853000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div>"))))
+((5139 61890 83863000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61890 83869000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b></b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div>"))))
+((5139 61897 629723000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61897 629746000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b></b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div>"))))
+((5139 61897 629754000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61897 629761000) :INSERT
+ (51 :VALUE ((:RESULT (ERROR ((ERROR-TYPE . END-OF-FILE)))))))
+((5139 61905 155220000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61905 155241000) :DELETE
+ (51 :VALUE ((:RESULT (ERROR ((ERROR-TYPE . END-OF-FILE)))))))
+((5139 61905 155246000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 61905 155253000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div>"))))
+((5139 76215 208989000) :DELETE (48 :CELL-ORDER (23 2 15 1 7 10 22)))
+((5139 76215 209150000) :INSERT (52 :CELL-ORDER (23 2 15 1 10 7 22 51)))
+((5139 76218 528241000) :DELETE (52 :CELL-ORDER (23 2 15 1 10 7 22 51)))
+((5139 76218 528354000) :INSERT (53 :CELL-ORDER (23 2 15 1 7 10 22 51)))
+((5139 76322 588851000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+      \"http://genericons.com/#draggable\" \"Genericons\"))"))
+((5139 76322 588880000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div>"))))
+((5139 76322 588887000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+		\"http://genericons.com/#draggable\" \"Genericons\")
+      
+   (section \"Misc...\"
+		\"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"
+		\"http://www.subtext-lang.org/\" \"Subtext Lang\"
+		\"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"
+		\"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"
+		\"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"
+		\"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\"))"))
+((5139 76322 588897000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div><div><p><b>Misc...</b></p><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul></div>"))))
+((5139 76337 471527000) :DELETE
+ (22 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:p \"This is all stuff I should read up on.\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))
+
+(:br)
+(:b \"Misc...\")
+(:ul
+ (:li (:a :href \"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"))
+ (:li (:a :href \"http://www.subtext-lang.org/\" \"Subtext Lang\"))
+ (:li (:a :href \"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"))
+ (:li (:a :href \"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"))
+ (:li (:a :href \"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"))
+ (:li (:a :href \"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\")))
+
+(:br)"))
+((5139 76337 471588000) :DELETE
+ (22 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><p>This is all stuff I should read up on.</p><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul><br /><b>Misc...</b><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul><br />"))))
+((5139 76337 471626000) :INSERT
+ (22 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:p \"This is all stuff I should read up on.\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))"))
+((5139 76337 471642000) :INSERT
+ (22 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><p>This is all stuff I should read up on.</p><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul>"))))
+((5139 76370 92744000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+		\"http://genericons.com/#draggable\" \"Genericons\")
+      
+   (section \"Misc...\"
+		\"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"
+		\"http://www.subtext-lang.org/\" \"Subtext Lang\"
+		\"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"
+		\"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"
+		\"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"
+		\"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\"))"))
+((5139 76370 92770000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div><div><p><b>Misc...</b></p><ul><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul></div>"))))
+((5139 76370 92784000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+		\"http://genericons.com/#draggable\" \"Genericons\")
+      
+   (section \"Misc...\"
+        \"https://github.com/darthdeus/LightTable-Ruby\" \"LightTable Ruby mode\"
+		\"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"
+		\"http://www.subtext-lang.org/\" \"Subtext Lang\"
+		\"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"
+		\"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"
+		\"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"
+		\"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\"))"))
+((5139 76370 92793000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div><div><p><b>Misc...</b></p><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>LightTable Ruby mode</a></li><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul></div>"))))
+((5139 76428 215745000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"cl-notebook Dev\"
+		\"http://genericons.com/#draggable\" \"Genericons\")
+      
+   (section \"Misc...\"
+        \"https://github.com/darthdeus/LightTable-Ruby\" \"LightTable Ruby mode\"
+		\"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"
+		\"http://www.subtext-lang.org/\" \"Subtext Lang\"
+		\"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"
+		\"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"
+		\"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"
+		\"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\"))"))
+((5139 76428 215771000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div><div><p><b>Misc...</b></p><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>LightTable Ruby mode</a></li><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul></div>"))))
+((5139 76428 215786000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+      
+   (section \"Clojure\"
+		\"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"
+		\"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"
+		\"https://github.com/clojure/core.logic\" \"core.logic GitHub\"
+		\"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"
+		\"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")
+      
+   (section \"cl-notebook Dev\"
+		\"http://genericons.com/#draggable\" \"Genericons\")
+      
+   (section \"Misc...\"
+        \"https://github.com/darthdeus/LightTable-Ruby\" \"LightTable Ruby mode\"
+		\"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"
+		\"http://www.subtext-lang.org/\" \"Subtext Lang\"
+		\"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"
+		\"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"
+		\"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"
+		\"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\"))"))
+((5139 76428 215799000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>Clojure</b></p><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul></div><div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div><div><p><b>Misc...</b></p><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>LightTable Ruby mode</a></li><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul></div>"))))
+((5139 76446 226024000) :DELETE (53 :CELL-ORDER (23 2 15 1 7 10 22 51)))
+((5139 76446 226078000) :INSERT (54 :CELL-ORDER (23 2 15 1 7 10 22 51)))
+((5139 76493 483342000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+      
+   (section \"Clojure\"
+		\"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"
+		\"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"
+		\"https://github.com/clojure/core.logic\" \"core.logic GitHub\"
+		\"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"
+		\"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")
+      
+   (section \"cl-notebook Dev\"
+		\"http://genericons.com/#draggable\" \"Genericons\")
+      
+   (section \"Misc...\"
+        \"https://github.com/darthdeus/LightTable-Ruby\" \"LightTable Ruby mode\"
+		\"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"
+		\"http://www.subtext-lang.org/\" \"Subtext Lang\"
+		\"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"
+		\"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"
+		\"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"
+		\"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\"))"))
+((5139 76493 483382000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>Clojure</b></p><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul></div><div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div><div><p><b>Misc...</b></p><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>LightTable Ruby mode</a></li><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul></div>"))))
+((5139 76493 483405000) :INSERT
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+      
+   (section \"Terrain Generation\"
+		\"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+		\"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+		\"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+		\"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+		\"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+		\"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+		\"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+		\"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+		\"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")
+      
+   (section \"Clojure\"
+		\"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"
+		\"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"
+		\"https://github.com/clojure/core.logic\" \"core.logic GitHub\"
+		\"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"
+		\"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")
+      
+   (section \"cl-notebook Dev\"
+		\"http://genericons.com/#draggable\" \"Genericons\")
+      
+   (section \"Misc...\"
+        \"https://github.com/darthdeus/LightTable-Ruby\" \"LightTable Ruby mode\"
+		\"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"
+		\"http://www.subtext-lang.org/\" \"Subtext Lang\"
+		\"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"
+		\"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"
+		\"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"
+		\"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\"))"))
+((5139 76493 483423000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>Terrain Generation</b></p><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul></div><div><p><b>Clojure</b></p><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul></div><div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div><div><p><b>Misc...</b></p><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>LightTable Ruby mode</a></li><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul></div>"))))
+((5139 76515 201457000) :DELETE
+ (51 :CONTENTS "(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+      
+   (section \"Terrain Generation\"
+		\"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+		\"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+		\"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+		\"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+		\"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+		\"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+		\"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+		\"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+		\"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")
+      
+   (section \"Clojure\"
+		\"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"
+		\"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"
+		\"https://github.com/clojure/core.logic\" \"core.logic GitHub\"
+		\"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"
+		\"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")
+      
+   (section \"cl-notebook Dev\"
+		\"http://genericons.com/#draggable\" \"Genericons\")
+      
+   (section \"Misc...\"
+        \"https://github.com/darthdeus/LightTable-Ruby\" \"LightTable Ruby mode\"
+		\"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"
+		\"http://www.subtext-lang.org/\" \"Subtext Lang\"
+		\"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"
+		\"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"
+		\"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"
+		\"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\"))"))
+((5139 76515 201530000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<div><p><b>Terrain Generation</b></p><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul></div><div><p><b>Clojure</b></p><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul></div><div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div><div><p><b>Misc...</b></p><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>LightTable Ruby mode</a></li><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul></div>"))))
+((5139 76515 201565000) :INSERT
+ (51 :CONTENTS "(:h2 \"Shit to read up on...\")
+
+(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+      
+   (section \"Terrain Generation\"
+		\"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+		\"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+		\"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+		\"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+		\"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+		\"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+		\"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+		\"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+		\"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")
+      
+   (section \"Clojure\"
+		\"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"
+		\"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"
+		\"https://github.com/clojure/core.logic\" \"core.logic GitHub\"
+		\"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"
+		\"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")
+      
+   (section \"cl-notebook Dev\"
+		\"http://genericons.com/#draggable\" \"Genericons\")
+      
+   (section \"Misc...\"
+        \"https://github.com/darthdeus/LightTable-Ruby\" \"LightTable Ruby mode\"
+		\"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"
+		\"http://www.subtext-lang.org/\" \"Subtext Lang\"
+		\"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"
+		\"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"
+		\"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"
+		\"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\"))"))
+((5139 76515 201584000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<h2>Shit to read up on...</h2><div><p><b>Terrain Generation</b></p><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul></div><div><p><b>Clojure</b></p><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul></div><div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div><div><p><b>Misc...</b></p><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>LightTable Ruby mode</a></li><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul></div>"))))
+((5139 76531 75378000) :DELETE
+ (22 :VALUE
+  ((:RESULT
+    . "<h3>Ok, serious notes now...</h3><p>This is all stuff I should read up on.</p><b>Terrain generation</b><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul><br /><b>Clojure</b><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul><br /><b>LightTable</b><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>Ruby mode</a></li></ul>"))))
+((5139 76531 75413000) :DELETE
+ (22 :CONTENTS "(:h3 \"Ok, serious notes now...\")
+
+(:p \"This is all stuff I should read up on.\")
+
+(:b \"Terrain generation\")
+(:ul
+ (:li (:a :href \"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"))
+ (:li (:a :href \"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"))
+ (:li (:a :href \"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")))
+
+(:br)
+
+(:b \"Clojure\")
+(:ul
+ (:li (:a :href \"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"))
+ (:li (:a :href \"https://github.com/clojure/core.logic\" \"core.logic GitHub\"))
+ (:li (:a :href \"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"))
+ (:li (:a :href \"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")))
+
+(:br)
+(:b \"LightTable\")
+(:ul
+ (:li (:a :href \"https://github.com/darthdeus/LightTable-Ruby\" \"Ruby mode\")))"))
+((5139 76531 75440000) :DELETE (22 :CELL NIL))
+((5139 76531 75446000) :DELETE (22 :CELL-TYPE :CL-WHO))
+((5139 76553 504648000) :DELETE (54 :CELL-ORDER (23 2 15 1 7 10 22 51)))
+((5139 76553 504664000) :INSERT (55 :CELL-ORDER (23 2 15 7 1 10 51)))
+((5139 76555 97522000) :DELETE (55 :CELL-ORDER (23 2 15 7 1 10 51)))
+((5139 76555 97541000) :INSERT (56 :CELL-ORDER (23 2 15 1 7 10 51)))
+((5139 76560 952372000) :DELETE (56 :CELL-ORDER (23 2 15 1 7 10 51)))
+((5139 76560 952387000) :INSERT (57 :CELL-ORDER (23 2 15 1 7 10 51)))
+((5139 76563 881068000) :DELETE (57 :CELL-ORDER (23 2 15 1 7 10 51)))
+((5139 76563 881082000) :INSERT (58 :CELL-ORDER (23 2 15 7 1 10 51)))
+((5139 76565 277106000) :DELETE (58 :CELL-ORDER (23 2 15 7 1 10 51)))
+((5139 76565 277120000) :INSERT (59 :CELL-ORDER (23 2 15 1 7 10 51)))
+((5140 5424 597718000) :DELETE (59 :CELL-ORDER (23 2 15 1 7 10 51)))
+((5140 5424 597934000) :INSERT (60 :CELL-ORDER (23 2 1 15 7 10 51)))
+((5140 6276 378126000) :INSERT (61 :CELL NIL))
+((5140 6276 378153000) :INSERT (61 :CELL-TYPE :CL-WHO))
+((5140 6276 378169000) :INSERT (61 :CONTENTS ""))
+((5140 6276 378172000) :INSERT (61 :VALUE ""))
+((5140 6294 118041000) :DELETE (61 :CONTENTS ""))
+((5140 6294 118091000) :DELETE (61 :VALUE ""))
+((5140 6294 118100000) :INSERT (61 :CONTENTS "(:p \"Blah\")"))
+((5140 6294 118104000) :INSERT (61 :VALUE ((:RESULT . "<p>Blah</p>"))))
+((5140 6311 647281000) :DELETE (61 :CONTENTS "(:p \"Blah\")"))
+((5140 6311 647301000) :DELETE (61 :VALUE ((:RESULT . "<p>Blah</p>"))))
+((5140 6311 647308000) :INSERT (61 :CONTENTS "((:p \"Blah\")"))
+((5140 6311 647314000) :INSERT
+ (61 :VALUE ((:RESULT (ERROR ((ERROR-TYPE . END-OF-FILE)))))))
+((5140 6316 997795000) :DELETE (61 :CONTENTS "((:p \"Blah\")"))
+((5140 6316 997809000) :DELETE
+ (61 :VALUE ((:RESULT (ERROR ((ERROR-TYPE . END-OF-FILE)))))))
+((5140 6316 997818000) :INSERT (61 :CONTENTS "((:p \"Blah\")"))
+((5140 6316 997823000) :INSERT
+ (61 :VALUE ((:RESULT (ERROR ((ERROR-TYPE . END-OF-FILE)))))))
+((5140 6518 844030000) :DELETE (61 :CONTENTS "((:p \"Blah\")"))
+((5140 6518 844067000) :DELETE
+ (61 :VALUE ((:RESULT (ERROR ((ERROR-TYPE . END-OF-FILE)))))))
+((5140 6518 844073000) :INSERT (61 :CONTENTS "((:p \"Blah\")))"))
+((5140 6518 844078000) :INSERT
+ (61 :VALUE ((:RESULT (ERROR ((ERROR-TYPE . SB-INT:SIMPLE-READER-ERROR)))))))
