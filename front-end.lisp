@@ -6,9 +6,11 @@
 
      ("button" 
       :height 24px :min-width 34px
-      :font-size x-large 
+      :font-size large :font-weight bold
       :border "2px solid #ccc" :border-radius 4px :cursor pointer 
       :float left :margin-right 5px :color "#666")
+     ("button.genericon"
+      :font-size x-large)
      ("button .btn-text"
       :font-size medium :display inline-block)
      ("button:hover"
@@ -21,9 +23,11 @@
       :color "#000" :background-color "#eee")
 
      (.main-controls 
-      :z-index 5 :position fixed :top -20px
+      :background-color "#eee" :border "2px solid #ccc" :border-radius "0px 0px 5px 5px"
+      :padding 8px
+      :z-index 5 :position fixed :top -40px
       :width 60% :left 50% :margin-left -30%)
-     (".main-controls:hover" :top 2px)
+     (".main-controls:hover" :top -2px)
      (".main-controls button"
       :height 32px)
      
@@ -276,10 +280,7 @@
     (defun notebook-template (notebook)
       (who-ps-html 
        (:div :class "main-controls"
-	     (:button 
-	      :onclick "newCell()"
-	      (:span :class "genericon genericon-document")
-	      (:span :class "btn-text" "New Cell")))
+	     (:button :onclick "newCell()" "+ New Cell"))
        (:ul :class "cells"
 	    (join (map (lambda (cell) (cell-template cell))
 		       (notebook-cells notebook))))))

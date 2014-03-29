@@ -46,6 +46,7 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	} else {
 	    var name = readSym(stream);
 	    if (/^(def|with|f?let|labels)/.test(name)) return "def";
+	    if (/lambda/.test(name)) return "def";
 	    if (name in keywords) return "builtin";
 	    if (name == ".") return null;
 	    type = "symbol";
