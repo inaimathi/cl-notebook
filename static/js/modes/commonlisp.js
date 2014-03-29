@@ -10,7 +10,7 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	return obj
     }
 
-    var keywords = makeKeywords("defmethod defgeneric defun let let* flet labels loop when unless do for in")
+    var keywords = makeKeywords("loop when unless do for in")
 
     function readSym(stream) {
 	var ch;
@@ -31,7 +31,7 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	else if (ch == "(") { type = "open"; return "bracket"; }
 	else if (ch == ")" || ch == "]") { type = "close"; return "bracket"; }
 	else if (ch == ";") { stream.skipToEnd(); type = "ws"; return "comment"; }
-	else if (/['`,@]/.test(ch)) return null;
+	else if (/[`,@]/.test(ch)) return null;
 	else if (ch == "|") {
 	    if (stream.skipTo("|")) { stream.next(); return "symbol"; }
 	    else { stream.skipToEnd(); return "error"; }
@@ -45,11 +45,13 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	    else return "error";
 	} else {
 	    var name = readSym(stream);
+	    if (/^(def|with|f?let|labels)/.test(name)) return "def";
 	    if (name in keywords) return "builtin";
 	    if (name == ".") return null;
 	    type = "symbol";
-	    if (name == "nil" || name == "t") return "atom";
-	    if (name.charAt(0) == ":") return "keyword";
+	    if (name == "nil" || name == "t") return "string-2";
+	    if (name.charAt(0) == "'") return "atom";
+	    if (name.charAt(0) == ":" ) return "keyword";
 	    if (name.charAt(0) == "&") return "variable-2";
 	    return "variable";
 	}

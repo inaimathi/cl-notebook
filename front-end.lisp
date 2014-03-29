@@ -358,6 +358,7 @@
 		       "lineNumbers" t 
 		       "matchBrackets" t
 		       "autoCloseBrackets" t
+		       "lineWrapping" t
 		       "viewportMargin" -infinity
 		       "extraKeys" keys)))
 	(setf 

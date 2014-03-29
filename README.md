@@ -15,7 +15,6 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 
 ### TODO
 
-- js-eval still acting oddly with respect to cl-who evaluation (sometimes returns a browser error rather than a front-end error)
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 - When loading a notebook, the system should evaluate all existing cells in order
 - front-end cleanup.
