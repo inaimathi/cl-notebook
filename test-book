@@ -3344,3 +3344,979 @@ And yes, it will show you total output for a group of printing procs."))))
 ((5140 11480 427038000) :INSERT (1 :CELL-TYPE :COMMON-LISP))
 ((5140 11480 427044000) :INSERT
  (1 :VALUE ((:RESULT ((INTEGER "14"))) (:STDOUT . ""))))
+((5140 11612 377094000) :DELETE (62 :CELL-ORDER (23 2 1 15 7 10 51 61)))
+((5140 11612 377312000) :INSERT (64 :CELL-ORDER (23 2 1 7 15 10 51)))
+((5140 11614 176572000) :DELETE (64 :CELL-ORDER (23 2 1 7 15 10 51)))
+((5140 11614 176661000) :INSERT (65 :CELL-ORDER (23 2 1 15 7 10 51)))
+((5140 11619 393429000) :DELETE (65 :CELL-ORDER (23 2 1 15 7 10 51)))
+((5140 11619 393473000) :INSERT (66 :CELL-ORDER (23 2 15 1 7 10 51)))
+((5140 11621 282269000) :DELETE (66 :CELL-ORDER (23 2 15 1 7 10 51)))
+((5140 11621 282287000) :INSERT (67 :CELL-ORDER (23 2 1 15 7 10 51)))
+((5140 11624 385278000) :DELETE (67 :CELL-ORDER (23 2 1 15 7 10 51)))
+((5140 11624 385297000) :INSERT (68 :CELL-ORDER (2 23 1 15 7 10 51)))
+((5140 11625 485287000) :DELETE (68 :CELL-ORDER (2 23 1 15 7 10 51)))
+((5140 11625 485307000) :INSERT (69 :CELL-ORDER (23 2 1 15 7 10 51)))
+((5140 11791 676739000) :DELETE
+ (51 :CONTENTS "(:h2 \"Shit to read up on...\")
+
+(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+      
+   (section \"Terrain Generation\"
+		\"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+		\"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+		\"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+		\"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+		\"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+		\"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+		\"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+		\"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+		\"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")
+      
+   (section \"Clojure\"
+		\"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"
+		\"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"
+		\"https://github.com/clojure/core.logic\" \"core.logic GitHub\"
+		\"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"
+		\"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")
+      
+   (section \"cl-notebook Dev\"
+		\"http://genericons.com/#draggable\" \"Genericons\")
+      
+   (section \"Misc...\"
+        \"https://github.com/darthdeus/LightTable-Ruby\" \"LightTable Ruby mode\"
+		\"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"
+		\"http://www.subtext-lang.org/\" \"Subtext Lang\"
+		\"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"
+		\"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"
+		\"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"
+		\"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\"))"))
+((5140 11791 676793000) :DELETE
+ (51 :VALUE
+  ((:RESULT
+    . "<h2>Shit to read up on...</h2><div><p><b>Terrain Generation</b></p><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul></div><div><p><b>Clojure</b></p><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul></div><div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div><div><p><b>Misc...</b></p><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>LightTable Ruby mode</a></li><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul></div>"))))
+((5140 11791 676836000) :INSERT
+ (51 :CONTENTS "(:h2 \"Shit to read up on...\")
+
+(flet ((section (title &rest uris)
+         (htm (:div (:p (:b (str title)))
+                    (:ul (loop for (u name) on uris by #'cddr
+                               do (htm (:li (:a :href u (str name))))))))))
+   (section \"Terrain Generation\"
+	\"http://en.wikipedia.org/wiki/Maze_generation_algorithm\" \"Maze generation on wikipedia\"
+	\"http://www.roguebasin.com/index.php?title=Articles#Map\" \"Rogue Basin page\"
+	\"http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm\" \"Dungeon Building Algorithm\"
+	\"http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python\" \"Dungeon Builder in Python\"
+	\"http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels\" \"Cellular Automata for Terrain\"
+	\"http://pixelenvy.ca/wa/ca_cave.html\" \"More cellular automata for terrain\"
+	\"http://www.roguebasin.com/index.php?title=Abstract_Dungeons\" \"Abstract dungeons from RogueBasin\"
+	\"http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern\" \"Cavern delving\"
+	\"http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation\" \"BSP Dungeon gen\")
+      
+   (section \"Clojure\"
+	\"https://github.com/JonyEpsilon/gorilla-repl\" \"Gorilla Repl\"
+	\"https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer\" \"core.logic Primer\"
+	\"https://github.com/clojure/core.logic\" \"core.logic GitHub\"
+	\"http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html\" \"Namespace Primer\"
+	\"https://gist.github.com/ghoseb/287710\" \"NS cheat-sheet\")
+      
+   (section \"cl-notebook Dev\"
+	\"http://genericons.com/#draggable\" \"Genericons\")
+      
+   (section \"Misc...\"
+	\"https://github.com/darthdeus/LightTable-Ruby\" \"LightTable Ruby mode\"
+	\"http://code.google.com/p/key-mon/source/checkout\" \"KeyMon -- tool for showing keystrokes in screencasts\"
+	\"http://www.subtext-lang.org/\" \"Subtext Lang\"
+	\"http://byorgey.wordpress.com/catsters-guide-2/\" \"The Catsters\"
+	\"http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53\" \"Share Elm -- Line of Sight\"
+	\"http://codemirror.net/doc/manual.html#overview\" \"CodeMirror manual\"
+	\"https://github.com/nkmathew/yasi-sexp-indenter\" \"batch s-exp indenter test\"))"))
+((5140 11791 676857000) :INSERT
+ (51 :VALUE
+  ((:RESULT
+    . "<h2>Shit to read up on...</h2><div><p><b>Terrain Generation</b></p><ul><li><a href='http://en.wikipedia.org/wiki/Maze_generation_algorithm'>Maze generation on wikipedia</a></li><li><a href='http://www.roguebasin.com/index.php?title=Articles#Map'>Rogue Basin page</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm'>Dungeon Building Algorithm</a></li><li><a href='http://www.roguebasin.com/index.php?title=Dungeon_builder_written_in_Python'>Dungeon Builder in Python</a></li><li><a href='http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels'>Cellular Automata for Terrain</a></li><li><a href='http://pixelenvy.ca/wa/ca_cave.html'>More cellular automata for terrain</a></li><li><a href='http://www.roguebasin.com/index.php?title=Abstract_Dungeons'>Abstract dungeons from RogueBasin</a></li><li><a href='http://www.roguebasin.com/index.php?title=Delving_a_connected_cavern'>Cavern delving</a></li><li><a href='http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation'>BSP Dungeon gen</a></li></ul></div><div><p><b>Clojure</b></p><ul><li><a href='https://github.com/JonyEpsilon/gorilla-repl'>Gorilla Repl</a></li><li><a href='https://github.com/clojure/core.logic/wiki/A-Core.logic-Primer'>core.logic Primer</a></li><li><a href='https://github.com/clojure/core.logic'>core.logic GitHub</a></li><li><a href='http://blog.8thlight.com/colin-jones/2010/12/05/clojure-libs-and-namespaces-require-use-import-and-ns.html'>Namespace Primer</a></li><li><a href='https://gist.github.com/ghoseb/287710'>NS cheat-sheet</a></li></ul></div><div><p><b>cl-notebook Dev</b></p><ul><li><a href='http://genericons.com/#draggable'>Genericons</a></li></ul></div><div><p><b>Misc...</b></p><ul><li><a href='https://github.com/darthdeus/LightTable-Ruby'>LightTable Ruby mode</a></li><li><a href='http://code.google.com/p/key-mon/source/checkout'>KeyMon -- tool for showing keystrokes in screencasts</a></li><li><a href='http://www.subtext-lang.org/'>Subtext Lang</a></li><li><a href='http://byorgey.wordpress.com/catsters-guide-2/'>The Catsters</a></li><li><a href='http://share-elm.com/sprout/532fa8fee4b0f7cc0dd4ef53'>Share Elm -- Line of Sight</a></li><li><a href='http://codemirror.net/doc/manual.html#overview'>CodeMirror manual</a></li><li><a href='https://github.com/nkmathew/yasi-sexp-indenter'>batch s-exp indenter test</a></li></ul></div>")
+   (:STDOUT . ""))))
+((5140 76722 123470000) :DELETE (69 :CELL-ORDER (23 2 1 15 7 10 51)))
+((5140 76722 123503000) :INSERT (70 :CELL-ORDER (2 23 1 15 7 10 51)))
+((5140 76723 789522000) :DELETE (70 :CELL-ORDER (2 23 1 15 7 10 51)))
+((5140 76723 789538000) :INSERT (71 :CELL-ORDER (23 2 1 15 7 10 51)))
+((5140 78620 537584000) :INSERT (72 :CELL NIL))
+((5140 78620 537611000) :INSERT (72 :CELL-TYPE :COMMON-LISP))
+((5140 78620 537615000) :INSERT (72 :CONTENTS ""))
+((5140 78620 537619000) :INSERT (72 :VALUE ""))
+((5140 78624 48749000) :DELETE (72 :VALUE ""))
+((5140 78624 48766000) :DELETE (72 :CONTENTS ""))
+((5140 78624 48773000) :DELETE (72 :CELL-TYPE :COMMON-LISP))
+((5140 78624 48780000) :DELETE (72 :CELL NIL))
+((5140 78965 546413000) :DELETE (23 :CELL-TYPE :CL-WHO))
+((5140 78965 546437000) :DELETE
+ (23 :VALUE ((:RESULT . "<h1>Test Book</h1>") (:STDOUT . ""))))
+((5140 78965 546449000) :INSERT (23 :CELL-TYPE :COMMON-LISP))
+((5140 78965 546456000) :INSERT
+ (23 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((ERROR-TYPE . UNDEFINED-FUNCTION) (:FORM . "(:H1 \"Test Book\")")
+       (:NAME . :H1)))))
+   (:STDOUT . ""))))
+((5140 78968 393570000) :DELETE (23 :CELL-TYPE :COMMON-LISP))
+((5140 78968 393586000) :DELETE
+ (23 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((ERROR-TYPE . UNDEFINED-FUNCTION) (:FORM . "(:H1 \"Test Book\")")
+       (:NAME . :H1)))))
+   (:STDOUT . ""))))
+((5140 78968 393592000) :INSERT (23 :CELL-TYPE :CL-WHO))
+((5140 78968 393597000) :INSERT
+ (23 :VALUE ((:RESULT . "<h1>Test Book</h1>") (:STDOUT . ""))))
+((5140 80090 114565000) :INSERT (73 :CELL NIL))
+((5140 80090 114603000) :INSERT (73 :CELL-TYPE :COMMON-LISP))
+((5140 80090 114608000) :INSERT (73 :CONTENTS ""))
+((5140 80090 114613000) :INSERT (73 :VALUE ""))
+((5140 80093 536569000) :DELETE (73 :VALUE ""))
+((5140 80093 536592000) :DELETE (73 :CONTENTS ""))
+((5140 80093 536602000) :DELETE (73 :CELL-TYPE :COMMON-LISP))
+((5140 80093 536611000) :DELETE (73 :CELL NIL))
+((5140 80122 612003000) :INSERT (74 :CELL NIL))
+((5140 80122 612017000) :INSERT (74 :CELL-TYPE :COMMON-LISP))
+((5140 80122 612021000) :INSERT (74 :CONTENTS ""))
+((5140 80122 612025000) :INSERT (74 :VALUE ""))
+((5140 80127 542946000) :DELETE (74 :CELL-TYPE :COMMON-LISP))
+((5140 80127 542967000) :DELETE (74 :VALUE ""))
+((5140 80127 542978000) :INSERT (74 :CELL-TYPE :CL-WHO))
+((5140 80127 542984000) :INSERT (74 :VALUE ((:RESULT . "") (:STDOUT . ""))))
+((5140 80140 769091000) :DELETE (74 :CONTENTS ""))
+((5140 80140 769115000) :DELETE (74 :VALUE ((:RESULT . "") (:STDOUT . ""))))
+((5140 80140 769124000) :INSERT (74 :CONTENTS "(:p \"Something\")"))
+((5140 80140 769130000) :INSERT
+ (74 :VALUE ((:RESULT . "<p>Something</p>") (:STDOUT . ""))))
+((5140 80144 636867000) :DELETE
+ (74 :VALUE ((:RESULT . "<p>Something</p>") (:STDOUT . ""))))
+((5140 80144 636884000) :DELETE (74 :CONTENTS "(:p \"Something\")"))
+((5140 80144 636892000) :DELETE (74 :CELL-TYPE :CL-WHO))
+((5140 80144 636898000) :DELETE (74 :CELL NIL))
+((5141 1801 221790000) :INSERT (75 :CELL NIL))
+((5141 1801 221877000) :INSERT (75 :CELL-TYPE :COMMON-LISP))
+((5141 1801 221889000) :INSERT (75 :CONTENTS ""))
+((5141 1801 221892000) :INSERT (75 :VALUE ""))
+((5141 1834 569113000) :DELETE (75 :CONTENTS ""))
+((5141 1834 569209000) :DELETE (75 :VALUE ""))
+((5141 1834 569231000) :INSERT (75 :CONTENTS "(+ 2 3)"))
+((5141 1834 569238000) :INSERT
+ (75 :VALUE ((:RESULT ((INTEGER "5"))) (:STDOUT . ""))))
+((5141 1974 314199000) :DELETE (75 :CONTENTS "(+ 2 3)"))
+((5141 1974 314220000) :DELETE
+ (75 :VALUE ((:RESULT ((INTEGER "5"))) (:STDOUT . ""))))
+((5141 1974 314228000) :INSERT
+ (75 :CONTENTS "(defgeneric dependency-tree (system))"))
+((5141 1974 314234000) :INSERT
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-GENERIC-FUNCTION
+      "#<STANDARD-GENERIC-FUNCTION DEPENDENCY-TREE (0)>")))
+   (:STDOUT . ""))))
+((5141 2045 666888000) :DELETE
+ (75 :CONTENTS "(defgeneric dependency-tree (system))"))
+((5141 2045 666909000) :DELETE
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-GENERIC-FUNCTION
+      "#<STANDARD-GENERIC-FUNCTION DEPENDENCY-TREE (0)>")))
+   (:STDOUT . ""))))
+((5141 2045 666917000) :INSERT
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))))"))
+((5141 2045 666926000) :INSERT
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {10055AF0D3}>")))
+   (:STDOUT . ""))))
+((5141 2062 153131000) :INSERT (76 :CELL NIL))
+((5141 2062 153145000) :INSERT (76 :CELL-TYPE :COMMON-LISP))
+((5141 2062 153150000) :INSERT (76 :CONTENTS ""))
+((5141 2062 153154000) :INSERT (76 :VALUE ""))
+((5141 2067 189313000) :DELETE (76 :CONTENTS ""))
+((5141 2067 189328000) :DELETE (76 :VALUE ""))
+((5141 2067 189334000) :INSERT (76 :CONTENTS "(dependency-tree :cl-notebook)"))
+((5141 2067 189338000) :INSERT
+ (76 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . ""))))
+((5141 2075 164520000) :DELETE (76 :CONTENTS "(dependency-tree :cl-notebook)"))
+((5141 2075 164542000) :DELETE
+ (76 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . ""))))
+((5141 2075 164551000) :INSERT (76 :CONTENTS "(dependency-tree :cl-who)"))
+((5141 2075 164558000) :INSERT
+ (76 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . ""))))
+((5141 2155 757154000) :DELETE
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))))"))
+((5141 2155 757189000) :DELETE
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {10055AF0D3}>")))
+   (:STDOUT . ""))))
+((5141 2155 757201000) :INSERT
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 2155 757212000) :INSERT
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {1006E47F33}>")))
+   (:STDOUT . ""))))
+((5141 2158 473347000) :DELETE (76 :CONTENTS "(dependency-tree :cl-who)"))
+((5141 2158 473367000) :DELETE
+ (76 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . ""))))
+((5141 2158 473376000) :INSERT (76 :CONTENTS "(dependency-tree :cl-who)"))
+((5141 2158 473381000) :INSERT
+ (76 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . ""))))
+((5141 2160 754967000) :DELETE (76 :CONTENTS "(dependency-tree :cl-who)"))
+((5141 2160 754987000) :DELETE
+ (76 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . ""))))
+((5141 2160 754994000) :INSERT (76 :CONTENTS "(dependency-tree :cl-who)"))
+((5141 2160 755000000) :INSERT
+ (76 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . ""))))
+((5141 2170 698347000) :DELETE
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 2170 698369000) :DELETE
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {1006E47F33}>")))
+   (:STDOUT . ""))))
+((5141 2170 698376000) :INSERT
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 2170 698382000) :INSERT
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {10071686C3}>")))
+   (:STDOUT . ""))))
+((5141 2172 923568000) :DELETE (71 :CELL-ORDER (23 2 1 15 7 10 51)))
+((5141 2172 923668000) :INSERT (77 :CELL-ORDER (23 2 1 15 7 10 51 75 76)))
+((5141 2174 584957000) :DELETE (76 :CONTENTS "(dependency-tree :cl-who)"))
+((5141 2174 584978000) :DELETE
+ (76 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . ""))))
+((5141 2174 584988000) :INSERT (76 :CONTENTS "(dependency-tree :cl-who)"))
+((5141 2174 584994000) :INSERT
+ (76 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . ""))))
+((5141 2179 76294000) :DELETE (76 :CONTENTS "(dependency-tree :cl-who)"))
+((5141 2179 76313000) :DELETE
+ (76 :VALUE ((:RESULT ((NULL "NIL"))) (:STDOUT . ""))))
+((5141 2179 76319000) :INSERT (76 :CONTENTS "(dependency-tree :cl-notebook)"))
+((5141 2179 76324000) :INSERT
+ (76 :VALUE
+  ((:RESULT
+    ((CONS
+      "(#:CL-MOP #:CL-CSS #:CL-WHO #:PARENSCRIPT :NAMED-READTABLES :ANAPHORA :CL-PPCRE
+ #:FACT-BASE #:CL-FAD #:OPTIMA #:LOCAL-TIME :CL-FAD #:ANAPHORA #:ALEXANDRIA
+ #:HOUSE #:FLEXI-STREAMS :TRIVIAL-GRAY-STREAMS #:OPTIMA :CLOSER-MOP #:CL-PPCRE
+ #:USOCKET :SB-BSD-SOCKETS #:CL-FAD :BORDEAUX-THREADS :SB-POSIX
+ #:BORDEAUX-THREADS :ALEXANDRIA #:CL-JSON #:CL-PPCRE #:CL-BASE64 #:ANAPHORA
+ #:ALEXANDRIA #:ANAPHORA #:ALEXANDRIA)")))
+   (:STDOUT . ""))))
+((5141 8669 930798000) :DELETE (77 :CELL-ORDER (23 2 1 15 7 10 51 75 76)))
+((5141 8669 930984000) :INSERT (78 :CELL-ORDER (23 2 15 1 7 10 51 75 76)))
+((5141 8672 398991000) :DELETE (78 :CELL-ORDER (23 2 15 1 7 10 51 75 76)))
+((5141 8672 399069000) :INSERT (79 :CELL-ORDER (23 2 1 15 7 10 51 75 76)))
+((5141 8674 428387000) :DELETE (79 :CELL-ORDER (23 2 1 15 7 10 51 75 76)))
+((5141 8674 428421000) :INSERT (80 :CELL-ORDER (23 2 15 1 7 10 51 75 76)))
+((5141 8678 379296000) :DELETE
+ (15 :CONTENTS
+  "(format t \"Standard output capture!~%Yes, even with multiple lines!~%\")
+(format t \"And yes, it will show you\")
+(format t \" total \")
+(format t \"output for a group of printing procs.\")"))
+((5141 8678 379316000) :DELETE
+ (15 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Standard output capture!
+Yes, even with multiple lines!
+And yes, it will show you total output for a group of printing procs."))))
+((5141 8678 379325000) :INSERT
+ (15 :CONTENTS
+  "(format t \"Standard output capture!~%Yes, even with multiple lines!~%\")
+(format t \"And yes, it will show you\")
+(format t \" total \")
+(format t \"output for a group of printing procs.\")"))
+((5141 8678 379331000) :INSERT
+ (15 :VALUE
+  ((:RESULT ((NULL "NIL")))
+   (:STDOUT . "Standard output capture!
+Yes, even with multiple lines!
+And yes, it will show you total output for a group of printing procs."))))
+((5141 8684 261686000) :DELETE (80 :CELL-ORDER (23 2 15 1 7 10 51 75 76)))
+((5141 8684 261701000) :INSERT (81 :CELL-ORDER (23 2 15 1 7 10 51 75 76)))
+((5141 8695 919527000) :DELETE
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 8695 919556000) :DELETE
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {10071686C3}>")))
+   (:STDOUT . ""))))
+((5141 8695 919566000) :INSERT
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 8695 919575000) :INSERT
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {1004AA43E3}>")))
+   (:STDOUT . ""))))
+((5141 8732 367162000) :DELETE
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 8732 367189000) :DELETE
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {1004AA43E3}>")))
+   (:STDOUT . ""))))
+((5141 8732 367195000) :INSERT
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (asdf/component:sideway-dependencies (find-sys sys))
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 8732 367203000) :INSERT
+ (75 :VALUE
+  ((:RESULT
+    (ERROR
+     ((ERROR-TYPE . SIMPLE-ERROR)
+      (:ERROR-MESSAGE . "There is no applicable method for the generic function
+  #<STANDARD-GENERIC-FUNCTION CL-MOP:TO-ALIST (2)>
+when called with arguments
+  (#<SB-INT:SIMPLE-STYLE-WARNING \"undefined ~(~A~): ~S\" {1004C22E63}>)."))))
+   (:STDOUT . ""))))
+((5141 8749 919549000) :DELETE
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (asdf/component:sideway-dependencies (find-sys sys))
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 8749 919578000) :DELETE
+ (75 :VALUE
+  ((:RESULT
+    (ERROR
+     ((ERROR-TYPE . SIMPLE-ERROR)
+      (:ERROR-MESSAGE . "There is no applicable method for the generic function
+  #<STANDARD-GENERIC-FUNCTION CL-MOP:TO-ALIST (2)>
+when called with arguments
+  (#<SB-INT:SIMPLE-STYLE-WARNING \"undefined ~(~A~): ~S\" {1004C22E63}>)."))))
+   (:STDOUT . ""))))
+((5141 8749 919586000) :INSERT
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 8749 919596000) :INSERT
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {1004FEA733}>")))
+   (:STDOUT . ""))))
+((5141 18336 911325000) :DELETE (23 :CONTENTS "(:h1 \"Test Book\")"))
+((5141 18336 911478000) :DELETE
+ (23 :VALUE ((:RESULT . "<h1>Test Book</h1>") (:STDOUT . ""))))
+((5141 18336 911501000) :INSERT (23 :CONTENTS "(:h1 \"Test Book\""))
+((5141 18336 911524000) :INSERT
+ (23 :VALUE ((:RESULT ((ERROR ((ERROR-TYPE . END-OF-FILE))))) (:STDOUT . ""))))
+((5141 18446 990057000) :DELETE (23 :CONTENTS "(:h1 \"Test Book\""))
+((5141 18446 990073000) :DELETE
+ (23 :VALUE ((:RESULT ((ERROR ((ERROR-TYPE . END-OF-FILE))))) (:STDOUT . ""))))
+((5141 18446 990080000) :INSERT (23 :CONTENTS "(:h1 \"Test Book\""))
+((5141 18446 990085000) :INSERT
+ (23 :VALUE ((:RESULT ((ERROR ((ERROR-TYPE . END-OF-FILE))))) (:STDOUT . ""))))
+((5141 18515 10939000) :DELETE (23 :CONTENTS "(:h1 \"Test Book\""))
+((5141 18515 11004000) :DELETE
+ (23 :VALUE ((:RESULT ((ERROR ((ERROR-TYPE . END-OF-FILE))))) (:STDOUT . ""))))
+((5141 18515 11013000) :INSERT (23 :CONTENTS "(:h1 \"Test Book\")"))
+((5141 18515 11019000) :INSERT
+ (23 :VALUE ((:RESULT . "<h1>Test Book</h1>") (:STDOUT . ""))))
+((5141 18520 645227000) :DELETE (23 :CONTENTS "(:h1 \"Test Book\")"))
+((5141 18520 645242000) :DELETE
+ (23 :VALUE ((:RESULT . "<h1>Test Book</h1>") (:STDOUT . ""))))
+((5141 18520 645248000) :INSERT (23 :CONTENTS "(:h1 \"Test Book\"))"))
+((5141 18520 645253000) :INSERT
+ (23 :VALUE
+  ((:RESULT ((ERROR ((ERROR-TYPE . SB-INT:SIMPLE-READER-ERROR)))))
+   (:STDOUT . ""))))
+((5141 18525 18377000) :DELETE (23 :CONTENTS "(:h1 \"Test Book\"))"))
+((5141 18525 18395000) :DELETE
+ (23 :VALUE
+  ((:RESULT ((ERROR ((ERROR-TYPE . SB-INT:SIMPLE-READER-ERROR)))))
+   (:STDOUT . ""))))
+((5141 18525 18401000) :INSERT (23 :CONTENTS "(:h1 \"Test Book\")"))
+((5141 18525 18405000) :INSERT
+ (23 :VALUE ((:RESULT . "<h1>Test Book</h1>") (:STDOUT . ""))))
+((5141 18545 593080000) :DELETE
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5141 18545 593108000) :DELETE
+ (7 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 2 3 4 :TEST)") (:DATUM . :TEST)
+       (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5141 18545 593126000) :INSERT
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5141 18545 593133000) :INSERT
+ (7 :VALUE
+  ((:RESULT
+    (((ERROR
+       ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+        (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+        (:FORM . "(+ 2 3 4 :TEST)") (:DATUM . :TEST)
+        (:EXPECTED-TYPE . NUMBER))))))
+   (:STDOUT . ""))))
+((5141 18549 171802000) :DELETE
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5141 18549 171831000) :DELETE
+ (7 :VALUE
+  ((:RESULT
+    (((ERROR
+       ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+        (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+        (:FORM . "(+ 2 3 4 :TEST)") (:DATUM . :TEST)
+        (:EXPECTED-TYPE . NUMBER))))))
+   (:STDOUT . ""))))
+((5141 18549 171842000) :INSERT
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5141 18549 171850000) :INSERT
+ (7 :VALUE
+  ((:RESULT
+    (((ERROR
+       ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+        (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+        (:FORM . "(+ 2 3 4 :TEST)") (:DATUM . :TEST)
+        (:EXPECTED-TYPE . NUMBER))))))
+   (:STDOUT . ""))))
+((5141 18595 886982000) :DELETE
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5141 18595 887000000) :DELETE
+ (7 :VALUE
+  ((:RESULT
+    (((ERROR
+       ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+        (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+        (:FORM . "(+ 2 3 4 :TEST)") (:DATUM . :TEST)
+        (:EXPECTED-TYPE . NUMBER))))))
+   (:STDOUT . ""))))
+((5141 18595 887007000) :INSERT
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5141 18595 887012000) :INSERT
+ (7 :VALUE
+  ((:RESULT
+    (((ERROR
+       ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+        (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+        (:FORM . "(+ 2 3 4 :TEST)") (:DATUM . :TEST)
+        (:EXPECTED-TYPE . NUMBER))))))
+   (:STDOUT . ""))))
+((5141 18832 552894000) :DELETE
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5141 18832 552937000) :DELETE
+ (7 :VALUE
+  ((:RESULT
+    (((ERROR
+       ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+        (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+        (:FORM . "(+ 2 3 4 :TEST)") (:DATUM . :TEST)
+        (:EXPECTED-TYPE . NUMBER))))))
+   (:STDOUT . ""))))
+((5141 18832 552944000) :INSERT
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5141 18832 552950000) :INSERT
+ (7 :VALUE
+  ((:RESULT
+    (((ERROR
+       ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+        (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+        (:FORM . "(+ 2 3 4 :TEST)") (:DATUM . :TEST)
+        (:EXPECTED-TYPE . NUMBER))))))
+   (:STDOUT . ""))))
+((5141 18835 10580000) :DELETE
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5141 18835 10607000) :DELETE
+ (7 :VALUE
+  ((:RESULT
+    (((ERROR
+       ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+        (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+        (:FORM . "(+ 2 3 4 :TEST)") (:DATUM . :TEST)
+        (:EXPECTED-TYPE . NUMBER))))))
+   (:STDOUT . ""))))
+((5141 18835 10620000) :INSERT
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5141 18835 10628000) :INSERT
+ (7 :VALUE
+  ((:RESULT
+    (((ERROR
+       ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+        (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+        (:FORM . "(+ 2 3 4 :TEST)") (:DATUM . :TEST)
+        (:EXPECTED-TYPE . NUMBER))))))
+   (:STDOUT . ""))))
+((5141 18839 508430000) :DELETE
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test)"))
+((5141 18839 508456000) :DELETE
+ (7 :VALUE
+  ((:RESULT
+    (((ERROR
+       ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+        (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+        (:FORM . "(+ 2 3 4 :TEST)") (:DATUM . :TEST)
+        (:EXPECTED-TYPE . NUMBER))))))
+   (:STDOUT . ""))))
+((5141 18839 508467000) :INSERT
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test 5)"))
+((5141 18839 508475000) :INSERT
+ (7 :VALUE
+  ((:RESULT
+    (((ERROR
+       ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+        (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+        (:FORM . "(+ 2 3 4 :TEST 5)") (:DATUM . :TEST)
+        (:EXPECTED-TYPE . NUMBER))))))
+   (:STDOUT . ""))))
+((5141 18892 521204000) :DELETE
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test 5)"))
+((5141 18892 521219000) :DELETE
+ (7 :VALUE
+  ((:RESULT
+    (((ERROR
+       ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+        (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+        (:FORM . "(+ 2 3 4 :TEST 5)") (:DATUM . :TEST)
+        (:EXPECTED-TYPE . NUMBER))))))
+   (:STDOUT . ""))))
+((5141 18892 521225000) :INSERT
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test 5)"))
+((5141 18892 521229000) :INSERT
+ (7 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 2 3 4 :TEST 5)") (:DATUM . :TEST)
+       (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5141 18896 459637000) :DELETE (23 :CONTENTS "(:h1 \"Test Book\")"))
+((5141 18896 459659000) :DELETE
+ (23 :VALUE ((:RESULT . "<h1>Test Book</h1>") (:STDOUT . ""))))
+((5141 18896 459699000) :INSERT (23 :CONTENTS "(:h1 \"Test Book\""))
+((5141 18896 459707000) :INSERT
+ (23 :VALUE ((:RESULT (ERROR ((ERROR-TYPE . END-OF-FILE)))) (:STDOUT . ""))))
+((5141 19095 980626000) :DELETE (23 :CONTENTS "(:h1 \"Test Book\""))
+((5141 19095 980660000) :DELETE
+ (23 :VALUE ((:RESULT (ERROR ((ERROR-TYPE . END-OF-FILE)))) (:STDOUT . ""))))
+((5141 19095 980675000) :INSERT (23 :CONTENTS "(:h1 \"Test Book\""))
+((5141 19095 980686000) :INSERT
+ (23 :VALUE ((:RESULT ((ERROR ((ERROR-TYPE . END-OF-FILE))))) (:STDOUT . ""))))
+((5141 19099 479211000) :DELETE (23 :CONTENTS "(:h1 \"Test Book\""))
+((5141 19099 479236000) :DELETE
+ (23 :VALUE ((:RESULT ((ERROR ((ERROR-TYPE . END-OF-FILE))))) (:STDOUT . ""))))
+((5141 19099 479248000) :INSERT (23 :CONTENTS "(:h1 \"Test Book\"))"))
+((5141 19099 479256000) :INSERT
+ (23 :VALUE
+  ((:RESULT ((ERROR ((ERROR-TYPE . SB-INT:SIMPLE-READER-ERROR)))))
+   (:STDOUT . ""))))
+((5141 19101 369076000) :DELETE (23 :CONTENTS "(:h1 \"Test Book\"))"))
+((5141 19101 369115000) :DELETE
+ (23 :VALUE
+  ((:RESULT ((ERROR ((ERROR-TYPE . SB-INT:SIMPLE-READER-ERROR)))))
+   (:STDOUT . ""))))
+((5141 19101 369121000) :INSERT (23 :CONTENTS "(:h1 \"Test Book\")"))
+((5141 19101 369125000) :INSERT
+ (23 :VALUE ((:RESULT . "<h1>Test Book</h1>") (:STDOUT . ""))))
+((5141 19103 434124000) :DELETE
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test 5)"))
+((5141 19103 434141000) :DELETE
+ (7 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 2 3 4 :TEST 5)") (:DATUM . :TEST)
+       (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5141 19103 434148000) :INSERT
+ (7 :CONTENTS ";; errors!
+
+(+ 2 3 4 :test 5)"))
+((5141 19103 434152000) :INSERT
+ (7 :VALUE
+  ((:RESULT
+    ((ERROR
+      ((ERROR-TYPE . SIMPLE-TYPE-ERROR)
+       (:ERROR-MESSAGE . "Argument Y is not a NUMBER: :TEST")
+       (:FORM . "(+ 2 3 4 :TEST 5)") (:DATUM . :TEST)
+       (:EXPECTED-TYPE . NUMBER)))))
+   (:STDOUT . ""))))
+((5141 19107 536462000) :DELETE
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(list :no :they :are :not :the :same :as :a :list :of :values)
+(format \"blah\")"))
+((5141 19107 536503000) :DELETE
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((CONS "(:NO :THEY :ARE :NOT :THE :SAME :AS :A :LIST :OF :VALUES)"))
+    ((ERROR
+      ((ERROR-TYPE . SB-INT:SIMPLE-PROGRAM-ERROR)
+       (:ERROR-MESSAGE . "invalid number of arguments: 1")
+       (:FORM . "(FORMAT \"blah\")")))))
+   (:STDOUT . ""))))
+((5141 19107 536515000) :INSERT
+ (10 :CONTENTS
+  ";; The working forms get evaled when an error happens part-way through!
+(+ 2 3)
+(+ 3 4)
+(+ 4 5)
+(values :yes :multiple :values :also :work!)
+(list :no :they :are :not :the :same :as :a :list :of :values)
+(format \"blah\")"))
+((5141 19107 536525000) :INSERT
+ (10 :VALUE
+  ((:RESULT ((INTEGER "5")) ((INTEGER "7")) ((INTEGER "9"))
+    ((KEYWORD ":YES") (KEYWORD ":MULTIPLE") (KEYWORD ":VALUES")
+     (KEYWORD ":ALSO") (KEYWORD ":WORK!"))
+    ((CONS "(:NO :THEY :ARE :NOT :THE :SAME :AS :A :LIST :OF :VALUES)"))
+    ((ERROR
+      ((ERROR-TYPE . SB-INT:SIMPLE-PROGRAM-ERROR)
+       (:ERROR-MESSAGE . "invalid number of arguments: 1")
+       (:FORM . "(FORMAT \"blah\")")))))
+   (:STDOUT . ""))))
+((5141 19118 721732000) :DELETE
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 19118 721762000) :DELETE
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {1004FEA733}>")))
+   (:STDOUT . ""))))
+((5141 19118 721773000) :INSERT
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 19118 721783000) :INSERT
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {1004CD6D63}>")))
+   (:STDOUT . ""))))
+((5141 19122 510510000) :DELETE
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 19122 510545000) :DELETE
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {1004CD6D63}>")))
+   (:STDOUT . ""))))
+((5141 19122 510564000) :INSERT
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res))"))
+((5141 19122 510576000) :INSERT
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-GENERIC-FUNCTION
+      "#<STANDARD-GENERIC-FUNCTION DEPENDENCY-TREE (1)>"))
+    ((ERROR ((ERROR-TYPE . END-OF-FILE)))))
+   (:STDOUT . ""))))
+((5141 19126 608959000) :DELETE
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res))"))
+((5141 19126 608989000) :DELETE
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-GENERIC-FUNCTION
+      "#<STANDARD-GENERIC-FUNCTION DEPENDENCY-TREE (1)>"))
+    ((ERROR ((ERROR-TYPE . END-OF-FILE)))))
+   (:STDOUT . ""))))
+((5141 19126 608998000) :INSERT
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 19126 609008000) :INSERT
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {1004F187D3}>")))
+   (:STDOUT . ""))))
+((5141 19128 732550000) :DELETE
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 19128 732568000) :DELETE
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {1004F187D3}>")))
+   (:STDOUT . ""))))
+((5141 19128 732573000) :INSERT
+ (75 :CONTENTS "(defgeneric dependency-tree (system)
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 19128 732579000) :INSERT
+ (75 :VALUE ((:RESULT ((ERROR ((ERROR-TYPE . END-OF-FILE))))) (:STDOUT . ""))))
+((5141 19130 614329000) :DELETE
+ (75 :CONTENTS "(defgeneric dependency-tree (system)
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 19130 614359000) :DELETE
+ (75 :VALUE ((:RESULT ((ERROR ((ERROR-TYPE . END-OF-FILE))))) (:STDOUT . ""))))
+((5141 19130 614368000) :INSERT
+ (75 :CONTENTS "(defgeneric dependency-tree (system))
+
+(defmethod dependency-tree ((system symbol))
+  (let ((res (make-hash-table)))
+    (labels ((find-sys (sys-name) (asdf/system:find-system sys-name))
+	     (rec (sys) 
+	       (loop for s in (slot-value (find-sys sys) 'asdf/component:sideway-dependencies)
+		  unless (gethash s res) do (rec s)
+		  do (incf (gethash s res 0)))))
+      (rec system))
+     (alexandria:hash-table-keys res)))"))
+((5141 19130 614378000) :INSERT
+ (75 :VALUE
+  ((:RESULT
+    ((STANDARD-METHOD
+      "#<STANDARD-METHOD DEPENDENCY-TREE (SYMBOL) {1005157873}>")))
+   (:STDOUT . ""))))
+((5141 19139 14599000) :DELETE (76 :CONTENTS "(dependency-tree :cl-notebook)"))
+((5141 19139 14627000) :DELETE
+ (76 :VALUE
+  ((:RESULT
+    ((CONS
+      "(#:CL-MOP #:CL-CSS #:CL-WHO #:PARENSCRIPT :NAMED-READTABLES :ANAPHORA :CL-PPCRE
+ #:FACT-BASE #:CL-FAD #:OPTIMA #:LOCAL-TIME :CL-FAD #:ANAPHORA #:ALEXANDRIA
+ #:HOUSE #:FLEXI-STREAMS :TRIVIAL-GRAY-STREAMS #:OPTIMA :CLOSER-MOP #:CL-PPCRE
+ #:USOCKET :SB-BSD-SOCKETS #:CL-FAD :BORDEAUX-THREADS :SB-POSIX
+ #:BORDEAUX-THREADS :ALEXANDRIA #:CL-JSON #:CL-PPCRE #:CL-BASE64 #:ANAPHORA
+ #:ALEXANDRIA #:ANAPHORA #:ALEXANDRIA)")))
+   (:STDOUT . ""))))
+((5141 19139 14643000) :INSERT (76 :CONTENTS "(dependency-tree :cl-notebook)"))
+((5141 19139 14651000) :INSERT
+ (76 :VALUE
+  ((:RESULT
+    ((CONS
+      "(#:CL-CSS #:CL-WHO #:PARENSCRIPT :NAMED-READTABLES :ANAPHORA :CL-PPCRE
+ #:FACT-BASE #:CL-FAD #:OPTIMA #:LOCAL-TIME :CL-FAD #:ANAPHORA #:ALEXANDRIA
+ #:HOUSE #:FLEXI-STREAMS :TRIVIAL-GRAY-STREAMS #:OPTIMA :CLOSER-MOP #:CL-PPCRE
+ #:USOCKET :SB-BSD-SOCKETS #:CL-FAD :BORDEAUX-THREADS :SB-POSIX
+ #:BORDEAUX-THREADS :ALEXANDRIA #:CL-JSON #:CL-PPCRE #:CL-BASE64 #:ANAPHORA
+ #:ALEXANDRIA #:ANAPHORA #:ALEXANDRIA)")))
+   (:STDOUT . ""))))

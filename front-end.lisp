@@ -227,7 +227,8 @@
 			      (:ul :class "result"
 				   (join (loop for (tp val) in form-res
 					    if (= tp :error) collect (who-ps-html (:li :class "error" (error-template val)))
-					    else collect (who-ps-html (:li (:span :class "value" val) (:span :class "type" " :: " tp))))))))))))))
+					    else collect (who-ps-html (:li (:span :class "value" (escape val))
+									   (:span :class "type" " :: " tp))))))))))))))
 
     (defun cell-controls-template (cell)
       (who-ps-html
@@ -257,9 +258,7 @@
 		      (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
 		     ((string? (@ value :result))
 		      (@ value :result))
-		     (t (who-ps-html
-			 (:ul :class "result"
-			      (:li :class "error" (error-template (@ value :result 0 1))))))))))))
+		     (t (result-template value))))))))
     
     (defun cell-code-template (cell)
       (with-slots (id contents value language) cell

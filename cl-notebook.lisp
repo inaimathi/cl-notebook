@@ -1,5 +1,6 @@
 (in-package #:cl-notebook)
 
+;;;;; Model-related
 (defvar *notebooks* 
   (make-hash-table :test 'equal))
 
@@ -23,6 +24,50 @@
 (defun get-notebook (name)
   (gethash name *notebooks*))
 
+;;;;; Read/eval-related
+(defun read-all-from-string (str)
+  (let ((len (length str))
+	(start 0))
+    (loop for (s-exp next) = (multiple-value-list (read-from-string str nil nil :start start))
+       do (setf start next)
+       collect s-exp
+       until (or (not (numberp next)) (= len next)))))
+
+(defun single-eval-for-js (s-exp)
+  (capturing-error (format nil "~s" s-exp)
+    (let ((res (multiple-value-list (ignore-redefinition-warning (eval s-exp)))))
+      (loop for v in res collect (list (type-label v) (format nil "~s" v))))))
+
+(defun eval-from-string (str)
+  (let ((len (length str))
+	(start 0))
+    (loop for (s-exp next) = (multiple-value-list (capturing-error nil (read-from-string str nil nil :start start)))
+       for (evaled eval-error?) = (unless (eq next :error) (multiple-value-list (single-eval-for-js s-exp)))
+       if (eq next :error) collect s-exp into res-list
+       else collect evaled into res-list
+	 
+       do (setf start next)
+       when (or (eq next :error) (eq eval-error? :error)) do (return res-list)
+       when (and next (numberp next) (= len next)) do (return (last res-list)))))
+
+(defmethod js-eval (cell-type (contents string))
+  (alist :result contents :stdout ""))
+
+(defmethod js-eval ((cell-type (eql :cl-who)) (contents string))
+  (with-js-error
+    (alist :result (eval 
+		    `(with-html-output-to-string (s) 
+		       ,@(read-all-from-string contents)))
+	   :stdout "")))
+
+(defmethod js-eval ((cell-type (eql :common-lisp)) (contents string))
+  (with-js-error
+    (multiple-value-bind (res stdout) (capturing-stdout (eval-from-string contents))
+      (alist
+       :result res
+       :stdout stdout))))
+
+;;;;; HTTP Handlers
 (define-closing-handler (root) ()
   (with-html-output-to-string (s nil :prologue t :indent t)
     (:html
@@ -54,52 +99,8 @@
 
      (:body))))
 
-(defun single-eval-for-js (s-exp)
-  (capturing-error (format nil "~s" s-exp)
-    (let ((res (multiple-value-list (ignoring-warnings (eval s-exp)))))
-      (loop for v in res collect (list (type-label v) (format nil "~s" v))))))
-
-(defun read-all-from-string (str)
-  (let ((len (length str))
-	(start 0))
-    (loop for (s-exp next) = (multiple-value-list (read-from-string str nil nil :start start))
-       do (setf start next)
-       collect s-exp
-       until (or (not (numberp next)) (= len next)))))
-
-(defun eval-from-string (str)
-  (let ((len (length str))
-	(start 0))
-    (loop for (s-exp next) = (multiple-value-list (capturing-error nil (read-from-string str nil nil :start start)))
-       for (evaled eval-error?) = (unless (eq next :error) (multiple-value-list (single-eval-for-js s-exp)))
-       if (eq next :error) collect s-exp into res-list
-       else collect evaled into res-list
-	 
-       do (setf start next)
-       when (or (eq next :error) (eq eval-error? :error)) do (return res-list)
-       when (and next (numberp next) (= len next)) do (return (last res-list)))))
-
-(defun html-tree-to-string (html-tree)
-  (eval `(with-html-output-to-string (s) ,@html-tree)))
-
 (define-json-handler (notebook/current) ((book :notebook))
   (current book))
-
-(defmethod js-eval (cell-type (contents string))
-  (alist :result contents
-	 :stdout ""))
-
-(defmethod js-eval ((cell-type (eql :cl-who)) (contents string))
-  (with-js-error
-    (alist :result (html-tree-to-string (read-all-from-string contents))
-	   :stdout "")))
-
-(defmethod js-eval ((cell-type (eql :common-lisp)) (contents string))
-  (with-js-error
-    (multiple-value-bind (res stdout) (capturing-stdout (eval-from-string contents))
-      (alist
-       :result res
-       :stdout stdout))))
 
 (define-json-handler (notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
   (let* ((cont-fact (first (lookup book :a cell-id :b :contents)))
@@ -144,6 +145,7 @@
 	(write-delta! book)
 	(current book)))))
 
+;;;;; System entry
 (defun main (&optional argv) 
   (declare (ignore argv))
   (in-package :cl-notebook)

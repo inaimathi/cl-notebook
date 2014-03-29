@@ -3,6 +3,14 @@
   (:use #:cl #:house #:parenscript #:cl-who #:fact-base)
   (:import-from #:anaphora #:aif #:awhen #:it)
   (:import-from #:alexandria #:with-gensyms)
+  (:shadowing-import-from 
+   #+openmcl-native-threads #:ccl 
+   #+cmu #:pcl 
+   #+sbcl #:sb-pcl 
+   #+lispworks #:hcl 
+   #+allegro #:mop 
+   #+clisp #:clos 
+   #:class-slots #:slot-definition-name)
   (:shadowing-import-from #:fact-base #:lookup))
 
 (in-package #:cl-notebook)
