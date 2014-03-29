@@ -15,6 +15,10 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 
 ### TODO
 
+- Deleting a cell shouldn't trigger a full re-draw; just remove the cell (similar for the others; you might want to integrate event-source here sooner rather than later)
+- Some errors still seem to sneak out
+- System hangs forever if you send it into an infinite loop. It should time out eventually, and send some notification of the fact.
+- Also, simple errors don't seem to be getting stored stringified occasionally?
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 - When loading a notebook, the system should evaluate all existing cells in order
 - front-end cleanup.

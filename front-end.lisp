@@ -221,6 +221,22 @@
 			 ""))
 		   err)))))
 
+    (defun clear-selection ()
+      (let ((sel (chain window (get-selection))))
+	(if (@ sel empty)
+	    ;; chrome
+	    (chain sel (empty))
+	    ;; firefox
+	    (chain sel (remove-all-ranges)))))
+
+    (defun select-contents (ev elem)
+      (console.log "Selecting!" ev elem)
+      (unless (@ ev shift-key)
+	(clear-selection))
+      (let ((r (new (-range))))
+	(chain r (select-node-contents elem))
+	(chain window (get-selection) (add-range r))))
+
     (defun result-template (result)
       (when result ;; yes, seriously. New cells don't have these
 	(who-ps-html
@@ -231,7 +247,8 @@
 			      (:ul :class "result"
 				   (join (loop for (tp val) in form-res
 					    if (= tp :error) collect (who-ps-html (:li :class "error" (error-template val)))
-					    else collect (who-ps-html (:li (:span :class "value" (escape val))
+					    else collect (who-ps-html (:li :onclick "selectContents(event, this)"
+									   (:span :class "value" (escape val))
 									   (:span :class "type" " :: " tp))))))))))))))
 
     (defun cell-controls-template (cell)
