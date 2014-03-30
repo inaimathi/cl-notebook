@@ -230,7 +230,6 @@
 	    (chain sel (remove-all-ranges)))))
 
     (defun select-contents (ev elem)
-      (console.log "Selecting!" ev elem)
       (unless (@ ev shift-key)
 	(clear-selection))
       (let ((r (new (-range))))
@@ -241,15 +240,21 @@
       (when result ;; yes, seriously. New cells don't have these
 	(who-ps-html
 	 (:pre
-	  (+ (if (@ result :stdout) (who-ps-html (:p :class "stdout" (@ result :stdout))) "")
-	     (join (loop for form-res in (@ result :result)
-		      append (who-ps-html
-			      (:ul :class "result"
-				   (join (loop for (tp val) in form-res
-					    if (= tp :error) collect (who-ps-html (:li :class "error" (error-template val)))
-					    else collect (who-ps-html (:li :onclick "selectContents(event, this)"
-									   (:span :class "value" (escape val))
-									   (:span :class "type" " :: " tp))))))))))))))
+	  (+ (if (@ result :stdout) 
+		 (who-ps-html 
+		  (:p :onclick "selectContents(event, this)" 
+		      :class "stdout" 
+		      (@ result :stdout))) 
+		 "")
+	     (who-ps-html
+	      (:span :onclick "selectContents(event, this)"
+		     (join (loop for form-res in (@ result :result)
+			      append (who-ps-html
+				      (:ul :class "result"
+					   (join (loop for (tp val) in form-res
+						    if (= tp :error) collect (who-ps-html (:li :class "error" (error-template val)))
+						    else collect (who-ps-html (:li (:span :class "value" (escape val))
+										   (:span :class "type" " :: " tp))))))))))))))))
 
     (defun cell-controls-template (cell)
       (who-ps-html
@@ -328,7 +333,6 @@
 		 #'notebook!))
 
     (defun change-cell-type (cell-id new-type)
-      (console.log "CHANGING TYPE OF" cell-id "TO" new-type)
       (post/json "/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)
 		 #'notebook!))
 
