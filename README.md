@@ -18,9 +18,11 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 - Deleting a cell shouldn't trigger a full re-draw; just remove the cell (similar for the others; you might want to integrate event-source here sooner rather than later)
 - Some errors still seem to sneak out
 - System hangs forever if you send it into an infinite loop. It should time out eventually, and send some notification of the fact.
+	- Should it? Are there situations where you'd legitimately want to run an infinite loop in cl-notebook? How would you handle that?
+	- Alternative to timing out: run queries in a separate thread (they'll be async anyhow) and give the user a keybinding to kill the current computation
+	- You'll need to somehow notify the front-end that there's still a pending computation.
 - Also, simple errors don't seem to be getting stored stringified occasionally?
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
-- When loading a notebook, the system should evaluate all existing cells in order
 - front-end cleanup.
 	- Possibly move it into a separate project?
 	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.

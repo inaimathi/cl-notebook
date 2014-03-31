@@ -18,8 +18,15 @@
     (unless (gethash name *notebooks*)
       (setf (gethash name *notebooks*) book))))
 
+(defmethod eval-notebook-code ((book fact-base))
+  (loop for cell-id in (caddar (lookup book :b :cell-order))
+     when (lookup book :a cell-id :b :cell-type :c :common-lisp)
+     do (js-eval :common-lisp (caddar (lookup book :a cell-id :b :contents)))))
+
 (defun load-notebook! (name)
-  (setf (gethash name *notebooks*) (load! name :indices '(:a :b :c :ab))))
+  (let ((book (load! name :indices '(:a :b :c :ab :abc))))
+    (eval-notebook-code book)
+    (setf (gethash name *notebooks*) book)))
 
 (defun get-notebook (name)
   (gethash name *notebooks*))
