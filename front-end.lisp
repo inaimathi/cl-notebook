@@ -106,6 +106,11 @@
     ;; basic DOM/event stuff
     (defun prevent (ev) (chain ev (prevent-default)))
 
+    (defun scroll-to-elem (elem)
+;;			 (chain window (scroll-to 45 45))
+
+      (console.log elem))
+
     (defun dom-ready (callback)
       (chain document (add-event-listener "DOMContentLoaded" callback)))
 
@@ -114,7 +119,7 @@
     (defun by-selector-all (selector)
       (chain document (query-selector-all selector)))
 
-    (defun escape (string)
+    (defun escaped (string)
       (chain string
 	     (replace "<" "&lt;")
 	     (replace ">" "&gt;")))
@@ -206,6 +211,12 @@
 
 (define-closing-handler (js/main.js :content-type "application/javascript") ()
   (ps
+    (defun by-cell-id (cell-id &rest children)
+      (by-selector
+       (+ "#cell-" cell-id
+	  (if (> (length children) 0) " " "")
+	  (join children " "))))
+    
     ;; DOM templates
     (defun error-template (err)
       (who-ps-html
@@ -253,7 +264,7 @@
 				      (:ul :class "result"
 					   (join (loop for (tp val) in form-res
 						    if (= tp :error) collect (who-ps-html (:li :class "error" (error-template val)))
-						    else collect (who-ps-html (:li (:span :class "value" (escape val))
+						    else collect (who-ps-html (:li (:span :class "value" (escaped val))
 										   (:span :class "type" " :: " tp))))))))))))))))
 
     (defun cell-controls-template (cell)
@@ -322,7 +333,9 @@
 
     (defun server/notebook/eval-to-cell (cell-id contents)
       (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)
-		 #'notebook!))
+		 (lambda (res)
+		   (notebook! res)
+		   (console.log (aref *notebook* :objects cell-id)))))
 
     (defun new-cell (&optional (cell-type :common-lisp))
       (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type)
@@ -347,15 +360,15 @@
 
     ;; CodeMirror utilities    
     (defun show-editor (cell-id)
-      (setf (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden) nil)
+      (setf (@ (by-cell-id cell-id ".CodeMirror") hidden) nil)
       (chain (aref *notebook* :objects cell-id :editor) (focus)))
 
     (defun hide-editor (cell-id)
-      (setf (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden) t))
+      (setf (@ (by-cell-id cell-id ".CodeMirror") hidden) t))
 
     (defun toggle-editor (cell-id)
-      (setf (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden)
-	    (not (@ (by-selector (+ "#cell-" cell-id " .CodeMirror")) hidden))))
+      (setf (@ (by-cell-id cell-id ".CodeMirror") hidden)
+	    (not (@ (by-cell-id cell-id ".CodeMirror") hidden))))
 
     (defun cell-mirror (cell-id)
       (aref *notebook* :objects cell-id :editor))
@@ -363,32 +376,23 @@
     (defun cell-editor-contents (cell-id)
       (chain (cell-mirror cell-id) (get-value)))
 
-    (defun mirror-keys (cell-id &key hiding?)
-      (let ((keys (create "Ctrl-Enter"
-			  (lambda (cmd)
-			    (server/notebook/eval-to-cell
-			     cell-id (cell-editor-contents cell-id)))
-			  "Ctrl-Space" "autocomplete")))
-	(when hiding?
-	  (setf (@ keys "Esc")
-		(lambda (cmd) (hide-editor cell-id))))
-	keys))
-
-    (defun mirror! (cell-id keys)
+    (defun mirror! (cell)
       (let* ((mirror)
+	     (cell-id (@ cell :id))
 	     (options (create 
 		       "lineNumbers" t 
 		       "matchBrackets" t
 		       "autoCloseBrackets" t
 		       "lineWrapping" t
 		       "viewportMargin" -infinity
-		       "extraKeys" keys)))
+		       "extraKeys" (create "Ctrl-Enter"
+					   (lambda (cmd)
+					     (server/notebook/eval-to-cell
+					      cell-id (cell-editor-contents cell-id)))
+					   "Ctrl-Space" "autocomplete"))))
 	(setf 
-	 mirror 
-	 (chain -code-mirror 
-		(from-text-area 
-		 (by-selector (+ "#cell-" cell-id " .cell-contents"))
-		 options)))
+	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
+	 (@ cell :editor) mirror)
 	mirror))
 
     ;; Notebook-related
@@ -436,17 +440,24 @@
 	(nativesortable (by-selector "ul.cells"))
 	(map (lambda (cell) 
 	       (with-slots (id cell-type) cell
-		 (setf (aref *notebook* :objects id :editor)
-		       (mirror! 
-			id (if (equal cell-type "clWho") 
-			       (mirror-keys id :hiding? t)
-			       (mirror-keys id))))
+		 (mirror! cell)
 		 (when (equal cell-type "clWho")
-		   (setf (@ (by-selector (+ "#cell-" id " .CodeMirror")) hidden) t))))
+		   (setf (@ (by-cell-id id ".CodeMirror") hidden) t))))
 	     (notebook-cells *notebook*))))
 
     (dom-ready
      (lambda ()
+       (chain 
+	(by-selector "body") 
+	(add-event-listener 
+	 :keyup (key-listener
+		 <esc> (progn 
+			 (clear-selection)
+			 (map (lambda (cell) 
+				(with-slots (id cell-type) cell
+				  (when (equal cell-type 'cl-who)
+				    (hide-editor id))))
+			      (notebook-cells *notebook*))))))
        (set-page-hash (create :book "test-book"))
        (setf document.title "test-book - cl-notebook")
        (server/notebook/current "test-book" #'notebook!)))))
