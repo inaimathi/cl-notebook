@@ -18,7 +18,8 @@
     (let ((cont (format nil "(:h1 \"~a\")" name)))
       (new-cell! book :cell-type :cl-who :contents cont :value (js-eval :cl-who cont)))
     (unless (gethash name *notebooks*)
-      (setf (gethash name *notebooks*) book))))
+      (setf (gethash name *notebooks*) book))
+    book))
 
 (defmethod eval-notebook-code ((book fact-base))
   (loop for cell-id in (caddar (lookup book :b :cell-order))
@@ -110,6 +111,10 @@
 
 (define-json-handler (notebook/current) ((book :notebook))
   (current book))
+
+(define-json-handler (notebook/new) ()
+  (let ((name (format nil "book-~a" (hash-table-count *notebooks*))))
+    (current (new-notebook! name))))
 
 (define-json-handler (notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
   (let* ((cont-fact (first (lookup book :a cell-id :b :contents)))

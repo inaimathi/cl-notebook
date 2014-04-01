@@ -25,7 +25,7 @@
      (.main-controls 
       :background-color "#eee" :border "2px solid #ccc" :border-radius "0px 0px 5px 5px"
       :padding 8px
-      :z-index 5 :position fixed :top -40px
+      :z-index 10 :position fixed :top -40px
       :width 60% :left 50% :margin-left -30%)
      (".main-controls:hover" :top -2px)
      (".main-controls button"
@@ -44,7 +44,7 @@
       :padding-top 5px :padding-left 3px :cursor move)
      (".cell .controls span:hover" :color "#000")
 
-     (".cell:hover" :border-top "3px solid #ccc" :z-index 10)
+     (".cell:hover" :border-top "3px solid #ccc" :z-index 15)
      (".cell:hover .controls" :display block)
 
      (.result :border "1px solid #ccc" :background-color "#fff" :list-style-type none :margin 0px :margin-top 5px :padding 0px)
@@ -100,16 +100,17 @@
 
     (defun join (strings &optional (separator "")) (chain strings (join separator)))
 
-    ;; basic hash stuff
+    ;; basic hash/array stuff
     (defun vals (obj) (map identity obj))
+    (defun last (array) (aref array (- (length array) 1)))
 
     ;; basic DOM/event stuff
     (defun prevent (ev) (chain ev (prevent-default)))
 
     (defun scroll-to-elem (elem)
-;;			 (chain window (scroll-to 45 45))
-
-      (console.log elem))
+      (let ((x (@ elem offset-left))
+	    (y (@ elem offset-top)))
+	(chain window (scroll-to x y))))
 
     (defun dom-ready (callback)
       (chain document (add-event-listener "DOMContentLoaded" callback)))
@@ -313,7 +314,8 @@
     (defun notebook-template (notebook)
       (who-ps-html 
        (:div :class "main-controls"
-	     (:button :onclick "newCell()" "+ New Cell"))
+	     (:button :onclick "newCell()" "+ New Cell")
+	     (:button :onclick "newBook()" "+ New Book"))
        (:ul :class "cells"
 	    (join (map (lambda (cell) (cell-template cell))
 		       (notebook-cells notebook))))))
@@ -333,13 +335,18 @@
 
     (defun server/notebook/eval-to-cell (cell-id contents)
       (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)
-		 (lambda (res)
-		   (notebook! res)
-		   (console.log (aref *notebook* :objects cell-id)))))
+		 #'notebook!))
 
     (defun new-cell (&optional (cell-type :common-lisp))
       (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type)
-		 #'notebook!))
+		 (lambda (res)
+		   (notebook! res)
+		   (let ((last-cell-id (last (notebook-cell-ordering *notebook*))))
+		     (scroll-to-elem (by-cell-id last-cell-id))
+		     (show-editor last-cell-id)))))
+
+    (defun new-book ()
+      (post/json "/notebook/new" (create) #'notebook!))
     
     (defun kill-cell (cell-id)
       (post/json "/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)
@@ -438,6 +445,7 @@
 			       do (return c))))
 	(dom-set (by-selector "body") (notebook-template *notebook*))
 	(nativesortable (by-selector "ul.cells"))
+	(set-page-hash (create :book (@ *notebook* name)))
 	(map (lambda (cell) 
 	       (with-slots (id cell-type) cell
 		 (mirror! cell)
@@ -458,6 +466,8 @@
 				  (when (equal cell-type 'cl-who)
 				    (hide-editor id))))
 			      (notebook-cells *notebook*))))))
-       (set-page-hash (create :book "test-book"))
-       (setf document.title "test-book - cl-notebook")
-       (server/notebook/current "test-book" #'notebook!)))))
+       (unless (get-page-hash)
+	 (set-page-hash (create :book "test-book")))
+       (let ((book-name (@ (get-page-hash) :book)))
+	 (setf document.title (+ book-name " - cl-notebook"))
+	 (server/notebook/current book-name #'notebook!))))))
