@@ -453,6 +453,12 @@
 		   (setf (@ (by-cell-id id ".CodeMirror") hidden) t))))
 	     (notebook-cells *notebook*))))
 
+    (defun hash-updated ()
+      (let ((book-name (@ (get-page-hash) :book)))
+	(when book-name
+	  (setf document.title (+ book-name " - cl-notebook"))
+	  (server/notebook/current book-name #'notebook!))))
+
     (dom-ready
      (lambda ()
        (chain 
@@ -466,8 +472,8 @@
 				  (when (equal cell-type 'cl-who)
 				    (hide-editor id))))
 			      (notebook-cells *notebook*))))))
+
        (unless (get-page-hash)
 	 (set-page-hash (create :book "test-book")))
-       (let ((book-name (@ (get-page-hash) :book)))
-	 (setf document.title (+ book-name " - cl-notebook"))
-	 (server/notebook/current book-name #'notebook!))))))
+       (setf (@ window onhashchange) #'hash-updated)
+       (hash-updated)))))

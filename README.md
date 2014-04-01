@@ -15,6 +15,7 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 
 ### TODO
 
+- Store notebooks in a separate notebook directory. Load all of them at startup
 - Deleting a cell shouldn't trigger a full re-draw; just remove the cell (similar for the others; you might want to integrate event-source here sooner rather than later)
 - Some errors still seem to sneak out
 - System hangs forever if you send it into an infinite loop. It should time out eventually, and send some notification of the fact.
