@@ -14,7 +14,7 @@
   (caddar (lookup book :b :notebook-name)))
 
 (defun new-notebook! (name)
-  (let ((book (make-fact-base :indices '(:a :b :ab :abc) :file-name name)))
+  (let ((book (make-fact-base :indices '(:a :b :ab :abc) :file-name (merge-pathnames (file-namestring name) *books*))))
     (insert-new! book :notebook-name name)
     (let ((cont (format nil "(:h1 \"~a\")" name)))
       (new-cell! book :cell-type :cl-who :contents cont :value (js-eval :cl-who cont)))
