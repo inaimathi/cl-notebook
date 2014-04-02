@@ -44,6 +44,8 @@
       :padding-top 5px :padding-left 3px :cursor move)
      (".cell .controls span:hover" :color "#000")
 
+     (".cell blockquote" :font-style oblique :border-left "2px solid #eee" :padding 10px)
+
      (".cell:hover" :border-top "3px solid #ccc" :z-index 15)
      (".cell:hover .controls" :display block)
 
@@ -52,7 +54,6 @@
      (".result li" :padding 5px)
      (".result .type" :color "#228b22")
      (".result .error" :background-color "#fdd" :color "#933")
-
      (.error-contents :list-style-type none :margin 0px :padding 0px)
      (".error-contents .error-type" :font-weight bolder)
      (".error-contents .error-property" :font-style oblique)

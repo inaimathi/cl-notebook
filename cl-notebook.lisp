@@ -3,8 +3,6 @@
 ;;;;; Model-related
 (defvar *notebooks* 
   (make-hash-table :test 'equal))
-(defvar *storage*
-  (merge-pathnames ".cl-notebook/" (user-homedir-pathname)))
 
 (defmethod new-cell! ((book fact-base) &key (cell-type :common-lisp) (contents "") (value ""))
   (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:contents ,contents) (:value ,value))))
@@ -12,8 +10,11 @@
 (defmethod remove-notebook! (name)
   (remhash name *notebooks*))
 
+(defmethod notebook-name ((book fact-base))
+  (caddar (lookup book :b :notebook-name)))
+
 (defun new-notebook! (name)
-  (let ((book (make-fact-base :indices '(:a :b :c :ab :abc) :file-name name)))
+  (let ((book (make-fact-base :indices '(:a :b :ab :abc) :file-name name)))
     (insert-new! book :notebook-name name)
     (let ((cont (format nil "(:h1 \"~a\")" name)))
       (new-cell! book :cell-type :cl-who :contents cont :value (js-eval :cl-who cont)))
@@ -26,10 +27,10 @@
      when (lookup book :a cell-id :b :cell-type :c :common-lisp)
      do (js-eval :common-lisp (caddar (lookup book :a cell-id :b :contents)))))
 
-(defun load-notebook! (name)
-  (let ((book (load! :fact-base name :indices '(:a :b :c :ab :abc))))
+(defmethod load-notebook! ((name pathname))
+  (let ((book (load! :fact-base name :indices '(:a :b :ab :abc))))
     (eval-notebook-code book)
-    (setf (gethash name *notebooks*) book)))
+    (setf (gethash (notebook-name book) *notebooks*) book)))
 
 (defun get-notebook (name)
   (gethash name *notebooks*))
@@ -105,9 +106,13 @@
       (:script :type "text/javascript" :src "/static/js/addons/mark-selection.js")
       (:script :type "text/javascript" :src "/static/js/addons/show-hint.js")
       (:script :type "text/javascript" :src "/static/js/addons/anyword-hint.js")
-      (:script :type "text/javascript" :src "/static/js/addons/dialog.js"))
+      (:script :type "text/javascript" :src "/static/js/addons/dialog.js")
+      (:script :type "text/javascript" :src "/static/js/addons/runmode/runmode.js"))
 
      (:body))))
+
+(define-json-handler (system/list-books) ()
+  (alexandria:hash-table-keys *notebooks*))
 
 (define-json-handler (notebook/current) ((book :notebook))
   (current book))
@@ -162,8 +167,15 @@
 ;;;;; System entry
 (defun main (&optional argv) 
   (declare (ignore argv))
+  (setf *storage* (merge-pathnames ".cl-notebook/" (user-homedir-pathname))
+	*books* (merge-pathnames "books/" *storage*))
+  (ensure-directories-exist *storage*)
+  (ensure-directories-exist *books*)
+  
+  (dolist (book (cl-fad:list-directory *books*)) (load-notebook! book))
+
   (in-package :cl-notebook)
   (let* ((root (asdf:system-source-directory :cl-notebook)))
     (define-file-handler (merge-pathnames "static" root) :stem-from "static"))
-  (load-notebook! "test-book")
+
   (start 4242))

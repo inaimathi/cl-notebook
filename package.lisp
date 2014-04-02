@@ -15,6 +15,9 @@
 
 (in-package #:cl-notebook)
 
+(defvar *storage*)
+(defvar *books*)
+
 (define-http-type (:notebook)
     :type-expression `(gethash ,parameter *notebooks*)
     :lookup-assertion `(typep ,parameter 'fact-base))
