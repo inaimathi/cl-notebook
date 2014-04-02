@@ -15,13 +15,22 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 
 ### TODO
 
-- Deleting a cell shouldn't trigger a full re-draw; just remove the cell (similar for the others; you might want to integrate event-source here sooner rather than later)
+- Deleting a cell shouldn't trigger a full re-draw; just remove the cell on success.
+	- Events that would benefit from this treatment include
+		- editing notebook title
+		- adding a new cell
+		- removing a cell (duh)
+		- editing/evaling a cell
+		- re-ordering cells
+	- Which is actually all of them.
+	- You could hook up an event-stream per book to send incremental updates out to each viewer. This would naturally lend itself to group coding.
+
 - Some errors still seem to sneak out
 - System hangs forever if you send it into an infinite loop. It should time out eventually, and send some notification of the fact.
 	- Should it? Are there situations where you'd legitimately want to run an infinite loop in cl-notebook? How would you handle that?
 	- Alternative to timing out: run queries in a separate thread (they'll be async anyhow) and give the user a keybinding to kill the current computation
-	- You'll need to somehow notify the front-end that there's still a pending computation.
-- Also, simple errors don't seem to be getting stored stringified occasionally?
+	- You'll need to somehow notify all front-ends that there's still a pending computation.
+- Also, simple errors don't seem to be getting stored stringified occasionally? Haven't seen this since the initial sighting so it may have been fixed already.
 - Branching for notebooks
 - Notebooks should be deletable (ditto branches, when we put that together)
 	- Not *actually* deletable from the front end. Put a delete button up, get confirmation, and move it off to `~/.cl-notebook/trash` or something. If a user really TRULY wants to delete all of their history, they can do the `rm` call manually
