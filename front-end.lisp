@@ -7,7 +7,7 @@
      ("button" 
       :height 24px :min-width 34px
       :font-size large :font-weight bold
-      :border "2px solid #ccc" :border-radius 4px :cursor pointer 
+      :border "2px solid #ccc" :border-right-color "#aaa" :border-bottom-color "#aaa" :border-radius 4px :cursor pointer 
       :float left :margin-right 5px :color "#666")
      ("button.genericon"
       :font-size x-large)
@@ -18,7 +18,7 @@
 
      (select
       :height 24px :font-weight bolder :color "#666" 
-      :border "2px solid #ccc" :border-radius 4px)
+      :border "2px solid #ccc" :border-right-color "#aaa" :border-bottom-color "#aaa" :border-radius 4px)
      ("select:hover"
       :color "#000" :background-color "#eee")
 
@@ -28,8 +28,8 @@
       :z-index 10 :position fixed :top -40px
       :width 60% :left 50% :margin-left -30%)
      (".main-controls:hover" :top -2px)
-     (".main-controls button"
-      :height 32px)
+     (".main-controls button" :height 32px)
+     (".main-controls select" :height 32px :font-size large :width 256px)
      
      (.cells :list-style-type none :padding 0px :margin 0px :margin-top 38px)
      (".cells .cell" :padding 5px :margin-bottom 10px :border-top "3px solid transparent" :background-color "#fff")
@@ -311,25 +311,25 @@
       (case (@ cell cell-type)
 	("commonLisp" (cell-code-template cell))
 	("clWho" (cell-markup-template cell))))
+
+    (defun display-book (book-name)
+      (console.log "DISPLAYING" book-name)
+      (set-page-hash (create :book book-name))
+      (hash-updated))
     
     (defun notebook-template (notebook)
       (who-ps-html 
        (:div :class "main-controls"
 	     (:button :onclick "newCell()" "+ New Cell")
-	     (:button :onclick "newBook()" "+ New Book"))
+	     (:button :onclick "newBook()" "+ New Book")
+	     (:select :id "book-list"
+		      :onchange "displayBook(this.value)"
+		      (:option (notebook-name notebook))))
        (:ul :class "cells"
 	    (join (map (lambda (cell) (cell-template cell))
 		       (notebook-cells notebook))))))
 
     ;; AJAX calls
-    (defun server/eval (thing target-elem)
-      (post/json "/eval" (create :thing thing)
-	    (lambda (res) (dom-set target-elem (result-template res)))))
-
-    (defun server/whoify (thing target-elem)
-      (post/json "/whoify" (create :thing thing)
-		 (lambda (res) (dom-set target-elem (@ res :result)))))
-
     (defun server/notebook/current (name callback)
       (post/json "/notebook/current" (create :book name)
 		 (lambda (res) (callback res))))
@@ -345,6 +345,18 @@
 		   (let ((last-cell-id (last (notebook-cell-ordering *notebook*))))
 		     (scroll-to-elem (by-cell-id last-cell-id))
 		     (show-editor last-cell-id)))))
+
+    (defun update-book-list () 
+      (post/json "/system/list-books" (create)
+		 (lambda (res)
+		   (dom-set 
+		    (by-selector "#book-list")
+		    (join (loop with cur-name = (notebook-name *notebook*)
+			     do (console.log "COMPARING" cur-name name)
+			     for name in res
+			     if (equal name cur-name) 
+			     collect (who-ps-html (:option :selected "selected" name))
+			     else collect (who-ps-html (:option name))))))))
 
     (defun new-book ()
       (post/json "/notebook/new" (create) #'notebook!))
@@ -447,6 +459,7 @@
 	(dom-set (by-selector "body") (notebook-template *notebook*))
 	(nativesortable (by-selector "ul.cells"))
 	(set-page-hash (create :book (@ *notebook* name)))
+	(update-book-list)
 	(map (lambda (cell) 
 	       (with-slots (id cell-type) cell
 		 (mirror! cell)
