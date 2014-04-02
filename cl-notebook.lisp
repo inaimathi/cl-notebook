@@ -13,11 +13,17 @@
 (defmethod notebook-name ((book fact-base))
   (caddar (lookup book :b :notebook-name)))
 
+(defmethod rename-notebook! ((book fact-base) (new-name string))
+  (let ((name-fact (first (lookup book :b :notebook-name))))
+    (delete! book name-fact)
+    (insert-new! book :notebook-name new-name)
+    (setf (gethash new-name *notebooks*) book)
+    (remhash (third name-fact) *notebooks*)
+    book))
+
 (defun new-notebook! (name)
-  (let ((book (make-fact-base :indices '(:a :b :ab :abc) :file-name (merge-pathnames (file-namestring name) *books*))))
+  (let ((book (make-fact-base :indices '(:a :b :ab :abc) :file-name (merge-pathnames (fact-base::temp-file-name) *books*))))
     (insert-new! book :notebook-name name)
-    (let ((cont (format nil "(:h1 \"~a\")" name)))
-      (new-cell! book :cell-type :cl-who :contents cont :value (js-eval :cl-who cont)))
     (unless (gethash name *notebooks*)
       (setf (gethash name *notebooks*) book))
     book))
@@ -66,9 +72,10 @@
 
 (defmethod js-eval ((cell-type (eql :cl-who)) (contents string))
   (with-js-error
-    (alist :result (eval 
-		    `(with-html-output-to-string (s) 
-		       ,@(read-all-from-string contents)))
+    (alist :result 
+	   (eval 
+	    `(with-html-output-to-string (s) 
+	       ,@(read-all-from-string contents)))
 	   :stdout "")))
 
 (defmethod js-eval ((cell-type (eql :common-lisp)) (contents string))
@@ -113,6 +120,11 @@
 
 (define-json-handler (system/list-books) ()
   (alexandria:hash-table-keys *notebooks*))
+
+(define-json-handler (notebook/rename) ((book :notebook) (new-name :string))
+  (let ((book (rename-notebook! book new-name)))
+    (write-delta! book)
+    (current book)))
 
 (define-json-handler (notebook/current) ((book :notebook))
   (current book))

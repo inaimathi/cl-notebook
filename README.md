@@ -22,10 +22,10 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 	- Alternative to timing out: run queries in a separate thread (they'll be async anyhow) and give the user a keybinding to kill the current computation
 	- You'll need to somehow notify the front-end that there's still a pending computation.
 - Also, simple errors don't seem to be getting stored stringified occasionally?
-- New notebook should be shown on page-hash change
 - Branching for notebooks
 - Notebooks should be deletable (ditto branches, when we put that together)
-- Notebooks should be renameable (not just re-titleable) (and ditto branches, when we put that together)
+	- Not *actually* deletable from the front end. Put a delete button up, get confirmation, and move it off to `~/.cl-notebook/trash` or something. If a user really TRULY wants to delete all of their history, they can do the `rm` call manually
+	- Is that the right behavior? I think so; our goal is to never lose data. An errant `POST` request shouldn't be able to counter that intent.
 - Really REALLY missing s-expression navigation. Look into it.
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 - front-end cleanup.

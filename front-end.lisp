@@ -1,26 +1,24 @@
 (in-package :cl-notebook)
 
+(defparameter +css-input+
+  `(:border "2px solid #ccc" :border-right-color "#aaa" :border-bottom-color "#aaa" :border-radius 4px :height 24px :font-weight bold))
+
 (define-closing-handler (css/notebook.css :content-type "text/css") ()
   (cl-css:css
    `((body :font-family sans-serif)
 
-     ("button" 
-      :height 24px :min-width 34px
-      :font-size large :font-weight bold
-      :border "2px solid #ccc" :border-right-color "#aaa" :border-bottom-color "#aaa" :border-radius 4px :cursor pointer 
-      :float left :margin-right 5px :color "#666")
-     ("button.genericon"
-      :font-size x-large)
-     ("button .btn-text"
-      :font-size medium :display inline-block)
-     ("button:hover"
-      :color "#000")
+     ("button" ,@+css-input+ :min-width 34px :font-size large :float left :margin-right 5px :color "#666")
+     ("button.genericon" :font-size x-large)
+     ("button .btn-text" :font-size medium :display inline-block)
+     ("button:hover" :color "#000")
 
-     (select
-      :height 24px :font-weight bolder :color "#666" 
-      :border "2px solid #ccc" :border-right-color "#aaa" :border-bottom-color "#aaa" :border-radius 4px)
-     ("select:hover"
-      :color "#000" :background-color "#eee")
+     (select ,@+css-input+ :color "#666")
+     ("select:hover" :color "#000" :background-color "#eee")
+
+     (input.text ,@+css-input+ :padding 3px)
+
+     (.book-title :margin "20px 10px 10px 5px" :padding 0px)
+     (".book-title h1" :cursor pointer :margin 0px :padding 0px)
 
      (.main-controls 
       :background-color "#eee" :border "2px solid #ccc" :border-radius "0px 0px 5px 5px"
@@ -31,7 +29,7 @@
      (".main-controls button" :height 32px)
      (".main-controls select" :height 32px :font-size large :width 256px)
      
-     (.cells :list-style-type none :padding 0px :margin 0px :margin-top 38px)
+     (.cells :list-style-type none :padding 0px :margin 0px)
      (".cells .cell" :padding 5px :margin-bottom 10px :border-top "3px solid transparent" :background-color "#fff")
      (".cells .cell.code" :background-color "#eee")
 
@@ -115,6 +113,11 @@
 
     (defun dom-ready (callback)
       (chain document (add-event-listener "DOMContentLoaded" callback)))
+
+    (defun show! (elem)
+      (setf (@ elem hidden) nil))
+    (defun hide! (elem)
+      (setf (@ elem hidden) t))
 
     (defun by-selector (selector)
       (chain document (query-selector selector)))
@@ -316,18 +319,33 @@
       (console.log "DISPLAYING" book-name)
       (set-page-hash (create :book book-name))
       (hash-updated))
+
+    (defun show-title-input () 
+      (let ((input (by-selector ".book-title input"))))
+      (show! input)
+      (chain input (focus))
+      (chain input (select))
+      (hide! (by-selector ".book-title h1")))
+
+    (defun hide-title-input () 
+      (hide! (by-selector ".book-title input"))
+      (show! (by-selector ".book-title h1")))
     
     (defun notebook-template (notebook)
-      (who-ps-html 
-       (:div :class "main-controls"
-	     (:button :onclick "newCell()" "+ New Cell")
-	     (:button :onclick "newBook()" "+ New Book")
-	     (:select :id "book-list"
-		      :onchange "displayBook(this.value)"
-		      (:option (notebook-name notebook))))
-       (:ul :class "cells"
-	    (join (map (lambda (cell) (cell-template cell))
-		       (notebook-cells notebook))))))
+      (let ((name (notebook-name notebook)))
+	(who-ps-html 
+	 (:div :class "main-controls"
+	       (:button :onclick "newCell()" "+ New Cell")
+	       (:button :onclick "newBook()" "+ New Book")
+	       (:select :id "book-list"
+			:onchange "displayBook(this.value)"
+			(:option name)))
+	 (:div :class "book-title"
+	       (:input :class "text" :onchange "renameBook(this.value)" :value name)
+	       (:h1 :onclick "showTitleInput()" name))
+	 (:ul :class "cells"
+	      (join (map (lambda (cell) (cell-template cell))
+			 (notebook-cells notebook)))))))
 
     ;; AJAX calls
     (defun server/notebook/current (name callback)
@@ -336,6 +354,10 @@
 
     (defun server/notebook/eval-to-cell (cell-id contents)
       (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)
+		 #'notebook!))
+
+    (defun rename-book (new-name)
+      (post/json "/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)
 		 #'notebook!))
 
     (defun new-cell (&optional (cell-type :common-lisp))
@@ -352,7 +374,6 @@
 		   (dom-set 
 		    (by-selector "#book-list")
 		    (join (loop with cur-name = (notebook-name *notebook*)
-			     do (console.log "COMPARING" cur-name name)
 			     for name in res
 			     if (equal name cur-name) 
 			     collect (who-ps-html (:option :selected "selected" name))
@@ -380,11 +401,11 @@
 
     ;; CodeMirror utilities    
     (defun show-editor (cell-id)
-      (setf (@ (by-cell-id cell-id ".CodeMirror") hidden) nil)
+      (show! (by-cell-id cell-id ".CodeMirror"))
       (chain (aref *notebook* :objects cell-id :editor) (focus)))
 
     (defun hide-editor (cell-id)
-      (setf (@ (by-cell-id cell-id ".CodeMirror") hidden) t))
+      (hide! (by-cell-id cell-id ".CodeMirror")))
 
     (defun toggle-editor (cell-id)
       (setf (@ (by-cell-id cell-id ".CodeMirror") hidden)
@@ -457,6 +478,7 @@
 			       when (equal b "notebookName")
 			       do (return c))))
 	(dom-set (by-selector "body") (notebook-template *notebook*))
+	(hide! (by-selector ".book-title input"))
 	(nativesortable (by-selector "ul.cells"))
 	(set-page-hash (create :book (@ *notebook* name)))
 	(update-book-list)
@@ -481,6 +503,7 @@
 	 :keyup (key-listener
 		 <esc> (progn 
 			 (clear-selection)
+			 (hide-title-input)
 			 (map (lambda (cell) 
 				(with-slots (id cell-type) cell
 				  (when (equal cell-type 'cl-who)
