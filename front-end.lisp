@@ -1,5 +1,45 @@
 (in-package :cl-notebook)
 
+(define-closing-handler (root) ()
+  (with-html-output-to-string (s nil :prologue t :indent t)
+    (:html
+     (:head
+      (:title "cl-notebook")
+      
+      (:link :rel "stylesheet" :href "/css/notebook.css")
+      (:link :rel "stylesheet" :href "/static/css/genericons.css")
+      (:link :rel "stylesheet" :href "/static/css/codemirror.css")
+      (:link :rel "stylesheet" :href "/static/css/dialog.css")
+      (:link :rel "stylesheet" :href "/static/css/show-hint.css")
+
+      (:script :type "text/javascript" :src "/js/base.js")
+      (:script :type "text/javascript" :src "/js/main.js")
+      (:script :type "text/javascript" :src "/static/js/native-sortable.js")
+
+      (:script :type "text/javascript" :src "/static/js/codemirror.js")
+      (:script :type "text/javascript" :src "/static/js/modes/commonlisp.js")
+      (:script :type "text/javascript" :src "/static/js/addons/closebrackets.js")
+      (:script :type "text/javascript" :src "/static/js/addons/matchbrackets.js")
+      (:script :type "text/javascript" :src "/static/js/addons/search.js")
+      (:script :type "text/javascript" :src "/static/js/addons/searchcursor.js")
+      (:script :type "text/javascript" :src "/static/js/addons/match-highlighter.js")
+      (:script :type "text/javascript" :src "/static/js/addons/active-line.js")
+      (:script :type "text/javascript" :src "/static/js/addons/mark-selection.js")
+      (:script :type "text/javascript" :src "/static/js/addons/show-hint.js")
+      (:script :type "text/javascript" :src "/static/js/addons/anyword-hint.js")
+      (:script :type "text/javascript" :src "/static/js/addons/dialog.js")
+      (:script :type "text/javascript" :src "/static/js/addons/runmode/runmode.js"))
+
+     (:body
+      (:div :class "main-controls"
+	    (:button :onclick "newCell()" "+ New Cell")
+	    (:button :onclick "newBook()" "+ New Book")
+	    (:select :id "book-list"
+		     :onchange "displayBook(this.value)"
+		     (loop for name being the hash-keys of *notebooks*
+			do (htm (:option :value name (str name))))))
+      (:div :id "notebook")))))
+
 (defparameter +css-input+
   `(:border "2px solid #ccc" :border-right-color "#aaa" :border-bottom-color "#aaa" :border-radius 4px :height 24px :font-weight bold))
 
@@ -130,10 +170,15 @@
 	     (replace ">" "&gt;")))
 
     (defun dom-append (elem markup)
-      (let ((new-content (chain document (create-element "div"))))
+      (let ((new-content (chain document (create-element "span"))))
 	(setf (@ new-content inner-h-t-m-l) markup)
 	(loop while (@ new-content first-child)
 	   do (chain elem (append-child (@ new-content first-child))))))
+
+    (defun dom-replace (elem markup)
+      (let ((new-content (chain document (create-element "span"))))
+	(setf (@ new-content inner-h-t-m-l) markup)
+	(chain elem parent-node (replace-child new-content elem))))
 
     (defun dom-set (elem markup)
       (setf (@ elem inner-h-t-m-l) markup))
@@ -211,8 +256,9 @@
     (defun post/json (uri params callback)
       (post uri params
 	    (lambda (raw)
-	      (let ((res (string->obj raw)))
-		(callback res)))))
+	      (when callback
+		(let ((res (string->obj raw)))
+		  (callback res))))))
 
     (defun event-source (uri bindings)
       (let ((stream (new (-event-source uri))))
@@ -222,8 +268,9 @@
 	      (lambda (e)
 		(let* ((res (string->obj (@ e data)))
 		       (callback (aref bindings (@ res action))))
-		  (when callback (funcall callback res))
-		  (console.log "Stream got MESSAGE!" res))))
+		  (if callback
+		      (funcall callback res)
+		      (console.log "Unhandled message" res)))))
 	stream))))
 
 (define-closing-handler (js/main.js :content-type "application/javascript") ()
@@ -343,64 +390,41 @@
       (hide! (by-selector ".book-title input"))
       (show! (by-selector ".book-title h1")))
     
-    (defun notebook-template (notebook)
-      (let ((name (notebook-name notebook)))
-	(who-ps-html 
-	 (:div :class "main-controls"
-	       (:button :onclick "newCell()" "+ New Cell")
-	       (:button :onclick "newBook()" "+ New Book")
-	       (:select :id "book-list"
-			:onchange "displayBook(this.value)"
-			(:option name)))
-	 (:div :class "book-title"
-	       (:input :class "text" :onchange "renameBook(this.value)" :value name)
-	       (:h1 :onclick "showTitleInput()" name))
-	 (:ul :class "cells"
-	      (join (map (lambda (cell) (cell-template cell))
-			 (notebook-cells notebook)))))))
+    (defun notebook-title-template (name)
+      (who-ps-html
+       (:div :class "book-title"
+	     (:input :class "text" :onchange "renameBook(this.value)" :value name)
+	     (:h1 :onclick "showTitleInput()" name))))
+
+    (defun notebook-template (notebook &optional order)
+      (+ (notebook-title-template (notebook-name notebook))
+	 (who-ps-html
+	  (:ul :class "cells"
+	       (join (map (lambda (cell) (cell-template cell))
+			  (notebook-cells notebook order)))))))
 
     ;; AJAX calls
-    (defun server/notebook/current (name callback)
+    (defun notebook/current (name callback)
       (post/json "/notebook/current" (create :book name)
-		 (lambda (res) (callback res))))
+		 #'notebook!))
 
     (defun server/notebook/eval-to-cell (cell-id contents)
-      (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)
-		 #'notebook!))
+      (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
 
     (defun rename-book (new-name)
       (post/json "/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)
 		 #'notebook!))
 
     (defun new-cell (&optional (cell-type :common-lisp))
-      (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type)
-		 (lambda (res)
-		   (notebook! res)
-		   (let ((last-cell-id (last (notebook-cell-ordering *notebook*))))
-		     (scroll-to-elem (by-cell-id last-cell-id))
-		     (show-editor last-cell-id)))))
+      (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type)))
 
-    (defun update-book-list () 
-      (post/json "/system/list-books" (create)
-		 (lambda (res)
-		   (dom-set 
-		    (by-selector "#book-list")
-		    (join (loop with cur-name = (notebook-name *notebook*)
-			     for name in res
-			     if (equal name cur-name) 
-			     collect (who-ps-html (:option :selected "selected" name))
-			     else collect (who-ps-html (:option name))))))))
-
-    (defun new-book () 
-      (post/json "/notebook/new" (create) #'notebook!))
+    (defun new-book () (post/json "/notebook/new" (create) #'notebook!))
     
     (defun kill-cell (cell-id)
-      (post/json "/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)
-		 #'notebook!))
+      (post/json "/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)))
 
     (defun change-cell-type (cell-id new-type)
-      (post/json "/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)
-		 #'notebook!))
+      (post/json "/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)))
 
     (defun reorder-cells (ev)
       (prevent ev)
@@ -414,17 +438,13 @@
     ;; CodeMirror utilities    
     (defun show-editor (cell-id)
       (show! (by-cell-id cell-id ".CodeMirror"))
-      (chain (aref *notebook* :objects cell-id :editor) (focus)))
+      (chain (aref (notebook-objects *notebook*) cell-id :editor) (focus)))
 
     (defun hide-editor (cell-id)
       (hide! (by-cell-id cell-id ".CodeMirror")))
 
-    (defun toggle-editor (cell-id)
-      (setf (@ (by-cell-id cell-id ".CodeMirror") hidden)
-	    (not (@ (by-cell-id cell-id ".CodeMirror") hidden))))
-
     (defun cell-mirror (cell-id)
-      (aref *notebook* :objects cell-id :editor))
+      (aref (notebook-objects *notebook*) cell-id :editor))
     
     (defun cell-editor-contents (cell-id)
       (chain (cell-mirror cell-id) (get-value)))
@@ -476,12 +496,11 @@
 	(append-new 
 	 (filter in-obj? ord) 
 	 (chain implicit (reverse)))))
-    (defun notebook-cells (notebook)
-      (let ((ord (notebook-cell-ordering notebook))
-	    (obj (notebook-objects notebook)))
-	(map (lambda (id) (aref obj id)) ord)))
+    (defun notebook-cells (notebook &optional (order (notebook-cell-ordering notebook)))
+      (let ((obj (notebook-objects notebook)))
+	(map (lambda (id) (aref obj id)) order)))
 
-    (defun notebook! (raw)
+    (defun notebook! (raw &optional order)
       (let ((book (notebook-condense raw)))
 	(setf *notebook* 
 	      (create :facts raw
@@ -489,27 +508,89 @@
 		      :name (loop for (a b c) in raw
 			       when (equal b "notebookName")
 			       do (return c))))
-	(dom-set (by-selector "body") (notebook-template *notebook*))
+	(dom-set 
+	 (by-selector "#notebook")
+	 (notebook-template *notebook* order))
 	(hide! (by-selector ".book-title input"))
 	(nativesortable (by-selector "ul.cells"))
-	(set-page-hash (create :book (@ *notebook* name)))
-	(update-book-list)
+	(set-page-hash (create :book (notebook-name *notebook*)))
+	(chain (by-selector "#book-list option")
+	       (remove-attribute :selected))
+	(chain (by-selector (+ "#book-list option[value='" (notebook-name *notebook*) "']"))
+	       (set-attribute :selected "selected"))
 	(map (lambda (cell) 
 	       (with-slots (id cell-type) cell
 		 (mirror! cell)
 		 (when (equal cell-type "clWho")
-		   (setf (@ (by-cell-id id ".CodeMirror") hidden) t))))
+		   (hide! (by-cell-id id ".CodeMirror")))))
 	     (notebook-cells *notebook*))))
 
     (defun hash-updated ()
       (let ((book-name (@ (get-page-hash) :book)))
 	(when book-name
 	  (setf document.title (+ book-name " - cl-notebook"))
-	  (server/notebook/current book-name #'notebook!))))
+	  (notebook/current book-name))))
+
+    (defun dom-replace-cell (cell)
+      (dom-replace (by-cell-id (@ cell :id)) (cell-template cell))
+      (mirror! cell))
+
+    (defun notebook-events ()
+      (event-source 
+       "/source"
+       (create
+	'new-cell (lambda (res)
+		    (when (equal (notebook-name *notebook*) (@ res 'book))
+		      (let ((id (@ res 'cell-id))
+			    (cell (create 'type "cell" 'contents "" 'value ""
+					  'cell-type (@ res cell-type)
+					  'id (@ res 'cell-id))))
+			(setf (aref (notebook-objects *notebook*) id) cell)
+			(dom-append (by-selector ".cells")
+				    (cell-template cell))
+			(mirror! cell)
+			(scroll-to-elem (by-cell-id id))
+			(show-editor id))))
+	'change-cell-type (lambda (res)
+			    (when (equal (notebook-name *notebook*) (@ res 'book))
+			      (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
+				(setf (@ cell :value) (@ res :value)
+				      (@ cell 'cell-type) (@ res 'new-type))
+				(dom-replace-cell cell))))
+	'eval-to-cell (lambda (res)
+			(when (equal (notebook-name *notebook*) (@ res 'book))
+			  (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
+			    (setf (@ cell :contents) (@ res :contents)
+				  (@ cell :value) (@ res :value))
+			    (dom-replace-cell cell))))
+	'kill-cell (lambda (res)
+		     (when (equal (notebook-name *notebook*) (@ res 'book))
+		       (chain (by-cell-id (@ res :cell)) (remove))))
+
+	'reorder-cells (lambda (res)
+			 (when (equal (notebook-name *notebook*) (@ res 'book))
+			   (console.log "TODO change oreder here to support multi-user noting.")
+			   (console.log "Changed cell order" res)))
+
+	'new-book (lambda (res)
+		    (let ((name (@ res book-name)))
+		      (dom-append (by-selector "#book-list")
+				  (who-ps-html (:option :value name name))))
+		    (console.log "Added new book" res))
+	'rename-book (lambda (res)
+		       (let ((old-name (@ res 'book))
+			     (new-name (@ res 'new-name)))
+			 (when (equal (notebook-name *notebook*) old-name)
+			   (dom-replace (by-selector ".book-title")
+					(notebook-title-template new-name)))
+			 (chain (by-selector (+ "#book-list option[value='" old-name "']")) (remove))
+			 (dom-append (by-selector "#book-list")
+				     (who-ps-html (:option :value new-name new-name))))
+		       (console.log "Renamed book")))))
 
     (dom-ready
      (lambda ()
-       (event-source "/source" (create))
+       (notebook-events)
        (chain 
 	(by-selector "body") 
 	(add-event-listener 

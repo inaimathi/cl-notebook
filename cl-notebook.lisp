@@ -4,8 +4,8 @@
 (defvar *notebooks* 
   (make-hash-table :test 'equal))
 
-(defmethod new-cell! ((book fact-base) &key (cell-type :common-lisp) (contents "") (value ""))
-  (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:contents ,contents) (:value ,value))))
+(defmethod new-cell! ((book fact-base) &key (cell-type :common-lisp))
+  (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:contents "") (:value ""))))
 
 (defmethod remove-notebook! (name)
   (remhash name *notebooks*))
@@ -86,38 +86,6 @@
        :stdout stdout))))
 
 ;;;;; HTTP Handlers
-(define-closing-handler (root) ()
-  (with-html-output-to-string (s nil :prologue t :indent t)
-    (:html
-     (:head
-      (:title "cl-notebook")
-      
-      (:link :rel "stylesheet" :href "/css/notebook.css")
-      (:link :rel "stylesheet" :href "/static/css/genericons.css")
-      (:link :rel "stylesheet" :href "/static/css/codemirror.css")
-      (:link :rel "stylesheet" :href "/static/css/dialog.css")
-      (:link :rel "stylesheet" :href "/static/css/show-hint.css")
-
-      (:script :type "text/javascript" :src "/js/base.js")
-      (:script :type "text/javascript" :src "/js/main.js")
-      (:script :type "text/javascript" :src "/static/js/native-sortable.js")
-
-      (:script :type "text/javascript" :src "/static/js/codemirror.js")
-      (:script :type "text/javascript" :src "/static/js/modes/commonlisp.js")
-      (:script :type "text/javascript" :src "/static/js/addons/closebrackets.js")
-      (:script :type "text/javascript" :src "/static/js/addons/matchbrackets.js")
-      (:script :type "text/javascript" :src "/static/js/addons/search.js")
-      (:script :type "text/javascript" :src "/static/js/addons/searchcursor.js")
-      (:script :type "text/javascript" :src "/static/js/addons/match-highlighter.js")
-      (:script :type "text/javascript" :src "/static/js/addons/active-line.js")
-      (:script :type "text/javascript" :src "/static/js/addons/mark-selection.js")
-      (:script :type "text/javascript" :src "/static/js/addons/show-hint.js")
-      (:script :type "text/javascript" :src "/static/js/addons/anyword-hint.js")
-      (:script :type "text/javascript" :src "/static/js/addons/dialog.js")
-      (:script :type "text/javascript" :src "/static/js/addons/runmode/runmode.js"))
-
-     (:body))))
-
 (define-json-handler (system/list-books) ()
   (alexandria:hash-table-keys *notebooks*))
 
@@ -149,14 +117,14 @@
       (insert! book (list cell-id :contents contents))
       (insert! book (list cell-id :value res))
       (write-delta! book)
-      (publish! :updates (update :book (notebook-name book) :cell cell-id :action 'eval-to-cell :contents contents :result res))
+      (publish! :updates (update :book (notebook-name book) :cell cell-id :action 'eval-to-cell :contents contents :value res))
       (current book))))
 
 (define-json-handler (notebook/new-cell) ((book :notebook) (cell-type :keyword))
-  (new-cell! book :cell-type cell-type)
-  (write-delta! book)
-  (publish! :updates (update :book (notebook-name book) :action 'new-cell :cell-type cell-type))
-  (current book))
+  (let ((cell-id (new-cell! book :cell-type cell-type)))
+    (write-delta! book)
+    (publish! :updates (update :book (notebook-name book) :action 'new-cell :cell-id cell-id :cell-type cell-type))
+    (current book)))
 
 (define-json-handler (notebook/reorder-cells) ((book :notebook) (cell-order :json))
   (awhen (lookup book :b :cell-order)
@@ -183,7 +151,7 @@
 	(insert! book (list cell-id :cell-type new-type))
 	(insert! book (list cell-id :value res))
 	(write-delta! book)
-	(publish! :updates (update :book (notebook-name book) :cell cell-id :action 'change-cell-type :new-type new-type))
+	(publish! :updates (update :book (notebook-name book) :cell cell-id :action 'change-cell-type :new-type new-type :value res))
 	(current book)))))
 
 (define-stream-handler (source) ()
