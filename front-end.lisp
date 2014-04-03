@@ -40,65 +40,11 @@
 			do (htm (:option :value name (str name))))))
       (:div :id "notebook")))))
 
-(defparameter +css-input+
-  `(:border "2px solid #ccc" :border-right-color "#aaa" :border-bottom-color "#aaa" :border-radius 4px :height 24px :font-weight bold))
-
-(define-closing-handler (css/notebook.css :content-type "text/css") ()
-  (cl-css:css
-   `((body :font-family sans-serif)
-     
-     ("button" ,@+css-input+ :min-width 34px :font-size large :float left :margin-right 5px :color "#666")
-     ("button.genericon" :font-size x-large)
-     ("button .btn-text" :font-size medium :display inline-block)
-     ("button:hover" :color "#000")
-
-     (select ,@+css-input+ :color "#666")
-     ("select:hover" :color "#000" :background-color "#eee")
-
-     (input.text ,@+css-input+ :padding 3px)
-
-     (.book-title :margin "20px 10px 10px 5px" :padding 0px)
-     (".book-title h1" :cursor pointer :margin 0px :padding 0px)
-
-     (.main-controls 
-      :background-color "#eee" :border "2px solid #ccc" :border-radius "0px 0px 5px 5px"
-      :padding 8px
-      :z-index 10 :position fixed :top -40px
-      :width 60% :left 50% :margin-left -30%)
-     (".main-controls:hover" :top -2px)
-     (".main-controls button" :height 32px)
-     (".main-controls select" :height 32px :font-size large :width 256px)
-     
-     (.cells :list-style-type none :padding 0px :margin 0px)
-     (".cells .cell" :padding 5px :margin-bottom 10px :border-top "3px solid transparent" :background-color "#fff")
-     (".cells .cell.code" :background-color "#eee")
-
-     (".cell .controls"
-      :display none :position absolute :margin-top -41px :padding 5px
-      :background-color "#eee" :border "2px solid #ccc" :border-bottom none :border-radius "5px 5px 0px 0px")
-     (".cell .controls button" :width 32px)
-     (".cell .controls span"
-      :height 19px :width 31px :font-size x-large :float left :margin-right 5px :color "#666"
-      :padding-top 5px :padding-left 3px :cursor move)
-     (".cell .controls span:hover" :color "#000")
-
-     (".cell blockquote" :font-style oblique :border-left "2px solid #eee" :padding 10px)
-
-     (".cell:hover" :border-top "3px solid #ccc" :z-index 15)
-     (".cell:hover .controls" :display block)
-
-     (.result :border "1px solid #ccc" :background-color "#fff" :list-style-type none :margin 0px :margin-top 5px :padding 0px)
-     (.stdout :margin 0px :padding 5px :color "#8b2252" :background-color "#efefef")
-     (".result li" :padding 5px)
-     (".result .type" :color "#228b22")
-     (".result .error" :background-color "#fdd" :color "#933")
-     (.error-contents :list-style-type none :margin 0px :padding 0px)
-     (".error-contents .error-type" :font-weight bolder)
-     (".error-contents .error-property" :font-style oblique)
-     (".error-contents .error-property .label" :display inline-block :margin-right 5px :font-size small))))
-
 (define-closing-handler (js/base.js :content-type "application/javascript") ()
   (ps 
+    ;;;; base.js contains general utilities that might be useful in other JS
+    ;;;; applications too. Nothing notebook-specific here.
+
     ;; basic functional stuff
     (defun identity (thing) thing)
 
@@ -141,18 +87,19 @@
 
     ;; basic hash/array stuff
     (defun vals (obj) (map identity obj))
+    (defun keys (obj) (map (lambda (v k) k) obj))
     (defun last (array) (aref array (- (length array) 1)))
 
     ;; basic DOM/event stuff
+    (defun dom-ready (callback)
+      (chain document (add-event-listener "DOMContentLoaded" callback)))
+
     (defun prevent (ev) (chain ev (prevent-default)))
 
     (defun scroll-to-elem (elem)
       (let ((x (@ elem offset-left))
 	    (y (@ elem offset-top)))
 	(chain window (scroll-to x y))))
-
-    (defun dom-ready (callback)
-      (chain document (add-event-listener "DOMContentLoaded" callback)))
 
     (defun show! (elem)
       (setf (@ elem hidden) nil))
@@ -164,7 +111,7 @@
     (defun by-selector-all (selector)
       (chain document (query-selector-all selector)))
 
-    (defun escaped (string)
+    (defun dom-escape (string)
       (chain string
 	     (replace "<" "&lt;")
 	     (replace ">" "&gt;")))
@@ -328,7 +275,7 @@
 				      (:ul :class "result"
 					   (join (loop for (tp val) in form-res
 						    if (= tp :error) collect (who-ps-html (:li :class "error" (error-template val)))
-						    else collect (who-ps-html (:li (:span :class "value" (escaped val))
+						    else collect (who-ps-html (:li (:span :class "value" (dom-escape val))
 										   (:span :class "type" " :: " tp))))))))))))))))
 
     (defun cell-controls-template (cell)
@@ -370,12 +317,11 @@
 	      (result-template value)))))
 
     (defun cell-template (cell)
-      (case (@ cell cell-type)
-	("commonLisp" (cell-code-template cell))
-	("clWho" (cell-markup-template cell))))
+      (if (equal 'cl-who (@ cell cell-type))
+	  (cell-markup-template cell)
+	  (cell-code-template cell)))
 
     (defun display-book (book-name)
-      (console.log "DISPLAYING" book-name)
       (set-page-hash (create :book book-name))
       (hash-updated))
 
@@ -484,6 +430,7 @@
 
     (defun notebook-facts (notebook) (@ notebook :facts))
     (defun notebook-objects (notebook) (@ notebook :objects))
+
     (defun notebook-cell-ordering (notebook)
       (let* ((ord (new (-array)))
 	     (obj (notebook-objects notebook))
@@ -496,6 +443,7 @@
 	(append-new 
 	 (filter in-obj? ord) 
 	 (chain implicit (reverse)))))
+
     (defun notebook-cells (notebook &optional (order (notebook-cell-ordering notebook)))
       (let ((obj (notebook-objects notebook)))
 	(map (lambda (id) (aref obj id)) order)))
@@ -503,8 +451,7 @@
     (defun notebook! (raw &optional order)
       (let ((book (notebook-condense raw)))
 	(setf *notebook* 
-	      (create :facts raw
-		      :objects book
+	      (create :facts raw :objects book
 		      :name (loop for (a b c) in raw
 			       when (equal b "notebookName")
 			       do (return c))))
@@ -539,54 +486,61 @@
       (event-source 
        "/source"
        (create
-	'new-cell (lambda (res)
-		    (when (equal (notebook-name *notebook*) (@ res 'book))
-		      (let ((id (@ res 'cell-id))
-			    (cell (create 'type "cell" 'contents "" 'value ""
-					  'cell-type (@ res cell-type)
-					  'id (@ res 'cell-id))))
-			(setf (aref (notebook-objects *notebook*) id) cell)
-			(dom-append (by-selector ".cells")
-				    (cell-template cell))
-			(mirror! cell)
-			(scroll-to-elem (by-cell-id id))
-			(show-editor id))))
-	'change-cell-type (lambda (res)
-			    (when (equal (notebook-name *notebook*) (@ res 'book))
-			      (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
-				(setf (@ cell :value) (@ res :value)
-				      (@ cell 'cell-type) (@ res 'new-type))
-				(dom-replace-cell cell))))
-	'eval-to-cell (lambda (res)
-			(when (equal (notebook-name *notebook*) (@ res 'book))
-			  (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
-			    (setf (@ cell :contents) (@ res :contents)
-				  (@ cell :value) (@ res :value))
-			    (dom-replace-cell cell))))
-	'kill-cell (lambda (res)
-		     (when (equal (notebook-name *notebook*) (@ res 'book))
-		       (chain (by-cell-id (@ res :cell)) (remove))))
-
-	'reorder-cells (lambda (res)
-			 (when (equal (notebook-name *notebook*) (@ res 'book))
-			   (console.log "TODO change oreder here to support multi-user noting.")
-			   (console.log "Changed cell order" res)))
-
-	'new-book (lambda (res)
-		    (let ((name (@ res book-name)))
-		      (dom-append (by-selector "#book-list")
-				  (who-ps-html (:option :value name name))))
-		    (console.log "Added new book" res))
-	'rename-book (lambda (res)
-		       (let ((old-name (@ res 'book))
-			     (new-name (@ res 'new-name)))
-			 (when (equal (notebook-name *notebook*) old-name)
-			   (dom-replace (by-selector ".book-title")
-					(notebook-title-template new-name)))
-			 (chain (by-selector (+ "#book-list option[value='" old-name "']")) (remove))
-			 (dom-append (by-selector "#book-list")
-				     (who-ps-html (:option :value new-name new-name))))
-		       (console.log "Renamed book")))))
+	'new-cell 
+	(lambda (res)
+	  (when (equal (notebook-name *notebook*) (@ res 'book))
+	    (let ((id (@ res 'cell-id))
+		  (cell (create 'type "cell" 'contents "" 'value ""
+				'cell-type (@ res cell-type)
+				'id (@ res 'cell-id))))
+	      (setf (aref (notebook-objects *notebook*) id) cell)
+	      (dom-append (by-selector ".cells")
+			  (cell-template cell))
+	      (mirror! cell)
+	      (scroll-to-elem (by-cell-id id))
+	      (show-editor id))))
+	'change-cell-type
+	(lambda (res)
+	  (when (equal (notebook-name *notebook*) (@ res 'book))
+	    (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
+	      (setf (@ cell :value) (@ res :value)
+		    (@ cell 'cell-type) (@ res 'new-type))
+	      (dom-replace-cell cell))))
+	'eval-to-cell 
+	(lambda (res)
+	  (when (equal (notebook-name *notebook*) (@ res 'book))
+	    (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
+	      (setf (@ cell :contents) (@ res :contents)
+		    (@ cell :value) (@ res :value))
+	      (dom-replace-cell cell))))
+	'kill-cell 
+	(lambda (res)
+	  (when (equal (notebook-name *notebook*) (@ res 'book))
+	    (chain (by-cell-id (@ res :cell)) (remove))))
+	
+	'reorder-cells 
+	(lambda (res)
+	  (when (equal (notebook-name *notebook*) (@ res 'book))
+	    (console.log "TODO change order here to support multi-user noting.")
+	    (console.log "Changed cell order" res)))
+	
+	'new-book
+	(lambda (res)
+	  (let ((name (@ res book-name)))
+	    (dom-append (by-selector "#book-list")
+			(who-ps-html (:option :value name name))))
+	  (console.log "Added new book" res))
+	'rename-book
+	(lambda (res)
+	  (let ((old-name (@ res 'book))
+		(new-name (@ res 'new-name)))
+	    (when (equal (notebook-name *notebook*) old-name)
+	      (dom-replace (by-selector ".book-title")
+			   (notebook-title-template new-name)))
+	    (chain (by-selector (+ "#book-list option[value='" old-name "']")) (remove))
+	    (dom-append (by-selector "#book-list")
+			(who-ps-html (:option :value new-name new-name))))
+	  (console.log "Renamed book")))))
 
     (dom-ready
      (lambda ()

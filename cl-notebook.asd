@@ -9,6 +9,7 @@
   :components ((:file "package")
 	       (:file "util")
 	       (:file "front-end-macros")
+	       (:file "css")
 	       (:file "front-end")
                (:file "cl-notebook")))
 
