@@ -122,16 +122,21 @@
   (alexandria:hash-table-keys *notebooks*))
 
 (define-json-handler (notebook/rename) ((book :notebook) (new-name :string))
-  (let ((book (rename-notebook! book new-name)))
+  (let* ((old-name (notebook-name book))
+	 (book (rename-notebook! book new-name)))
     (write-delta! book)
+    (publish! :updates (update :book old-name :action 'rename-book :new-name new-name))
     (current book)))
 
 (define-json-handler (notebook/current) ((book :notebook))
   (current book))
 
 (define-json-handler (notebook/new) ()
-  (let ((name (format nil "book-~a" (hash-table-count *notebooks*))))
-    (current (new-notebook! name))))
+  (let* ((name (format nil "book-~a" (hash-table-count *notebooks*)))
+	 (book (new-notebook! name)))
+    (write! book)
+    (publish! :updates (update :action 'new-book :book-name name))
+    (current book)))
 
 (define-json-handler (notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
   (let* ((cont-fact (first (lookup book :a cell-id :b :contents)))
@@ -144,11 +149,13 @@
       (insert! book (list cell-id :contents contents))
       (insert! book (list cell-id :value res))
       (write-delta! book)
+      (publish! :updates (update :book (notebook-name book) :cell cell-id :action 'eval-to-cell :contents contents :result res))
       (current book))))
 
-(define-json-handler (notebook/new-cell) ((book :notebook) (cell-type :cell-type))
+(define-json-handler (notebook/new-cell) ((book :notebook) (cell-type :keyword))
   (new-cell! book :cell-type cell-type)
   (write-delta! book)
+  (publish! :updates (update :book (notebook-name book) :action 'new-cell :cell-type cell-type))
   (current book))
 
 (define-json-handler (notebook/reorder-cells) ((book :notebook) (cell-order :json))
@@ -156,14 +163,16 @@
     (delete! book (car it)))
   (insert-new! book :cell-order cell-order)
   (write-delta! book)
+  (publish! :updates (update :book (notebook-name book) :action 'reorder-cells :new-order cell-order))
   (alist :result :ok))
 
 (define-json-handler (notebook/kill-cell) ((book :notebook) (cell-id :integer))
   (loop for f in (lookup book :a cell-id) do (delete! book f))
   (write-delta! book)
+  (publish! :updates (update :book (notebook-name book) :cell cell-id :action 'kill-cell))
   (current book))
 
-(define-json-handler (notebook/change-cell-type) ((book :notebook) (cell-id :integer) (new-type :cell-type))
+(define-json-handler (notebook/change-cell-type) ((book :notebook) (cell-id :integer) (new-type :keyword))
   (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
 	(val-fact (first (lookup book :a cell-id :b :value)))
 	(tp-fact (first (lookup book :a cell-id :b :cell-type))))
@@ -174,7 +183,11 @@
 	(insert! book (list cell-id :cell-type new-type))
 	(insert! book (list cell-id :value res))
 	(write-delta! book)
+	(publish! :updates (update :book (notebook-name book) :cell cell-id :action 'change-cell-type :new-type new-type))
 	(current book)))))
+
+(define-stream-handler (source) ()
+  (subscribe! :updates sock))
 
 ;;;;; System entry
 (defun main (&optional argv) 

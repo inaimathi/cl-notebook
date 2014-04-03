@@ -1,5 +1,8 @@
 (in-package :cl-notebook)
 
+(defun update (&rest k/v-pairs)
+  (json:encode-json-to-string (apply #'alist k/v-pairs)))
+
 (defun instance->alist (instance)
   (loop for s in (closer-mop:class-slots (class-of instance))
      for slot-name = (slot-definition-name s)

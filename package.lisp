@@ -21,7 +21,3 @@
 (define-http-type (:notebook)
     :type-expression `(gethash ,parameter *notebooks*)
     :lookup-assertion `(typep ,parameter 'fact-base))
-
-(define-http-type (:cell-type)
-    :type-expression `(intern (string-upcase ,parameter) :keyword)
-    :lookup-assertion `(member ,parameter '(:common-lisp :cl-who)))

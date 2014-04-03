@@ -15,6 +15,14 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 
 ### TODO
 
+- rename-book
+- new-book
+- eval-to-cell
+- new-cell
+- reorder-cells
+- kill-cell
+- change-cell-type
+
 - Deleting a cell shouldn't trigger a full re-draw; just remove the cell on success.
 	- Events that would benefit from this treatment include
 		- editing notebook title

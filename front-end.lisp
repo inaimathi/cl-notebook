@@ -6,7 +6,7 @@
 (define-closing-handler (css/notebook.css :content-type "text/css") ()
   (cl-css:css
    `((body :font-family sans-serif)
-
+     
      ("button" ,@+css-input+ :min-width 34px :font-size large :float left :margin-right 5px :color "#666")
      ("button.genericon" :font-size x-large)
      ("button .btn-text" :font-size medium :display inline-block)
@@ -212,7 +212,19 @@
       (post uri params
 	    (lambda (raw)
 	      (let ((res (string->obj raw)))
-		(callback res)))))))
+		(callback res)))))
+
+    (defun event-source (uri bindings)
+      (let ((stream (new (-event-source uri))))
+	(setf (@ stream onopen) (lambda (e) (console.log "Stream OPENED!"))
+	      (@ stream onerror) (lambda (e) (console.log "Stream ERRORED!"))
+	      (@ stream onmessage)
+	      (lambda (e)
+		(let* ((res (string->obj (@ e data)))
+		       (callback (aref bindings (@ res action))))
+		  (when callback (funcall callback res))
+		  (console.log "Stream got MESSAGE!" res))))
+	stream))))
 
 (define-closing-handler (js/main.js :content-type "application/javascript") ()
   (ps
@@ -379,7 +391,7 @@
 			     collect (who-ps-html (:option :selected "selected" name))
 			     else collect (who-ps-html (:option name))))))))
 
-    (defun new-book ()
+    (defun new-book () 
       (post/json "/notebook/new" (create) #'notebook!))
     
     (defun kill-cell (cell-id)
@@ -497,6 +509,7 @@
 
     (dom-ready
      (lambda ()
+       (event-source "/source" (create))
        (chain 
 	(by-selector "body") 
 	(add-event-listener 
