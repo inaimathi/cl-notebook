@@ -24,7 +24,6 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 - Also, simple errors don't seem to be getting stored stringified occasionally? Haven't seen this since the initial sighting so it may have been fixed already.
 
 ##### Features
-- Evaluating a cell should replace the value, not the whole cell (this will require a re-structuring in return value display, which you should probably do anyhow. Seriously. It's confusing as fuck.)
 - Branching for notebooks
 - Should collect warnings rather than ignoring some and treating the rest as errors
 - Notebooks should be deletable (ditto branches, when we put that together)

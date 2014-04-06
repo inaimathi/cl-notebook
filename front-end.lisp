@@ -227,6 +227,9 @@
        (+ "#cell-" cell-id
 	  (if (> (length children) 0) " " "")
 	  (join children " "))))
+
+    (defun markup-cell? (cell)
+      (equal 'cl-who (@ cell cell-type)))
     
     ;; DOM templates
     (defun error-template (err)
@@ -300,13 +303,13 @@
 	      :ondragend "reorderCells(event)" :draggable "true"
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
-	      (:div 
-	       :onclick (+ "showEditor(" id ")")
-	       (cond ((and (string? (@ value :result)) (= "" (@ value :result)))
-		      (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
-		     ((string? (@ value :result))
-		      (@ value :result))
-		     (t (result-template value))))))))
+	      (:div :onclick (+ "showEditor(" id ")")
+		    (:span :class "cell-value"
+			   (cond ((and (string? (@ value :result)) (= "" (@ value :result)))
+				  (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
+				 ((string? (@ value :result))
+				  (@ value :result))
+				 (t (result-template value)))))))))
     
     (defun cell-code-template (cell)
       (with-slots (id contents value language) cell
@@ -315,10 +318,11 @@
 	      :ondragend "reorderCells(event)" :draggable "true"
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp")  contents)
-	      (result-template value)))))
+	      (:span :class "cell-value" 
+		     (result-template value))))))
 
     (defun cell-template (cell)
-      (if (equal 'cl-who (@ cell cell-type))
+      (if (markup-cell? cell)
 	  (cell-markup-template cell)
 	  (cell-code-template cell)))
 
@@ -479,6 +483,15 @@
 	  (setf document.title (+ book-name " - cl-notebook"))
 	  (notebook/current book-name))))
 
+    (defun dom-replace-cell-value (cell)
+      (let ((res (@ cell value result)))
+	(dom-set (by-cell-id (@ cell :id) ".cell-value")
+		 (cond ((and (markup-cell? cell) (string? res) (= "" res))
+			(who-ps-html (:p (:b "[[EMPTY CELL]]"))))
+		       ((and (markup-cell? cell) (string? res))
+			res)
+		       (t (result-template (@ cell value)))))))
+    
     (defun dom-replace-cell (cell)
       (dom-replace (by-cell-id (@ cell :id)) (cell-template cell))
       (mirror! cell))
@@ -513,7 +526,7 @@
 	    (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
 	      (setf (@ cell :contents) (@ res :contents)
 		    (@ cell :value) (@ res :value))
-	      (dom-replace-cell cell))))
+	      (dom-replace-cell-value cell))))
 	'kill-cell 
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
