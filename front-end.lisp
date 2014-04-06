@@ -297,7 +297,7 @@
       (with-slots (id contents value language) cell
 	(who-ps-html 
 	 (:li :class "cell markup" :id (+ "cell-" id) :cell-id id 
-	      :ondragend "reorderCells(event)"
+	      :ondragend "reorderCells(event)" :draggable "true"
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
 	      (:div 
@@ -311,7 +311,8 @@
     (defun cell-code-template (cell)
       (with-slots (id contents value language) cell
 	(who-ps-html 
-	 (:li :class "cell code" :id (+ "cell-" id) :cell-id id :ondragend "reorderCells(event)"
+	 (:li :class "cell code" :id (+ "cell-" id) :cell-id id 
+	      :ondragend "reorderCells(event)" :draggable "true"
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp")  contents)
 	      (result-template value)))))

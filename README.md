@@ -24,15 +24,21 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 - Also, simple errors don't seem to be getting stored stringified occasionally? Haven't seen this since the initial sighting so it may have been fixed already.
 
 ##### Features
+- Evaluating a cell should replace the value, not the whole cell (this will require a re-structuring in return value display, which you should probably do anyhow. Seriously. It's confusing as fuck.)
 - Branching for notebooks
+- Should collect warnings rather than ignoring some and treating the rest as errors
 - Notebooks should be deletable (ditto branches, when we put that together)
 	- Not *actually* deletable from the front end. Put a delete button up, get confirmation, and move it off to `~/.cl-notebook/trash` or something. If a user really TRULY wants to delete all of their history, they can do the `rm` call manually
 	- Is that the right behavior? I think so; our goal is to never lose data. An errant `POST` request shouldn't be able to counter that intent.
 - Really REALLY missing s-expression-based navigation. Look into it.
+	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 - front-end cleanup.
 	- Possibly move it into a separate project?
 	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.
+- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:
+	- `CodeMirror.runMode(byCellId(10, ".cell-contents").value, "commonlisp", function (token, type) { console.log(token, type)})` effectively tokenizes for you. The CodeMirror matching paren mode might also be a good way to get s-expresison-related stuff happening
+
 
 ### Dependencies
 
