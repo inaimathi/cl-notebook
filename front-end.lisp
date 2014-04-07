@@ -232,16 +232,16 @@
       (equal 'cl-who (@ cell cell-type)))
     
     ;; DOM templates
-    (defun error-template (err)
+    (defun condition-template (err)
       (who-ps-html
-       (:ul :class "error-contents"
-	    (:li :class "error-type" (@ err "errorType"))
-	    (:li :class "error-form" (@ err "form"))
+       (:ul :class "condition-contents"
+	    (:li :class "condition-type" (@ err "conditionType"))
+	    (:li :class "condition-form" (@ err "form"))
 	    (join (map 
 		   (lambda (v k) 
-		     (if (not (or (= k "errorType") (= k "form")))
+		     (if (not (or (= k "conditionType") (= k "form")))
 			 (who-ps-html 
-			  (:li :class "error-property" 
+			  (:li :class "condition-property" 
 			       (:span :class "label" k ":") v))
 			 ""))
 		   err)))))
@@ -261,25 +261,29 @@
 	(chain r (select-node-contents elem))
 	(chain window (get-selection) (add-range r))))
 
-    (defun result-template (result)
-      (when result ;; yes, seriously. New cells don't have these
-	(who-ps-html
-	 (:pre
-	  (+ (if (@ result :stdout) 
-		 (who-ps-html 
-		  (:p :onclick "selectContents(event, this)" 
-		      :class "stdout" 
-		      (@ result :stdout))) 
-		 "")
-	     (who-ps-html
-	      (:span :onclick "selectContents(event, this)"
-		     (join (loop for form-res in (@ result :result)
-			      append (who-ps-html
-				      (:ul :class "result"
-					   (join (loop for (tp val) in form-res
-						    if (= tp :error) collect (who-ps-html (:li :class "error" (error-template val)))
-						    else collect (who-ps-html (:li (:span :class "value" (dom-escape val))
-										   (:span :class "type" " :: " tp))))))))))))))))
+    (defun result-template (results)
+      (who-ps-html
+       (:pre
+	(join
+	 (loop for res in results
+	    when (@ res :stdout)
+	    collect (who-ps-html
+		     (:p :onclick "selectContents(event, this)" :class "stdout"
+			 (@ res :stdout)))
+	    when (@ res :warnings)
+	    collect (who-ps-html
+		     (:span :class "warnings"
+			  (join (loop for w in (@ res :warnings) 
+				   collect (condition-template w)))))
+	    when (@ res :values)
+	    collect (who-ps-html
+		     (:ul :class "result"
+			  (join (loop for v in (@ res :values)
+				   collect (with-slots (type value) v
+					     (if (= type :error)
+						 (who-ps-html (:li :class "error" (condition-template value)))
+						 (who-ps-html (:li (:span :class "value" (dom-escape value))
+								   (:span :class "type" " :: " type))))))))))))))
 
     (defun cell-controls-template (cell)
       (who-ps-html
@@ -320,7 +324,7 @@
 	      (:textarea :class "cell-contents" :language (or language "commonlisp")  contents)
 	      (:span :class "cell-value" 
 		     (result-template value))))))
-
+    
     (defun cell-template (cell)
       (if (markup-cell? cell)
 	  (cell-markup-template cell)
@@ -360,7 +364,9 @@
 		 #'notebook!))
 
     (defun server/notebook/eval-to-cell (cell-id contents)
-      (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
+      (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)
+		 (lambda (res)
+		   (console.log res))))
 
     (defun rename-book (new-name)
       (post/json "/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)

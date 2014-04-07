@@ -51,8 +51,13 @@
      (.stdout :margin 0px :padding 5px :color "#8b2252" :background-color "#efefef")
      (".result li" :padding 5px)
      (".result .type" :color "#228b22")
+
+     (".warnings .condition-contents" 
+      :background-color "#fc6" :color "#c60" :border "1px solid #c60"
+      :padding 5px :margin-bottom 5px)
+
      (".result .error" :background-color "#fdd" :color "#933")
-     (.error-contents :list-style-type none :margin 0px :padding 0px)
-     (".error-contents .error-type" :font-weight bolder)
-     (".error-contents .error-property" :font-style oblique)
-     (".error-contents .error-property .label" :display inline-block :margin-right 5px :font-size small))))
+     (.condition-contents :list-style-type none :margin 0px :padding 0px)
+     (".condition-contents .condition-type" :font-weight bolder)
+     (".condition-contents .condition-property" :font-style oblique)
+     (".condition-contents .condition-property .label" :display inline-block :margin-right 5px :font-size small))))

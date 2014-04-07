@@ -10,55 +10,81 @@
      collect (cons (intern (symbol-name slot-name) :keyword) 
 		   (slot-value instance slot-name))))
 
-(defun type-label (thing)
+(defun alist (&rest k/v-pairs)
+  "Association lists with less consing"
+  (loop for (k v) on k/v-pairs by #'cddr
+     collect (cons k v)))
+
+(defun type-tag (thing)
+  "Extracts just the type tag from compound type specifications.
+Returns primitive type specifications as-is."
   (let ((tp (type-of thing)))
     (if (listp tp)
 	(first tp)
 	tp)))
 
-(defun alist (&rest k/v-pairs)
-  (loop for (k v) on k/v-pairs by #'cddr
-     collect (cons k v)))
-
 (defun ignored-error-prop? (pair)
   (member (first pair) 
 	  (list :args :control-string :second-relative :print-banner
 		:references :format-control :format-arguments :offset
-		:stream)))
+		:stream
+		:new-location :new-function :specializers :old-method)))
 
 (defun front-end-error (form e)
+  "Takes a form and an error pertaining to it.
+Formats the error for front-end display, including a reference to the form."
   (let ((err-alist (instance->alist e)))
-    `(error 
-      ((error-type . ,(type-of e))
+    `((condition-type . ,(type-tag e))
        ,@(let ((f-tmp (cdr (assoc :format-control err-alist)))
 	       (f-args (cdr (assoc :format-arguments err-alist))))
 	      (when (and f-tmp f-args)
 		(list (cons :error-message (apply #'format nil f-tmp f-args)))))
        ,@(when form
 	       (list (cons :form form)))
-       ,@(remove-if #'ignored-error-prop? err-alist)))))
+       ,@(remove-if #'ignored-error-prop? err-alist))))
 
-(defmacro ignore-redefinition-warning (&body body)
-  `(locally
-       (declare #+sbcl(sb-ext:muffle-conditions sb-kernel:redefinition-warning))
-     (handler-bind
-	 (#+sbcl(sb-kernel:redefinition-warning #'muffle-warning))
-       ,@body)))
+(defmethod read-all ((str stream))
+  (let ((eof (gensym "EOF-")))
+    (loop for s-exp = (read str nil eof) until (eq s-exp eof)
+       collect s-exp)))
 
-(defmacro capturing-stdout (&body body)
-  (with-gensyms (res stdout)
-    `(let* ((,res nil)
-	    (,stdout (with-output-to-string (*standard-output*)
-		       (setf ,res (progn ,@body)))))
-       (values ,res ,stdout))))
+(defmethod read-all ((str string))
+  (read-all (make-string-input-stream str)))
 
-(defmacro capturing-error (form &body body)
-  `(handler-case
-       (ignore-redefinition-warning ,@body)
-     (t (e) (values (list (front-end-error ,form e)) :error))))
+(defmethod capturing-eval ((str stream))
+  "Takes the next s-expression from a stream and tries to evaluate it.
+   Returns either NIL (if there are no further expressions)
+or a (:stdout :warnings :values) alist representing
+  - The *standard-output* emissions
+  - collected warnings
+  - return values (which may be errors)
+from each expression in turn."
+  (let* ((eof (gensym "EOF-"))
+	 (res nil)
+	 (warnings)
+	 (exp)
+	 (stdout
+	  (with-output-to-string (*standard-output*)
+	    (handler-case
+		(handler-bind ((warning (lambda (w) (push (front-end-error nil w) warnings))))
+		  (setf
+		   exp (read str nil eof)
+		   res (if (eq eof exp)
+			   :eof
+			   (mapcar
+			    (lambda (v) (alist :type (type-tag v) :value (write-to-string v))) 
+			    (multiple-value-list (eval exp))))))
+	      (error (e) 
+		(setf res (list
+			   (alist 
+			    :type 'error 
+			    :value (list (front-end-error exp e))))))))))
+    (if (eq :eof res)
+	nil
+	(alist :stdout stdout :warnings warnings :values res))))
 
-(defmacro with-js-error (&body body)
-  `(handler-case
-       (ignore-redefinition-warning ,@body)
-     (t (e) (alist :result (list (list (front-end-error nil e))) :stdout ""))))
-
+(defmethod capturing-eval ((str string))
+  "Evaluates each form in the given string, collecting return values, warnings and *standard-output* emissions."
+  (let ((stream (make-string-input-stream str)))
+    (loop for res = (capturing-eval stream)
+       while res collect res)))
