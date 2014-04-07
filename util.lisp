@@ -1,7 +1,10 @@
 (in-package :cl-notebook)
 
 (defun update (&rest k/v-pairs)
-  (json:encode-json-to-string (apply #'alist k/v-pairs)))
+  (let ((hash (make-hash-table)))
+    (loop for (k v) on k/v-pairs by #'cddr
+       do (setf (gethash k hash) v))
+    (json:encode-json-to-string hash)))
 
 (defun instance->alist (instance)
   (loop for s in (closer-mop:class-slots (class-of instance))
