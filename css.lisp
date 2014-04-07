@@ -54,7 +54,7 @@
 
      (".warnings .condition-contents" 
       :background-color "#fc6" :color "#c60" :border "1px solid #c60"
-      :padding 5px :margin-bottom 5px)
+      :padding 5px :margin "5px 0px")
 
      (".result .error" :background-color "#fdd" :color "#933")
      (.condition-contents :list-style-type none :margin 0px :padding 0px)

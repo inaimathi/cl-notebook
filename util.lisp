@@ -81,7 +81,7 @@ from each expression in turn."
 		(setf res (list
 			   (alist 
 			    :type 'error 
-			    :value (list (front-end-error exp e))))))))))
+			    :value (front-end-error (format nil "~s" exp) e)))))))))
     (if (eq :eof res)
 	nil
 	(alist :stdout stdout :warnings warnings :values res))))
