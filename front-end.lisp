@@ -13,6 +13,7 @@
       (:link :rel "stylesheet" :href "/static/css/show-hint.css")
 
       (:script :type "text/javascript" :src "/js/base.js")
+      (:script :type "text/javascript" :src "/js/templates.js")
       (:script :type "text/javascript" :src "/js/main.js")
       (:script :type "text/javascript" :src "/static/js/native-sortable.js")
 
@@ -220,18 +221,8 @@
 		      (console.log "Unhandled message" res)))))
 	stream))))
 
-(define-closing-handler (js/main.js :content-type "application/javascript") ()
-  (ps
-    (defun by-cell-id (cell-id &rest children)
-      (by-selector
-       (+ "#cell-" cell-id
-	  (if (> (length children) 0) " " "")
-	  (join children " "))))
-
-    (defun markup-cell? (cell)
-      (equal 'cl-who (@ cell cell-type)))
-    
-    ;; DOM templates
+(define-closing-handler (js/templates.js :content-type "application/javascript") ()
+  (ps 
     (defun condition-template (err)
       (who-ps-html
        (:ul :class "condition-contents"
@@ -246,21 +237,6 @@
 			 ""))
 		   err)))))
 
-    (defun clear-selection ()
-      (let ((sel (chain window (get-selection))))
-	(if (@ sel empty)
-	    ;; chrome
-	    (chain sel (empty))
-	    ;; firefox
-	    (chain sel (remove-all-ranges)))))
-
-    (defun select-contents (ev elem)
-      (unless (@ ev shift-key)
-	(clear-selection))
-      (let ((r (new (-range))))
-	(chain r (select-node-contents elem))
-	(chain window (get-selection) (add-range r))))
-
     (defun result-template (results)
       (who-ps-html
        (:pre
@@ -273,8 +249,8 @@
 	    when (@ res :warnings)
 	    collect (who-ps-html
 		     (:span :class "warnings"
-			  (join (loop for w in (@ res :warnings) 
-				   collect (condition-template w)))))
+			    (join (loop for w in (@ res :warnings) 
+				     collect (condition-template w)))))
 	    when (@ res :values)
 	    collect (who-ps-html
 		     (:ul :class "result"
@@ -296,9 +272,16 @@
 	      (join (loop for tp in (list :cl-who :common-lisp) 
 		       for lb in (list 'cl-who 'common-lisp) ;; curse these symbol case issues
 		       if (= (@ cell "cellType") lb)
-		         collect (who-ps-html (:option :value tp :selected "selected" tp))
+		       collect (who-ps-html (:option :value tp :selected "selected" tp))
 		       else 
-			 collect (who-ps-html (:option :value tp tp))))))))
+		       collect (who-ps-html (:option :value tp tp))))))))
+
+    (defun cell-markup-value-template (value)
+      (let ((val (@ value 0 :values 0 :value))) ;; TODO clean this shit up.
+	(cond ((and (string? val) (= "" val))
+	       (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
+	      ((string? val) val)
+	      (t (result-template value)))))
 
     (defun cell-markup-template (cell)
       (with-slots (id contents value language) cell
@@ -308,12 +291,7 @@
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
 	      (:div :onclick (+ "showEditor(" id ")")
-		    (:span :class "cell-value"
-			   (cond ((and (string? (@ value :result)) (= "" (@ value :result)))
-				  (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
-				 ((string? (@ value :result))
-				  (@ value :result))
-				 (t (result-template value)))))))))
+		    (:span :class "cell-value" (cell-markup-value-template value)))))))
     
     (defun cell-code-template (cell)
       (with-slots (id contents value language) cell
@@ -329,11 +307,7 @@
       (if (markup-cell? cell)
 	  (cell-markup-template cell)
 	  (cell-code-template cell)))
-
-    (defun display-book (book-name)
-      (set-page-hash (create :book book-name))
-      (hash-updated))
-
+    
     (defun show-title-input () 
       (let ((input (by-selector ".book-title input"))))
       (show! input)
@@ -356,7 +330,56 @@
 	 (who-ps-html
 	  (:ul :class "cells"
 	       (join (map (lambda (cell) (cell-template cell))
-			  (notebook-cells notebook order)))))))
+			  (notebook-cells notebook order)))))))))
+
+(define-closing-handler (js/main.js :content-type "application/javascript") ()
+  (ps
+    ;; cl-notebook specific utility
+    (defun by-cell-id (cell-id &rest children)
+      (by-selector
+       (+ "#cell-" cell-id
+	  (if (> (length children) 0) " " "")
+	  (join children " "))))
+
+    (defun markup-cell? (cell)
+      (equal 'cl-who (@ cell cell-type)))
+    
+    (defun clear-selection ()
+      (let ((sel (chain window (get-selection))))
+	(if (@ sel empty)
+	    ;; chrome
+	    (chain sel (empty))
+	    ;; firefox
+	    (chain sel (remove-all-ranges)))))
+
+    (defun select-contents (ev elem)
+      (unless (@ ev shift-key)
+	(clear-selection))
+      (let ((r (new (-range))))
+	(chain r (select-node-contents elem))
+	(chain window (get-selection) (add-range r))))
+
+    ;; cl-notebook specific DOM manipulation
+    (defun display-book (book-name)
+      (set-page-hash (create :book book-name))
+      (hash-updated))
+
+    (defun hash-updated ()
+      (let ((book-name (@ (get-page-hash) :book)))
+	(when book-name
+	  (setf document.title (+ book-name " - cl-notebook"))
+	  (notebook/current book-name))))
+
+    (defun dom-replace-cell-value (cell)
+      (let ((res (@ cell value result)))
+	(dom-set (by-cell-id (@ cell :id) ".cell-value")
+		 (if (markup-cell? cell)
+		     (cell-markup-value-template (@ cell value))
+		     (result-template (@ cell value))))))
+    
+    (defun dom-replace-cell (cell)
+      (dom-replace (by-cell-id (@ cell :id)) (cell-template cell))
+      (mirror! cell))
 
     ;; AJAX calls
     (defun notebook/current (name callback)
@@ -364,9 +387,7 @@
 		 #'notebook!))
 
     (defun server/notebook/eval-to-cell (cell-id contents)
-      (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)
-		 (lambda (res)
-		   (console.log res))))
+      (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
 
     (defun rename-book (new-name)
       (post/json "/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)
@@ -392,7 +413,7 @@
 	      (create :book (notebook-name *notebook*) 
 		      :cell-order ord))))
 
-    ;; CodeMirror utilities    
+    ;; CodeMirror and utilities
     (defun show-editor (cell-id)
       (show! (by-cell-id cell-id ".CodeMirror"))
       (chain (aref (notebook-objects *notebook*) cell-id :editor) (focus)))
@@ -482,25 +503,6 @@
 		 (when (equal cell-type "clWho")
 		   (hide! (by-cell-id id ".CodeMirror")))))
 	     (notebook-cells *notebook*))))
-
-    (defun hash-updated ()
-      (let ((book-name (@ (get-page-hash) :book)))
-	(when book-name
-	  (setf document.title (+ book-name " - cl-notebook"))
-	  (notebook/current book-name))))
-
-    (defun dom-replace-cell-value (cell)
-      (let ((res (@ cell value result)))
-	(dom-set (by-cell-id (@ cell :id) ".cell-value")
-		 (cond ((and (markup-cell? cell) (string? res) (= "" res))
-			(who-ps-html (:p (:b "[[EMPTY CELL]]"))))
-		       ((and (markup-cell? cell) (string? res))
-			res)
-		       (t (result-template (@ cell value)))))))
-    
-    (defun dom-replace-cell (cell)
-      (dom-replace (by-cell-id (@ cell :id)) (cell-template cell))
-      (mirror! cell))
 
     (defun notebook-events ()
       (event-source 

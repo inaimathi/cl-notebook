@@ -43,17 +43,24 @@
 
 ;;;;; Read/eval-related
 (defmethod js-eval (cell-type (contents string))
-  (list (alist :values (list contents))))
+  (list 
+   (alist 
+    :stdout "" :warnings nil 
+    :values (list (alist :type "string" :value contents)))))
 
 (defmethod js-eval ((cell-type (eql :cl-who)) (contents string))
-  (alist :values
-	 (handler-case
-	     (list
-	      (eval 
-	       `(with-html-output-to-string (s) 
-		  ,@(read-all-from-string contents))))
-	   (error (e)
-	     (list (front-end-error nil e))))))
+  (list
+   (alist :stdout "" :warnings nil ; Without these, :json encodes this as an array rather than an object
+	  :values
+	  (handler-case
+	      (list
+	       (alist 
+		:type "string"
+		:value (eval 
+			`(with-html-output-to-string (s) 
+			   ,@(read-all contents)))))
+	    (error (e)
+	      (list (alist :type 'error :value (front-end-error nil e))))))))
 
 (defmethod js-eval ((cell-type (eql :common-lisp)) (contents string))
   (capturing-eval contents))
