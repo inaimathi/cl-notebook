@@ -154,3 +154,7 @@
     (define-file-handler (merge-pathnames "static" root) :stem-from "static"))
 
   (start 4242))
+
+(defun main-dev ()
+  (house::debug!)
+  (bt:make-thread (lambda () (main))))
