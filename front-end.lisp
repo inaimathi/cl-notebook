@@ -255,7 +255,7 @@
 		       collect (condition-template w))))))
 
     (defun terse-result-template (results)
-      (result-values-template (@ (last results) values)))
+      (who-ps-html (:pre (result-values-template (@ (last results) values)))))
 
     (defun normal-result-template (results)
       (let ((all-stdout (new (-array)))
@@ -311,8 +311,16 @@
 		       if (= (@ cell "cellType") lb)
 		       collect (who-ps-html (:option :value tp :selected "selected" tp))
 		       else 
-		       collect (who-ps-html (:option :value tp tp))))))))
-
+		       collect (who-ps-html (:option :value tp tp)))))
+	     (:select
+	      :onchange (+ "changeCellNoise(" (@ cell :id) ", this.value)")
+	      (join (loop for ns in (list :silent :terse :normal :verbose)
+		       if (or (and (@ cell noise) (= (@ cell noise) ns))
+			      (and (not (@ cell noise)) (= ns :normal)))
+		       collect (who-ps-html (:option :value ns :selected "selected" ns))
+		       else
+		       collect (who-ps-html (:option :value ns ns))))))))
+    
     (defun cell-markup-value-template (value)
       (let ((val (@ value 0 :values 0 :value))) ;; TODO clean this shit up.
 	(cond ((and (string? val) (= "" val))
@@ -423,23 +431,27 @@
       (post/json "/notebook/current" (create :book name)
 		 #'notebook!))
 
+    (defun new-book () 
+      (post/json "/notebook/new" (create) 
+		 #'notebook!))
+
+    (defun rename-book (new-name)
+      (post/json "/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)))
+
     (defun server/notebook/eval-to-cell (cell-id contents)
       (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
 
-    (defun rename-book (new-name)
-      (post/json "/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)
-		 #'notebook!))
-
     (defun new-cell (&optional (cell-type :common-lisp))
       (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type)))
-
-    (defun new-book () (post/json "/notebook/new" (create) #'notebook!))
     
     (defun kill-cell (cell-id)
       (post/json "/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)))
 
     (defun change-cell-type (cell-id new-type)
       (post/json "/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)))
+
+    (defun change-cell-noise (cell-id new-noise)
+      (post/json "/notebook/change-cell-noise" (create :book (notebook-name *notebook*) :cell-id cell-id :new-noise new-noise)))
 
     (defun reorder-cells (ev)
       (prevent ev)
@@ -496,6 +508,7 @@
 	res))
 
     (defun notebook-name (notebook) (@ notebook :name))
+    (defun set-notebook-name (notebook new-name) (setf (@ notebook :name) new-name))
 
     (defun notebook-facts (notebook) (@ notebook :facts))
     (defun notebook-objects (notebook) (@ notebook :objects))
@@ -565,6 +578,12 @@
 	      (setf (@ cell :value) (@ res :value)
 		    (@ cell 'cell-type) (@ res 'new-type))
 	      (dom-replace-cell cell))))
+	'change-cell-noise
+	(lambda (res)
+	  (when (equal (notebook-name *notebook*) (@ res 'book))
+	    (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
+	      (setf (@ cell :noise) (@ res 'new-noise))
+	      (dom-replace-cell-value cell))))
 	'eval-to-cell 
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
@@ -580,7 +599,7 @@
 	'reorder-cells 
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
-	    (console.log "TODO change order here to support multi-user noting.")
+	    ;; TODO change order here to support multi-user noting
 	    (console.log "Changed cell order" res)))
 	
 	'new-book
@@ -598,7 +617,10 @@
 			   (notebook-title-template new-name)))
 	    (chain (by-selector (+ "#book-list option[value='" old-name "']")) (remove))
 	    (dom-append (by-selector "#book-list")
-			(who-ps-html (:option :value new-name new-name))))
+			(who-ps-html (:option :value new-name new-name)))
+	    (set-notebook-name *notebook* new-name)
+	    (set-page-hash (create :book new-name))
+	    (hide-title-input))
 	  (console.log "Renamed book")))))
 
     (dom-ready
