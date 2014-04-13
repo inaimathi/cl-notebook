@@ -230,14 +230,52 @@
 	    (:li :class "condition-form" (@ err "form"))
 	    (join (map 
 		   (lambda (v k) 
-		     (if (not (or (= k "conditionType") (= k "form")))
+		     (if (and v (not (or (= k "conditionType") (= k "form"))))
 			 (who-ps-html 
 			  (:li :class "condition-property" 
 			       (:span :class "label" k ":") v))
 			 ""))
-		   err)))))
+		      err)))))
 
-    (defun result-template (results)
+    (defun result-values-template (result-vals)
+      (who-ps-html
+       (:ul :onclick "selectContents(event, this)" :class "result"
+	    (join (loop for v in result-vals
+		     collect (with-slots (type value) v
+			       (if (= type :error)
+				   (who-ps-html (:li :class "error" (condition-template value)))
+				   (who-ps-html (:li (:span :class "value" (dom-escape value))
+						     (:span :class "type" " :: " type))))))))))
+    
+    (defun result-warnings-template (result-warnings)
+      (console.log result-warnings)
+      (who-ps-html
+       (:span :onclick "selectContents(event, this)" :class "warnings"
+	      (join (loop for w in result-warnings 
+		       collect (condition-template w))))))
+
+    (defun terse-result-template (results)
+      (result-values-template (@ (last results) values)))
+
+    (defun normal-result-template (results)
+      (let ((all-stdout (new (-array)))
+	    (all-warnings (new (-array)))
+	    (res))
+	(loop for r in results
+	   do (with-slots (stdout warnings) r
+		(chain all-stdout (push stdout))
+		(when warnings
+		  (setf all-warnings
+			(chain all-warnings (concat warnings)))))
+	   finally (setf res (@ r values))))
+      (who-ps-html
+       (:pre
+	(:p :onclick "selectContents(event, this)" :class "stdout"
+	    (join all-stdout))
+	(result-warnings-template all-warnings)
+	(result-values-template res))))
+
+    (defun verbose-result-template (results)
       (who-ps-html
        (:pre
 	(join
@@ -247,19 +285,18 @@
 		     (:p :onclick "selectContents(event, this)" :class "stdout"
 			 (@ res :stdout)))
 	    when (@ res :warnings)
-	    collect (who-ps-html
-		     (:span :class "warnings"
-			    (join (loop for w in (@ res :warnings) 
-				     collect (condition-template w)))))
+	    collect (result-warnings-template (@ res :warnings))
 	    when (@ res :values)
-	    collect (who-ps-html
-		     (:ul :class "result"
-			  (join (loop for v in (@ res :values)
-				   collect (with-slots (type value) v
-					     (if (= type :error)
-						 (who-ps-html (:li :class "error" (condition-template value)))
-						 (who-ps-html (:li (:span :class "value" (dom-escape value))
-								   (:span :class "type" " :: " type))))))))))))))
+	    collect (result-values-template (@ res :values)))))))
+
+    (defun result-template (noise value)
+      (case noise
+	(:verbose 
+	 (verbose-result-template value))
+	(:terse
+	 (terse-result-template value))
+	(:silent "")
+	(t (normal-result-template value))))
 
     (defun cell-controls-template (cell)
       (who-ps-html
@@ -281,7 +318,7 @@
 	(cond ((and (string? val) (= "" val))
 	       (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
 	      ((string? val) val)
-	      (t (result-template value)))))
+	      (t (result-template :verbose value)))))
 
     (defun cell-markup-template (cell)
       (with-slots (id contents value language) cell
@@ -300,8 +337,8 @@
 	      :ondragend "reorderCells(event)" :draggable "true"
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp")  contents)
-	      (:span :class "cell-value" 
-		     (result-template value))))))
+	      (:span :class "cell-value"
+		     (result-template (@ cell :noise) value))))))
     
     (defun cell-template (cell)
       (if (markup-cell? cell)
@@ -375,7 +412,7 @@
 	(dom-set (by-cell-id (@ cell :id) ".cell-value")
 		 (if (markup-cell? cell)
 		     (cell-markup-value-template (@ cell value))
-		     (result-template (@ cell value))))))
+		     (result-template (@ cell noise) (@ cell value))))))
     
     (defun dom-replace-cell (cell)
       (dom-replace (by-cell-id (@ cell :id)) (cell-template cell))
