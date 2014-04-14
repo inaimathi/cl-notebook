@@ -290,13 +290,14 @@
 	    collect (result-values-template (@ res :values)))))))
 
     (defun result-template (noise value)
-      (case noise
-	(:verbose 
-	 (verbose-result-template value))
-	(:terse
-	 (terse-result-template value))
-	(:silent "")
-	(t (normal-result-template value))))
+      (when value
+	(case noise
+	  (:verbose 
+	   (verbose-result-template value))
+	  (:terse
+	   (terse-result-template value))
+	  (:silent "")
+	  (t (normal-result-template value)))))
 
     (defun cell-controls-template (cell)
       (who-ps-html
