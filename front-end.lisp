@@ -233,7 +233,7 @@
 		     (if (and v (not (or (= k "conditionType") (= k "form"))))
 			 (who-ps-html 
 			  (:li :class "condition-property" 
-			       (:span :class "label" k ":") v))
+			       (:span :class "label" k ":") (dom-escape v)))
 			 ""))
 		      err)))))
 

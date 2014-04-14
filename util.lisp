@@ -26,25 +26,32 @@ Returns primitive type specifications as-is."
 	(first tp)
 	tp)))
 
-(defun ignored-error-prop? (pair)
-  (member (first pair) 
+(defun ignored-error-prop? (prop-name)
+  (member prop-name
 	  (list :args :control-string :second-relative :print-banner
 		:references :format-control :format-arguments :offset
 		:stream
-		:new-location :new-function :specializers :old-method)))
+		:new-location)))
+
+(defun stringified-error-prop? (prop-name)
+  (member prop-name
+	  (list :name :new-function :specializers :old-method)))
 
 (defun front-end-error (form e)
   "Takes a form and an error pertaining to it.
 Formats the error for front-end display, including a reference to the form."
   (let ((err-alist (instance->alist e)))
-    `((condition-type . ,(type-tag e))
-       ,@(let ((f-tmp (cdr (assoc :format-control err-alist)))
-	       (f-args (cdr (assoc :format-arguments err-alist))))
-	      (when (and f-tmp f-args)
-		(list (cons :error-message (apply #'format nil f-tmp f-args)))))
-       ,@(when form
-	       (list (cons :form form)))
-       ,@(remove-if #'ignored-error-prop? err-alist))))
+    `((condition-type . ,(symbol-name (type-tag e)))
+      ,@(let ((f-tmp (cdr (assoc :format-control err-alist)))
+	      (f-args (cdr (assoc :format-arguments err-alist))))
+	     (when (and f-tmp f-args)
+	       (list (cons :error-message (apply #'format nil f-tmp f-args)))))
+      ,@(when form (list (cons :form form)))
+      ,@(loop for (a . b) in err-alist
+	   if (stringified-error-prop? a)
+	   collect (cons a (format nil "~s" b))
+	   else if (not (ignored-error-prop? a))
+	   collect (cons a b)))))
 
 (defmethod read-all ((str stream))
   (let ((eof (gensym "EOF-")))
