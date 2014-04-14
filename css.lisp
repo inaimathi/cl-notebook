@@ -12,7 +12,7 @@
      ("button .btn-text" :font-size medium :display inline-block)
      ("button:hover" :color "#000")
 
-     (select ,@+css-input+ :color "#666")
+     (select ,@+css-input+ :color "#666" :margin-right 5px)
      ("select:hover" :color "#000" :background-color "#eee")
 
      (input.text ,@+css-input+ :padding 3px)
