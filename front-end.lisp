@@ -248,14 +248,13 @@
 						     (:span :class "type" " :: " type))))))))))
     
     (defun result-warnings-template (result-warnings)
-      (console.log result-warnings)
       (who-ps-html
        (:span :onclick "selectContents(event, this)" :class "warnings"
 	      (join (loop for w in result-warnings 
 		       collect (condition-template w))))))
 
     (defun terse-result-template (results)
-      (who-ps-html (:pre (result-values-template (@ (last results) values)))))
+      (result-values-template (@ (last results) values)))
 
     (defun normal-result-template (results)
       (let ((all-stdout (new (-array)))
@@ -269,35 +268,34 @@
 			(chain all-warnings (concat warnings)))))
 	   finally (setf res (@ r values))))
       (who-ps-html
-       (:pre
-	(:p :onclick "selectContents(event, this)" :class "stdout"
-	    (join all-stdout))
-	(result-warnings-template all-warnings)
-	(result-values-template res))))
+       (:p :onclick "selectContents(event, this)" :class "stdout"
+	   (join all-stdout))
+       (result-warnings-template all-warnings)
+       (result-values-template res)))
 
     (defun verbose-result-template (results)
-      (who-ps-html
-       (:pre
-	(join
-	 (loop for res in results
-	    when (@ res :stdout)
-	    collect (who-ps-html
-		     (:p :onclick "selectContents(event, this)" :class "stdout"
-			 (@ res :stdout)))
-	    when (@ res :warnings)
-	    collect (result-warnings-template (@ res :warnings))
-	    when (@ res :values)
-	    collect (result-values-template (@ res :values)))))))
+      (join
+       (loop for res in results
+	  when (@ res :stdout)
+	  collect (who-ps-html
+		   (:p :onclick "selectContents(event, this)" :class "stdout"
+		       (@ res :stdout)))
+	  when (@ res :warnings)
+	  collect (result-warnings-template (@ res :warnings))
+	  when (@ res :values)
+	  collect (result-values-template (@ res :values)))))
 
     (defun result-template (noise value)
       (when value
-	(case noise
-	  (:verbose 
-	   (verbose-result-template value))
-	  (:terse
-	   (terse-result-template value))
-	  (:silent "")
-	  (t (normal-result-template value)))))
+	(who-ps-html 
+	 (:pre
+	  (case noise
+	    (:verbose 
+	     (verbose-result-template value))
+	    (:terse
+	     (terse-result-template value))
+	    (:silent "")
+	    (t (normal-result-template value)))))))
 
     (defun cell-controls-template (cell)
       (who-ps-html
@@ -595,34 +593,33 @@
 	'kill-cell 
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
+	    ;; TODO remove from the *notebook* object too
 	    (chain (by-cell-id (@ res :cell)) (remove))))
 	
 	'reorder-cells 
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
-	    ;; TODO change order here to support multi-user noting
+	    ;; TODO change order here to support proper multi-user noting
 	    (console.log "Changed cell order" res)))
 	
 	'new-book
 	(lambda (res)
 	  (let ((name (@ res book-name)))
 	    (dom-append (by-selector "#book-list")
-			(who-ps-html (:option :value name name))))
-	  (console.log "Added new book" res))
+			(who-ps-html (:option :value name name)))))
 	'rename-book
 	(lambda (res)
 	  (let ((old-name (@ res 'book))
 		(new-name (@ res 'new-name)))
 	    (when (equal (notebook-name *notebook*) old-name)
 	      (dom-replace (by-selector ".book-title")
-			   (notebook-title-template new-name)))
+			   (notebook-title-template new-name))
+	      (set-notebook-name *notebook* new-name)
+	      (set-page-hash (create :book new-name))
+	      (hide-title-input))
 	    (chain (by-selector (+ "#book-list option[value='" old-name "']")) (remove))
 	    (dom-append (by-selector "#book-list")
-			(who-ps-html (:option :value new-name new-name)))
-	    (set-notebook-name *notebook* new-name)
-	    (set-page-hash (create :book new-name))
-	    (hide-title-input))
-	  (console.log "Renamed book")))))
+			(who-ps-html (:option :value new-name new-name))))))))
 
     (dom-ready
      (lambda ()
