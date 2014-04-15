@@ -254,6 +254,13 @@
 	      (join (loop for w in result-warnings 
 		       collect (condition-template w))))))
 
+    (defun result-stdout-template (stdout)
+      (if stdout
+	  (who-ps-html
+	   (:p :onclick "selectContents(event, this)" :class "stdout"
+	       stdout))
+	  ""))
+
     (defun terse-result-template (results)
       (result-values-template (@ (last results) values)))
 
@@ -269,8 +276,7 @@
 			(chain all-warnings (concat warnings)))))
 	   finally (setf res (@ r values))))
       (who-ps-html
-       (:p :onclick "selectContents(event, this)" :class "stdout"
-	   (join all-stdout))
+       (result-stdout-template (join all-stdout))
        (result-warnings-template all-warnings)
        (result-values-template res)))
 
@@ -278,9 +284,7 @@
       (join
        (loop for res in results
 	  when (@ res :stdout)
-	  collect (who-ps-html
-		   (:p :onclick "selectContents(event, this)" :class "stdout"
-		       (@ res :stdout)))
+	  collect (result-stdout-template (@ res :stdout))
 	  when (@ res :warnings)
 	  collect (result-warnings-template (@ res :warnings))
 	  when (@ res :values)

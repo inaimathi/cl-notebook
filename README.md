@@ -32,7 +32,6 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 	- Possibly move it into a separate project?
 	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.
 
-
 ### Dependencies
 
 `alexandria`, `anaphora`, `cl-fad`, `closer-mop`, `optima`, `local-time`, `fact-base`
