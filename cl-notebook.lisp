@@ -83,6 +83,9 @@
 (define-json-handler (system/list-books) ()
   (alexandria:hash-table-keys *notebooks*))
 
+(define-json-handler (notebook/current) ((book :notebook))
+  (current book))
+
 (define-json-handler (notebook/new) ()
   (let* ((name (format nil "book-~a" (hash-table-count *notebooks*)))
 	 (book (new-notebook! name)))
@@ -90,8 +93,10 @@
     (publish! :updates (update :action 'new-book :book-name name))
     (current book)))
 
-(define-json-handler (notebook/current) ((book :notebook))
-  (current book))
+(define-json-handler (notebook/kill) ((book :notebook))
+  (kill! book)
+  (publish! :updates (update :book (notebook-name book) :action 'kill-book))
+  :ok)
 
 (define-json-handler (notebook/rename) ((book :notebook) (new-name :string))
   (let* ((old-name (notebook-name book))
@@ -132,11 +137,6 @@
   (loop for f in (lookup book :a cell-id) do (delete! book f))
   (write-delta! book)
   (publish! :updates (update :book (notebook-name book) :cell cell-id :action 'kill-cell))
-  :ok)
-
-(define-json-handler (notebook/kill) ((book :notebook))
-  (kill! book)
-  (publish! :updates (update :book (notebook-name book) :action 'kill-book))
   :ok)
 
 (define-json-handler (notebook/change-cell-type) ((book :notebook) (cell-id :integer) (new-type :keyword))

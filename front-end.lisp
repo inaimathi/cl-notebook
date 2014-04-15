@@ -322,7 +322,7 @@
 		       collect (who-ps-html (:option :value ns ns))))))))
     
     (defun cell-markup-value-template (value)
-      (let ((val (@ value 0 :values 0 :value))) ;; TODO clean this shit up.
+      (let ((val (@ value 0 :values 0 :value))) ;; TODO clean this shit up. Seriously.
 	(cond ((and (string? val) (= "" val))
 	       (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
 	      ((string? val) val)
