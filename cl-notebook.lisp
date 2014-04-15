@@ -22,7 +22,7 @@
     book))
 
 (defun new-notebook! (name)
-  (let ((book (make-fact-base :indices '(:a :b :ab :abc) :file-name (merge-pathnames (fact-base::temp-file-name) *books*))))
+  (let ((book (make-fact-base :indices *default-indices* :file-name (merge-pathnames (fact-base::temp-file-name) *books*))))
     (insert-new! book :notebook-name name)
     (unless (gethash name *notebooks*)
       (setf (gethash name *notebooks*) book))
@@ -33,8 +33,22 @@
      when (lookup book :a cell-id :b :cell-type :c :common-lisp)
      do (js-eval :common-lisp (caddar (lookup book :a cell-id :b :contents)))))
 
+(defmethod make-unique-name-in ((dir pathname) (base-name string))
+  (assert (cl-fad:directory-pathname-p dir))
+  (let ((name (merge-pathnames base-name dir)))
+    (if (cl-fad:file-exists-p name)
+	(loop for i from 0
+	   for name = (merge-pathnames (format nil "~a-~a" base-name i) dir)
+	   unless (cl-fad:file-exists-p name) do (return name))
+	name)))
+
+(defmethod kill! ((book fact-base))
+  (let ((trash-name (make-unique-name-in *trash*  (file-namestring (file-name book)))))
+    (rename-file (file-name book) trash-name)
+    (remhash (notebook-name book) *notebooks*)))
+
 (defmethod load-notebook! ((name pathname))
-  (let ((book (load! :fact-base name :indices '(:a :b :ab :abc))))
+  (let ((book (load! :fact-base name :indices *default-indices*)))
     (eval-notebook-code book)
     (setf (gethash (notebook-name book) *notebooks*) book)))
 
@@ -120,6 +134,11 @@
   (publish! :updates (update :book (notebook-name book) :cell cell-id :action 'kill-cell))
   :ok)
 
+(define-json-handler (notebook/kill) ((book :notebook))
+  (kill! book)
+  (publish! :updates (update :book (notebook-name book) :action 'kill-book))
+  :ok)
+
 (define-json-handler (notebook/change-cell-type) ((book :notebook) (cell-id :integer) (new-type :keyword))
   (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
 	(val-fact (first (lookup book :a cell-id :b :value)))
@@ -148,10 +167,13 @@
 ;;;;; System entry
 (defun main (&optional argv) 
   (declare (ignore argv))
-  (setf *storage* (merge-pathnames ".cl-notebook/" (user-homedir-pathname))
-	*books* (merge-pathnames "books/" *storage*))
+  (flet ((as-dir (path) (cl-fad:pathname-as-directory path)))
+    (setf *storage* (as-dir (merge-pathnames ".cl-notebook" (user-homedir-pathname)))
+	  *books* (as-dir (merge-pathnames "books" *storage*))
+	  *trash* (as-dir (merge-pathnames "trash" *storage*))))
   (ensure-directories-exist *storage*)
   (ensure-directories-exist *books*)
+  (ensure-directories-exist *trash*)
 
   (in-package :cl-notebook)
   

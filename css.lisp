@@ -8,6 +8,7 @@
    `((body :font-family sans-serif)
      
      ("button" ,@+css-input+ :min-width 34px :font-size large :float left :margin-right 5px :color "#666")
+     ("button.right" :float right)
      ("button.genericon" :font-size x-large)
      ("button .btn-text" :font-size medium :display inline-block)
      ("button:hover" :color "#000")

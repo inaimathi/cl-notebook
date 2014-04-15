@@ -38,7 +38,8 @@
 	    (:select :id "book-list"
 		     :onchange "displayBook(this.value)"
 		     (loop for name being the hash-keys of *notebooks*
-			do (htm (:option :value name (str name))))))
+			do (htm (:option :value name (str name)))))
+	    (:button :onclick "killBook()" :class "right" "- Kill Book"))
       (:div :id "notebook")))))
 
 (define-closing-handler (js/base.js :content-type "application/javascript") ()
@@ -434,6 +435,9 @@
       (post/json "/notebook/new" (create) 
 		 #'notebook!))
 
+    (defun kill-book ()
+      (post/json "/notebook/kill" (create :book (notebook-name *notebook*))))
+
     (defun rename-book (new-name)
       (post/json "/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)))
 
@@ -607,6 +611,14 @@
 	  (let ((name (@ res book-name)))
 	    (dom-append (by-selector "#book-list")
 			(who-ps-html (:option :value name name)))))
+	'kill-book
+	(lambda (res)
+	  (let ((name (@ res 'book)))
+	    (chain (by-selector (+ "#book-list option[value='" name "']")) (remove))
+	    (when (equal (notebook-name *notebook*) name)
+	      (display-book 
+	       (chain (by-selector "#book-list option") 
+		      (get-attribute :value))))))
 	'rename-book
 	(lambda (res)
 	  (let ((old-name (@ res 'book))

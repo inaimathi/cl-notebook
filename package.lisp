@@ -15,8 +15,10 @@
 
 (in-package #:cl-notebook)
 
-(defvar *storage*)
-(defvar *books*)
+(defvar *storage* nil)
+(defvar *books* nil)
+(defvar *trash* nil)
+(defvar *default-indices* '(:a :b :ab :abc))
 
 (define-http-type (:notebook)
     :type-expression `(gethash ,parameter *notebooks*)
