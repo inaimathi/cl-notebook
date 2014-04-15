@@ -22,9 +22,6 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 
 ##### Features
 - Branching for notebooks
-- Notebooks should be deletable (ditto branches, when we put that together)
-	- Not *actually* deletable from the front end. Put a delete button up, get confirmation, and move it off to `~/.cl-notebook/trash` or something. If a user really TRULY wants to delete all of their history, they can do the `rm` call manually
-	- Is that the right behavior? I think so; our goal is to never lose data. An errant `POST` request shouldn't be able to counter that intent.
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
 	- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:
