@@ -597,8 +597,8 @@
 	'kill-cell 
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
-	    ;; TODO remove from the *notebook* object too
-	    (chain (by-cell-id (@ res :cell)) (remove))))
+	    (delete (aref *notebook* 'objects (@ res 'cell)))
+	    (chain (by-cell-id (@ res 'cell)) (remove))))
 	
 	'reorder-cells 
 	(lambda (res)
