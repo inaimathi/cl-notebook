@@ -15,14 +15,10 @@
 	- Should it? Are there situations where you'd legitimately want to run an infinite loop in cl-notebook? How would you handle that?
 	- Alternative to timing out: run evaluation in a separate thread (they'll be async anyhow) and give the user a keybinding to kill the current computation
 	- You'll need to somehow notify all front-ends that there's still a pending computation, and when one has been killed.
+	- Do the async thing. There may be very few legitimate use cases, but it's sometimes easy to do by accident, And it's rather annoying to have to restart the whole server because of this (especially since it sometimes fails to re-bind the old port).
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
-- Command line args for certain things
-	- Forcing output of static files
-	- Showing version number
-	- Setting listening port
-	- Starting the debug system on the server
 - Export HTML files
 - Export .lisp files
 - Build using buildapp?

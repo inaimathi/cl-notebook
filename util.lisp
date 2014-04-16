@@ -1,9 +1,29 @@
 (in-package :cl-notebook)
 
+(defun parse-args! (raw)
+  (pop raw)
+  (flet ((arg? (str) (eql #\- (first-char str)))
+	 (->flag (str) (intern (string-upcase (string-left-trim "-" str)) :keyword))
+	 (->arg (str) (or (parse-integer str :junk-allowed t) str)))
+    (loop for next = (pop raw) while next
+       if (and (arg? next) (or (not raw) (arg? (car raw))))
+       collect (cons (->flag next) t) into params
+       else if (arg? next)
+       collect (cons (->flag next) (->arg (pop raw))) into params
+       else collect next into args
+       finally (return (values params args)))))
+
+(defun get-param (names params) 
+  (loop for (a . b) in params 
+     if (member a names) do (return b)))
+
 (defun sys-dir (path)
   (let ((path (cl-fad:pathname-as-directory path)))
     (ensure-directories-exist path)
     path))
+
+(defmethod first-char ((str string))
+  (char str 0))
 
 (defmethod last-char ((pth pathname))
   (last-char (file-namestring pth)))
