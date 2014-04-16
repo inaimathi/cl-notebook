@@ -1,5 +1,5 @@
 # cl-notebook
-###### I got bored. So here's Notebook for Common Lisp
+###### A notebook-style in-browser editor for Common Lisp
 
 > Tools, of course, can be the subtlest of traps.
 > One day I know I must smash the ~~emerald~~ Emacs.
@@ -9,15 +9,11 @@
 # Do not use this yet. Seriously.
 ######Just walk away for a little while 'till I get it running properly.
 
-### What's `cl-notebook`?
-
-An in-browser editor for my own idiosyncratic use editing/presentation/etc use. Maybe it'll be useful to you too, but I wouldn't hold my breath.
-
 ### TODO
 ##### Bugs
 - System hangs forever if you send it into an infinite loop (duh). It should time out eventually, and send some notification of the fact.
 	- Should it? Are there situations where you'd legitimately want to run an infinite loop in cl-notebook? How would you handle that?
-	- Alternative to timing out: run queries in a separate thread (they'll be async anyhow) and give the user a keybinding to kill the current computation
+	- Alternative to timing out: run evaluation in a separate thread (they'll be async anyhow) and give the user a keybinding to kill the current computation
 	- You'll need to somehow notify all front-ends that there's still a pending computation, and when one has been killed.
 
 ##### Features (not necessarily in priority order)
@@ -66,10 +62,10 @@ Do whatever you like, BUT afford the same freedoms to anyone you give this softw
 This project uses
 - [`nativesortable`](https://github.com/bgrins/nativesortable)
 - [Code Mirror](http://codemirror.net/)
+- [Genericons](http://genericons.com/)
 - [`anaphora`](http://www.cliki.net/anaphora)
 - [`alexandria`](http://common-lisp.net/project/alexandria/)
 - [`parenscript`](http://common-lisp.net/project/parenscript/)
 - [`cl-who`](http://weitz.de/cl-who/)
 - [`quicklisp`](http://www.quicklisp.org/beta/)
 - [`buildapp`](http://www.xach.com/lisp/buildapp/)
-- [Genericons](http://genericons.com/)
