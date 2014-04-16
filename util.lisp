@@ -1,5 +1,26 @@
 (in-package :cl-notebook)
 
+(defun sys-dir (path)
+  (let ((path (cl-fad:pathname-as-directory path)))
+    (ensure-directories-exist path)
+    path))
+
+(defmethod last-char ((pth pathname))
+  (last-char (file-namestring pth)))
+
+(defmethod last-char ((str string))
+  (aref str (- (length str) 1)))
+
+(defmethod stem-path ((path pathname) stem-from)
+  (let ((stemmed (member stem-from (cdr (pathname-directory path)) :test #'string=)))
+    (make-pathname 
+     :directory
+     (if stemmed
+	 (cons :relative stemmed)
+	 (pathname-directory path))
+     :name (pathname-name path)
+     :type (pathname-type path))))
+
 (defun update (&rest k/v-pairs)
   (let ((hash (make-hash-table)))
     (loop for (k v) on k/v-pairs by #'cddr

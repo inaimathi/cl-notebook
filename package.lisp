@@ -18,6 +18,10 @@
 (defvar *storage* nil)
 (defvar *books* nil)
 (defvar *trash* nil)
+(defvar *static* nil)
+
+(defvar *static-files* nil)
+
 (defvar *default-indices* '(:a :b :ab :abc))
 
 (define-http-type (:notebook)

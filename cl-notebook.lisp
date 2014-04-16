@@ -165,26 +165,47 @@
   (subscribe! :updates sock))
 
 ;;;;; System entry
+(defun read-statics ()
+  (setf *static-files* (make-hash-table :test #'equal))
+  (let ((root (asdf:system-source-directory :cl-notebook)))
+    (cl-fad:walk-directory 
+     (sys-dir (merge-pathnames "static" root))
+     (lambda (file)
+       (unless (eql #\~ (last-char file))
+	 (setf (gethash file *static-files*) 
+	       (with-open-file (stream file :element-type '(unsigned-byte 8))
+		 (let ((data (make-array (list (file-length stream)))))
+		   (read-sequence data stream)
+		   data))))))))
+
+(defun write-statics ()
+  (when *static-files*
+    (loop for k being the hash-keys of *static-files*
+       for v being the hash-values of *static-files*
+       for file = (merge-pathnames (stem-path k "static") *storage*)
+       do (ensure-directories-exist file)
+       do (with-open-file (stream file :direction :output :element-type '(unsigned-byte 8) :if-exists :supersede :if-does-not-exist :create)
+       	    (write-sequence v stream)))
+    (setf *static-files* nil)))
+
 (defun main (&optional argv) 
   (declare (ignore argv))
-  (flet ((as-dir (path) (cl-fad:pathname-as-directory path)))
-    (setf *storage* (as-dir (merge-pathnames ".cl-notebook" (user-homedir-pathname)))
-	  *books* (as-dir (merge-pathnames "books" *storage*))
-	  *trash* (as-dir (merge-pathnames "trash" *storage*))))
-  (ensure-directories-exist *storage*)
-  (ensure-directories-exist *books*)
-  (ensure-directories-exist *trash*)
+
+  (setf *storage* (sys-dir (merge-pathnames ".cl-notebook" (user-homedir-pathname)))
+	*books* (sys-dir (merge-pathnames "books" *storage*))
+	*trash* (sys-dir (merge-pathnames "trash" *storage*)))
+  (unless *static*
+    (setf *static* (sys-dir (merge-pathnames "static" *storage*)))
+    (write-statics))
 
   (in-package :cl-notebook)
-  
   (dolist (book (cl-fad:list-directory *books*))
-    (load-notebook! book))
-
-  (let* ((root (asdf:system-source-directory :cl-notebook)))
-    (define-file-handler (merge-pathnames "static" root) :stem-from "static"))
+    (load-notebook! book))  
+  (define-file-handler *static* :stem-from "static")
 
   (start 4242))
 
 (defun main-dev ()
   (house::debug!)
+  (setf *static* (sys-dir (merge-pathnames "static" (asdf:system-source-directory :cl-notebook))))
   (bt:make-thread (lambda () (main))))
