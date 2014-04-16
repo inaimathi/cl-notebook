@@ -432,40 +432,40 @@
 
     ;; AJAX calls
     (defun notebook/current (name callback)
-      (post/json "/notebook/current" (create :book name)
+      (post/json "/cl-notebook/notebook/current" (create :book name)
 		 #'notebook!))
 
     (defun new-book () 
-      (post/json "/notebook/new" (create) 
+      (post/json "/cl-notebook/notebook/new" (create) 
 		 #'notebook!))
 
     (defun kill-book ()
-      (post/json "/notebook/kill" (create :book (notebook-name *notebook*))))
+      (post/json "/cl-notebook/notebook/kill" (create :book (notebook-name *notebook*))))
 
     (defun rename-book (new-name)
-      (post/json "/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)))
+      (post/json "/cl-notebook/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)))
 
     (defun server/notebook/eval-to-cell (cell-id contents)
-      (post/json "/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
+      (post/json "/cl-notebook/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
 
     (defun new-cell (&optional (cell-type :common-lisp))
-      (post/json "/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type)))
+      (post/json "/cl-notebook/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type)))
     
     (defun kill-cell (cell-id)
-      (post/json "/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)))
+      (post/json "/cl-notebook/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)))
 
     (defun change-cell-type (cell-id new-type)
-      (post/json "/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)))
+      (post/json "/cl-notebook/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)))
 
     (defun change-cell-noise (cell-id new-noise)
-      (post/json "/notebook/change-cell-noise" (create :book (notebook-name *notebook*) :cell-id cell-id :new-noise new-noise)))
+      (post/json "/cl-notebook/notebook/change-cell-noise" (create :book (notebook-name *notebook*) :cell-id cell-id :new-noise new-noise)))
 
     (defun reorder-cells (ev)
       (prevent ev)
       (let ((ord (obj->string
 		  (loop for elem in (by-selector-all ".cell")
 		     collect (parse-int (chain elem (get-attribute :cell-id)))))))
-	(post "/notebook/reorder-cells" 
+	(post "/cl-notebook/notebook/reorder-cells" 
 	      (create :book (notebook-name *notebook*) 
 		      :cell-order ord))))
 
@@ -563,7 +563,7 @@
 
     (defun notebook-events ()
       (event-source 
-       "/source"
+       "/cl-notebook/source"
        (create
 	'new-cell 
 	(lambda (res)

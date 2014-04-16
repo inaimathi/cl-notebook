@@ -80,32 +80,32 @@
   (capturing-eval contents))
 
 ;;;;; HTTP Handlers
-(define-json-handler (system/list-books) ()
+(define-json-handler (cl-notebook/system/list-books) ()
   (alexandria:hash-table-keys *notebooks*))
 
-(define-json-handler (notebook/current) ((book :notebook))
+(define-json-handler (cl-notebook/notebook/current) ((book :notebook))
   (current book))
 
-(define-json-handler (notebook/new) ()
+(define-json-handler (cl-notebook/notebook/new) ()
   (let* ((name (format nil "book-~a" (hash-table-count *notebooks*)))
 	 (book (new-notebook! name)))
     (write! book)
     (publish! :updates (update :action 'new-book :book-name name))
     (current book)))
 
-(define-json-handler (notebook/kill) ((book :notebook))
+(define-json-handler (cl-notebook/notebook/kill) ((book :notebook))
   (kill! book)
   (publish! :updates (update :book (notebook-name book) :action 'kill-book))
   :ok)
 
-(define-json-handler (notebook/rename) ((book :notebook) (new-name :string))
+(define-json-handler (cl-notebook/notebook/rename) ((book :notebook) (new-name :string))
   (let* ((old-name (notebook-name book))
 	 (book (rename-notebook! book new-name)))
     (write-delta! book)
     (publish! :updates (update :book old-name :action 'rename-book :new-name new-name)))
   :ok)
 
-(define-json-handler (notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
+(define-json-handler (cl-notebook/notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
   (let* ((cont-fact (first (lookup book :a cell-id :b :contents)))
 	 (val-fact (first (lookup book :a cell-id :b :value)))
 	 (cell-type (caddar (lookup book :a cell-id :b :cell-type)))
@@ -119,13 +119,13 @@
       (publish! :updates (update :book (notebook-name book) :cell cell-id :action 'eval-to-cell :contents contents :value res))))
   :ok)
 
-(define-json-handler (notebook/new-cell) ((book :notebook) (cell-type :keyword))
+(define-json-handler (cl-notebook/notebook/new-cell) ((book :notebook) (cell-type :keyword))
   (let ((cell-id (new-cell! book :cell-type cell-type)))
     (write-delta! book)
     (publish! :updates (update :book (notebook-name book) :action 'new-cell :cell-id cell-id :cell-type cell-type)))
   :ok)
 
-(define-json-handler (notebook/reorder-cells) ((book :notebook) (cell-order :json))
+(define-json-handler (cl-notebook/notebook/reorder-cells) ((book :notebook) (cell-order :json))
   (awhen (lookup book :b :cell-order)
     (delete! book (car it)))
   (insert-new! book :cell-order cell-order)
@@ -133,13 +133,13 @@
   (publish! :updates (update :book (notebook-name book) :action 'reorder-cells :new-order cell-order))
   :ok)
 
-(define-json-handler (notebook/kill-cell) ((book :notebook) (cell-id :integer))
+(define-json-handler (cl-notebook/notebook/kill-cell) ((book :notebook) (cell-id :integer))
   (loop for f in (lookup book :a cell-id) do (delete! book f))
   (write-delta! book)
   (publish! :updates (update :book (notebook-name book) :cell cell-id :action 'kill-cell))
   :ok)
 
-(define-json-handler (notebook/change-cell-type) ((book :notebook) (cell-id :integer) (new-type :keyword))
+(define-json-handler (cl-notebook/notebook/change-cell-type) ((book :notebook) (cell-id :integer) (new-type :keyword))
   (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
 	(val-fact (first (lookup book :a cell-id :b :value)))
 	(tp-fact (first (lookup book :a cell-id :b :cell-type))))
@@ -153,7 +153,7 @@
 	(publish! :updates (update :book (notebook-name book) :cell cell-id :action 'change-cell-type :new-type new-type :value res)))))
   :ok)
 
-(define-json-handler (notebook/change-cell-noise) ((book :notebook) (cell-id :integer) (new-noise :keyword))
+(define-json-handler (cl-notebook/notebook/change-cell-noise) ((book :notebook) (cell-id :integer) (new-noise :keyword))
   (awhen (first (lookup book :a cell-id :b :noise))
     (delete! book it))
   (unless (eq new-noise :normal)
@@ -161,7 +161,7 @@
   (publish! :updates (update :book (notebook-name book) :cell cell-id :action 'change-cell-noise :new-noise new-noise))
   :ok)
 
-(define-stream-handler (source) ()
+(define-stream-handler (cl-notebook/source) ()
   (subscribe! :updates sock))
 
 ;;;;; System entry

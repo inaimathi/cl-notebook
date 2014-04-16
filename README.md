@@ -20,19 +20,25 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 	- Alternative to timing out: run queries in a separate thread (they'll be async anyhow) and give the user a keybinding to kill the current computation
 	- You'll need to somehow notify all front-ends that there's still a pending computation, and when one has been killed.
 
-##### Features
+##### Features (not necessarily in priority order)
+######## Back-end
 - Command line args for certain things
 	- Forcing output of static files
 	- Showing version number
 	- Setting listening port
 	- Starting the debug system on the server
+- Export HTML files
+- Export .lisp files
+- Build using buildapp?
 - Branching for notebooks
+- Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
+
+######## Front-end
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
 	- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:
 		- `CodeMirror.runMode(byCellId(10, ".cell-contents").value, "commonlisp", function (token, type) { console.log(token, type)})` effectively tokenizes for you.
 		- The CodeMirror matching paren mode might also be a good way to get s-expresison-related stuff happening
-- Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 - front-end cleanup.
 	- Possibly move it into a separate project?
 	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.
