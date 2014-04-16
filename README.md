@@ -15,12 +15,17 @@ An in-browser editor for my own idiosyncratic use editing/presentation/etc use. 
 
 ### TODO
 ##### Bugs
-- System hangs forever if you send it into an infinite loop. It should time out eventually, and send some notification of the fact.
+- System hangs forever if you send it into an infinite loop (duh). It should time out eventually, and send some notification of the fact.
 	- Should it? Are there situations where you'd legitimately want to run an infinite loop in cl-notebook? How would you handle that?
 	- Alternative to timing out: run queries in a separate thread (they'll be async anyhow) and give the user a keybinding to kill the current computation
-	- You'll need to somehow notify all front-ends that there's still a pending computation.
+	- You'll need to somehow notify all front-ends that there's still a pending computation, and when one has been killed.
 
 ##### Features
+- Command line args for certain things
+	- Forcing output of static files
+	- Showing version number
+	- Setting listening port
+	- Starting the debug system on the server
 - Branching for notebooks
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently

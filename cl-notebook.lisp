@@ -178,32 +178,41 @@
 		   (read-sequence data stream)
 		   data))))))))
 
-(defun write-statics ()
+(defun write-statics (&key force?)
   (when *static-files*
     (loop for k being the hash-keys of *static-files*
        for v being the hash-values of *static-files*
        for file = (merge-pathnames (stem-path k "static") *storage*)
-       do (ensure-directories-exist file)
-       do (with-open-file (stream file :direction :output :element-type '(unsigned-byte 8) :if-exists :supersede :if-does-not-exist :create)
-       	    (write-sequence v stream)))
+       unless (and (cl-fad:file-exists-p file) (not force?))
+       do (progn 
+	    (format t "   Writing ~a ...~%" file)
+	    (ensure-directories-exist file)
+	    (with-open-file (stream file :direction :output :element-type '(unsigned-byte 8) :if-exists :supersede :if-does-not-exist :create)
+	      (write-sequence v stream))))
     (setf *static-files* nil)))
 
 (defun main (&optional argv) 
   (declare (ignore argv))
 
-  (setf *storage* (sys-dir (merge-pathnames ".cl-notebook" (user-homedir-pathname)))
-	*books* (sys-dir (merge-pathnames "books" *storage*))
-	*trash* (sys-dir (merge-pathnames "trash" *storage*)))
-  (unless *static*
-    (setf *static* (sys-dir (merge-pathnames "static" *storage*)))
-    (write-statics))
+  (let ((port 4242))
+    (format t "Initializing storage directories...~%")
+    (setf *storage* (sys-dir (merge-pathnames ".cl-notebook" (user-homedir-pathname)))
+	  *books* (sys-dir (merge-pathnames "books" *storage*))
+	  *trash* (sys-dir (merge-pathnames "trash" *storage*)))
+    (unless *static*
+      (format t "Initializing static files...~%")
+      (setf *static* (sys-dir (merge-pathnames "static" *storage*)))
+      (write-statics))
 
-  (in-package :cl-notebook)
-  (dolist (book (cl-fad:list-directory *books*))
-    (load-notebook! book))  
-  (define-file-handler *static* :stem-from "static")
-
-  (start 4242))
+    (in-package :cl-notebook)
+    (format t "Loading books...~%")
+    (dolist (book (cl-fad:list-directory *books*))
+      (format t "   Loading ~a...~%" book)
+      (load-notebook! book))
+    (define-file-handler *static* :stem-from "static")
+    
+    (format t "Listening on '~s'...~%" port)
+    (start port)))
 
 (defun main-dev ()
   (house::debug!)
