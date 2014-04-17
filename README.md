@@ -6,8 +6,15 @@
 >
 > *with apologies to Neil Gaiman*
 
-# Do not use this yet. Seriously.
-######Just walk away for a little while 'till I get it running properly.
+### Dependencies
+
+`alexandria`, `anaphora`, `cl-fad`, `closer-mop`, `optima`, `local-time`, `fact-base`, `house`
+
+### Usage
+
+You need to install the [`house` server](https://github.com/Inaimathi/house), the [`fact-base` triple-store](https://github.com/Inaimathi/fact-base) and [this repo](https://github.com/Inaimathi/cl-notebook) by cloning them.
+
+The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/), so you should then be able to hop into a lisp and do `(ql:quickload :cl-notebook)`.
 
 ### TODO
 ##### Features (not necessarily in priority order)
@@ -19,7 +26,6 @@
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 
 ######## Front-end
-- Put together a good interface for the thread control thing. I'm thinking a status bar at the bottom with a kill-thread button that only appears when a thread is in progress
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
 	- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:
@@ -28,16 +34,6 @@
 - front-end cleanup.
 	- Possibly move it into a separate project?
 	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.
-
-### Dependencies
-
-`alexandria`, `anaphora`, `cl-fad`, `closer-mop`, `optima`, `local-time`, `fact-base`, `house`
-
-### Usage
-
-You need to install the [`house` server](https://github.com/Inaimathi/house), the [`fact-base` triple-store](https://github.com/Inaimathi/fact-base) and [this repo](https://github.com/Inaimathi/cl-notebook) by cloning them.
-
-The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/), so you should then be able to hop into a lisp and do `(ql:quickload :cl-notebook)`.
 
 ### License
 
@@ -53,6 +49,7 @@ This project uses
 - [`nativesortable`](https://github.com/bgrins/nativesortable)
 - [Code Mirror](http://codemirror.net/)
 - [Genericons](http://genericons.com/)
+- A spinner generated from [here](http://preloaders.net/en/letters_numbers_words)
 - [`anaphora`](http://www.cliki.net/anaphora)
 - [`alexandria`](http://common-lisp.net/project/alexandria/)
 - [`parenscript`](http://common-lisp.net/project/parenscript/)

@@ -598,13 +598,28 @@
 	    (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
 	      (setf (@ cell :noise) (@ res 'new-noise))
 	      (dom-replace-cell-value cell))))
-	'eval-to-cell 
+	'starting-eval
 	(lambda (res)
+	  (show! (by-selector ".footer")))
+	'killed-eval
+	(lambda (res)
+	  (hide! (by-selector ".footer")))
+	'finished-eval 
+	(lambda (res)
+	  (hide! (by-selector ".footer"))
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
 	    (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
 	      (setf (@ cell :contents) (@ res :contents)
 		    (@ cell :value) (@ res :value))
 	      (dom-replace-cell-value cell))))
+	'content-changed
+	(lambda (res)
+	  (when (equal (notebook-name *notebook*) (@ res 'book))
+	    (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
+	      (setf (@ cell :contents) (@ res :contents))
+	      ;; TODO - Figure out a way of doing this without clobbering undo stack
+	      ;; (dom-replace-cell-value cell)
+	      )))
 	'kill-cell 
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
@@ -647,6 +662,7 @@
     (dom-ready
      (lambda ()
        (notebook-events)
+       (hide! (by-selector ".footer"))
        (chain 
 	(by-selector "body") 
 	(add-event-listener 
