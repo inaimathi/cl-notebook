@@ -31,6 +31,10 @@ The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/)
 	- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:
 		- `CodeMirror.runMode(byCellId(10, ".cell-contents").value, "commonlisp", function (token, type) { console.log(token, type)})` effectively tokenizes for you.
 		- The CodeMirror matching paren mode might also be a good way to get s-expresison-related stuff happening
+- Proper autocompletion (this may qualify as both front-end and back-end)
+- Argument hints (again, both front and back-end)
+- Better automatic indenting
+- Better coloring
 - front-end cleanup.
 	- Possibly move it into a separate project?
 	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.

@@ -25,7 +25,7 @@
       :background-color "#eee" :border "2px solid #ccc" :border-radius "0px 0px 5px 5px"
       :padding 8px
       :z-index 10 :position fixed :top -40px
-      :width 60% :left 50% :margin-left -30%)
+      :width 80% :left 10%)
      (".main-controls:hover" :top -2px)
      (".main-controls button" :height 32px)
      (".main-controls select" :height 32px :font-size large :width 256px)
@@ -33,7 +33,7 @@
      (.footer :position fixed :bottom 1% :z-index 100 :padding 2px :border-radius "5px"
 	      :font-weight bold :color "rgba(255, 255, 255, .6)" 
 	      :width 80% :margin-left 10%
-	      :background-color "rgba(50, 50, 200, .4)" :border "2px solid rgba(50, 50, 200, .5)")
+	      :background-color "rgba(50, 50, 200, .4)" :border "2px solid rgba(50, 50, 200, .6)")
      (".footer .notice" :padding-left 5px :display inline-block)
      (".footer img" :height 1.6em :opacity .6 :margin-bottom -.3em :margin-left -5px)
      (".footer button" :background-color "rgba(50, 50, 200, .4)" :font-size medium

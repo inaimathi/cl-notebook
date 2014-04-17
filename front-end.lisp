@@ -42,9 +42,9 @@
 	    (:button :class "right" :onclick "killBook()" "- Kill Book"))
       (:div :id "notebook")
       (:div :class "footer"
-	    (:span :class "notice" "Running process")
+	    (:span :class "notice" "Processing")
 	    (:img :src "/static/img/dots.png")
-	    (:button :onclick "killThread()" :class "right" "! Kill Thread"))))))
+	    (:button :onclick "killThread()" :class "right" "! Abort"))))))
 
 (define-closing-handler (js/base.js :content-type "application/javascript") ()
   (ps 
