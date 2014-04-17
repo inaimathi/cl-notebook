@@ -449,6 +449,7 @@
       (post/json "/cl-notebook/notebook/current" (create :book name)
 		 #'notebook!
 		 (lambda (res)
+		   ;; TODO - make this selection juggle work
 		   (map (lambda (opt) (chain opt (remove-attribute :selected)))
 			(by-selector-all "#book-list option"))
 		   (chain (by-selector "#book-list option") (set-attribute :selected "selected"))
