@@ -7,7 +7,7 @@
   (cl-css:css
    `((body :font-family sans-serif)
      
-     ("button" ,@+css-input+ :min-width 34px :font-size large :float left :margin-right 5px :color "#666")
+     ("button" ,@+css-input+ :min-width 34px :font-size large :float left :margin-right 5px :color "#666" :cursor pointer)
      ("button.right" :float right)
      ("button.genericon" :font-size x-large)
      ("button .btn-text" :font-size medium :display inline-block)
@@ -29,6 +29,16 @@
      (".main-controls:hover" :top -2px)
      (".main-controls button" :height 32px)
      (".main-controls select" :height 32px :font-size large :width 256px)
+
+     (.footer :position fixed :bottom 1% :z-index 100 :padding 2px :border-radius "5px"
+	      :font-weight bold :color "rgba(255, 255, 255, .6)" 
+	      :width 80% :margin-left 10%
+	      :background-color "rgba(50, 50, 200, .4)" :border "2px solid rgba(50, 50, 200, .5)")
+     (".footer .notice" :padding-left 5px :display inline-block)
+     (".footer img" :height 1.6em :opacity .6 :margin-bottom -.3em :margin-left -5px)
+     (".footer button" :background-color "rgba(50, 50, 200, .4)" :font-size medium
+		       :color "rgba(255, 255, 255, .6)" :border-color "rgba(255, 255, 255, .6)")
+     (".footer button:hover" :border-color white :color white :background-color "rgba(75, 75, 200, .4)")
      
      (.cells :list-style-type none :padding 0px :margin 0px)
      (".cells .cell" :padding 5px :margin-bottom 10px :border-top "3px solid transparent" :background-color "#fff")

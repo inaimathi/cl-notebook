@@ -39,9 +39,12 @@
 		     :onchange "displayBook(this.value)"
 		     (loop for name being the hash-keys of *notebooks*
 			do (htm (:option :value name (str name)))))
-	    (:button :onclick "killThread()" :class "right" "! Kill Thread")
-	    (:button :onclick "killBook()" :class "right" "- Kill Book"))
-      (:div :id "notebook")))))
+	    (:button :class "right" :onclick "killBook()" "- Kill Book"))
+      (:div :id "notebook")
+      (:div :class "footer"
+	    (:span :class "notice" "Running process")
+	    (:img :src "/static/img/dots.png")
+	    (:button :onclick "killThread()" :class "right" "! Kill Thread"))))))
 
 (define-closing-handler (js/base.js :content-type "application/javascript") ()
   (ps 
