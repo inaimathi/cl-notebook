@@ -37,6 +37,7 @@
 	    (:button :onclick "newBook()" "+ New Book")
 	    (:select :id "book-list"
 		     :onchange "displayBook(this.value)"
+		     (:option :value "" "Choose book...")
 		     (loop for name being the hash-keys of *notebooks*
 			do (htm (:option :value name (str name)))))
 	    (:button :class "right" :onclick "killBook()" "- Kill Book"))
@@ -190,28 +191,31 @@
 	(chain req (open :GET (if params (+ uri "?" (obj->params params)) uri) t))
 	(chain req (send))))
 
-    (defun post (uri params callback)
+    (defun post (uri params on-success on-fail)
       (let ((req (new (-x-m-l-http-request)))
 	    (encoded-params (obj->params params)))
 	(setf (@ req onreadystatechange)
 	      (lambda ()
-		(when (and (equal (@ req ready-state) 4)
-			   (equal (@ req status) 200))
-		  (let ((result (@ req response-text)))
-		    (when (function? callback)
-		      (callback result))))))
+		(when (equal (@ req ready-state) 4)
+		  (if (equal (@ req status) 200)
+		      (when (function? on-success)
+			(let ((result (@ req response-text)))
+			  (on-success result)))
+		      (when (function? on-fail)
+			(on-fail req))))))
 	(chain req (open :POST uri t))
 	(chain req (set-request-header "Content-type" "application/x-www-form-urlencoded"))
 	(chain req (set-request-header "Content-length" (length encoded-params)))
 	(chain req (set-request-header "Connection" "close"))
 	(chain req (send encoded-params))))
 
-    (defun post/json (uri params callback)
+    (defun post/json (uri params on-success on-fail)
       (post uri params
 	    (lambda (raw)
-	      (when callback
+	      (when (function? on-success)
 		(let ((res (string->obj raw)))
-		  (callback res))))))
+		  (on-success res))))
+	    on-fail))
 
     (defun event-source (uri bindings)
       (let ((stream (new (-event-source uri))))
@@ -415,8 +419,10 @@
 
     ;; cl-notebook specific DOM manipulation
     (defun display-book (book-name)
-      (set-page-hash (create :book book-name))
-      (hash-updated))
+      (when book-name
+	(console.log "CHANGING TO " book-name)
+	(set-page-hash (create :book book-name))
+	(hash-updated)))
 
     (defun hash-updated ()
       (let ((book-name (@ (get-page-hash) :book)))
@@ -438,10 +444,17 @@
     ;; AJAX calls
     (defun kill-thread ()
       (post/json "/cl-notebook/system/kill-thread" (create)))
-
+    
     (defun notebook/current (name)
       (post/json "/cl-notebook/notebook/current" (create :book name)
-		 #'notebook!))
+		 #'notebook!
+		 (lambda (res)
+		   (map (lambda (opt) (chain opt (remove-attribute :selected)))
+			(by-selector-all "#book-list option"))
+		   (chain (by-selector "#book-list option") (set-attribute :selected "selected"))
+		   (dom-set 
+		    (by-selector "#notebook")
+		    (who-ps-html (:h2 "Notebook '" name "' not found..."))))))
 
     (defun new-book () 
       (post/json "/cl-notebook/notebook/new" (create) 
@@ -558,8 +571,8 @@
 	(hide! (by-selector ".book-title input"))
 	(nativesortable (by-selector "ul.cells"))
 	(set-page-hash (create :book (notebook-name *notebook*)))
-	(chain (by-selector "#book-list option")
-	       (remove-attribute :selected))
+	(map (lambda (opt) (chain opt (remove-attribute :selected)))
+	     (by-selector-all "#book-list option"))
 	(chain (by-selector (+ "#book-list option[value='" (notebook-name *notebook*) "']"))
 	       (set-attribute :selected "selected"))
 	(map (lambda (cell) 
@@ -678,6 +691,6 @@
 			      (notebook-cells *notebook*))))))
 
        (unless (get-page-hash)
-	 (set-page-hash (create :book (chain (by-selector "#book-list option") (get-attribute :value)))))
+	 (set-page-hash (create :book (chain (@ (by-selector-all "#book-list option") 1) (get-attribute :value)))))
        (setf (@ window onhashchange) #'hash-updated)
        (hash-updated)))))
