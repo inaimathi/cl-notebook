@@ -439,7 +439,7 @@
     (defun kill-thread ()
       (post/json "/cl-notebook/system/kill-thread" (create)))
 
-    (defun notebook/current (name callback)
+    (defun notebook/current (name)
       (post/json "/cl-notebook/notebook/current" (create :book name)
 		 #'notebook!))
 
@@ -678,6 +678,6 @@
 			      (notebook-cells *notebook*))))))
 
        (unless (get-page-hash)
-	 (set-page-hash (create :book "test-book")))
+	 (set-page-hash (create :book (chain (by-selector "#book-list option") (get-attribute :value)))))
        (setf (@ window onhashchange) #'hash-updated)
        (hash-updated)))))
