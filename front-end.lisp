@@ -39,6 +39,7 @@
 		     :onchange "displayBook(this.value)"
 		     (loop for name being the hash-keys of *notebooks*
 			do (htm (:option :value name (str name)))))
+	    (:button :onclick "killThread()" :class "right" "! Kill Thread")
 	    (:button :onclick "killBook()" :class "right" "- Kill Book"))
       (:div :id "notebook")))))
 
@@ -431,6 +432,9 @@
       (mirror! cell))
 
     ;; AJAX calls
+    (defun kill-thread ()
+      (post/json "/cl-notebook/system/kill-thread" (create)))
+
     (defun notebook/current (name callback)
       (post/json "/cl-notebook/notebook/current" (create :book name)
 		 #'notebook!))
@@ -647,7 +651,7 @@
 		 <esc> (progn 
 			 (clear-selection)
 			 (hide-title-input)
-			 (map (lambda (cell) 
+			 (map (lambda (cell)
 				(with-slots (id cell-type) cell
 				  (when (equal cell-type 'cl-who)
 				    (hide-editor id))))

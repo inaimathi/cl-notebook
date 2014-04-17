@@ -3,6 +3,7 @@
 ;;;;; Model-related
 (defvar *notebooks* 
   (make-hash-table :test 'equal))
+(defvar *front-end-eval-thread* nil)
 
 (defmethod new-cell! ((book fact-base) &key (cell-type :common-lisp))
   (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:contents "") (:value ""))))
@@ -83,6 +84,11 @@
 (define-json-handler (cl-notebook/system/list-books) ()
   (alexandria:hash-table-keys *notebooks*))
 
+(define-json-handler (cl-notebook/system/kill-thread) ()
+  (when (and (bt:threadp *front-end-eval-thread*)
+	     (bt:thread-alive-p *front-end-eval-thread*))
+    (bt:destroy-thread *front-end-eval-thread*)))
+
 (define-json-handler (cl-notebook/notebook/current) ((book :notebook))
   (current book))
 
@@ -106,17 +112,23 @@
   :ok)
 
 (define-json-handler (cl-notebook/notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
-  (let* ((cont-fact (first (lookup book :a cell-id :b :contents)))
-	 (val-fact (first (lookup book :a cell-id :b :value)))
-	 (cell-type (caddar (lookup book :a cell-id :b :cell-type)))
-	 (res (js-eval cell-type contents)))
-    (when (and cont-fact val-fact res)
-      (delete! book cont-fact)
-      (delete! book val-fact)
-      (insert! book (list cell-id :contents contents))
-      (insert! book (list cell-id :value res))
-      (write-delta! book)
-      (publish! :updates (update :book (notebook-name book) :cell cell-id :action 'eval-to-cell :contents contents :value res))))
+  (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
+	(val-fact (first (lookup book :a cell-id :b :value)))
+	(cell-type (caddar (lookup book :a cell-id :b :cell-type))))
+    (when (and (bt:threadp *front-end-eval-thread*)
+	       (bt:thread-alive-p *front-end-eval-thread*))
+      (bt:destroy-thread *front-end-eval-thread*))
+    (setf *front-end-eval-thread*
+	  (bt:make-thread
+	   (lambda ()
+	     (let ((res (js-eval cell-type contents)))
+	       (when (and cont-fact val-fact res)
+		 (delete! book cont-fact)
+		 (delete! book val-fact)
+		 (insert! book (list cell-id :contents contents))
+		 (insert! book (list cell-id :value res))
+		 (write-delta! book)
+		 (publish! :updates (update :book (notebook-name book) :cell cell-id :action 'eval-to-cell :contents contents :value res))))))))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/new-cell) ((book :notebook) (cell-type :keyword))

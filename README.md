@@ -10,13 +10,6 @@
 ######Just walk away for a little while 'till I get it running properly.
 
 ### TODO
-##### Bugs
-- System hangs forever if you send it into an infinite loop (duh). It should time out eventually, and send some notification of the fact.
-	- Should it? Are there situations where you'd legitimately want to run an infinite loop in cl-notebook? How would you handle that?
-	- Alternative to timing out: run evaluation in a separate thread (they'll be async anyhow) and give the user a keybinding to kill the current computation
-	- You'll need to somehow notify all front-ends that there's still a pending computation, and when one has been killed.
-	- Do the async thing. There may be very few legitimate use cases, but it's sometimes easy to do by accident, And it's rather annoying to have to restart the whole server because of this (especially since it sometimes fails to re-bind the old port).
-
 ##### Features (not necessarily in priority order)
 ######## Back-end
 - Export HTML files
@@ -26,6 +19,7 @@
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 
 ######## Front-end
+- Put together a good interface for the thread control thing. I'm thinking a status bar at the bottom with a kill-thread button that only appears when a thread is in progress
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
 	- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:
