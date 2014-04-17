@@ -243,14 +243,15 @@
 		      err)))))
 
     (defun result-values-template (result-vals)
-      (who-ps-html
-       (:ul :onclick "selectContents(event, this)" :class "result"
-	    (join (loop for v in result-vals
-		     collect (with-slots (type value) v
-			       (if (= type :error)
-				   (who-ps-html (:li :class "error" (condition-template value)))
-				   (who-ps-html (:li (:span :class "value" (dom-escape value))
-						     (:span :class "type" " :: " type))))))))))
+      (when result-vals
+	(who-ps-html
+	 (:ul :onclick "selectContents(event, this)" :class "result"
+	      (join (loop for v in result-vals
+		       collect (with-slots (type value) v
+				 (if (= type :error)
+				     (who-ps-html (:li :class "error" (condition-template value)))
+				     (who-ps-html (:li (:span :class "value" (dom-escape value))
+						       (:span :class "type" " :: " type)))))))))))
     
     (defun result-warnings-template (result-warnings)
       (who-ps-html

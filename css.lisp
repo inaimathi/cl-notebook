@@ -30,7 +30,7 @@
      (".main-controls button" :height 32px)
      (".main-controls select" :height 32px :font-size large :width 256px)
 
-     (.footer :position fixed :bottom 1% :z-index 100 :padding 2px :border-radius "5px"
+     (.footer :position fixed :bottom 1% :z-index 10 :padding 2px :border-radius "5px"
 	      :font-weight bold :color "rgba(255, 255, 255, .6)" 
 	      :width 80% :margin-left 10%
 	      :background-color "rgba(50, 50, 200, .4)" :border "2px solid rgba(50, 50, 200, .6)")
@@ -46,7 +46,7 @@
 
      (".cell .controls"
       :display none :position absolute :margin-top -41px :padding 5px
-      :background-color "#eee" :border "2px solid #ccc" :border-bottom none :border-radius "5px 5px 0px 0px")
+      :background-color "#eee" :border "2px solid #ccc" :border-bottom none :border-radius "5px 5px 0px 0px" :z-index 8)
      (".cell .controls button" :width 32px)
      (".cell .controls span"
       :height 19px :width 31px :font-size x-large :float left :margin-right 5px :color "#666"
