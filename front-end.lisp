@@ -11,6 +11,9 @@
       (:link :rel "stylesheet" :href "/static/css/codemirror.css")
       (:link :rel "stylesheet" :href "/static/css/dialog.css")
       (:link :rel "stylesheet" :href "/static/css/show-hint.css")
+
+      (:script :type "text/javascript" :src "/static/js/Blob.js")
+      (:script :type "text/javascript" :src "/static/js/FileSaver.js")
       
       (:script :type "text/javascript" :src "/js/base.js")
       (:script :type "text/javascript" :src "/js/templates.js")
@@ -180,6 +183,11 @@
        "&"))
 
     ;; basic AJAX stuff
+    (defun save-file (filename contents &optional (type "application/json;charset=utf-8"))
+      (let* ((content-string (if (string? contents) contents (obj->string contents)))
+	     (blob (new (-blob (list content-string) (create :type type)))))
+	(save-as blob filename)))
+
     (defun get-page-hash ()
       (let ((hash (@ window location hash))
 	    (res (create)))
@@ -451,21 +459,32 @@
 		(create :book (notebook-name *notebook*) 
 			:cell-order ord))))))
 
+(let ((new-content (chain document (create-element "span"))))
+	(setf (@ new-content inner-h-t-m-l) markup)
+	(loop while (@ new-content first-child)
+	   do (chain elem (append-child (@ new-content first-child)))))
+
 (define-closing-handler (js/book-actions.js :content-type "application/javascript") ()
   (ps 
     (defvar *book-actions*
       (create :export-html
 	      (lambda ()
-		(map (lambda (cell) 
-		       (case (@ cell 'cell-type)
-			 ("commonLisp" 
-			  (console.log "Lisp cell!"))
-			 ("clWho"
-			  (console.log (@ cell 'value 0 'values 0 'value)))
-			 (t
-			  (console.log "Unknown cell type!"))))
-		     (notebook-cells *notebook*))
-		(console.log (@ (by-selector "#notebook") inner-h-t-m-l)))
+		(save-file
+		 (+ (notebook-name *notebook*) ".html")
+		 (+ (who-ps-html (:h1 (notebook-name *notebook*)))
+		    (join 
+		     (map (lambda (cell) 
+			    (case (@ cell 'cell-type)
+			      ("commonLisp" 
+			       (let ((node (chain document (create-element "pre"))))
+				 (chain -code-mirror (run-mode (@ cell contents) "commonlisp" node))
+				 (@ node outer-h-t-m-l)))
+			      ("clWho"
+			       (@ cell 'value 0 'values 0 'value))
+			      (t
+			       (console.log "Unknown cell type!")
+			       "")))
+			  (notebook-cells *notebook*))))))
 	      :kill-book 
 	      #'kill-book))
     
