@@ -55,7 +55,9 @@ This project uses
 - [`nativesortable`](https://github.com/bgrins/nativesortable)
 - [Code Mirror](http://codemirror.net/)
 - [Genericons](http://genericons.com/)
+- [Blob.js](https://github.com/eligrey/Blob.js) and [FileSave.js](https://github.com/eligrey/FileSaver.js)
 - A spinner generated from [here](http://preloaders.net/en/letters_numbers_words)
+
 - [`anaphora`](http://www.cliki.net/anaphora)
 - [`alexandria`](http://common-lisp.net/project/alexandria/)
 - [`parenscript`](http://common-lisp.net/project/parenscript/)
