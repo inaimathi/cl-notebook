@@ -11,10 +11,12 @@
       (:link :rel "stylesheet" :href "/static/css/codemirror.css")
       (:link :rel "stylesheet" :href "/static/css/dialog.css")
       (:link :rel "stylesheet" :href "/static/css/show-hint.css")
-
+      
       (:script :type "text/javascript" :src "/js/base.js")
       (:script :type "text/javascript" :src "/js/templates.js")
+      (:script :type "text/javascript" :src "/js/ajax.js")
       (:script :type "text/javascript" :src "/js/main.js")
+      (:script :type "text/javascript" :src "/js/book-actions.js")
       (:script :type "text/javascript" :src "/static/js/native-sortable.js")
 
       (:script :type "text/javascript" :src "/static/js/codemirror.js")
@@ -40,7 +42,17 @@
 		     (:option :value "" "Choose book...")
 		     (loop for name being the hash-keys of *notebooks*
 			do (htm (:option :value name (str name)))))
-	    (:button :class "right" :onclick "killBook()" "- Kill Book"))
+	    (:select :id "book-actions"
+		     :onchange "runBookAction(this.value)"
+		     (:option :value "" "Stuff...")
+		     (:optgroup 
+		      :label "Export"
+		      (:option :value "export-html" "Export as HTML")
+		      (:option :value "export-lisp" "Export as .lisp")
+		      (:option :value "export-fact-base" "Export fact base"))
+		     (:optgroup
+		      :label "Delete"
+		      (:option :value "kill-book" "Kill Book"))))
       (:div :id "notebook")
       (:div :class "footer"
 	    (:span :class "notice" "Processing")
@@ -335,7 +347,7 @@
 		       collect (who-ps-html (:option :value ns ns))))))))
     
     (defun cell-markup-value-template (value)
-      (let ((val (@ value 0 :values 0 :value))) ;; TODO clean this shit up. Seriously.
+      (let ((val (@ value 0 'values 0 'value))) ;; TODO clean this shit up. Seriously.
 	(cond ((and (string? val) (= "" val))
 	       (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
 	      ((string? val) val)
@@ -390,6 +402,79 @@
 	       (join (map (lambda (cell) (cell-template cell))
 			  (notebook-cells notebook order)))))))))
 
+(define-closing-handler (js/ajax.js :content-type "application/javascript") ()
+  (ps (defun kill-thread ()
+	(post/json "/cl-notebook/system/kill-thread" (create)))
+      
+      (defun notebook/current (name)
+	(post/json "/cl-notebook/notebook/current" (create :book name)
+		   #'notebook!
+		   (lambda (res)
+		     ($aif (by-selector "#book-list option[selected='selected']")
+			   (chain it (remove-attribute :selected)))
+		     (setf (@ (by-selector "#book-list") selected-index) 0)
+		     (dom-set 
+		      (by-selector "#notebook")
+		      (who-ps-html (:h2 "Notebook '" name "' not found..."))))))
+
+      (defun new-book () 
+	(post/json "/cl-notebook/notebook/new" (create) 
+		   #'notebook!))
+
+      (defun kill-book ()
+	(post/json "/cl-notebook/notebook/kill" (create :book (notebook-name *notebook*))))
+
+      (defun rename-book (new-name)
+	(post/json "/cl-notebook/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)))
+
+      (defun server/notebook/eval-to-cell (cell-id contents)
+	(post/json "/cl-notebook/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
+
+      (defun new-cell (&optional (cell-type :common-lisp))
+	(post/json "/cl-notebook/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type)))
+      
+      (defun kill-cell (cell-id)
+	(post/json "/cl-notebook/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)))
+
+      (defun change-cell-type (cell-id new-type)
+	(post/json "/cl-notebook/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)))
+
+      (defun change-cell-noise (cell-id new-noise)
+	(post/json "/cl-notebook/notebook/change-cell-noise" (create :book (notebook-name *notebook*) :cell-id cell-id :new-noise new-noise)))
+
+      (defun reorder-cells (ev)
+	(prevent ev)
+	(let ((ord (obj->string
+		    (loop for elem in (by-selector-all ".cell")
+		       collect (parse-int (chain elem (get-attribute :cell-id)))))))
+	  (post "/cl-notebook/notebook/reorder-cells" 
+		(create :book (notebook-name *notebook*) 
+			:cell-order ord))))))
+
+(define-closing-handler (js/book-actions.js :content-type "application/javascript") ()
+  (ps 
+    (defvar *book-actions*
+      (create :export-html
+	      (lambda ()
+		(map (lambda (cell) 
+		       (case (@ cell 'cell-type)
+			 ("commonLisp" 
+			  (console.log "Lisp cell!"))
+			 ("clWho"
+			  (console.log (@ cell 'value 0 'values 0 'value)))
+			 (t
+			  (console.log "Unknown cell type!"))))
+		     (notebook-cells *notebook*))
+		(console.log (@ (by-selector "#notebook") inner-h-t-m-l)))
+	      :kill-book 
+	      #'kill-book))
+    
+    (defun run-book-action (action)
+      (setf (@ (by-selector "#book-actions") selected-index) 0)
+      ($aif (aref *book-actions* action)
+	    (funcall it)
+	    (console.log "NOT YET IMPLEMENTED: " action)))))
+
 (define-closing-handler (js/main.js :content-type "application/javascript") ()
   (ps
     ;; cl-notebook specific utility
@@ -441,66 +526,16 @@
       (dom-replace (by-cell-id (@ cell :id)) (cell-template cell))
       (mirror! cell))
 
-    ;; AJAX calls
-    (defun kill-thread ()
-      (post/json "/cl-notebook/system/kill-thread" (create)))
-    
-    (defun notebook/current (name)
-      (post/json "/cl-notebook/notebook/current" (create :book name)
-		 #'notebook!
-		 (lambda (res)
-		   ;; TODO - make this selection juggle work
-		   (map (lambda (opt) (chain opt (remove-attribute :selected)))
-			(by-selector-all "#book-list option"))
-		   (chain (by-selector "#book-list option") (set-attribute :selected "selected"))
-		   (dom-set 
-		    (by-selector "#notebook")
-		    (who-ps-html (:h2 "Notebook '" name "' not found..."))))))
-
-    (defun new-book () 
-      (post/json "/cl-notebook/notebook/new" (create) 
-		 #'notebook!))
-
-    (defun kill-book ()
-      (post/json "/cl-notebook/notebook/kill" (create :book (notebook-name *notebook*))))
-
-    (defun rename-book (new-name)
-      (post/json "/cl-notebook/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)))
-
-    (defun server/notebook/eval-to-cell (cell-id contents)
-      (post/json "/cl-notebook/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
-
-    (defun new-cell (&optional (cell-type :common-lisp))
-      (post/json "/cl-notebook/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type)))
-    
-    (defun kill-cell (cell-id)
-      (post/json "/cl-notebook/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)))
-
-    (defun change-cell-type (cell-id new-type)
-      (post/json "/cl-notebook/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)))
-
-    (defun change-cell-noise (cell-id new-noise)
-      (post/json "/cl-notebook/notebook/change-cell-noise" (create :book (notebook-name *notebook*) :cell-id cell-id :new-noise new-noise)))
-
-    (defun reorder-cells (ev)
-      (prevent ev)
-      (let ((ord (obj->string
-		  (loop for elem in (by-selector-all ".cell")
-		     collect (parse-int (chain elem (get-attribute :cell-id)))))))
-	(post "/cl-notebook/notebook/reorder-cells" 
-	      (create :book (notebook-name *notebook*) 
-		      :cell-order ord))))
-
     ;; CodeMirror and utilities
     (defun show-editor (cell-id)
       (show! (by-cell-id cell-id ".CodeMirror"))
-      (chain (aref (notebook-objects *notebook*) cell-id :editor) (focus)))
+      (chain (cell-mirror cell-id) (focus)))
 
     (defun hide-editor (cell-id)
       (hide! (by-cell-id cell-id ".CodeMirror")))
 
     (defun cell-mirror (cell-id)
-      (aref (notebook-objects *notebook*) cell-id :editor))
+      (@ (notebook-cell *notebook* cell-id) editor))
     
     (defun cell-editor-contents (cell-id)
       (chain (cell-mirror cell-id) (get-value)))
@@ -559,6 +594,9 @@
       (let ((obj (notebook-objects notebook)))
 	(map (lambda (id) (aref obj id)) order)))
 
+    (defun notebook-cell (notebook id)
+      (aref notebook :objects id))
+    
     (defun notebook! (raw &optional order)
       (let ((book (notebook-condense raw)))
 	(setf *notebook* 
@@ -603,14 +641,14 @@
 	'change-cell-type
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
-	    (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
+	    (let ((cell (notebook-cell *notebook* (@ res 'cell))))
 	      (setf (@ cell :value) (@ res :value)
 		    (@ cell 'cell-type) (@ res 'new-type))
 	      (dom-replace-cell cell))))
 	'change-cell-noise
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
-	    (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
+	    (let ((cell (notebook-cell *notebook* (@ res 'cell))))
 	      (setf (@ cell :noise) (@ res 'new-noise))
 	      (dom-replace-cell-value cell))))
 	'starting-eval
@@ -623,18 +661,16 @@
 	(lambda (res)
 	  (hide! (by-selector ".footer"))
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
-	    (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
+	    (let ((cell (notebook-cell *notebook* (@ res 'cell))))
 	      (setf (@ cell :contents) (@ res :contents)
 		    (@ cell :value) (@ res :value))
 	      (dom-replace-cell-value cell))))
 	'content-changed
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
-	    (let ((cell (aref (notebook-objects *notebook*) (@ res :cell))))
-	      (setf (@ cell :contents) (@ res :contents))
-	      ;; TODO - Figure out a way of doing this without clobbering undo stack
-	      ;; (dom-replace-cell-value cell)
-	      )))
+	    (let ((cell (notebook-cell *notebook* (@ res 'cell))))
+	      (setf (@ cell 'contents) (@ res 'contents))
+	      (chain cell editor (set-value (@ res 'contents))))))
 	'kill-cell 
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
@@ -654,11 +690,12 @@
 			(who-ps-html (:option :value name name)))))
 	'kill-book
 	(lambda (res)
+	  (console.log "KILLED BOOK" res)
 	  (let ((name (@ res 'book)))
 	    (chain (by-selector (+ "#book-list option[value='" name "']")) (remove))
 	    (when (equal (notebook-name *notebook*) name)
 	      (display-book 
-	       (chain (by-selector "#book-list option") 
+	       (chain (@ (by-selector-all "#book-list option") 1)
 		      (get-attribute :value))))))
 	'rename-book
 	(lambda (res)

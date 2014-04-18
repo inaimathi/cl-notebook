@@ -23,6 +23,8 @@ The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/)
 - Export .lisp files
 - Build using buildapp?
 - Branching for notebooks
+- Add flag to single out cells that have changed since last being successfully evaluated
+- Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 
 ######## Front-end

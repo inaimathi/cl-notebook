@@ -15,3 +15,7 @@
 	 ,@(loop for (key body) on key/body-pairs by #'cddr
 	      collect `((= key-code ,(if (stringp key) `(chain ,key (char-code-at 0)) key)) 
 			,body))))))
+
+(defpsmacro $aif (test if-true &optional if-false)
+  `(let ((it ,test))
+     (if it ,if-true ,if-false)))
