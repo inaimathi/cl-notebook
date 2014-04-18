@@ -51,8 +51,7 @@
 		     (:optgroup 
 		      :label "Export"
 		      (:option :value "export-html" "Export as HTML")
-		      (:option :value "export-lisp" "Export as .lisp")
-		      (:option :value "export-fact-base" "Export fact base"))
+		      (:option :value "export-lisp" "Export as .lisp"))
 		     (:optgroup
 		      :label "Delete"
 		      (:option :value "kill-book" "Kill Book"))))

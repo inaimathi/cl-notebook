@@ -19,13 +19,12 @@ The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/)
 ### TODO
 ##### Features (not necessarily in priority order)
 ######## Back-end
-- Export HTML files
-- Export .lisp files
 - Build using buildapp?
 - Branching for notebooks
 - Add flag to single out cells that have changed since last being successfully evaluated
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
+	- Maybe a separate cell type? It would contain just a package name change the package context of all cells coming after it (this would keep you from having to declare a new package in each cell, while allowing you to have a notebook span multiple packages)
 
 ######## Front-end
 - Really REALLY missing s-expression-based navigation. Look into it.
