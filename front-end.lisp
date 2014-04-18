@@ -354,7 +354,7 @@
 		       collect (who-ps-html (:option :value ns ns))))))))
     
     (defun cell-markup-value-template (value)
-      (let ((val (@ value 0 'values 0 'value))) ;; TODO clean this shit up. Seriously.
+      (let ((val (@ value 0 values 0 value))) ;; TODO clean this shit up. Seriously.
 	(cond ((and (string? val) (= "" val))
 	       (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
 	      ((string? val) val)
@@ -520,7 +520,7 @@
 				 (+ (@ node outer-h-t-m-l)
 				    (@ (by-cell-id (@ cell id) ".cell-value" "pre") outer-h-t-m-l))))
 			      ("clWho"
-			       (@ cell 'value 0 'values 0 'value))
+			       (@ cell value 0 values 0 value))
 			      (t
 			       (console.log "Unknown cell type!")
 			       "")))
