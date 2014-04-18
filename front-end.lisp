@@ -318,17 +318,17 @@
 	  when (@ res :values)
 	  collect (result-values-template (@ res :values)))))
 
-    (defun result-template (noise value)
-      (when value
+    (defun result-template (noise result)
+      (when result
 	(who-ps-html 
 	 (:pre
 	  (case noise
 	    (:verbose 
-	     (verbose-result-template value))
+	     (verbose-result-template result))
 	    (:terse
-	     (terse-result-template value))
+	     (terse-result-template result))
 	    (:silent "")
-	    (t (normal-result-template value)))))))
+	    (t (normal-result-template result)))))))
 
     (defun cell-controls-template (cell)
       (who-ps-html
@@ -353,32 +353,33 @@
 		       else
 		       collect (who-ps-html (:option :value ns ns))))))))
     
-    (defun cell-markup-value-template (value)
-      (let ((val (@ value 0 values 0 value))) ;; TODO clean this shit up. Seriously.
+    (defun cell-markup-result-template (result)
+      (let ((val (@ result 0 values 0 value)))
 	(cond ((and (string? val) (= "" val))
 	       (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
 	      ((string? val) val)
-	      (t (result-template :verbose value)))))
+	      (t (result-template :verbose result)))))
 
     (defun cell-markup-template (cell)
-      (with-slots (id contents value language) cell
+      (with-slots (id contents result language) cell
+	(console.log "CELL MARKUP TEMPLATE" result)
 	(who-ps-html 
 	 (:li :class "cell markup" :id (+ "cell-" id) :cell-id id 
 	      :ondragend "reorderCells(event)" :draggable "true"
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
 	      (:div :onclick (+ "showEditor(" id ")")
-		    (:span :class "cell-value" (cell-markup-value-template value)))))))
+		    (:span :class "cell-value" (cell-markup-result-template result)))))))
     
     (defun cell-code-template (cell)
-      (with-slots (id contents value language) cell
+      (with-slots (id contents result language) cell
 	(who-ps-html 
 	 (:li :class "cell code" :id (+ "cell-" id) :cell-id id 
 	      :ondragend "reorderCells(event)" :draggable "true"
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp")  contents)
 	      (:span :class "cell-value"
-		     (result-template (@ cell :noise) value))))))
+		     (result-template (@ cell :noise) result))))))
     
     (defun cell-template (cell)
       (if (markup-cell? cell)
@@ -458,11 +459,6 @@
 		(create :book (notebook-name *notebook*) 
 			:cell-order ord))))))
 
-(let ((new-content (chain document (create-element "span"))))
-	(setf (@ new-content inner-h-t-m-l) markup)
-	(loop while (@ new-content first-child)
-	   do (chain elem (append-child (@ new-content first-child)))))
-
 (define-closing-handler (js/book-actions.js :content-type "application/javascript") ()
   (ps 
     (defvar *book-actions*
@@ -520,7 +516,7 @@
 				 (+ (@ node outer-h-t-m-l)
 				    (@ (by-cell-id (@ cell id) ".cell-value" "pre") outer-h-t-m-l))))
 			      ("clWho"
-			       (@ cell value 0 values 0 value))
+			       (@ cell result 0 values 0 value))
 			      (t
 			       (console.log "Unknown cell type!")
 			       "")))
@@ -589,11 +585,11 @@
 	  (notebook/current book-name))))
 
     (defun dom-replace-cell-value (cell)
-      (let ((res (@ cell value result)))
+      (let ((res (@ cell result result)))
 	(dom-set (by-cell-id (@ cell :id) ".cell-value")
 		 (if (markup-cell? cell)
-		     (cell-markup-value-template (@ cell value))
-		     (result-template (@ cell noise) (@ cell value))))))
+		     (cell-markup-result-template (@ cell result))
+		     (result-template (@ cell noise) (@ cell result))))))
     
     (defun dom-replace-cell (cell)
       (dom-replace (by-cell-id (@ cell :id)) (cell-template cell))
@@ -702,7 +698,7 @@
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
 	    (let ((id (@ res 'cell-id))
-		  (cell (create 'type "cell" 'contents "" 'value ""
+		  (cell (create 'type "cell" 'contents "" 'result ""
 				'cell-type (@ res cell-type)
 				'id (@ res 'cell-id))))
 	      (setf (aref (notebook-objects *notebook*) id) cell)
@@ -715,7 +711,7 @@
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
 	    (let ((cell (notebook-cell *notebook* (@ res 'cell))))
-	      (setf (@ cell :value) (@ res :value)
+	      (setf (@ cell :result) (@ res :result)
 		    (@ cell 'cell-type) (@ res 'new-type))
 	      (dom-replace-cell cell))))
 	'change-cell-noise
@@ -736,7 +732,7 @@
 	  (when (equal (notebook-name *notebook*) (@ res 'book))
 	    (let ((cell (notebook-cell *notebook* (@ res 'cell))))
 	      (setf (@ cell :contents) (@ res :contents)
-		    (@ cell :value) (@ res :value))
+		    (@ cell :result) (@ res :result))
 	      (dom-replace-cell-value cell))))
 	'content-changed
 	(lambda (res)

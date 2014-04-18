@@ -7,7 +7,7 @@
 (defvar *front-end-eval-thread* nil)
 
 (defmethod new-cell! ((book fact-base) &key (cell-type :common-lisp))
-  (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:contents "") (:value ""))))
+  (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:contents "") (:result ""))))
 
 (defmethod remove-notebook! (name)
   (remhash name *notebooks*))
@@ -116,7 +116,7 @@
 
 (define-json-handler (cl-notebook/notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
   (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
-	(val-fact (first (lookup book :a cell-id :b :value)))
+	(val-fact (first (lookup book :a cell-id :b :result)))
 	(cell-type (caddar (lookup book :a cell-id :b :cell-type))))
     (delete! book cont-fact)
     (insert! book (list cell-id :contents contents))
@@ -131,9 +131,9 @@
 	     (let ((res (js-eval cell-type contents)))
 	       (when (and cont-fact val-fact res)
 		 (delete! book val-fact)
-		 (insert! book (list cell-id :value res))
+		 (insert! book (list cell-id :result res))
 		 (write-delta! book)
-		 (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'finished-eval :contents contents :value res))))))))
+		 (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'finished-eval :contents contents :result res))))))))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/new-cell) ((book :notebook) (cell-type :keyword))
@@ -158,16 +158,16 @@
 
 (define-json-handler (cl-notebook/notebook/change-cell-type) ((book :notebook) (cell-id :integer) (new-type :keyword))
   (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
-	(val-fact (first (lookup book :a cell-id :b :value)))
+	(val-fact (first (lookup book :a cell-id :b :result)))
 	(tp-fact (first (lookup book :a cell-id :b :cell-type))))
     (unless (eq (third tp-fact) new-type)
       (let ((res (js-eval new-type (third cont-fact))))
 	(delete! book tp-fact)
 	(delete! book val-fact)
 	(insert! book (list cell-id :cell-type new-type))
-	(insert! book (list cell-id :value res))
+	(insert! book (list cell-id :result res))
 	(write-delta! book)
-	(publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'change-cell-type :new-type new-type :value res)))))
+	(publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'change-cell-type :new-type new-type :result res)))))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/change-cell-noise) ((book :notebook) (cell-id :integer) (new-noise :keyword))
