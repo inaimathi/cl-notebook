@@ -14,11 +14,11 @@
 
 You need to install the [`house` server](https://github.com/Inaimathi/house), the [`fact-base` triple-store](https://github.com/Inaimathi/fact-base) and [this repo](https://github.com/Inaimathi/cl-notebook) by cloning them.
 
-The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/), so you should then be able to hop into a lisp and do `(ql:quickload :cl-notebook)`.
+The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/), so you should then be able to hop into a lisp and do `(ql:quickload :cl-notebook)`, followed by `(cl-notebook:main)`. That'll start a server listening.
 
 ### TODO
 ##### Bugs
-- Newly spawned markup cells don't get their editors hidden on esc
+- Newly spawned markup cells don't get their editors hidden on <esc>
 - The eval-on-load thing is going to need to be re-thought.
 	- What happens when we hit an infinite loop thing?
 	- What happens when we eval a book that has no ordering record?

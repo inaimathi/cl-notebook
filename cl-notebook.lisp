@@ -3,11 +3,14 @@
 ; Basic server-side definitions and handlers
 ;;;;; Read/eval-related
 (defmethod front-end-eval (cell-language cell-type (contents string))
-  "A cell that fits no other description is self-evaluating"
+  "A cell that fits no other description returns a"
   (list
    (alist 
     :stdout "" :warnings nil ; Without these, :json encodes this as an array rather than an object
-    :values (list (alist :type "string" :value contents)))))
+    :values (list (alist :type 'error :value 
+			 (alist 'condition-type "UNKNOWN-LANGUAGE:TYPE-COMBINATION" 
+				'cell-language cell-language
+				'cell-type cell-type))))))
 
 (defmethod front-end-eval ((cell-language (eql :common-lisp)) cell-type (contents string))
   "A Common-Lisp:Code cell is just evaluated, capturing all warnings, stdout emissions and errors."

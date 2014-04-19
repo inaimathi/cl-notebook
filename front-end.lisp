@@ -338,7 +338,7 @@
 		      :onclick (+ "killCell(" (@ cell id) ")") "  ")
 	     (:select 
 	      :onchange (+ "changeCellType(" (@ cell id) ", this.value)")
-	      (join (loop for tp in (list :markup :code)
+	      (join (loop for tp in (list :markup :code :tests)
 		       if (= (@ cell cell-type) tp)
 		       collect (who-ps-html (:option :value tp :selected "selected" tp))
 		       else collect (who-ps-html (:option :value tp tp)))))
