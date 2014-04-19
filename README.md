@@ -19,9 +19,6 @@ The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/)
 ### TODO
 ##### Bugs
 - Newly spawned markup cells don't get their editors hidden on <esc>
-- The eval-on-load thing is going to need to be re-thought.
-	- What happens when we hit an infinite loop thing?
-	- What happens when we eval a book that has no ordering record?
 
 ##### Features (not necessarily in priority order)
 ######## Back-end

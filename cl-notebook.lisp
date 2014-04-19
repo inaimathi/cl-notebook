@@ -31,11 +31,18 @@
 	    (error (e)
 	      (list (alist :type 'error :value (front-end-error nil e))))))))
 
-;; (defmethod eval-notebook-code ((book fact-base))
-;;   (loop for cell-id in (caddar (lookup book :b :cell-order))
-;;      when (and (lookup book :a cell-id :b :cell-language :c :common-lisp)
-;; 	       (lookup book :a cell-id :b :cell-type :c :code))
-;;      do (js-eval :common-lisp (caddar (lookup book :a cell-id :b :contents)))))
+(defmethod eval-notebook-code ((book fact-base))
+  (let ((ids (or (caddar (lookup book :b :cell-order))
+		 (mapcar #'first (lookup book :b :cell :c nil)))))
+    (loop for cell-id in ids
+       when (and (lookup book :a cell-id :b :cell-language :c :common-lisp)
+		 (lookup book :a cell-id :b :cell-type :c :code))
+       do (handler-case
+	      (bt:with-timeout (.1)
+		(front-end-eval 
+		 :common-lisp :code 
+		 (caddar (lookup book :a cell-id :b :contents))))
+	    (sb-ext:timeout () nil)))))
 
 (defmethod empty-expression? ((contents string))
   (when (cl-ppcre:scan "^[ \n\t\r]*$" contents) t))
@@ -105,7 +112,7 @@
 
 (defmethod load-notebook! ((name pathname))
   (let ((book (load! name :indices *default-indices*)))
-;;    (eval-notebook-code book)
+    (eval-notebook-code book)
     (setf (gethash (notebook-name book) *notebooks*) book)))
 
 (defun get-notebook (name)
