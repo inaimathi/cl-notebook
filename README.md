@@ -25,6 +25,7 @@ The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/)
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 	- Maybe a separate cell type? It would contain just a package name change the package context of all cells coming after it (this would keep you from having to declare a new package in each cell, while allowing you to have a notebook span multiple packages)
+	- Each book has a package (and system) named after it?
 
 ######## Front-end
 - Really REALLY missing s-expression-based navigation. Look into it.

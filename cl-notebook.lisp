@@ -1,6 +1,59 @@
 (in-package #:cl-notebook)
 
 ; Basic server-side definitions and handlers
+;;;;; Read/eval-related
+;; (defmethod front-end-eval (cell-language cell-type (contents string))
+;;   "A cell that fits no other description is self-evaluating"
+;;   (list
+;;    (alist 
+;;     :stdout "" :warnings nil ; Without these, :json encodes this as an array rather than an object
+;;     :values (list (alist :type "string" :value contents)))))
+
+;; (defmethod front-end-eval ((cell-language (eql :common-lisp)) cell-type (contents string))
+;;   "A Common-Lisp:Code cell is just evaluated, capturing all warnings, stdout emissions and errors."
+;;   (capturing-eval contents))
+
+;; (defmethod front-end-eval ((cell-language (eql :common-lisp)) (cell-type (eql :markup)) (contents string))
+;;   "A Common-Lisp:Markup cell is evaluated as a :cl-who tree"
+;;   (list
+;;    (alist :stdout "" :warnings nil ; Without these, :json encodes this as an array rather than an object
+;; 	  :values
+;; 	  (handler-case
+;; 	      (list
+;; 	       (alist 
+;; 		:type "string"
+;; 		:value (eval 
+;; 			`(with-html-output-to-string (s) 
+;; 			   ,@(read-all contents)))))
+;; 	    (error (e)
+;; 	      (list (alist :type 'error :value (front-end-error nil e))))))))
+
+
+
+
+(defmethod js-eval (cell-type (contents string))
+  (list 
+   (alist 
+    :stdout "" :warnings nil 
+    :values (list (alist :type "string" :value contents)))))
+
+(defmethod js-eval ((cell-type (eql :cl-who)) (contents string))
+  (list
+   (alist :stdout "" :warnings nil ; Without these, :json encodes this as an array rather than an object
+	  :values
+	  (handler-case
+	      (list
+	       (alist 
+		:type "string"
+		:value (eval 
+			`(with-html-output-to-string (s) 
+			   ,@(read-all contents)))))
+	    (error (e)
+	      (list (alist :type 'error :value (front-end-error nil e))))))))
+
+(defmethod js-eval ((cell-type (eql :common-lisp)) (contents string))
+  (capturing-eval contents))
+
 ;;;;; Model-related
 (defvar *notebooks* 
   (make-hash-table :test 'equal))
@@ -56,30 +109,6 @@
 
 (defun get-notebook (name)
   (gethash name *notebooks*))
-
-;;;;; Read/eval-related
-(defmethod js-eval (cell-type (contents string))
-  (list 
-   (alist 
-    :stdout "" :warnings nil 
-    :values (list (alist :type "string" :value contents)))))
-
-(defmethod js-eval ((cell-type (eql :cl-who)) (contents string))
-  (list
-   (alist :stdout "" :warnings nil ; Without these, :json encodes this as an array rather than an object
-	  :values
-	  (handler-case
-	      (list
-	       (alist 
-		:type "string"
-		:value (eval 
-			`(with-html-output-to-string (s) 
-			   ,@(read-all contents)))))
-	    (error (e)
-	      (list (alist :type 'error :value (front-end-error nil e))))))))
-
-(defmethod js-eval ((cell-type (eql :common-lisp)) (contents string))
-  (capturing-eval contents))
 
 ;;;;; HTTP Handlers
 (define-json-handler (cl-notebook/system/list-books) ()
