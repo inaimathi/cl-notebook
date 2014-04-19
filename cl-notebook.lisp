@@ -2,42 +2,19 @@
 
 ; Basic server-side definitions and handlers
 ;;;;; Read/eval-related
-;; (defmethod front-end-eval (cell-language cell-type (contents string))
-;;   "A cell that fits no other description is self-evaluating"
-;;   (list
-;;    (alist 
-;;     :stdout "" :warnings nil ; Without these, :json encodes this as an array rather than an object
-;;     :values (list (alist :type "string" :value contents)))))
-
-;; (defmethod front-end-eval ((cell-language (eql :common-lisp)) cell-type (contents string))
-;;   "A Common-Lisp:Code cell is just evaluated, capturing all warnings, stdout emissions and errors."
-;;   (capturing-eval contents))
-
-;; (defmethod front-end-eval ((cell-language (eql :common-lisp)) (cell-type (eql :markup)) (contents string))
-;;   "A Common-Lisp:Markup cell is evaluated as a :cl-who tree"
-;;   (list
-;;    (alist :stdout "" :warnings nil ; Without these, :json encodes this as an array rather than an object
-;; 	  :values
-;; 	  (handler-case
-;; 	      (list
-;; 	       (alist 
-;; 		:type "string"
-;; 		:value (eval 
-;; 			`(with-html-output-to-string (s) 
-;; 			   ,@(read-all contents)))))
-;; 	    (error (e)
-;; 	      (list (alist :type 'error :value (front-end-error nil e))))))))
-
-
-
-
-(defmethod js-eval (cell-type (contents string))
-  (list 
+(defmethod front-end-eval (cell-language cell-type (contents string))
+  "A cell that fits no other description is self-evaluating"
+  (list
    (alist 
-    :stdout "" :warnings nil 
+    :stdout "" :warnings nil ; Without these, :json encodes this as an array rather than an object
     :values (list (alist :type "string" :value contents)))))
 
-(defmethod js-eval ((cell-type (eql :cl-who)) (contents string))
+(defmethod front-end-eval ((cell-language (eql :common-lisp)) cell-type (contents string))
+  "A Common-Lisp:Code cell is just evaluated, capturing all warnings, stdout emissions and errors."
+  (capturing-eval contents))
+
+(defmethod front-end-eval ((cell-language (eql :common-lisp)) (cell-type (eql :markup)) (contents string))
+  "A Common-Lisp:Markup cell is evaluated as a :cl-who tree"
   (list
    (alist :stdout "" :warnings nil ; Without these, :json encodes this as an array rather than an object
 	  :values
@@ -51,16 +28,42 @@
 	    (error (e)
 	      (list (alist :type 'error :value (front-end-error nil e))))))))
 
-(defmethod js-eval ((cell-type (eql :common-lisp)) (contents string))
-  (capturing-eval contents))
+;; (defmethod eval-notebook-code ((book fact-base))
+;;   (loop for cell-id in (caddar (lookup book :b :cell-order))
+;;      when (and (lookup book :a cell-id :b :cell-language :c :common-lisp)
+;; 	       (lookup book :a cell-id :b :cell-type :c :code))
+;;      do (js-eval :common-lisp (caddar (lookup book :a cell-id :b :contents)))))
+
+(defmethod empty-expression? ((contents string))
+  (when (cl-ppcre:scan "^[ \n\t\r]*$" contents) t))
+
+(defmethod eval-cell ((book fact-base) cell-id (contents string) val-fact cell-language cell-type)
+  (unless (empty-expression? contents)
+    (when (and (bt:threadp *front-end-eval-thread*)
+	       (bt:thread-alive-p *front-end-eval-thread*))
+      (bt:destroy-thread *front-end-eval-thread*))
+    (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'starting-eval))
+    (setf *front-end-eval-thread*
+	  (bt:make-thread
+	   (lambda ()
+	     (let ((res (front-end-eval cell-language cell-type contents)))
+	       (when (and val-fact res)
+		 (delete! book val-fact)
+		 (insert! book (list cell-id :result res))
+		 (write-delta! book))
+	       (publish! :cl-notebook-updates 
+			 (update :book (notebook-name book) 
+				 :cell cell-id 
+				 :action 'finished-eval 
+				 :contents contents 
+				 :result res))))))))
 
 ;;;;; Model-related
-(defvar *notebooks* 
-  (make-hash-table :test 'equal))
+(defvar *notebooks* (make-hash-table :test 'equal))
 (defvar *front-end-eval-thread* nil)
 
-(defmethod new-cell! ((book fact-base) &key (cell-type :common-lisp))
-  (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:contents "") (:result ""))))
+(defmethod new-cell! ((book fact-base) &key (cell-language :common-lisp) (cell-type :code))
+  (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:cell-language ,cell-language) (:contents "") (:result ""))))
 
 (defmethod remove-notebook! (name)
   (remhash name *notebooks*))
@@ -83,11 +86,6 @@
       (setf (gethash name *notebooks*) book))
     book))
 
-(defmethod eval-notebook-code ((book fact-base))
-  (loop for cell-id in (caddar (lookup book :b :cell-order))
-     when (lookup book :a cell-id :b :cell-type :c :common-lisp)
-     do (js-eval :common-lisp (caddar (lookup book :a cell-id :b :contents)))))
-
 (defmethod make-unique-name-in ((dir pathname) (base-name string))
   (assert (cl-fad:directory-pathname-p dir))
   (let ((name (merge-pathnames base-name dir)))
@@ -104,7 +102,7 @@
 
 (defmethod load-notebook! ((name pathname))
   (let ((book (load! name :indices *default-indices*)))
-    (eval-notebook-code book)
+;;    (eval-notebook-code book)
     (setf (gethash (notebook-name book) *notebooks*) book)))
 
 (defun get-notebook (name)
@@ -117,8 +115,8 @@
 (define-json-handler (cl-notebook/system/kill-thread) ()
   (when (and (bt:threadp *front-end-eval-thread*)
 	     (bt:thread-alive-p *front-end-eval-thread*))
-    (bt:destroy-thread *front-end-eval-thread*)
-    (publish! :cl-notebook-updates (update :action 'killed-eval)))
+    (bt:destroy-thread *front-end-eval-thread*))
+  (publish! :cl-notebook-updates (update :action 'killed-eval))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/current) ((book :notebook))
@@ -146,29 +144,49 @@
 (define-json-handler (cl-notebook/notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
   (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
 	(val-fact (first (lookup book :a cell-id :b :result)))
+	(cell-lang (caddar (lookup book :a cell-id :b :cell-language)))
 	(cell-type (caddar (lookup book :a cell-id :b :cell-type))))
     (delete! book cont-fact)
     (insert! book (list cell-id :contents contents))
     (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'content-changed :contents contents))
-    (when (and (bt:threadp *front-end-eval-thread*)
-	       (bt:thread-alive-p *front-end-eval-thread*))
-      (bt:destroy-thread *front-end-eval-thread*))
-    (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'starting-eval))
-    (setf *front-end-eval-thread*
-	  (bt:make-thread
-	   (lambda ()
-	     (let ((res (js-eval cell-type contents)))
-	       (when (and cont-fact val-fact res)
-		 (delete! book val-fact)
-		 (insert! book (list cell-id :result res))
-		 (write-delta! book)
-		 (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'finished-eval :contents contents :result res))))))))
+    (eval-cell book cell-id contents val-fact cell-lang cell-type))
   :ok)
 
-(define-json-handler (cl-notebook/notebook/new-cell) ((book :notebook) (cell-type :keyword))
-  (let ((cell-id (new-cell! book :cell-type cell-type)))
+(define-json-handler (cl-notebook/notebook/change-cell-language) ((book :notebook) (cell-id :integer) (new-language :keyword))
+  (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
+	(val-fact (first (lookup book :a cell-id :b :result)))	
+	(cell-type (caddar (lookup book :a cell-id :b :cell-type)))
+	(lang-fact (first (lookup book :a cell-id :b :cell-language))))
+    (unless (eq (third lang-fact) new-language)
+      (delete! book lang-fact)
+      (insert! book (list cell-id :cell-type new-language))
+      (publish! 
+       :cl-notebook-updates 
+       (update :book (notebook-name book) :cell cell-id :action 'change-cell-language :new-language new-language))
+      (eval-cell book cell-id (third cont-fact) val-fact new-language cell-type)))
+  :ok)
+
+(define-json-handler (cl-notebook/notebook/change-cell-type) ((book :notebook) (cell-id :integer) (new-type :keyword))
+  (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
+	(val-fact (first (lookup book :a cell-id :b :result)))
+	(cell-lang (caddar (lookup book :a cell-id :b :cell-language)))
+	(tp-fact (first (lookup book :a cell-id :b :cell-type))))
+    (unless (eq (third tp-fact) new-type)
+      (delete! book tp-fact)
+      (insert! book (list cell-id :cell-type new-type))
+      (publish! 
+       :cl-notebook-updates 
+       (update :book (notebook-name book) :cell cell-id :action 'change-cell-type :new-type new-type))
+      (eval-cell book cell-id (third cont-fact) val-fact cell-lang new-type)))
+  :ok)
+
+(define-json-handler (cl-notebook/notebook/new-cell) ((book :notebook) (cell-language :keyword) (cell-type :keyword))
+  (let ((cell-id (new-cell! book :cell-type cell-type :cell-language cell-language)))
     (write-delta! book)
-    (publish! :cl-notebook-updates (update :book (notebook-name book) :action 'new-cell :cell-id cell-id :cell-type cell-type)))
+    (publish! 
+     :cl-notebook-updates 
+     (update :book (notebook-name book) :action 'new-cell :cell-id cell-id 
+	     :cell-type cell-type :cell-language cell-language)))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/reorder-cells) ((book :notebook) (cell-order :json))
@@ -183,20 +201,6 @@
   (loop for f in (lookup book :a cell-id) do (delete! book f))
   (write-delta! book)
   (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'kill-cell))
-  :ok)
-
-(define-json-handler (cl-notebook/notebook/change-cell-type) ((book :notebook) (cell-id :integer) (new-type :keyword))
-  (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
-	(val-fact (first (lookup book :a cell-id :b :result)))
-	(tp-fact (first (lookup book :a cell-id :b :cell-type))))
-    (unless (eq (third tp-fact) new-type)
-      (let ((res (js-eval new-type (third cont-fact))))
-	(delete! book tp-fact)
-	(delete! book val-fact)
-	(insert! book (list cell-id :cell-type new-type))
-	(insert! book (list cell-id :result res))
-	(write-delta! book)
-	(publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'change-cell-type :new-type new-type :result res)))))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/change-cell-noise) ((book :notebook) (cell-id :integer) (new-noise :keyword))
