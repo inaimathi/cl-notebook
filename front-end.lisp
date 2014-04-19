@@ -516,21 +516,18 @@
 .condition-contents .condition-property .label { display: inline-block; margin-right: 5px; font-size: small; }
 -->")
 		   (:h1 (notebook-name *notebook*)))
-		    (join 
-		     (map (lambda (cell) 
-			    (cond ((and (= 'common-lisp (@ cell cell-language))
-					(= 'code (@ cell cell-type)))
-				   (let ((node (chain document (create-element "pre"))))
-				     (chain node (set-attribute :class "cm-s-default"))
-				     (chain -code-mirror (run-mode (@ cell contents) "commonlisp" node))
-				     (+ (@ node outer-h-t-m-l)
-					(@ (by-cell-id (@ cell id) ".cell-value" "pre") outer-h-t-m-l))))
-				  ((and (= 'common-lisp (@ cell cell-language))
-					(= 'markup (@ cell cell-type)))
-				   (@ cell result 0 values 0 value))
-				  (t
-				   (console.log "Unknown cell type!" cell))))
-			  (notebook-cells *notebook*))))
+		  (join 
+		   (map (lambda (cell)
+			  (if (= 'markup (@ cell cell-type))
+			      (@ cell result 0 values 0 value)
+			      (let ((node (chain document (create-element "pre"))))
+				(chain node (set-attribute :class "cm-s-default"))
+				(chain -code-mirror (run-mode (@ cell contents) "commonlisp" node))
+				(+ (@ node outer-h-t-m-l)
+				   ($aif (by-cell-id (@ cell id) ".cell-value" "pre")
+					 (@ it outer-h-t-m-l)
+					 "")))))
+			(notebook-cells *notebook*))))
 		 "text/html;charset=utf-8"))
 	      :export-lisp
 	      (lambda ()
