@@ -360,12 +360,13 @@
 		       collect (who-ps-html (:option :value ns ns))))))))
     
     (defun cell-markup-result-template (result)
-      (when result
-	(let ((val (@ result 0 values 0 value)))
-	  (cond ((and (string? val) (= "" val))
-		 (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
-		((string? val) val)
-		(t (result-template :verbose result))))))
+      (if result
+	  (let ((val (@ result 0 values 0 value)))
+	    (cond ((and (string? val) (= "" val))
+		   (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
+		  ((string? val) val)
+		  (t (result-template :verbose result))))
+	  (who-ps-html (:p (:b "[[EMPTY CELL]]")))))
 
     (defun cell-markup-template (cell)
       (with-slots (id contents result language) cell
@@ -409,12 +410,12 @@
 	     (:input :class "text" :onchange "renameBook(this.value)" :value name)
 	     (:h1 :onclick "showTitleInput()" name))))
 
-    (defun notebook-template (notebook &optional order)
+    (defun notebook-template (notebook)
       (+ (notebook-title-template (notebook-name notebook))
 	 (who-ps-html
 	  (:ul :class "cells"
 	       (join (map (lambda (cell) (cell-template cell))
-			  (notebook-cells notebook order)))))))))
+			  (notebook-cells notebook)))))))))
 
 (define-closing-handler (js/ajax.js :content-type "application/javascript") ()
   (ps (defun kill-thread ()
@@ -451,7 +452,6 @@
 	(post/json "/cl-notebook/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)))
 
       (defun change-cell-type (cell-id new-type)
-	(console.log "CHANGING CELL TYPE" cell-id new-type)
 	(post/json "/cl-notebook/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)))
       
       (defun change-cell-language (cell-id new-language)
@@ -655,26 +655,25 @@
     (defun notebook-objects (notebook) (@ notebook objects))
 
     (defun notebook-cell-ordering (notebook)
-      (let* ((ord (new (-array)))
-	     (obj (notebook-objects notebook))
-	     (in-obj? (lambda (id) (in id obj)))
-	     (implicit (new (-array))))
-	(loop for (a b c) in (notebook-facts notebook)
-	   when (equal b "cellOrder") do (setf ord c)
-	   when (and (equal b :cell) (null c))
-	   do (chain implicit (push a)))
-	(append-new 
-	 (filter in-obj? ord) 
-	 (chain implicit (reverse)))))
+      (let ((ord (loop for (a b c) in (notebook-facts notebook)
+		    when (= b 'cell-order) do (return c)))
+	    (all-cell-ids 
+	     (loop for (a b c) in (notebook-facts notebook) 
+		when (and (= b 'cell) (null c)) collect a)))
+	(if ord
+	    (append-new ord all-cell-ids)
+	    all-cell-ids)))
 
-    (defun notebook-cells (notebook &optional (order (notebook-cell-ordering notebook)))
-      (let ((obj (notebook-objects notebook)))
-	(map (lambda (id) (aref obj id)) order)))
+    (defun notebook-cells (notebook)
+      (let ((obj (notebook-objects notebook))
+	    (ord (notebook-cell-ordering notebook)))
+	(loop for id in ord for res = (aref obj id)
+	   when res collect res)))
 
     (defun notebook-cell (notebook id)
       (aref notebook :objects id))
     
-    (defun notebook! (raw &optional order)
+    (defun notebook! (raw)
       (let ((book (notebook-condense raw)))
 	(setf *notebook* 
 	      (create :facts raw :objects book
@@ -683,7 +682,7 @@
 			       do (return c))))
 	(dom-set 
 	 (by-selector "#notebook")
-	 (notebook-template *notebook* order))
+	 (notebook-template *notebook*))
 	(hide! (by-selector ".book-title input"))
 	(nativesortable (by-selector "ul.cells"))
 	(set-page-hash (create :book (notebook-name *notebook*)))
@@ -711,6 +710,7 @@
 				'cell-language (@ res cell-language)
 				'id (@ res 'cell-id))))
 	      (setf (aref (notebook-objects *notebook*) id) cell)
+	      (chain (notebook-facts *notebook*) (push (list id 'cell nil)))
 	      (dom-append (by-selector ".cells")
 			  (cell-template cell))
 	      (mirror! cell)
@@ -718,7 +718,6 @@
 	      (show-editor id))))
 	'change-cell-type
 	(lambda (res)
-	  (console.log "CHANGING CELL TYPE" res)
 	  (when (equal (notebook-name *notebook*) (@ res book))
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
 	      (setf (@ cell cell-type) (@ res new-type))

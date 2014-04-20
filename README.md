@@ -18,7 +18,6 @@ The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/)
 
 ### TODO
 ##### Bugs
-- Newly spawned markup cells don't get their editors hidden on <esc>
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
