@@ -6,15 +6,28 @@
 >
 > *with apologies to Neil Gaiman*
 
+## This is now a pre-beta
+##### Use it at your own risk, and expect explosions
+
 ### Dependencies
 
 `alexandria`, `anaphora`, `cl-fad`, `closer-mop`, `optima`, `local-time`, `fact-base`, `house`
 
 ### Usage
 
+**Either**
+
+Download [this](http://173.255.226.138/cl-notebook-binaries/), run it (if you downloaded the tarball instead of the naked binary, unpack it first, obviously)
+
+**Or**
+
 You need to install the [`house` server](https://github.com/Inaimathi/house), the [`fact-base` triple-store](https://github.com/Inaimathi/fact-base) and [this repo](https://github.com/Inaimathi/cl-notebook) by cloning them.
 
 The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/), so you should then be able to hop into a lisp and do `(ql:quickload :cl-notebook)`, followed by `(cl-notebook:main)`. That'll start a server listening.
+
+**Then**
+
+Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 ### TODO
 ##### Bugs
