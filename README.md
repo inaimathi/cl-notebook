@@ -23,6 +23,8 @@ The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/)
 ######## Back-end
 - Add flag to single out cells that have changed since last being successfully evaluated
 	- Such cells should be updated at load time rather than just re-evaluated
+	- Think a bit more about this. If the given cell randomly generates some content, it'll actually be changed on each load.
+	- Should we just *update* all cells at load time rather than just re-evaluating them?
 - Build using buildapp?
 - Branching for notebooks
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
@@ -31,7 +33,6 @@ The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/)
 	- Each book has a package (and system) named after it?
 
 ######## Front-end
-- Debounce
 - Use debounce to periodically save cell contents on keydown
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently

@@ -115,6 +115,16 @@
     (defun dom-ready (callback)
       (chain document (add-event-listener "DOMContentLoaded" callback)))
 
+    (defun debounce (fn wait)
+      (let ((last-run) (args) (context))
+	(lambda ()
+	  (setf context this
+		args arguments)
+	  (let ((timestamp (new (-date))))
+	    (when (or (not last-run) (> (- timestamp last-run) wait))
+	      (setf last-run timestamp)
+	      (chain fn (apply context args)))))))
+
     (defun prevent (ev) (chain ev (prevent-default)))
 
     (defun scroll-to-elem (elem)
