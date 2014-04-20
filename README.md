@@ -21,15 +21,18 @@ The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/)
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
+- Add flag to single out cells that have changed since last being successfully evaluated
+	- Such cells should be updated at load time rather than just re-evaluated
 - Build using buildapp?
 - Branching for notebooks
-- Add flag to single out cells that have changed since last being successfully evaluated
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 	- Maybe a separate cell type? It would contain just a package name change the package context of all cells coming after it (this would keep you from having to declare a new package in each cell, while allowing you to have a notebook span multiple packages)
 	- Each book has a package (and system) named after it?
 
 ######## Front-end
+- Debounce
+- Use debounce to periodically save cell contents on keydown
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
 	- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:
