@@ -452,14 +452,18 @@
       (defun rename-book (new-name)
 	(post/json "/cl-notebook/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)))
 
-      (defun server/notebook/eval-to-cell (cell-id contents)
+      (defun notebook/eval-to-cell (cell-id contents)
 	(post/json "/cl-notebook/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
 
       (defun new-cell (&optional (cell-language :common-lisp) (cell-type :code))
 	(post/json "/cl-notebook/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type :cell-language cell-language)))
-      
+
       (defun kill-cell (cell-id)
 	(post/json "/cl-notebook/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)))
+      
+      (defun change-cell-content (cell-id contents)
+	;; TODO actual content save every so often
+	(console.log "SAVING CONTENT" cell-id contents))
 
       (defun change-cell-type (cell-id new-type)
 	(post/json "/cl-notebook/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)))
@@ -534,9 +538,11 @@
 				(chain node (set-attribute :class "cm-s-default"))
 				(chain -code-mirror (run-mode (@ cell contents) "commonlisp" node))
 				(+ (@ node outer-h-t-m-l)
-				   ($aif (by-cell-id (@ cell id) ".cell-value" "pre")
-					 (@ it outer-h-t-m-l)
-					 "")))))
+				   (if (not (= 'silent (@ cell noise)))
+				       ($aif (by-cell-id (@ cell id) ".cell-value" "pre")
+					     (@ it outer-h-t-m-l)
+					     "")
+				       "")))))
 			(notebook-cells *notebook*))))
 		 "text/html;charset=utf-8"))
 	      :export-lisp
@@ -638,12 +644,19 @@
 		       "viewportMargin" -infinity
 		       "extraKeys" (create "Ctrl-Enter"
 					   (lambda (cmd)
-					     (server/notebook/eval-to-cell
+					     (notebook/eval-to-cell
 					      cell-id (cell-editor-contents cell-id)))
 					   "Ctrl-Space" "autocomplete"))))
 	(setf 
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
 	 (@ cell editor) mirror)
+	(chain 
+	 mirror (on :change 
+		    (debounce
+		     (lambda (mirror change)
+		       (when (= "+input" (@ change origin))
+			 (change-cell-content cell-id (cell-editor-contents cell-id))))
+		     4000)))
 	mirror))
 
     ;; Notebook-related
@@ -762,8 +775,9 @@
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res book))
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
-	      (setf (@ cell contents) (@ res contents))
-	      (chain cell editor (set-value (@ res contents))))))
+	      (unless (= (@ cell contents) (@ res contents))
+		(setf (@ cell contents) (@ res contents))
+		(chain cell editor (set-value (@ res contents)))))))
 	'kill-cell 
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res book))

@@ -34,6 +34,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
+- If there are no existing notebooks, we should write a default scratch book with some initial instructions
 - Add flag to single out cells that have changed since last being successfully evaluated
 	- Such cells should be updated at load time rather than just re-evaluated
 	- Think a bit more about this. If the given cell randomly generates some content, it'll actually be changed on each load.
@@ -59,6 +60,10 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 - front-end cleanup.
 	- Possibly move it into a separate project?
 	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.
+
+######## Multi-user related
+- If you join a book in the middle of an already running computation, you currently aren't notified of this. Figure something out.
+- Moving cells around isn't propagated to other users
 
 ### License
 
