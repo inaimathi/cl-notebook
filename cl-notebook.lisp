@@ -163,6 +163,14 @@
     (eval-cell book cell-id contents val-fact cell-lang cell-type))
   :ok)
 
+(define-json-handler (cl-notebook/notebook/change-cell-contents) ((book :notebook) (cell-id :integer) (contents :string))
+  (let ((cont-fact (first (lookup book :a cell-id :b :contents))))
+    (unless (string= contents (third cont-fact))
+      (delete! book cont-fact)
+      (insert! book (list cell-id :contents contents))
+      (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'content-changed :contents contents))))
+  :ok)
+
 (define-json-handler (cl-notebook/notebook/change-cell-language) ((book :notebook) (cell-id :integer) (new-language :keyword))
   (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
 	(val-fact (first (lookup book :a cell-id :b :result)))	

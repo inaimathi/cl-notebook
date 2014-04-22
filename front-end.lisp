@@ -461,9 +461,8 @@
       (defun kill-cell (cell-id)
 	(post/json "/cl-notebook/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)))
       
-      (defun change-cell-content (cell-id contents)
-	;; TODO actual content save every so often
-	(console.log "SAVING CONTENT" cell-id contents))
+      (defun change-cell-contents (cell-id contents)
+	(post/json "/cl-notebook/notebook/change-cell-contents" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
 
       (defun change-cell-type (cell-id new-type)
 	(post/json "/cl-notebook/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)))
@@ -655,7 +654,7 @@
 		    (debounce
 		     (lambda (mirror change)
 		       (when (= "+input" (@ change origin))
-			 (change-cell-content cell-id (cell-editor-contents cell-id))))
+			 (change-cell-contents cell-id (cell-editor-contents cell-id))))
 		     4000)))
 	mirror))
 
@@ -774,10 +773,12 @@
 	'content-changed
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res book))
-	    (let ((cell (notebook-cell *notebook* (@ res cell))))
-	      (unless (= (@ cell contents) (@ res contents))
-		(setf (@ cell contents) (@ res contents))
-		(chain cell editor (set-value (@ res contents)))))))
+	    (let* ((cell (notebook-cell *notebook* (@ res cell)))
+		   (mirror (cell-mirror (@ res cell)))
+		   (cursor (chain mirror (get-cursor))))
+	      (setf (@ cell contents) (@ res contents))
+	      (chain mirror (set-value (@ res contents)))
+	      (chain mirror (set-cursor cursor)))))
 	'kill-cell 
 	(lambda (res)
 	  (when (equal (notebook-name *notebook*) (@ res book))
