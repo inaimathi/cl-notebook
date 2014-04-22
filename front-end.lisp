@@ -115,16 +115,6 @@
     (defun dom-ready (callback)
       (chain document (add-event-listener "DOMContentLoaded" callback)))
 
-    (defun debounce (fn wait)
-      (let ((last-run) (args) (context))
-	(lambda ()
-	  (setf context this
-		args arguments)
-	  (let ((timestamp (new (-date))))
-	    (when (or (not last-run) (> (- timestamp last-run) wait))
-	      (setf last-run timestamp)
-	      (chain fn (apply context args)))))))
-
     (defun prevent (ev) (chain ev (prevent-default)))
 
     (defun scroll-to-elem (elem)
@@ -594,6 +584,21 @@
 	(chain r (select-node-contents elem))
 	(chain window (get-selection) (add-range r))))
 
+    (defun debounced-save (cell-id delay)
+      (let ((last-run (new -date))
+	    (save! 
+	     (lambda () 
+	       (change-cell-contents cell-id (cell-editor-contents cell-id))))
+	    (parting-shot))
+	(lambda (mirror change)
+	  (let ((now (new -date)))
+	    (when (= "+input" (@ change origin))
+	      (clear-timeout parting-shot)
+	      (setf parting-shot (set-timeout #'save! delay))
+	      (when (> (- now last-run) (* delay 2))
+		(setf last-run now)
+		(funcall save!)))))))
+
     ;; cl-notebook specific DOM manipulation
     (defun display-book (book-name)
       (when book-name
@@ -650,12 +655,7 @@
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
 	 (@ cell editor) mirror)
 	(chain 
-	 mirror (on :change 
-		    (debounce
-		     (lambda (mirror change)
-		       (when (= "+input" (@ change origin))
-			 (change-cell-contents cell-id (cell-editor-contents cell-id))))
-		     4000)))
+	 mirror (on :change (debounced-save cell-id 4000)))
 	mirror))
 
     ;; Notebook-related
