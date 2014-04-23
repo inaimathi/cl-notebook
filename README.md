@@ -34,14 +34,16 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
+- Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
+- Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
 - If there are no existing notebooks, we should write a default scratch book with some initial instructions
 - Add flag to single out cells that have changed since last being successfully evaluated
 	- Such cells should be updated at load time rather than just re-evaluated
 	- Think a bit more about this. If the given cell randomly generates some content, it'll actually be changed on each load.
 	- Should we just *update* all cells at load time rather than just re-evaluating them?
+- We should go through history rather than just evaluating current cells in order (they may have initially been evaluated in a different order. Doing the general thing might be better all-round)
 - Build using buildapp?
 - Branching for notebooks
-- Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 	- Maybe a separate cell type? It would contain just a package name change the package context of all cells coming after it (this would keep you from having to declare a new package in each cell, while allowing you to have a notebook span multiple packages)
 	- Each book has a package (and system) named after it?

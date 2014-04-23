@@ -96,13 +96,12 @@
 	  res)))
 
     (defun append-new (list-a list-b)
-      (let ((s (new (-set list-a))))
-	(chain 
-	 list-a 
-	 (concat
-	  (loop for elem in list-b
-	     unless (chain s (has elem))
-	     collect elem)))))
+      (let ((s (new (-set list-a)))
+	    (lst (map #'identity list-a)))
+	(loop for elem in list-b
+	   unless (chain s (has elem))
+	   do (chain lst (push elem)))
+	lst))
 
     (defun join (strings &optional (separator "")) (chain strings (join separator)))
 
