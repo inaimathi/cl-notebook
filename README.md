@@ -70,6 +70,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.
 
 ######## Multi-user related
+- Move to a thread-per-cell model to make multi-user development easier
 - If you join a book in the middle of an already running computation, you currently aren't notified of this. Figure something out.
 - Moving cells around isn't propagated to other users
 
