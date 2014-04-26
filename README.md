@@ -34,6 +34,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
+- Capture and die on `SB-SYS:INTERACTIVE-INTERRUPT` (conditionally on SBCL, of course, and do the same in other implementations)
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 - Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
 - If there are no existing notebooks, we should write a default scratch book with some initial instructions
@@ -41,12 +42,17 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- Such cells should be updated at load time rather than just re-evaluated
 	- Think a bit more about this. If the given cell randomly generates some content, it'll actually be changed on each load.
 	- Should we just *update* all cells at load time rather than just re-evaluating them?
+		- This implies fresh evaluations whenever a notebook is opened for viewing. I know how annoying that is.
+		- On the other hand, some cells do change their content on evaluation. Presumably, we **want** those being updated on each load.
+			- We could just check. That is, at load-time, re-evaluate each cell, if it succeeded see if its results have changed. If they have, update it.
+	- Maybe a button to evaluate all cells, and leave it to the user?
+		- Might be the right approach. This way we could do an in-order evaluation, or a timeline evaluation as needed.
 - We should go through history rather than just evaluating current cells in order (they may have initially been evaluated in a different order. Doing the general thing might be better all-round)
 - Build using buildapp?
 - Branching for notebooks
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 	- Maybe a separate cell type? It would contain just a package name change the package context of all cells coming after it (this would keep you from having to declare a new package in each cell, while allowing you to have a notebook span multiple packages)
-	- Each book has a package (and system) named after it?
+	- Each book has a package (and system) named after it? (Renaming just got really hard)
 
 ######## Front-end
 - Use debounce to periodically save cell contents on keydown
