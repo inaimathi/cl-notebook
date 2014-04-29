@@ -7,13 +7,13 @@
   (cl-css:css
    `((body :font-family sans-serif)
      
-     ("button" ,@+css-input+ :min-width 34px :font-size large :float left :margin-right 5px :color "#666" :cursor pointer)
+     ("button" ,@+css-input+ :min-width 34px :font-size 1em :float left :margin-right 1% :color "#666" :cursor pointer)
      ("button.right" :float right)
-     ("button.genericon" :font-size x-large)
-     ("button .btn-text" :font-size medium :display inline-block)
+     ("button.genericon" :font-size 1.4em)
+     ("button .btn-text" :display inline-block)
      ("button:hover" :color "#000")
 
-     (select ,@+css-input+ :color "#666" :margin-right 5px)
+     (select ,@+css-input+ :color "#666" :margin-right 1%)
      ("select:hover" :color "#000" :background-color "#eee")
 
      (input.text ,@+css-input+ :padding 3px)
@@ -23,12 +23,13 @@
 
      (.main-controls 
       :background-color "#eee" :border "2px solid #ccc" :border-radius "0px 0px 5px 5px"
-      :padding 8px
-      :z-index 10 :position fixed :top -40px
+      :padding 1%
+      :z-index 10 :position fixed :top -10% :height 8%
       :width 80% :left 10%)
      (".main-controls:hover" :top -2px)
-     (".main-controls button" :height 32px)
-     (".main-controls select" :height 32px :font-size large :width 256px)
+     (".main-controls button" :visibility hidden :width 16% :min-height 32px)
+     (".main-controls select" :visibility hidden :font-size 1em :width 28% :padding-top 4px :min-height 32px)
+     (".main-controls:hover button, .main-controls:hover select" :visibility visible :height auto)
 
      (.footer :position fixed :bottom 1% :z-index 10 :padding 2px :border-radius "5px"
 	      :font-weight bold :color "rgba(255, 255, 255, .6)" 
@@ -36,7 +37,7 @@
 	      :background-color "rgba(50, 50, 200, .4)" :border "2px solid rgba(50, 50, 200, .6)")
      (".footer .notice" :padding-left 5px :display inline-block)
      (".footer img" :height 1.6em :opacity .6 :margin-bottom -.3em :margin-left -5px)
-     (".footer button" :background-color "rgba(50, 50, 200, .4)" :font-size medium
+     (".footer button" :background-color "rgba(50, 50, 200, .4)" :font-size 1em
 		       :color "rgba(255, 255, 255, .6)" :border-color "rgba(255, 255, 255, .6)")
      (".footer button:hover" :border-color white :color white :background-color "rgba(75, 75, 200, .4)")
      
@@ -45,11 +46,11 @@
      (".cells .cell.code" :background-color "#eee")
 
      (".cell .controls"
-      :display none :position absolute :margin-top -41px :padding 5px
-      :background-color "#eee" :border "2px solid #ccc" :border-bottom none :border-radius "5px 5px 0px 0px" :z-index 8)
+      :display none :position absolute :margin-top -41px :padding 5px :padding-right 10px
+      :background-color "#eee" :border "2px solid #ccc" :border-bottom none :border-radius "5px 5px 0px 0px" :z-index 8 :white-space nowrap)
      (".cell .controls button" :width 32px)
      (".cell .controls span"
-      :height 19px :width 31px :font-size x-large :float left :margin-right 5px :color "#666"
+      :height 19px :width 31px :font-size 1.4em :float left :margin-right 1% :color "#666"
       :padding-top 5px :padding-left 3px :cursor move)
      (".cell .controls span:hover" :color "#000")
 
@@ -71,4 +72,4 @@
      (.condition-contents :list-style-type none :margin 0px :padding 0px)
      (".condition-contents .condition-type" :font-weight bolder)
      (".condition-contents .condition-property" :font-style oblique)
-     (".condition-contents .condition-property .label" :display inline-block :margin-right 5px :font-size small))))
+     (".condition-contents .condition-property .label" :display inline-block :margin-right 5px :font-size .4em))))

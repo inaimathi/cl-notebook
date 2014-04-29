@@ -681,6 +681,7 @@
 	    (all-cell-ids 
 	     (loop for (a b c) in (notebook-facts notebook) 
 		when (and (= b 'cell) (null c)) collect a)))
+	(chain all-cell-ids (reverse))
 	(if ord
 	    (append-new ord all-cell-ids)
 	    all-cell-ids)))
