@@ -30,6 +30,9 @@ The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/)
 Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 ### TODO
+##### Thoughts
+- Cells are now updated if their content is different on a notebook-load. This means that books that contain timestamp-related cells or similar will always be changed when they're opened. Is that what we really want?
+
 ##### Bugs
 
 ##### Features (not necessarily in priority order)
