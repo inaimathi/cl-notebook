@@ -36,16 +36,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 ######## Back-end
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 - Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
-- If there are no existing notebooks, we should write a default scratch book with some initial instructions
-- Add flag to single out cells that have changed since last being successfully evaluated
-	- Such cells should be updated at load time rather than just re-evaluated
-	- Think a bit more about this. If the given cell randomly generates some content, it'll actually be changed on each load.
-	- Should we just *update* all cells at load time rather than just re-evaluating them?
-		- This implies fresh evaluations whenever a notebook is opened for viewing. I know how annoying that is.
-		- On the other hand, some cells do change their content on evaluation. Presumably, we **want** those being updated on each load.
-			- We could just check. That is, at load-time, re-evaluate each cell, if it succeeded see if its results have changed. If they have, update it.
-	- Maybe a button to evaluate all cells, and leave it to the user?
-		- Might be the right approach. This way we could do an in-order evaluation, or a timeline evaluation as needed.
+- If there are no existing notebooks, we should write a default scratch book with some initial how-to instructions
 - We should go through history rather than just evaluating current cells in order (they may have initially been evaluated in a different order. Doing the general thing might be better all-round)
 - Build using buildapp?
 - Branching for notebooks
@@ -54,6 +45,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- Each book has a package (and system) named after it? (Renaming just got really hard)
 
 ######## Front-end
+- Ignore re-definition warnings for all but `:verbose` cells
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
 	- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:

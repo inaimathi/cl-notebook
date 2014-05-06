@@ -38,12 +38,21 @@
       (loop for cell-id in ids
 	 when (and (lookup book :a cell-id :b :cell-language :c :common-lisp)
 		   (lookup book :a cell-id :b :cell-type :c :code))
-	 do (handler-case
-		(bt:with-timeout (.1)
-		  (front-end-eval 
-		   :common-lisp :code 
-		   (caddar (lookup book :a cell-id :b :contents))))
-	      (sb-ext:timeout () nil))))))
+	 do (let ((stale? (first (lookup book :a cell-id :b :stale :c t)))
+		  (res-fact (first (lookup book :a cell-id :b :result))))
+	      (let ((res 
+		     (handler-case
+			 (bt:with-timeout (.1)
+			   (front-end-eval 
+			    :common-lisp :code 
+			    (caddar (lookup book :a cell-id :b :contents))))
+		       (sb-ext:timeout () :timed-out))))
+		(unless (eq :timed-out res)
+		  (when stale? (delete! book stale?))
+		  (unless (equalp (third res-fact) res)
+		    (when res-fact (delete! book res-fact))
+		    (insert! book (list cell-id :result res)))))))
+      (write-delta! book))))
 
 (defmethod empty-expression? ((contents string))
   (when (cl-ppcre:scan "^[ \n\t\r]*$" contents) t))
