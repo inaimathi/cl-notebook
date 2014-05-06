@@ -590,7 +590,7 @@
 	    (parting-shot))
 	(lambda (mirror change)
 	  (let ((now (new -date)))
-	    (when (= "+input" (@ change origin))
+	    (when (or (= "+input" (@ change origin)) (= "+delete" (@ change origin)))
 	      (chain (by-cell-id cell-id) class-list (add "stale"))
 	      (clear-timeout parting-shot)
 	      (setf parting-shot (set-timeout #'save! delay))
