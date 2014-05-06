@@ -34,7 +34,6 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
-- Capture and die on `SB-SYS:INTERACTIVE-INTERRUPT` (conditionally on SBCL, of course, and do the same in other implementations)
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 - Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
 - If there are no existing notebooks, we should write a default scratch book with some initial instructions
@@ -55,7 +54,6 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- Each book has a package (and system) named after it? (Renaming just got really hard)
 
 ######## Front-end
-- Use debounce to periodically save cell contents on keydown
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
 	- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:

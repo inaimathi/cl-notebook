@@ -53,9 +53,18 @@ Only useful during the build process, where its called with an --eval flag."
 	(house::debug!))
       
       (format t "Listening on '~s'...~%" port)
-      (start port))))
+      #+ccl (setf ccl:*break-hook*
+		  (lambda (cond hook)
+		    (declare (ignore cond hook))
+		    (ccl:quit)))
+      #-sbcl(start port)
+      #+sbcl(handler-case
+		(start port)
+	      (sb-sys:interactive-interrupt (e)
+		(cl-user::exit))))))
 
 (defun main-dev ()
   (house::debug!)
   (setf *static* (sys-dir (merge-pathnames "static" (asdf:system-source-directory :cl-notebook))))
-  (bt:make-thread (lambda () (main))))
+  (bt:make-thread 
+   (lambda () (main))))
