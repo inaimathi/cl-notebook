@@ -43,6 +43,7 @@
      
      (.cells :list-style-type none :padding 0px :margin 0px)
      (".cells .cell" :padding 5px :margin-bottom 10px :border-top "3px solid transparent" :background-color "#fff")
+     (".cells .cell.stale" :border "2px solid orange")
      (".cells .cell.code" :background-color "#eee")
 
      (".cell .controls"

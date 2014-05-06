@@ -61,6 +61,7 @@
 	       (when (and val-fact res)
 		 (delete! book val-fact)
 		 (insert! book (list cell-id :result res))
+		 (delete! book (list cell-id :stale t))
 		 (write-delta! book))
 	       (publish! :cl-notebook-updates 
 			 (update :book (notebook-name book) 
@@ -167,6 +168,7 @@
   (let ((cont-fact (first (lookup book :a cell-id :b :contents))))
     (unless (string= contents (third cont-fact))
       (delete! book cont-fact)
+      (insert! book (list cell-id :stale t))
       (insert! book (list cell-id :contents contents))
       (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'content-changed :contents contents))))
   :ok)

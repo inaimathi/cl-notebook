@@ -320,14 +320,13 @@
     (defun result-template (noise result)
       (when result
 	(who-ps-html 
-	 (:pre
-	  (case noise
-	    (:verbose 
-	     (verbose-result-template result))
-	    (:terse
-	     (terse-result-template result))
-	    (:silent "")
-	    (t (normal-result-template result)))))))
+	 (:pre (case noise
+		 (:verbose 
+		  (verbose-result-template result))
+		 (:terse
+		  (terse-result-template result))
+		 (:silent "")
+		 (t (normal-result-template result)))))))
 
     (defun cell-controls-template (cell)
       (who-ps-html
@@ -370,7 +369,7 @@
     (defun cell-markup-template (cell)
       (with-slots (id contents result language) cell
 	(who-ps-html 
-	 (:li :class "cell markup" :id (+ "cell-" id) :cell-id id 
+	 (:li :class (+ "cell markup" (if (@ cell stale) " stale" "")) :id (+ "cell-" id) :cell-id id 
 	      :ondragend "reorderCells(event)" :draggable "true"
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
@@ -380,7 +379,7 @@
     (defun cell-code-template (cell)
       (with-slots (id contents result language) cell
 	(who-ps-html 
-	 (:li :class "cell code" :id (+ "cell-" id) :cell-id id 
+	 (:li :class (+ "cell code" (if (@ cell stale) " stale" "")) :id (+ "cell-" id) :cell-id id 
 	      :ondragend "reorderCells(event)" :draggable "true"
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp")  contents)
@@ -592,6 +591,7 @@
 	(lambda (mirror change)
 	  (let ((now (new -date)))
 	    (when (= "+input" (@ change origin))
+	      (chain (by-cell-id cell-id) class-list (add "stale"))
 	      (clear-timeout parting-shot)
 	      (setf parting-shot (set-timeout #'save! delay))
 	      (when (> (- now last-run) (* delay 2))
@@ -616,7 +616,7 @@
 	  (dom-set (by-cell-id (@ cell :id) ".cell-value")
 		   (if (markup-cell? cell)
 		       (cell-markup-result-template (@ cell result))
-		       (result-template (@ cell noise) (@ cell result)))))))
+		       (result-template (@ cell noise) (@ cell result) :stale? (@ cell stale)))))))
     
     (defun dom-replace-cell (cell)
       (dom-replace (by-cell-id (@ cell id)) (cell-template cell))
@@ -767,8 +767,10 @@
 	  (hide! (by-selector ".footer"))
 	  (when (equal (notebook-name *notebook*) (@ res book))
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
-	      (setf (@ cell :contents) (@ res :contents)
-		    (@ cell :result) (@ res :result))
+	      (setf (@ cell contents) (@ res contents)
+		    (@ cell result) (@ res result))
+	      (delete (@ cell stale))
+	      (chain (by-cell-id (@ res cell)) class-list (remove "stale"))
 	      (dom-replace-cell-value cell))))
 	'content-changed
 	(lambda (res)
@@ -776,7 +778,9 @@
 	    (let* ((cell (notebook-cell *notebook* (@ res cell)))
 		   (mirror (cell-mirror (@ res cell)))
 		   (cursor (chain mirror (get-cursor))))
-	      (setf (@ cell contents) (@ res contents))
+	      (setf (@ cell contents) (@ res contents)
+		    (@ cell stale) t)
+	      (chain (by-cell-id (@ res cell)) class-list (add "stale"))
 	      (chain mirror (set-value (@ res contents)))
 	      (chain mirror (set-cursor cursor)))))
 	'kill-cell 
