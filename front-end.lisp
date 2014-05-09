@@ -732,7 +732,7 @@
 				'cell-language (@ res cell-language)
 				'id (@ res 'cell-id))))
 	      (setf (aref (notebook-objects *notebook*) id) cell)
-	      (chain (notebook-facts *notebook*) (push (list id 'cell nil)))
+	      (chain (notebook-facts *notebook*) (unshift (list id 'cell nil)))
 	      (dom-append (by-selector ".cells")
 			  (cell-template cell))
 	      (mirror! cell)
