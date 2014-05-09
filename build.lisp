@@ -1,0 +1,5 @@
+(ql:quickload :cl-notebook)
+(ql:write-asdf-manifest-file "build.manifest")
+(with-open-file (s "build.manifest" :direction :output :if-exists :append)
+  (loop for sys in (list :house :fact-base :cl-notebook)
+     do (format s "~a~%" (merge-pathnames (format nil "~(~a~).asd" sys) (asdf/system:system-source-directory sys)))))
