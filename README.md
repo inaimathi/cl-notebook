@@ -48,7 +48,6 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- Each book has a package (and system) named after it? (Renaming just got really hard)
 
 ######## Front-end
-- Ignore re-definition warnings for all but `:verbose` cells
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
 	- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:

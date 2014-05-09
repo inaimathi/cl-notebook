@@ -299,8 +299,9 @@
 	   do (with-slots (stdout warnings) r
 		(chain all-stdout (push stdout))
 		(when warnings
-		  (setf all-warnings
-			(chain all-warnings (concat warnings)))))
+		  (loop for w in warnings
+		     unless (*warning-filter* w) 
+		     do (chain all-warnings (push w)))))
 	   finally (setf res (@ r values))))
       (who-ps-html
        (result-stdout-template (join all-stdout))
@@ -821,6 +822,12 @@
 	    (chain (by-selector (+ "#book-list option[value='" old-name "']")) (remove))
 	    (dom-append (by-selector "#book-list")
 			(who-ps-html (:option :value new-name new-name))))))))
+
+    (defvar *warning-filter* 
+      (lambda (w)
+	(or (chain (@ w condition-type) (starts-with "REDEFINITION"))
+	    (chain (@ w error-message) (starts-with "undefined "))
+	    (chain (@ w error-message) (ends-with "never used.")))))
 
     (dom-ready
      (lambda ()
