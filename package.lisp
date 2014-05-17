@@ -26,4 +26,4 @@
 
 (define-http-type (:notebook)
     :type-expression `(gethash ,parameter *notebooks*)
-    :lookup-assertion `(typep ,parameter 'fact-base))
+    :type-assertion  `(typep ,parameter 'fact-base))

@@ -23,6 +23,7 @@
       (:script :type "text/javascript" :src "/static/js/native-sortable.js")
 
       (:script :type "text/javascript" :src "/static/js/codemirror.js")
+      
       (:script :type "text/javascript" :src "/static/js/modes/commonlisp.js")
       (:script :type "text/javascript" :src "/static/js/addons/closebrackets.js")
       (:script :type "text/javascript" :src "/static/js/addons/matchbrackets.js")
@@ -640,8 +641,8 @@
     (defun mirror! (cell)
       (let* ((mirror)
 	     (cell-id (@ cell id))
-	     (options (create 
-		       "lineNumbers" t 
+	     (options (create
+		       "lineNumbers" t
 		       "matchBrackets" t
 		       "autoCloseBrackets" t
 		       "lineWrapping" t
@@ -826,8 +827,9 @@
     (defvar *warning-filter* 
       (lambda (w)
 	(or (chain (@ w condition-type) (starts-with "REDEFINITION"))
-	    (chain (@ w error-message) (starts-with "undefined "))
-	    (chain (@ w error-message) (ends-with "never used.")))))
+	    (and (@ w error-message) 
+		 (or  (chain (@ w error-message) (starts-with "undefined "))
+		      (chain (@ w error-message) (ends-with "never used.")))))))
 
     (dom-ready
      (lambda ()
