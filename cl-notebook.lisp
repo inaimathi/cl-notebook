@@ -52,7 +52,7 @@
 		  (unless (equalp (third res-fact) res)
 		    (when res-fact (delete! book res-fact))
 		    (insert! book (list cell-id :result res)))))))
-      (write-delta! book))))
+      (write! book))))
 
 (defmethod empty-expression? ((contents string))
   (when (cl-ppcre:scan "^[ \n\t\r]*$" contents) t))
@@ -71,7 +71,7 @@
 		 (delete! book val-fact)
 		 (insert! book (list cell-id :result res))
 		 (delete! book (list cell-id :stale t))
-		 (write-delta! book))
+		 (write! book))
 	       (publish! :cl-notebook-updates 
 			 (update :book (notebook-name book) 
 				 :cell cell-id 
@@ -158,7 +158,7 @@
 (define-json-handler (cl-notebook/notebook/rename) ((book :notebook) (new-name :string))
   (let* ((old-name (notebook-name book))
 	 (book (rename-notebook! book new-name)))
-    (write-delta! book)
+    (write! book)
     (publish! :cl-notebook-updates (update :book old-name :action 'rename-book :new-name new-name)))
   :ok)
 
@@ -212,7 +212,7 @@
 
 (define-json-handler (cl-notebook/notebook/new-cell) ((book :notebook) (cell-language :keyword) (cell-type :keyword))
   (let ((cell-id (new-cell! book :cell-type cell-type :cell-language cell-language)))
-    (write-delta! book)
+    (write! book)
     (publish! 
      :cl-notebook-updates 
      (update :book (notebook-name book) :action 'new-cell :cell-id cell-id 
@@ -223,13 +223,13 @@
   (awhen (lookup book :b :cell-order)
     (delete! book (car it)))
   (insert-new! book :cell-order cell-order)
-  (write-delta! book)
+  (write! book)
   (publish! :cl-notebook-updates (update :book (notebook-name book) :action 'reorder-cells :new-order cell-order))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/kill-cell) ((book :notebook) (cell-id :integer))
   (loop for f in (lookup book :a cell-id) do (delete! book f))
-  (write-delta! book)
+  (write! book)
   (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'kill-cell))
   :ok)
 
