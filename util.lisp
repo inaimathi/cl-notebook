@@ -78,6 +78,13 @@ Returns primitive type specifications as-is."
   (member prop-name
 	  '(:name :new-function :specializers :old-method :datum :expected-type :generic-function)))
 
+(defun printable-readably? (thing)
+  (handler-case
+      (let ((*print-readably* t))
+        (prin1-to-string thing))
+    (print-not-readable ()
+      nil)))
+
 (defun front-end-error (form e)
   "Takes a form and an error pertaining to it.
 Formats the error for front-end display, including a reference to the form."
@@ -89,7 +96,8 @@ Formats the error for front-end display, including a reference to the form."
 	       (list (cons :error-message (apply #'format nil f-tmp f-args)))))
       ,@(when form (list (cons :form form)))
       ,@(loop for (a . b) in err-alist
-	   if (stringified-error-prop? a)
+	   if (or (stringified-error-prop? a)
+                  (not (printable-readably? b)))
 	   collect (cons a (format nil "~s" b))
 	   else if (not (ignored-error-prop? a))
 	   collect (cons a b)))))
