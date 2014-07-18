@@ -13,8 +13,8 @@
        else collect next into args
        finally (return (values params args)))))
 
-(defun get-param (names params) 
-  (loop for (a . b) in params 
+(defun get-param (names params)
+  (loop for (a . b) in params
      if (member a names) do (return b)))
 
 (defun sys-dir (path)
@@ -33,7 +33,7 @@
 
 (defmethod stem-path ((path pathname) stem-from)
   (let ((stemmed (member stem-from (cdr (pathname-directory path)) :test #'string=)))
-    (make-pathname 
+    (make-pathname
      :directory
      (if stemmed
 	 (cons :relative stemmed)
@@ -51,7 +51,7 @@
   (loop for s in (closer-mop:class-slots (class-of instance))
      for slot-name = (slot-definition-name s)
      when (slot-boundp instance slot-name)
-     collect (cons (intern (symbol-name slot-name) :keyword) 
+     collect (cons (intern (symbol-name slot-name) :keyword)
 		   (slot-value instance slot-name))))
 
 (defun alist (&rest k/v-pairs)
@@ -76,7 +76,7 @@ Returns primitive type specifications as-is."
 
 (defun stringified-error-prop? (prop-name)
   (member prop-name
-	  (list :name :new-function :specializers :old-method)))
+	  '(:name :new-function :specializers :old-method :datum :expected-type :generic-function)))
 
 (defun front-end-error (form e)
   "Takes a form and an error pertaining to it.
@@ -123,12 +123,12 @@ from each expression in turn."
 		   res (if (eq eof exp)
 			   :eof
 			   (mapcar
-			    (lambda (v) (alist :type (type-tag v) :value (write-to-string v))) 
+			    (lambda (v) (alist :type (type-tag v) :value (write-to-string v)))
 			    (multiple-value-list (eval exp))))))
-	      (error (e) 
+	      (error (e)
 		(setf res (list
-			   (alist 
-			    :type 'error 
+			   (alist
+			    :type 'error
 			    :value (front-end-error (format nil "~s" exp) e)))))))))
     (if (eq :eof res)
 	nil
