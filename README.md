@@ -1,5 +1,7 @@
 # cl-notebook
-###### A notebook-style in-browser editor for Common Lisp
+###### A notebook-style in-browser editor for Common Lisp.
+
+Quick-ish video demo available [here](https://vimeo.com/97623064).
 
 > Tools, of course, can be the subtlest of traps.
 > One day I know I must smash the ~~emerald~~ Emacs.
@@ -32,6 +34,11 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 ### TODO
 ##### Thoughts
 - Cells are now updated if their content is different on a notebook-load. This means that books that contain timestamp-related cells or similar will always be changed when they're opened. Is that what we really want?
+- Things I actually want:
+	- kill-sexp (forward/backward)
+	- forward-sexp, backward-sexp
+	- slurp-sexp (forward/backward)
+	- barf-sexp (forward/backward)
 
 ##### Bugs
 
