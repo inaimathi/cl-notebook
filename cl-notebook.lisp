@@ -241,5 +241,5 @@
   (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'change-cell-noise :new-noise new-noise))
   :ok)
 
-(define-stream-handler (cl-notebook/source) ()
+(define-handler (cl-notebook/source :close-socket? nil) ()
   (subscribe! :cl-notebook-updates sock))

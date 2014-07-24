@@ -3,7 +3,7 @@
 (defparameter +css-input+
   `(:border "2px solid #ccc" :border-right-color "#aaa" :border-bottom-color "#aaa" :border-radius 4px :height 24px :font-weight bold))
 
-(define-closing-handler (css/notebook.css :content-type "text/css") ()
+(define-handler (css/notebook.css :content-type "text/css") ()
   (cl-css:css
    `((body :font-family sans-serif)
      

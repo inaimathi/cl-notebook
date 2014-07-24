@@ -1,6 +1,6 @@
 (in-package :cl-notebook)
 
-(define-closing-handler (root) ()
+(define-handler (root) ()
   (with-html-output-to-string (s nil :prologue t :indent t)
     (:html
      (:head
@@ -62,7 +62,7 @@
 	    (:img :src "/static/img/dots.png")
 	    (:button :onclick "killThread()" :class "right" "! Abort"))))))
 
-(define-closing-handler (js/base.js :content-type "application/javascript") ()
+(define-handler (js/base.js :content-type "application/javascript") ()
   (ps 
     ;;;; base.js contains general utilities that might be useful in other JS
     ;;;; applications too. Nothing notebook-specific here.
@@ -249,7 +249,7 @@
 		      (console.log "Unhandled message" res)))))
 	stream))))
 
-(define-closing-handler (js/templates.js :content-type "application/javascript") ()
+(define-handler (js/templates.js :content-type "application/javascript") ()
   (ps 
     (defun condition-template (err)
       (who-ps-html
@@ -417,7 +417,7 @@
 	       (join (map (lambda (cell) (cell-template cell))
 			  (notebook-cells notebook)))))))))
 
-(define-closing-handler (js/ajax.js :content-type "application/javascript") ()
+(define-handler (js/ajax.js :content-type "application/javascript") ()
   (ps (defun kill-thread ()
 	(post/json "/cl-notebook/system/kill-thread" (create)))
       
@@ -472,7 +472,7 @@
 		(create :book (notebook-name *notebook*) 
 			:cell-order ord))))))
 
-(define-closing-handler (js/book-actions.js :content-type "application/javascript") ()
+(define-handler (js/book-actions.js :content-type "application/javascript") ()
   (ps 
     (defvar *book-actions*
       (create :export-html
@@ -557,7 +557,7 @@
 	    (funcall it)
 	    (console.log "NOT YET IMPLEMENTED: " action)))))
 
-(define-closing-handler (js/main.js :content-type "application/javascript") ()
+(define-handler (js/main.js :content-type "application/javascript") ()
   (ps
     ;; cl-notebook specific utility
     (defun by-cell-id (cell-id &rest children)
