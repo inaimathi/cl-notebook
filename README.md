@@ -55,6 +55,12 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- Each book has a package (and system) named after it? (Renaming just got really hard)
 
 ######## Front-end
+- History interface
+	- Slider as part of main notebook controls
+	- Usually at max, if scrolled, takes you back in history (it'll need to be pretty wide, and there should be an alternate textbox input bound with it)
+	- If you edit something and it's not at max history, it instead forks at that point and lets you edit the fork.
+	- No idea how we're reconciling this with the notebook menu
+		- Probably, let it go. The menu should just list forks as regular notebooks (perhaps list them as descendants, if their parent still exists)
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
 	- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:
