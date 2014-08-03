@@ -122,7 +122,7 @@
     (remhash (notebook-name book) *notebooks*)))
 
 (defmethod load-notebook! ((name pathname))
-  (let ((book (load! name :indices *default-indices*)))
+  (let ((book (load! name :indices *default-indices* :in-memory? t)))
     (eval-notebook-code book)
     (setf (gethash (notebook-name book) *notebooks*) book)))
 
