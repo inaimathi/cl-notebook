@@ -56,6 +56,11 @@
 		     (:optgroup
 		      :label "Delete"
 		      (:option :value "kill-book" "Kill Book"))))
+      (:div :class "history-controls"
+	    (:input :id "book-history-slider" :type "range" :min 0 :max 500 :value 500 
+;;		    :onchange "console.log(\"Changed!\", this.value)"
+;;		    :onmousemove "console.log(\"Moving!\", this.value)"
+		    ))
       (:div :id "notebook")
       (:div :class "footer"
 	    (:span :class "notice" "Processing")
@@ -114,6 +119,11 @@
     ;; basic DOM/event stuff
     (defun dom-ready (callback)
       (chain document (add-event-listener "DOMContentLoaded" callback)))
+
+    (defun remove-all-event-handlers (elem)
+      (let ((clone (chain elem (clone-node t))))
+	(chain elem parent-node (replace-child clone elem))
+	clone))
 
     (defun prevent (ev) (chain ev (prevent-default)))
 
@@ -421,6 +431,10 @@
   (ps (defun kill-thread ()
 	(post/json "/cl-notebook/system/kill-thread" (create)))
       
+      (defun rewind-book (index)
+	(post/json "/cl-notebook/notebook/rewind" (create :book (notebook-name *notebook*) :index index)
+		   #'notebook!))
+
       (defun notebook/current (name)
 	(post/json "/cl-notebook/notebook/current" (create :book name)
 		   #'notebook!
@@ -698,15 +712,24 @@
       (aref notebook :objects id))
     
     (defun notebook! (raw)
-      (let ((book (notebook-condense raw)))
+      (let ((fs (@ raw facts))
+	    (count (@ raw history-size)))
 	(setf *notebook* 
-	      (create :facts raw :objects book
-		      :name (loop for (a b c) in raw
+	      (create :facts fs :objects (notebook-condense fs)
+		      :history-size count
+		      :name (loop for (a b c) in fs
 			       when (equal b "notebookName")
 			       do (return c))))
 	(dom-set 
 	 (by-selector "#notebook")
 	 (notebook-template *notebook*))
+	(let ((slider (remove-all-event-handlers (by-selector "#book-history-slider"))))
+	  (chain slider (set-attribute :max count))
+	  (chain slider (set-attribute :value count))
+	  (chain slider (add-event-listener
+			 :change (lambda ()
+				   (console.log "Testing!" (@ slider value))
+				   (rewind-book (@ slider value))))))
 	(hide! (by-selector ".book-title input"))
 	(nativesortable (by-selector "ul.cells"))
 	(set-page-hash (create :book (notebook-name *notebook*)))

@@ -29,7 +29,7 @@
      (".main-controls:hover" :top -2px)
      (".main-controls button" :visibility hidden :width 16% :min-height 32px)
      (".main-controls select" :visibility hidden :font-size 1em :width 28% :padding-top 4px :min-height 32px)
-     (".main-controls:hover button, .main-controls:hover select" :visibility visible :height auto)
+     (".main-controls:hover button, .main-controls:hover select, .main-controls:hover input" :visibility visible :height auto)
 
      (.footer :position fixed :bottom 1% :z-index 10 :padding 2px :border-radius "5px"
 	      :font-weight bold :color "rgba(255, 255, 255, .6)" 

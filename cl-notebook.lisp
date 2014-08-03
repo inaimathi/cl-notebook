@@ -140,15 +140,18 @@
   (publish! :cl-notebook-updates (update :action 'killed-eval))
   :ok)
 
+(define-json-handler (cl-notebook/notebook/rewind) ((book :notebook) (index :integer))
+  (hash :facts (rewind-to book index) :history-size (total-entries book)))
+
 (define-json-handler (cl-notebook/notebook/current) ((book :notebook))
-  (current book))
+  (hash :facts (current book) :history-size (total-entries book)))
 
 (define-json-handler (cl-notebook/notebook/new) ()
   (let* ((name (format nil "book-~a" (hash-table-count *notebooks*)))
 	 (book (new-notebook! name)))
     (write! book)
     (publish! :cl-notebook-updates (update :action 'new-book :book-name name))
-    (current book)))
+    (hash :facts (current book) :history-size (total-entries book))))
 
 (define-json-handler (cl-notebook/notebook/kill) ((book :notebook))
   (kill! book)

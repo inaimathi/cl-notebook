@@ -1,5 +1,11 @@
 (in-package :cl-notebook)
 
+(defun hash (&rest entries)
+  (let ((h (make-hash-table)))
+    (loop for (k v) on entries by #'cddr
+       do (setf (gethash k h) v))
+    h))
+
 (defun parse-args! (raw)
   (pop raw)
   (flet ((arg? (str) (eql #\- (first-char str)))
