@@ -56,9 +56,18 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 ######## Front-end
 - History interface
-	- Slider as part of main notebook controls
-	- Usually at max, if scrolled, takes you back in history (it'll need to be pretty wide, and there should be an alternate textbox input bound with it)
-	- If you edit something and it's not at max history, it instead forks at that point and lets you edit the fork.
+	- If you edit something while looking at a state in the past, it should instead fork at that point and have you edit the fork.
+		- Operations that need to fork a book:
+			- rename book
+			- eval-to-cell
+			- new cell
+			- kill cell
+			- change-cell-contents
+			- change cell type
+			- change cell language
+			- change cell noise
+			- reorder cells
+		- Probably write a separate function. Something like `maybe-fork-command` that takes care of forking the notebook behind the scenes, and just sends the command if you're at the current history state.
 	- No idea how we're reconciling this with the notebook menu
 		- Probably, let it go. The menu should just list forks as regular notebooks (perhaps list them as descendants, if their parent still exists)
 - Really REALLY missing s-expression-based navigation. Look into it.
@@ -75,6 +84,9 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.
 
 ######## Multi-user related
+- If you're looking at past history states, you shouldn't see others edits to the current book
+	- The list of ignored actions is the same as "operations that should fork a book" above.
+	- We do still want to be notified of book deletion the same way, and we still want to know when an eval starts/aborts/finishes (but don't want to see the result change any viewed cells)
 - Move to a thread-per-cell model to make multi-user development easier
 - If you join a book in the middle of an already running computation, you currently aren't notified of this. Figure something out.
 - Moving cells around isn't propagated to other users

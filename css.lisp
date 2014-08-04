@@ -18,17 +18,16 @@
 
      (input.text ,@+css-input+ :padding 3px)
 
-     (.book-title :margin "20px 10px 10px 5px" :padding 0px)
+     (.book-title :margin "40px 10px 10px 5px" :padding 0px)
      (".book-title h1" :cursor pointer :margin 0px :padding 0px)
 
      (.main-controls 
       :background-color "#eee" :border "2px solid #ccc" :border-radius "0px 0px 5px 5px"
-      :padding 1%
-      :z-index 10 :position fixed :top -8% :height 9%
+      :z-index 10 :position fixed :top -5px :height 15px :padding 0px :margin 0px
       :width 80% :left 10%)
      (".main-controls #book-history-slider" :width 80%)
      (".main-controls #book-history-text" :width 10%)
-     (".main-controls:hover" :top -2px)
+     (".main-controls:hover" :top -2px :height 6% :padding 1%)
      (".main-controls button" :visibility hidden :width 16% :min-height 32px)
      (".main-controls select" :visibility hidden :font-size 1em :width 28% :padding-top 4px :min-height 32px)
      (".main-controls input" :visibility hidden :height auto :margin 0px :padding 0px :margin-bottom 3px)

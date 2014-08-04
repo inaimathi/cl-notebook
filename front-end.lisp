@@ -667,8 +667,8 @@
 	(setf 
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
 	 (@ cell editor) mirror)
-	(chain 
-	 mirror (on :change (debounced-save cell-id 4000)))
+	(when (= :markup (@ cell cell-type))
+	  (chain mirror (on :change (debounced-save cell-id 4000))))
 	mirror))
 
     ;; Notebook-related
