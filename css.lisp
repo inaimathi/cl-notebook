@@ -24,11 +24,14 @@
      (.main-controls 
       :background-color "#eee" :border "2px solid #ccc" :border-radius "0px 0px 5px 5px"
       :padding 1%
-      :z-index 10 :position fixed :top -10% :height 8%
+      :z-index 10 :position fixed :top -8% :height 9%
       :width 80% :left 10%)
+     (".main-controls #book-history-slider" :width 80%)
+     (".main-controls #book-history-text" :width 10%)
      (".main-controls:hover" :top -2px)
      (".main-controls button" :visibility hidden :width 16% :min-height 32px)
      (".main-controls select" :visibility hidden :font-size 1em :width 28% :padding-top 4px :min-height 32px)
+     (".main-controls input" :visibility hidden :height auto :margin 0px :padding 0px :margin-bottom 3px)
      (".main-controls:hover button, .main-controls:hover select, .main-controls:hover input" :visibility visible :height auto)
 
      (.footer :position fixed :bottom 1% :z-index 10 :padding 2px :border-radius "5px"

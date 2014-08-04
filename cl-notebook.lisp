@@ -141,7 +141,7 @@
   :ok)
 
 (define-json-handler (cl-notebook/notebook/rewind) ((book :notebook) (index :integer))
-  (hash :facts (rewind-to book index) :history-size (total-entries book)))
+  (hash :facts (rewind-to book index) :history-size (total-entries book) :history-position index))
 
 (define-json-handler (cl-notebook/notebook/current) ((book :notebook))
   (hash :facts (current book) :history-size (total-entries book)))
