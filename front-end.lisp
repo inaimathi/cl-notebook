@@ -617,14 +617,17 @@
 		(setf last-run now)
 		(funcall save!)))))))
 
-    (defun post/fork (uri args on-success on-fail) 
+    (defun in-present? ()
       (let ((slider (by-selector "#book-history-slider")))
-	(if (= (@ slider value) (chain slider (get-attribute :max)))
-	    (post/json uri args on-success on-fail)
-	    (fork-book (lambda (res) 
-			 (notebook! res)
-			 (setf (@ args :book) (notebook-id *notebook*))
-			 (post/json uri args on-success on-fail))))))
+	(= (@ slider value) (chain slider (get-attribute :max)))))
+
+    (defun post/fork (uri args on-success on-fail) 
+      (if (in-present?)
+	  (post/json uri args on-success on-fail)
+	  (fork-book (lambda (res) 
+		       (notebook! res)
+		       (setf (@ args :book) (notebook-id *notebook*))
+		       (post/json uri args on-success on-fail)))))
 
     ;; cl-notebook specific DOM manipulation
     (defun display-book (book-name)
@@ -756,13 +759,16 @@
 		   (hide! (by-cell-id id ".CodeMirror")))))
 	     (notebook-cells *notebook*))))
 
+    (defun relevant-event? (ev)
+      (and (in-present?) (equal (notebook-id *notebook*) (@ ev book))))
+
     (defun notebook-events ()
       (event-source 
        "/cl-notebook/source"
        (create
 	'new-cell 
 	(lambda (res)
-	  (when (equal (notebook-id *notebook*) (@ res book))
+	  (when (relevant-event? res)
 	    (let ((id (@ res 'cell-id))
 		  (cell (create 'type "cell" 'contents "" 'result ""
 				'cell-type (@ res cell-type) 
@@ -777,19 +783,19 @@
 	      (show-editor id))))
 	'change-cell-type
 	(lambda (res)
-	  (when (equal (notebook-id *notebook*) (@ res book))
+	  (when (relevant-event? res)
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
 	      (setf (@ cell cell-type) (@ res new-type))
 	      (dom-replace-cell cell))))
 	'change-cell-language
 	(lambda (res)
-	  (when (equal (notebook-id *notebook*) (@ res book))
+	  (when (relevant-event? res)
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
 	      (setf (@ cell cell-language) (@ res new-language))
 	      (dom-replace-cell cell))))
 	'change-cell-noise
 	(lambda (res)
-	  (when (equal (notebook-id *notebook*) (@ res book))
+	  (when (relevant-event? res)
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
 	      (setf (@ cell noise) (@ res new-noise))
 	      (dom-replace-cell-value cell))))
@@ -802,7 +808,7 @@
 	'finished-eval 
 	(lambda (res)
 	  (hide! (by-selector ".footer"))
-	  (when (equal (notebook-id *notebook*) (@ res book))
+	  (when (relevant-event? res)
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
 	      (setf (@ cell contents) (@ res contents)
 		    (@ cell result) (@ res result))
@@ -811,7 +817,7 @@
 	      (dom-replace-cell-value cell))))
 	'content-changed
 	(lambda (res)
-	  (when (equal (notebook-id *notebook*) (@ res book))
+	  (when (relevant-event? res)
 	    (let* ((cell (notebook-cell *notebook* (@ res cell)))
 		   (mirror (cell-mirror (@ res cell)))
 		   (cursor (chain mirror (get-cursor))))
@@ -822,13 +828,13 @@
 	      (chain mirror (set-cursor cursor)))))
 	'kill-cell 
 	(lambda (res)
-	  (when (equal (notebook-id *notebook*) (@ res book))
+	  (when (relevant-event? res)
 	    (delete (aref *notebook* 'objects (@ res cell)))
 	    (chain (by-cell-id (@ res cell)) (remove))))
 	
 	'reorder-cells 
 	(lambda (res)
-	  (when (equal (notebook-id *notebook*) (@ res book))
+	  (when (relevant-event? res)
 	    ;; TODO change order here to support proper multi-user noting
 	    (console.log "Changed cell order" res)))
 	
@@ -843,6 +849,8 @@
 	  (let ((id (@ res book)))
 	    (chain (by-selector (+ "#book-list option[value='" id "']")) (remove))
 	    (when (equal (notebook-id *notebook*) id)
+	      ;; TODO. If someone else deletes the book you're editing, this could get confusing.
+	      ;;       Maybe put up a notice of "Book deleted" instead of moving on to some arbitrary "first book"?
 	      (display-book 
 	       (chain (@ (by-selector-all "#book-list option") 1)
 		      (get-attribute :value))))))
@@ -850,7 +858,7 @@
 	(lambda (res)
 	  (let ((id (@ res book))
 		(new-name (@ res new-name)))
-	    (when (equal (notebook-id *notebook*) id)
+	    (when (relevant-event? res)
 	      (dom-replace (by-selector ".book-title")
 			   (notebook-title-template new-name))
 	      (set-notebook-name *notebook* new-name)

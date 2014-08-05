@@ -57,6 +57,12 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 - Branching for notebooks
 
 ######## Front-end
+- When you fork, the only things that really needs to change are
+	- The notebook title
+	- The history slider and text input
+	- The internal ID of the notebook
+	so there's no point in re-rendering the screen. Just surgically change those and call it a day (this'll get rid of the jump when forking as part of an eval-to-cell call).
+- History entries should be grouped with their parents. Guess you could pull out parent relationships at load-time? Sounds like you're getting closer and closer to sub-classing fact-base into a separate notebook class.
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
 	- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:
@@ -67,7 +73,6 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 		- forward-sexp, backward-sexp
 		- slurp-sexp (forward/backward)
 		- barf-sexp (forward/backward)
-- History entries should be grouped with their parents. Guess you could pull out parent relationships at load-time? Sounds like you're getting closer and closer to sub-classing fact-base into a separate notebook class.
 - Proper autocompletion (this may qualify as both front-end and back-end)
 - Argument hints (again, both front and back-end)
 - Better automatic indenting
@@ -77,18 +82,6 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.
 
 ######## Multi-user related
-- If you're looking at past history states, you shouldn't see others edits to the current book
-	- The list of ignored actions:
-		- rename book
-		- eval-to-cell
-		- new cell
-		- kill cell
-		- change-cell-contents
-		- change cell type
-		- change cell language
-		- change cell noise
-		- reorder cells
-	- We do still want to be notified of book deletion the same way, and we still want to know when an eval starts/aborts/finishes (but don't want to see the result change any viewed cells)
 - Move to a thread-per-cell model to make multi-user development easier
 - If you join a book in the middle of an already running computation, you currently aren't notified of this. Figure something out.
 - Moving cells around isn't propagated to other users
