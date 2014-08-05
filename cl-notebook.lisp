@@ -66,6 +66,7 @@
     (setf *front-end-eval-thread*
 	  (bt:make-thread
 	   (lambda ()
+	     (in-package :cl-notebook)
 	     (let ((res (front-end-eval cell-language cell-type contents)))
 	       (when (and val-fact res)
 		 (delete! book val-fact)

@@ -34,47 +34,40 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 ### TODO
 ##### Thoughts
 - Cells are now updated if their content is different on a notebook-load. This means that books that contain timestamp-related cells or similar will always be changed when they're opened. Is that what we really want?
-- Things I actually want:
-	- kill-sexp (forward/backward)
-	- forward-sexp, backward-sexp
-	- slurp-sexp (forward/backward)
-	- barf-sexp (forward/backward)
 
 ##### Bugs
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
+- Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
+	- Maybe a separate cell type? It would contain just a package name change the package context of all cells coming after it (this would keep you from having to declare a new package in each cell, while allowing you to have a notebook span multiple packages)
+	- Each book has a package (and system) named after it? (Renaming just got really hard)
+	- This just bit again (failed to properly eval a `:cl-who` form because it wasn't being done in `:cl-notebook`). Right decision might be to default to `:cl-notebook`, but allow a system specification cell type that'd let users specify different info.
+- Get `quicklisp` working properly with this.
+	- Let user configure where to check for a `quicklisp` folder (default to `~/quicklisp`)
+	- If `ql` package exists when loading, just use the defaults.
+	- Otherwise, try to load from the user-specified `quicklisp` location.
+		- If it doesn't exist, start a new install in `~/.cl-notebook/quicklisp`
+	- What we want is a workflow where we transparently use the systems' existing `quicklisp` directory, if any, and create our own if one doesn't already exist (If they *have* a quicklisp folder, but re-configured `quicklisp` to store it somewhere other than the default, they'll have to similarly configure `cl-notebook`).
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 - Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
 - If there are no existing notebooks, we should write a default scratch book with some initial how-to instructions
 - We should go through history rather than just evaluating current cells in order (they may have initially been evaluated in a different order. Doing the general thing might be better all-round)
 - Build using buildapp?
 - Branching for notebooks
-- Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
-	- Maybe a separate cell type? It would contain just a package name change the package context of all cells coming after it (this would keep you from having to declare a new package in each cell, while allowing you to have a notebook span multiple packages)
-	- Each book has a package (and system) named after it? (Renaming just got really hard)
 
 ######## Front-end
-- History interface
-	- If you edit something while looking at a state in the past, it should instead fork at that point and have you edit the fork.
-		- Operations that need to fork a book:
-			- rename book
-			- eval-to-cell
-			- new cell
-			- kill cell
-			- change-cell-contents
-			- change cell type
-			- change cell language
-			- change cell noise
-			- reorder cells
-		- Probably write a separate function. Something like `maybe-fork-command` that takes care of forking the notebook behind the scenes, and just sends the command if you're at the current history state.
-	- No idea how we're reconciling this with the notebook menu
-		- Probably, let it go. The menu should just list forks as regular notebooks (perhaps list them as descendants, if their parent still exists)
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
 	- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:
 		- `CodeMirror.runMode(byCellId(10, ".cell-contents").value, "commonlisp", function (token, type) { console.log(token, type)})` effectively tokenizes for you.
 		- The CodeMirror matching paren mode might also be a good way to get s-expresison-related stuff happening
+	- Things I actually want:
+		- kill-sexp (forward/backward)
+		- forward-sexp, backward-sexp
+		- slurp-sexp (forward/backward)
+		- barf-sexp (forward/backward)
+- History entries should be grouped with their parents. Guess you could pull out parent relationships at load-time? Sounds like you're getting closer and closer to sub-classing fact-base into a separate notebook class.
 - Proper autocompletion (this may qualify as both front-end and back-end)
 - Argument hints (again, both front and back-end)
 - Better automatic indenting
@@ -85,7 +78,16 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 ######## Multi-user related
 - If you're looking at past history states, you shouldn't see others edits to the current book
-	- The list of ignored actions is the same as "operations that should fork a book" abosve.
+	- The list of ignored actions:
+		- rename book
+		- eval-to-cell
+		- new cell
+		- kill cell
+		- change-cell-contents
+		- change cell type
+		- change cell language
+		- change cell noise
+		- reorder cells
 	- We do still want to be notified of book deletion the same way, and we still want to know when an eval starts/aborts/finishes (but don't want to see the result change any viewed cells)
 - Move to a thread-per-cell model to make multi-user development easier
 - If you join a book in the middle of an already running computation, you currently aren't notified of this. Figure something out.
