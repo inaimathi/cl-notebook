@@ -631,19 +631,11 @@
       (if (in-present?)
 	  (post/json uri args on-success on-fail)
 	  (fork-book (lambda (res)
-		       (let ((slider (by-selector "#book-history-slider"))		     
-			     (count (@ res history-size))
-			     (id (@ res id)))
-			 (chain slider (set-attribute :max count))
-			 (setf (@ *notebook* id) id
-			       (@ slider value) count
-			       (@ (by-selector "#book-history-text") value) count
-			       (@ args :book) id)
-			 (hide! (by-selector ".book-title input"))
-			 (dom-replace (by-selector ".book-title") (@ res book-name))
-			 (set-page-hash (create :book id))
-			 (post/json uri args on-success on-fail))))))
-
+		       (surgical! res)
+		       (setf (@ args :book) (@ res id))
+		       (dom-replace (by-selector ".book-title") (notebook-title-template (@ res book-name)))
+		       (post/json uri args on-success on-fail)))))
+    
     ;; cl-notebook specific DOM manipulation
     (defun display-book (book-name)
       (when book-name
@@ -743,39 +735,30 @@
       (aref notebook :objects id))
     
     (defun surgical! (raw)
-      (let ((slider (by-selector "#book-history-slider"))		     
-	    (count (@ raw history-size))
-	    (id (@ raw id)))
+      (let* ((slider (by-selector "#book-history-slider"))		     
+	     (count (@ raw history-size))
+	     (pos (or (@ raw history-position) count))
+	     (id (@ raw id)))
 	(chain slider (set-attribute :max count))
 	(setf (@ *notebook* id) id
-	      (@ slider value) count
-	      (@ (by-selector "#book-history-text") value) count
-	      (@ args :book) id)
+	      (@ slider value) pos
+	      (@ (by-selector "#book-history-text") value) pos)
 	(hide! (by-selector ".book-title input"))
-	(dom-replace (by-selector ".book-title") (@ raw book-name))
-	(set-page-hash (create :book id))
-	(post/json uri args on-success on-fail)))
+	(set-page-hash (create :book id))))
 
     (defun notebook! (raw)
-      (let* ((fs (@ raw facts))
-	     (count (@ raw history-size))
-	     (pos (or (@ raw history-position) count)))
+      (let* ((fs (@ raw facts)))
 	(setf *notebook* 
 	      (create :facts fs :objects (notebook-condense fs)
-		      :history-size count
+		      :history-size (@ raw history-size)
 		      :id (@ raw :id) :name (loop for (a b c) in fs
 					       when (equal b "notebookName")
 					       do (return c))))
 	(dom-set 
 	 (by-selector "#notebook")
 	 (notebook-template *notebook*))
-	(let ((slider (by-selector "#book-history-slider")))
-	  (chain slider (set-attribute :max count))
-	  (setf (@ slider value) pos
-		(@ (by-selector "#book-history-text") value) pos))
-	(hide! (by-selector ".book-title input"))
+	(surgical! raw)
 	(nativesortable (by-selector "ul.cells"))
-	(set-page-hash (create :book (notebook-id *notebook*)))
 	(map (lambda (opt) (chain opt (remove-attribute :selected)))
 	     (by-selector-all "#book-list option"))
 	(chain (by-selector (+ "#book-list option[value='" (notebook-id *notebook*) "']"))
