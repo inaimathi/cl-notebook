@@ -46,6 +46,12 @@
 	    (:select :id "book-list"
 		     :onchange "displayBook(this.value)"
 		     (:option :value "" "Choose book...")
+		     ;; TODO figure out why this doesn't work
+		     ;; (let ((books (loop for k being the hash-keys of *notebooks*
+		     ;; 		     for v being the hash-values of *notebooks*
+		     ;; 		     collect (list k (notebook-name v)))))
+		     ;;   (loop for (id name) in (sort books #'string<= :key #'second)
+		     ;; 	  do (htm :option :value id name)))
 		     (loop for id being the hash-keys of *notebooks*
 			for book being the hash-values of *notebooks*
 			do (htm (:option :value id (str (notebook-name book))))))
@@ -624,10 +630,19 @@
     (defun post/fork (uri args on-success on-fail) 
       (if (in-present?)
 	  (post/json uri args on-success on-fail)
-	  (fork-book (lambda (res) 
-		       (notebook! res)
-		       (setf (@ args :book) (notebook-id *notebook*))
-		       (post/json uri args on-success on-fail)))))
+	  (fork-book (lambda (res)
+		       (let ((slider (by-selector "#book-history-slider"))		     
+			     (count (@ res history-size))
+			     (id (@ res id)))
+			 (chain slider (set-attribute :max count))
+			 (setf (@ *notebook* id) id
+			       (@ slider value) count
+			       (@ (by-selector "#book-history-text") value) count
+			       (@ args :book) id)
+			 (hide! (by-selector ".book-title input"))
+			 (dom-replace (by-selector ".book-title") (@ res book-name))
+			 (set-page-hash (create :book id))
+			 (post/json uri args on-success on-fail))))))
 
     ;; cl-notebook specific DOM manipulation
     (defun display-book (book-name)

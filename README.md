@@ -62,6 +62,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- The history slider and text input
 	- The internal ID of the notebook
 	so there's no point in re-rendering the screen. Just surgically change those and call it a day (this'll get rid of the jump when forking as part of an eval-to-cell call).
+		- Actually also the notebook page-hash, but yes, essentially correct
 - History entries should be grouped with their parents. Guess you could pull out parent relationships at load-time? Sounds like you're getting closer and closer to sub-classing fact-base into a separate notebook class.
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently

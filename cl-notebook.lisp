@@ -12,6 +12,8 @@
 				'cell-language cell-language
 				'cell-type cell-type))))))
 
+(defmethod front-end-eval (cell-language cell-type (contents null)) "")
+
 (defmethod front-end-eval ((cell-language (eql :common-lisp)) cell-type (contents string))
   "A Common-Lisp:Code cell is just evaluated, capturing all warnings, stdout emissions and errors."
   (capturing-eval contents))
@@ -156,7 +158,7 @@
     (insert-new! new :notebook-name new-name)
     (register-notebook! new)
     (publish! :cl-notebook-updates (update :action 'new-book :book (notebook-id new) :book-name new-name))
-    (hash :facts (current new) :history-size (total-entries new) :id (notebook-id new))))
+    (hash :facts (current new) :history-size (total-entries new) :id (notebook-id new) :book-name new-name)))
 
 (define-json-handler (cl-notebook/notebook/new) ()
   (let* ((name (format nil "book-~a" (hash-table-count *notebooks*)))
