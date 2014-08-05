@@ -57,12 +57,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 - Branching for notebooks
 
 ######## Front-end
-- When you fork, the only things that really needs to change are
-	- The notebook title
-	- The history slider and text input
-	- The internal ID of the notebook
-	so there's no point in re-rendering the screen. Just surgically change those and call it a day (this'll get rid of the jump when forking as part of an eval-to-cell call).
-		- Actually also the notebook page-hash, but yes, essentially correct
+- Notebooks should be sorted by notebook-name, at the very least (in addition to the below noted fork-grouping)
 - History entries should be grouped with their parents. Guess you could pull out parent relationships at load-time? Sounds like you're getting closer and closer to sub-classing fact-base into a separate notebook class.
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
