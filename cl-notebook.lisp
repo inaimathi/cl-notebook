@@ -146,6 +146,17 @@
 (define-json-handler (cl-notebook/notebook/current) ((book :notebook))
   (hash :facts (current book) :history-size (total-entries book)))
 
+(define-json-handler (cl-notebook/notebook/fork-at) ((book :notebook) (index :integer))
+  (let ((new (load! 
+	      (fork-at book index :file-name (merge-pathnames (fact-base::temp-file-name) *books*))
+	      :indices *default-indices* :in-memory? t))
+	(new-name (format nil "Fork of ~a" (notebook-name book))))
+    (delete! new (first (lookup new :b :notebook-name)))
+    (insert-new! new :notebook-name new-name)    
+    (setf (gethash new-name *notebooks*) new)
+    (publish! :cl-notebook-updates (update :action 'new-book :book-name new-name))
+    (hash :facts (current new) :history-size (total-entries new))))
+
 (define-json-handler (cl-notebook/notebook/new) ()
   (let* ((name (format nil "book-~a" (hash-table-count *notebooks*)))
 	 (book (new-notebook! name)))

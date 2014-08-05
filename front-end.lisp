@@ -58,6 +58,7 @@
 		     (:optgroup
 		      :label "Delete"
 		      (:option :value "kill-book" "Kill Book"))))
+      (:button :id "fork-button" :onclick "forkBook()" "! Fork")
       
       (:div :id "notebook")
       (:div :class "footer"
@@ -431,6 +432,11 @@
       
       (defun rewind-book (index)
 	(post/json "/cl-notebook/notebook/rewind" (create :book (notebook-name *notebook*) :index index)
+		   #'notebook!))
+
+      (defun fork-book ()
+	(console.log "Forking" (notebook-name *notebook*) "at" (@ (by-selector "#book-history-slider") value))
+	(post/json "/cl-notebook/notebook/fork-at" (create :book (notebook-name *notebook*) :index (@ (by-selector "#book-history-slider") value))
 		   #'notebook!))
 
       (defun notebook/current (name)
