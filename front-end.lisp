@@ -46,8 +46,9 @@
 	    (:select :id "book-list"
 		     :onchange "displayBook(this.value)"
 		     (:option :value "" "Choose book...")
-		     (loop for name being the hash-keys of *notebooks*
-			do (htm (:option :value name (str name)))))
+		     (loop for id being the hash-keys of *notebooks*
+			for book being the hash-values of *notebooks*
+			do (htm (:option :value id (str (notebook-name book))))))
 	    (:select :id "book-actions"
 		     :onchange "runBookAction(this.value)"
 		     (:option :value "" "Stuff...")
@@ -430,11 +431,11 @@
 	(post/json "/cl-notebook/system/kill-thread" (create)))
       
       (defun rewind-book (index)
-	(post/json "/cl-notebook/notebook/rewind" (create :book (notebook-name *notebook*) :index index)
+	(post/json "/cl-notebook/notebook/rewind" (create :book (notebook-id *notebook*) :index index)
 		   #'notebook!))
 
       (defun fork-book (callback)
-	(post/json "/cl-notebook/notebook/fork-at" (create :book (notebook-name *notebook*) :index (@ (by-selector "#book-history-slider") value))
+	(post/json "/cl-notebook/notebook/fork-at" (create :book (notebook-id *notebook*) :index (@ (by-selector "#book-history-slider") value))
 		   callback))
 
       (defun notebook/current (name)
@@ -453,31 +454,31 @@
 		   #'notebook!))
 
       (defun kill-book ()
-	(post/json "/cl-notebook/notebook/kill" (create :book (notebook-name *notebook*))))
+	(post/json "/cl-notebook/notebook/kill" (create :book (notebook-id *notebook*))))
 
       (defun rename-book (new-name)
-	(post/fork "/cl-notebook/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)))
+	(post/fork "/cl-notebook/notebook/rename" (create :book (notebook-id *notebook*) :new-name new-name)))
 
       (defun notebook/eval-to-cell (cell-id contents)
-	(post/fork "/cl-notebook/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
+	(post/fork "/cl-notebook/notebook/eval-to-cell" (create :book (notebook-id *notebook*) :cell-id cell-id :contents contents)))
 
       (defun new-cell (&optional (cell-language :common-lisp) (cell-type :code))
-	(post/fork "/cl-notebook/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type :cell-language cell-language)))
+	(post/fork "/cl-notebook/notebook/new-cell" (create :book (notebook-id *notebook*) :cell-type cell-type :cell-language cell-language)))
 
       (defun kill-cell (cell-id)
-	(post/fork "/cl-notebook/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)))
+	(post/fork "/cl-notebook/notebook/kill-cell" (create :book (notebook-id *notebook*) :cell-id cell-id)))
       
       (defun change-cell-contents (cell-id contents)
-	(post/fork "/cl-notebook/notebook/change-cell-contents" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
+	(post/fork "/cl-notebook/notebook/change-cell-contents" (create :book (notebook-id *notebook*) :cell-id cell-id :contents contents)))
 
       (defun change-cell-type (cell-id new-type)
-	(post/fork "/cl-notebook/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)))
+	(post/fork "/cl-notebook/notebook/change-cell-type" (create :book (notebook-id *notebook*) :cell-id cell-id :new-type new-type)))
       
       (defun change-cell-language (cell-id new-language)
-	(post/fork "/cl-notebook/notebook/change-cell-language" (create :book (notebook-name *notebook*) :cell-id cell-id :new-language new-language)))
+	(post/fork "/cl-notebook/notebook/change-cell-language" (create :book (notebook-id *notebook*) :cell-id cell-id :new-language new-language)))
 
       (defun change-cell-noise (cell-id new-noise)
-	(post/fork "/cl-notebook/notebook/change-cell-noise" (create :book (notebook-name *notebook*) :cell-id cell-id :new-noise new-noise)))
+	(post/fork "/cl-notebook/notebook/change-cell-noise" (create :book (notebook-id *notebook*) :cell-id cell-id :new-noise new-noise)))
 
       (defun reorder-cells (ev)
 	(prevent ev)
@@ -485,7 +486,7 @@
 		    (loop for elem in (by-selector-all ".cell")
 		       collect (parse-int (chain elem (get-attribute :cell-id)))))))
 	  (post "/cl-notebook/notebook/reorder-cells" 
-		(create :book (notebook-name *notebook*) 
+		(create :book (notebook-id *notebook*) 
 			:cell-order ord))))))
 
 (define-handler (js/book-actions.js :content-type "application/javascript") ()
@@ -622,7 +623,7 @@
 	    (post/json uri args on-success on-fail)
 	    (fork-book (lambda (res) 
 			 (notebook! res)
-			 (setf (@ args :book) (notebook-name *notebook*))
+			 (setf (@ args :book) (notebook-id *notebook*))
 			 (post/json uri args on-success on-fail))))))
 
     ;; cl-notebook specific DOM manipulation
@@ -697,6 +698,7 @@
 	res))
 
     (defun notebook-name (notebook) (@ notebook name))
+    (defun notebook-id (notebook) (@ notebook id))
     (defun set-notebook-name (notebook new-name) (setf (@ notebook name) new-name))
 
     (defun notebook-facts (notebook) (@ notebook facts))
@@ -729,9 +731,9 @@
 	(setf *notebook* 
 	      (create :facts fs :objects (notebook-condense fs)
 		      :history-size count
-		      :name (loop for (a b c) in fs
-			       when (equal b "notebookName")
-			       do (return c))))
+		      :id (@ raw :id) :name (loop for (a b c) in fs
+					       when (equal b "notebookName")
+					       do (return c))))
 	(dom-set 
 	 (by-selector "#notebook")
 	 (notebook-template *notebook*))
@@ -742,10 +744,10 @@
 	  (chain slider (add-event-listener :change (lambda () (rewind-book (@ slider value))))))
 	(hide! (by-selector ".book-title input"))
 	(nativesortable (by-selector "ul.cells"))
-	(set-page-hash (create :book (notebook-name *notebook*)))
+	(set-page-hash (create :book (notebook-id *notebook*)))
 	(map (lambda (opt) (chain opt (remove-attribute :selected)))
 	     (by-selector-all "#book-list option"))
-	(chain (by-selector (+ "#book-list option[value='" (notebook-name *notebook*) "']"))
+	(chain (by-selector (+ "#book-list option[value='" (notebook-id *notebook*) "']"))
 	       (set-attribute :selected "selected"))
 	(map (lambda (cell) 
 	       (with-slots (id cell-type) cell
@@ -760,7 +762,7 @@
        (create
 	'new-cell 
 	(lambda (res)
-	  (when (equal (notebook-name *notebook*) (@ res book))
+	  (when (equal (notebook-id *notebook*) (@ res book))
 	    (let ((id (@ res 'cell-id))
 		  (cell (create 'type "cell" 'contents "" 'result ""
 				'cell-type (@ res cell-type) 
@@ -775,19 +777,19 @@
 	      (show-editor id))))
 	'change-cell-type
 	(lambda (res)
-	  (when (equal (notebook-name *notebook*) (@ res book))
+	  (when (equal (notebook-id *notebook*) (@ res book))
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
 	      (setf (@ cell cell-type) (@ res new-type))
 	      (dom-replace-cell cell))))
 	'change-cell-language
 	(lambda (res)
-	  (when (equal (notebook-name *notebook*) (@ res book))
+	  (when (equal (notebook-id *notebook*) (@ res book))
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
 	      (setf (@ cell cell-language) (@ res new-language))
 	      (dom-replace-cell cell))))
 	'change-cell-noise
 	(lambda (res)
-	  (when (equal (notebook-name *notebook*) (@ res book))
+	  (when (equal (notebook-id *notebook*) (@ res book))
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
 	      (setf (@ cell noise) (@ res new-noise))
 	      (dom-replace-cell-value cell))))
@@ -800,7 +802,7 @@
 	'finished-eval 
 	(lambda (res)
 	  (hide! (by-selector ".footer"))
-	  (when (equal (notebook-name *notebook*) (@ res book))
+	  (when (equal (notebook-id *notebook*) (@ res book))
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
 	      (setf (@ cell contents) (@ res contents)
 		    (@ cell result) (@ res result))
@@ -809,7 +811,7 @@
 	      (dom-replace-cell-value cell))))
 	'content-changed
 	(lambda (res)
-	  (when (equal (notebook-name *notebook*) (@ res book))
+	  (when (equal (notebook-id *notebook*) (@ res book))
 	    (let* ((cell (notebook-cell *notebook* (@ res cell)))
 		   (mirror (cell-mirror (@ res cell)))
 		   (cursor (chain mirror (get-cursor))))
@@ -820,42 +822,43 @@
 	      (chain mirror (set-cursor cursor)))))
 	'kill-cell 
 	(lambda (res)
-	  (when (equal (notebook-name *notebook*) (@ res book))
+	  (when (equal (notebook-id *notebook*) (@ res book))
 	    (delete (aref *notebook* 'objects (@ res cell)))
 	    (chain (by-cell-id (@ res cell)) (remove))))
 	
 	'reorder-cells 
 	(lambda (res)
-	  (when (equal (notebook-name *notebook*) (@ res book))
+	  (when (equal (notebook-id *notebook*) (@ res book))
 	    ;; TODO change order here to support proper multi-user noting
 	    (console.log "Changed cell order" res)))
 	
 	'new-book
 	(lambda (res)
-	  (let ((name (@ res book-name)))
+	  (let ((id (@ res book))
+		(name (@ res book-name)))
 	    (dom-append (by-selector "#book-list")
-			(who-ps-html (:option :value name name)))))
+			(who-ps-html (:option :value id name)))))
 	'kill-book
 	(lambda (res)
-	  (let ((name (@ res book)))
-	    (chain (by-selector (+ "#book-list option[value='" name "']")) (remove))
-	    (when (equal (notebook-name *notebook*) name)
+	  (let ((id (@ res book)))
+	    (chain (by-selector (+ "#book-list option[value='" id "']")) (remove))
+	    (when (equal (notebook-id *notebook*) id)
 	      (display-book 
 	       (chain (@ (by-selector-all "#book-list option") 1)
 		      (get-attribute :value))))))
 	'rename-book
 	(lambda (res)
-	  (let ((old-name (@ res book))
+	  (let ((id (@ res book))
 		(new-name (@ res new-name)))
-	    (when (equal (notebook-name *notebook*) old-name)
+	    (when (equal (notebook-id *notebook*) id)
 	      (dom-replace (by-selector ".book-title")
 			   (notebook-title-template new-name))
 	      (set-notebook-name *notebook* new-name)
 	      (set-page-hash (create :book new-name))
 	      (hide-title-input))
-	    (chain (by-selector (+ "#book-list option[value='" old-name "']")) (remove))
+	    (chain (by-selector (+ "#book-list option[value='" id "']")) (remove))
 	    (dom-append (by-selector "#book-list")
-			(who-ps-html (:option :value new-name new-name))))))))
+			(who-ps-html (:option :value id new-name))))))))
 
     (defvar *warning-filter* 
       (lambda (w)

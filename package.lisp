@@ -25,5 +25,5 @@
 (defvar *default-indices* '(:a :b :ab :abc))
 
 (define-http-type (:notebook)
-    :type-expression `(gethash ,parameter *notebooks*)
+    :type-expression `(get-notebook ,parameter)
     :type-assertion  `(typep ,parameter 'fact-base))

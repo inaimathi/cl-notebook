@@ -62,7 +62,7 @@
     (when (and (bt:threadp *front-end-eval-thread*)
 	       (bt:thread-alive-p *front-end-eval-thread*))
       (bt:destroy-thread *front-end-eval-thread*))
-    (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'starting-eval))
+    (publish! :cl-notebook-updates (update :book (notebook-id book) :cell cell-id :action 'starting-eval))
     (setf *front-end-eval-thread*
 	  (bt:make-thread
 	   (lambda ()
@@ -73,7 +73,7 @@
 		 (delete! book (list cell-id :stale t))
 		 (write! book))
 	       (publish! :cl-notebook-updates 
-			 (update :book (notebook-name book) 
+			 (update :book (notebook-id book) 
 				 :cell cell-id 
 				 :action 'finished-eval 
 				 :contents contents 
@@ -86,8 +86,17 @@
 (defmethod new-cell! ((book fact-base) &key (cell-language :common-lisp) (cell-type :code))
   (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:cell-language ,cell-language) (:contents "") (:result ""))))
 
-(defmethod remove-notebook! (name)
-  (remhash name *notebooks*))
+(defmethod remove-notebook! ((book fact-base))
+  (remhash (notebook-id book) *notebooks*))
+
+(defmethod register-notebook! ((book fact-base))
+  (setf (gethash (notebook-id book) *notebooks*) book))
+
+(defmethod get-notebook ((name string))
+  (gethash name *notebooks*))
+
+(defmethod notebook-id ((book fact-base))
+  (file-namestring (file-name book)))
 
 (defmethod notebook-name ((book fact-base))
   (caddar (lookup book :b :notebook-name)))
@@ -96,15 +105,12 @@
   (let ((name-fact (first (lookup book :b :notebook-name))))
     (delete! book name-fact)
     (insert-new! book :notebook-name new-name)
-    (setf (gethash new-name *notebooks*) book)
-    (remhash (third name-fact) *notebooks*)
     book))
 
 (defun new-notebook! (name)
   (let ((book (make-fact-base :indices *default-indices* :file-name (merge-pathnames (fact-base::temp-file-name) *books*))))
     (insert-new! book :notebook-name name)
-    (unless (gethash name *notebooks*)
-      (setf (gethash name *notebooks*) book))
+    (register-notebook! book)
     book))
 
 (defmethod make-unique-name-in ((dir pathname) (base-name string))
@@ -116,28 +122,17 @@
 	   unless (cl-fad:file-exists-p name) return name)
 	name)))
 
-(defmethod make-unique-fork-name ((base-name string))
-  (loop for i from 1
-     for name = (format nil "Fork ~@[~a ~]of ~a" (if (= i 1) nil i) base-name)
-     unless (gethash name *notebooks*) return name))
-
 (defmethod kill! ((book fact-base))
   (let ((trash-name (make-unique-name-in *trash*  (file-namestring (file-name book)))))
     (rename-file (file-name book) trash-name)
-    (remhash (notebook-name book) *notebooks*)))
+    (remove-notebook! book)))
 
 (defmethod load-notebook! ((name pathname))
   (let ((book (load! name :indices *default-indices* :in-memory? t)))
     (eval-notebook-code book)
-    (setf (gethash (notebook-name book) *notebooks*) book)))
-
-(defun get-notebook (name)
-  (gethash name *notebooks*))
+    (register-notebook! book)))
 
 ;;;;; HTTP Handlers
-(define-json-handler (cl-notebook/system/list-books) ()
-  (alexandria:hash-table-keys *notebooks*))
-
 (define-json-handler (cl-notebook/system/kill-thread) ()
   (when (and (bt:threadp *front-end-eval-thread*)
 	     (bt:thread-alive-p *front-end-eval-thread*))
@@ -146,32 +141,32 @@
   :ok)
 
 (define-json-handler (cl-notebook/notebook/rewind) ((book :notebook) (index :integer))
-  (hash :facts (rewind-to book index) :history-size (total-entries book) :history-position index))
+  (hash :facts (rewind-to book index) :history-size (total-entries book) :history-position index :id (notebook-id book)))
 
 (define-json-handler (cl-notebook/notebook/current) ((book :notebook))
-  (hash :facts (current book) :history-size (total-entries book)))
+  (hash :facts (current book) :history-size (total-entries book) :id (notebook-id book)))
 
 (define-json-handler (cl-notebook/notebook/fork-at) ((book :notebook) (index :integer))
   (let ((new (load! 
 	      (fork-at book index :file-name (merge-pathnames (fact-base::temp-file-name) *books*))
 	      :indices *default-indices* :in-memory? t))
-	(new-name (make-unique-fork-name (notebook-name book))))
+	(new-name (format nil "Fork of ~a" (notebook-name book))))
     (delete! new (first (lookup new :b :notebook-name)))
-    (insert-new! new :notebook-name new-name)    
-    (setf (gethash new-name *notebooks*) new)
-    (publish! :cl-notebook-updates (update :action 'new-book :book-name new-name))
-    (hash :facts (current new) :history-size (total-entries new))))
+    (insert-new! new :notebook-name new-name)
+    (register-notebook! new)
+    (publish! :cl-notebook-updates (update :action 'new-book :book (notebook-id new) :book-name new-name))
+    (hash :facts (current new) :history-size (total-entries new) :id (notebook-id new))))
 
 (define-json-handler (cl-notebook/notebook/new) ()
   (let* ((name (format nil "book-~a" (hash-table-count *notebooks*)))
 	 (book (new-notebook! name)))
     (write! book)
-    (publish! :cl-notebook-updates (update :action 'new-book :book-name name))
+    (publish! :cl-notebook-updates (update :action 'new-book (notebook-id book) :book-name name))
     (hash :facts (current book) :history-size (total-entries book))))
 
 (define-json-handler (cl-notebook/notebook/kill) ((book :notebook))
   (kill! book)
-  (publish! :cl-notebook-updates (update :book (notebook-name book) :action 'kill-book))
+  (publish! :cl-notebook-updates (update :book (notebook-id book) :action 'kill-book))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/rename) ((book :notebook) (new-name :string))
@@ -188,7 +183,7 @@
 	(cell-type (caddar (lookup book :a cell-id :b :cell-type))))
     (delete! book cont-fact)
     (insert! book (list cell-id :contents contents))
-    (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'content-changed :contents contents))
+    (publish! :cl-notebook-updates (update :book (notebook-id book) :cell cell-id :action 'content-changed :contents contents))
     (eval-cell book cell-id contents val-fact cell-lang cell-type))
   :ok)
 
@@ -198,7 +193,7 @@
       (delete! book cont-fact)
       (insert! book (list cell-id :stale t))
       (insert! book (list cell-id :contents contents))
-      (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'content-changed :contents contents))))
+      (publish! :cl-notebook-updates (update :book (notebook-id book) :cell cell-id :action 'content-changed :contents contents))))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/change-cell-language) ((book :notebook) (cell-id :integer) (new-language :keyword))
@@ -211,7 +206,7 @@
       (insert! book (list cell-id :cell-type new-language))
       (publish! 
        :cl-notebook-updates 
-       (update :book (notebook-name book) :cell cell-id :action 'change-cell-language :new-language new-language))
+       (update :book (notebook-id book) :cell cell-id :action 'change-cell-language :new-language new-language))
       (eval-cell book cell-id (third cont-fact) val-fact new-language cell-type)))
   :ok)
 
@@ -225,7 +220,7 @@
       (insert! book (list cell-id :cell-type new-type))
       (publish! 
        :cl-notebook-updates 
-       (update :book (notebook-name book) :cell cell-id :action 'change-cell-type :new-type new-type))
+       (update :book (notebook-id book) :cell cell-id :action 'change-cell-type :new-type new-type))
       (eval-cell book cell-id (third cont-fact) val-fact cell-lang new-type)))
   :ok)
 
@@ -234,7 +229,7 @@
     (write! book)
     (publish! 
      :cl-notebook-updates 
-     (update :book (notebook-name book) :action 'new-cell :cell-id cell-id 
+     (update :book (notebook-id book) :action 'new-cell :cell-id cell-id 
 	     :cell-type cell-type :cell-language cell-language)))
   :ok)
 
@@ -243,13 +238,13 @@
     (delete! book (car it)))
   (insert-new! book :cell-order cell-order)
   (write! book)
-  (publish! :cl-notebook-updates (update :book (notebook-name book) :action 'reorder-cells :new-order cell-order))
+  (publish! :cl-notebook-updates (update :book (notebook-id book) :action 'reorder-cells :new-order cell-order))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/kill-cell) ((book :notebook) (cell-id :integer))
   (loop for f in (lookup book :a cell-id) do (delete! book f))
   (write! book)
-  (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'kill-cell))
+  (publish! :cl-notebook-updates (update :book (notebook-id book) :cell cell-id :action 'kill-cell))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/change-cell-noise) ((book :notebook) (cell-id :integer) (new-noise :keyword))
@@ -257,7 +252,7 @@
     (delete! book it))
   (unless (eq new-noise :normal)
     (insert! book (list cell-id :noise new-noise)))
-  (publish! :cl-notebook-updates (update :book (notebook-name book) :cell cell-id :action 'change-cell-noise :new-noise new-noise))
+  (publish! :cl-notebook-updates (update :book (notebook-id book) :cell cell-id :action 'change-cell-noise :new-noise new-noise))
   :ok)
 
 (define-handler (cl-notebook/source :close-socket? nil) ()
