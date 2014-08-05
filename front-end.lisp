@@ -58,7 +58,6 @@
 		     (:optgroup
 		      :label "Delete"
 		      (:option :value "kill-book" "Kill Book"))))
-      (:button :id "fork-button" :onclick "forkBook()" "! Fork")
       
       (:div :id "notebook")
       (:div :class "footer"
@@ -434,10 +433,9 @@
 	(post/json "/cl-notebook/notebook/rewind" (create :book (notebook-name *notebook*) :index index)
 		   #'notebook!))
 
-      (defun fork-book ()
-	(console.log "Forking" (notebook-name *notebook*) "at" (@ (by-selector "#book-history-slider") value))
+      (defun fork-book (callback)
 	(post/json "/cl-notebook/notebook/fork-at" (create :book (notebook-name *notebook*) :index (@ (by-selector "#book-history-slider") value))
-		   #'notebook!))
+		   callback))
 
       (defun notebook/current (name)
 	(post/json "/cl-notebook/notebook/current" (create :book name)
@@ -458,28 +456,28 @@
 	(post/json "/cl-notebook/notebook/kill" (create :book (notebook-name *notebook*))))
 
       (defun rename-book (new-name)
-	(post/json "/cl-notebook/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)))
+	(post/fork "/cl-notebook/notebook/rename" (create :book (notebook-name *notebook*) :new-name new-name)))
 
       (defun notebook/eval-to-cell (cell-id contents)
-	(post/json "/cl-notebook/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
+	(post/fork "/cl-notebook/notebook/eval-to-cell" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
 
       (defun new-cell (&optional (cell-language :common-lisp) (cell-type :code))
-	(post/json "/cl-notebook/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type :cell-language cell-language)))
+	(post/fork "/cl-notebook/notebook/new-cell" (create :book (notebook-name *notebook*) :cell-type cell-type :cell-language cell-language)))
 
       (defun kill-cell (cell-id)
-	(post/json "/cl-notebook/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)))
+	(post/fork "/cl-notebook/notebook/kill-cell" (create :book (notebook-name *notebook*) :cell-id cell-id)))
       
       (defun change-cell-contents (cell-id contents)
-	(post/json "/cl-notebook/notebook/change-cell-contents" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
+	(post/fork "/cl-notebook/notebook/change-cell-contents" (create :book (notebook-name *notebook*) :cell-id cell-id :contents contents)))
 
       (defun change-cell-type (cell-id new-type)
-	(post/json "/cl-notebook/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)))
+	(post/fork "/cl-notebook/notebook/change-cell-type" (create :book (notebook-name *notebook*) :cell-id cell-id :new-type new-type)))
       
       (defun change-cell-language (cell-id new-language)
-	(post/json "/cl-notebook/notebook/change-cell-language" (create :book (notebook-name *notebook*) :cell-id cell-id :new-language new-language)))
+	(post/fork "/cl-notebook/notebook/change-cell-language" (create :book (notebook-name *notebook*) :cell-id cell-id :new-language new-language)))
 
       (defun change-cell-noise (cell-id new-noise)
-	(post/json "/cl-notebook/notebook/change-cell-noise" (create :book (notebook-name *notebook*) :cell-id cell-id :new-noise new-noise)))
+	(post/fork "/cl-notebook/notebook/change-cell-noise" (create :book (notebook-name *notebook*) :cell-id cell-id :new-noise new-noise)))
 
       (defun reorder-cells (ev)
 	(prevent ev)
@@ -618,6 +616,15 @@
 		(setf last-run now)
 		(funcall save!)))))))
 
+    (defun post/fork (uri args on-success on-fail) 
+      (let ((slider (by-selector "#book-history-slider")))
+	(if (= (@ slider value) (chain slider (get-attribute :max)))
+	    (post/json uri args on-success on-fail)
+	    (fork-book (lambda (res) 
+			 (notebook! res)
+			 (setf (@ args :book) (notebook-name *notebook*))
+			 (post/json uri args on-success on-fail))))))
+
     ;; cl-notebook specific DOM manipulation
     (defun display-book (book-name)
       (when book-name
@@ -667,8 +674,8 @@
 		       "viewportMargin" -infinity
 		       "extraKeys" (create "Ctrl-Enter"
 					   (lambda (cmd)
-					     (notebook/eval-to-cell
-					      cell-id (cell-editor-contents cell-id)))
+					     (let ((contents (cell-editor-contents cell-id)))
+					       (notebook/eval-to-cell cell-id contents)))
 					   "Ctrl-Space" "autocomplete"))))
 	(setf 
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
@@ -729,7 +736,6 @@
 	 (by-selector "#notebook")
 	 (notebook-template *notebook*))
 	(let ((slider (remove-all-event-handlers (by-selector "#book-history-slider"))))
-	  (console.log "Resetting history values...")
 	  (chain slider (set-attribute :max count))
 	  (setf (@ slider value) pos
 		(@ (by-selector "#book-history-text") value) pos)

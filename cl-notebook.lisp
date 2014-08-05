@@ -113,8 +113,13 @@
     (if (cl-fad:file-exists-p name)
 	(loop for i from 0
 	   for name = (merge-pathnames (format nil "~a-~a" base-name i) dir)
-	   unless (cl-fad:file-exists-p name) do (return name))
+	   unless (cl-fad:file-exists-p name) return name)
 	name)))
+
+(defmethod make-unique-fork-name ((base-name string))
+  (loop for i from 1
+     for name = (format nil "Fork ~@[~a ~]of ~a" (if (= i 1) nil i) base-name)
+     unless (gethash name *notebooks*) return name))
 
 (defmethod kill! ((book fact-base))
   (let ((trash-name (make-unique-name-in *trash*  (file-namestring (file-name book)))))
@@ -150,7 +155,7 @@
   (let ((new (load! 
 	      (fork-at book index :file-name (merge-pathnames (fact-base::temp-file-name) *books*))
 	      :indices *default-indices* :in-memory? t))
-	(new-name (format nil "Fork of ~a" (notebook-name book))))
+	(new-name (make-unique-fork-name (notebook-name book))))
     (delete! new (first (lookup new :b :notebook-name)))
     (insert-new! new :notebook-name new-name)    
     (setf (gethash new-name *notebooks*) new)

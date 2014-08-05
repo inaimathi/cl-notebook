@@ -85,7 +85,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 ######## Multi-user related
 - If you're looking at past history states, you shouldn't see others edits to the current book
-	- The list of ignored actions is the same as "operations that should fork a book" above.
+	- The list of ignored actions is the same as "operations that should fork a book" abosve.
 	- We do still want to be notified of book deletion the same way, and we still want to know when an eval starts/aborts/finishes (but don't want to see the result change any viewed cells)
 - Move to a thread-per-cell model to make multi-user development easier
 - If you join a book in the middle of an already running computation, you currently aren't notified of this. Figure something out.
