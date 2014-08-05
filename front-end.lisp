@@ -39,7 +39,7 @@
 
      (:body
       (:div :class "main-controls"
-	    (:input :id "book-history-slider" :type "range" :min 0 :max 500 :value 500)
+	    (:input :id "book-history-slider" :onchange "rewindBook(this.value)" :type "range" :min 0 :max 500 :value 500)
 	    (:input :id "book-history-text" :onchange "rewindBook(this.value)")
 	    (:button :onclick "newCell()" "+ New Cell")
 	    (:button :onclick "newBook()" "+ New Book")
@@ -742,6 +742,20 @@
     (defun notebook-cell (notebook id)
       (aref notebook :objects id))
     
+    (defun surgical! (raw)
+      (let ((slider (by-selector "#book-history-slider"))		     
+	    (count (@ raw history-size))
+	    (id (@ raw id)))
+	(chain slider (set-attribute :max count))
+	(setf (@ *notebook* id) id
+	      (@ slider value) count
+	      (@ (by-selector "#book-history-text") value) count
+	      (@ args :book) id)
+	(hide! (by-selector ".book-title input"))
+	(dom-replace (by-selector ".book-title") (@ raw book-name))
+	(set-page-hash (create :book id))
+	(post/json uri args on-success on-fail)))
+
     (defun notebook! (raw)
       (let* ((fs (@ raw facts))
 	     (count (@ raw history-size))
@@ -755,11 +769,10 @@
 	(dom-set 
 	 (by-selector "#notebook")
 	 (notebook-template *notebook*))
-	(let ((slider (remove-all-event-handlers (by-selector "#book-history-slider"))))
+	(let ((slider (by-selector "#book-history-slider")))
 	  (chain slider (set-attribute :max count))
 	  (setf (@ slider value) pos
-		(@ (by-selector "#book-history-text") value) pos)
-	  (chain slider (add-event-listener :change (lambda () (rewind-book (@ slider value))))))
+		(@ (by-selector "#book-history-text") value) pos))
 	(hide! (by-selector ".book-title input"))
 	(nativesortable (by-selector "ul.cells"))
 	(set-page-hash (create :book (notebook-id *notebook*)))
