@@ -35,6 +35,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 ##### Thoughts
 - Cells are now updated if their content is different on a notebook-load. This means that books that contain timestamp-related cells or similar will always be changed when they're opened. Is that what we really want?
 	- Unsure. On the one hand, we don't want a cell to be re-saved every time on the basis that it contains a call to `random`. On the other hand, we don't want to say such changes never require a re-eval. The _easy_ way out seems to be dropping the eval-on-load thing. Or, at the very least, deferring it to the first time a given book is viewed in the lifetime of a server instance.
+- Do we want to differentiate between "someone forked a book" and "someone started a new book"? Right now, there's no difference, but we may want to treat forks differently for multi-user purposes later on.
 
 ##### Bugs
 

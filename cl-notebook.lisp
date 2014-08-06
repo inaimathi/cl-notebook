@@ -113,9 +113,14 @@
   (caddar (lookup book :b :notebook-name)))
 
 (defmethod rename-notebook! ((book fact-base) (new-name string))
-  (let ((name-fact (first (lookup book :b :notebook-name))))
-    (change! book name-fact (list (first name-fact) :notebook-name new-name))
-    book))
+  "Takes a book and a new name.
+Returns two values; the renamed book, and a boolean specifying whether the name was changed.
+If the new name passed in is the same as the books' current name, we don't insert any new facts."
+  (let* ((name-fact (first (lookup book :b :notebook-name)))
+	 (same? (equal (third name-fact) new-name)))
+    (unless same?
+      (change! book name-fact (list (first name-fact) :notebook-name new-name)))
+    (values book (not same?))))
 
 (defun new-notebook! (name)
   (let ((book (make-fact-base :indices *default-indices* :file-name (merge-pathnames (fact-base::temp-file-name) *books*))))
@@ -170,19 +175,19 @@
   (let* ((name (format nil "book-~a" (hash-table-count *notebooks*)))
 	 (book (new-notebook! name)))
     (write! book)
-    (publish! :cl-notebook-updates (update :action 'new-book (notebook-id book) :book-name name))
+    (publish! :cl-notebook-updates (update :action 'new-book :book (notebook-id book) :book-name name))
     (hash :facts (current book) :history-size (total-entries book))))
 
 (define-json-handler (cl-notebook/notebook/kill) ((book :notebook))
   (kill! book)
-  (publish! :cl-notebook-updates (update :book (notebook-id book) :action 'kill-book))
+  (publish! :cl-notebook-updates (update :action 'kill-book :book (notebook-id book)))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/rename) ((book :notebook) (new-name :string))
-  (let* ((old-name (notebook-name book))
-	 (book (rename-notebook! book new-name)))
-    (write! book)
-    (publish! :cl-notebook-updates (update :book old-name :action 'rename-book :new-name new-name)))
+  (multiple-value-bind (book renamed?) (rename-notebook! book new-name)
+    (when renamed? 
+      (write! book)
+      (publish! :cl-notebook-updates (update :action 'rename-book :book (notebook-id book) :new-name new-name))))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
