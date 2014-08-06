@@ -629,6 +629,7 @@
 	  (post/json uri args on-success on-fail)
 	  (fork-book (lambda (res)
 		       (surgical! res)
+		       (setf document.title (+ (@ res book-name) " - cl-notebook"))
 		       (setf (@ args :book) (@ res id))
 		       (dom-replace (by-selector ".book-title") (notebook-title-template (@ res book-name)))
 		       (post/json uri args on-success on-fail)))))
@@ -642,7 +643,6 @@
     (defun hash-updated ()
       (let ((book-name (@ (get-page-hash) :book)))
 	(when book-name
-	  (setf document.title (+ book-name " - cl-notebook"))
 	  (notebook/current book-name))))
 
     (defun dom-replace-cell-value (cell)
@@ -753,6 +753,7 @@
 	 (by-selector "#notebook")
 	 (notebook-template *notebook*))
 	(surgical! raw)
+	(setf document.title (+ (notebook-name *notebook*) " - cl-notebook"))
 	(nativesortable (by-selector "ul.cells"))
 	(map (lambda (opt) (chain opt (remove-attribute :selected)))
 	     (by-selector-all "#book-list option"))
