@@ -39,7 +39,7 @@
 
      (:body
       (:div :class "main-controls"
-	    (:input :id "book-history-slider" :onchange "rewindBook(this.value)" :type "range" :min 0 :max 500 :value 500)
+	    (:input :id "book-history-slider" :onchange "rewindBook(this.value)" :oninput "debouncedRewind(this.value)" :type "range" :min 0 :max 500 :value 500)
 	    (:input :id "book-history-text" :onchange "rewindBook(this.value)")
 	    (:button :onclick "newCell()" "+ New Cell")
 	    (:button :onclick "newBook()" "+ New Book")
@@ -127,6 +127,21 @@
 	clone))
 
     (defun prevent (ev) (chain ev (prevent-default)))
+
+    (defun debounce (fn delay immediate?)
+      (let ((timeout))
+	(lambda ()
+	  (let ((context this)
+		(args arguments))
+	    (clear-timeout timeout)
+	    (setf timeout (set-timeout 
+			   (lambda ()
+			     (setf timeout nil)
+			     (unless immediate?
+			       (chain fn (apply context args))))
+			   delay))
+	    (when (and immediate? (not timeout))
+	      (chain fn (apply context args)))))))
 
     (defun scroll-to-elem (elem)
       (let ((x (@ elem offset-left))
@@ -435,6 +450,8 @@
       (defun rewind-book (index)
 	(post/json "/cl-notebook/notebook/rewind" (create :book (notebook-id *notebook*) :index index)
 		   #'notebook!))
+
+      (defvar debounced-rewind (debounce #'rewind-book 50))
 
       (defun fork-book (callback)
 	(post/json "/cl-notebook/notebook/fork-at" (create :book (notebook-id *notebook*) :index (@ (by-selector "#book-history-slider") value))
