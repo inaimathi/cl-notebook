@@ -52,14 +52,16 @@
 		(unless (eq :timed-out res)
 		  (when stale? (delete! book stale?))
 		  (unless (equalp (third res-fact) res)
-		    (when res-fact (delete! book res-fact))
-		    (insert! book (list cell-id :result res)))))))
+		    (let ((new (list cell-id :result res)))
+		      (if res-fact 
+			  (change! book res-fact new)
+			  (insert! book new))))))))
       (write! book))))
 
 (defmethod empty-expression? ((contents string))
   (when (cl-ppcre:scan "^[ \n\t\r]*$" contents) t))
 
-(defmethod eval-cell ((book fact-base) cell-id (contents string) val-fact cell-language cell-type)
+(defmethod eval-cell ((book fact-base) cell-id (contents string) res-fact cell-language cell-type)
   (unless (empty-expression? contents)
     (when (and (bt:threadp *front-end-eval-thread*)
 	       (bt:thread-alive-p *front-end-eval-thread*))
@@ -70,9 +72,8 @@
 	   (lambda ()
 	     (in-package :cl-notebook)
 	     (let ((res (front-end-eval cell-language cell-type contents)))
-	       (when (and val-fact res)
-		 (delete! book val-fact)
-		 (insert! book (list cell-id :result res))
+	       (when (and res-fact res)
+		 (change! book res-fact (list cell-id :result res))
 		 (delete! book (list cell-id :stale t))
 		 (write! book))
 	       (publish! :cl-notebook-updates 
@@ -88,6 +89,13 @@
 
 (defmethod new-cell! ((book fact-base) &key (cell-language :common-lisp) (cell-type :code))
   (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:cell-language ,cell-language) (:contents "") (:result ""))))
+
+(defun ordered-books ()
+  (sort
+   (loop for k being the hash-keys of *notebooks*
+      for v being the hash-values of *notebooks*
+      collect (list k (notebook-name v)))
+   #'string<= :key #'second))
 
 (defmethod remove-notebook! ((book fact-base))
   (remhash (notebook-id book) *notebooks*))
@@ -106,8 +114,7 @@
 
 (defmethod rename-notebook! ((book fact-base) (new-name string))
   (let ((name-fact (first (lookup book :b :notebook-name))))
-    (delete! book name-fact)
-    (insert-new! book :notebook-name new-name)
+    (change! book name-fact (list (first name-fact) :notebook-name new-name))
     book))
 
 (defun new-notebook! (name)
@@ -154,8 +161,7 @@
 	      (fork-at book index :file-name (merge-pathnames (fact-base::temp-file-name) *books*))
 	      :indices *default-indices* :in-memory? t))
 	(new-name (format nil "Fork of ~a" (notebook-name book))))
-    (delete! new (first (lookup new :b :notebook-name)))
-    (insert-new! new :notebook-name new-name)
+    (rename-notebook! new new-name)
     (register-notebook! new)
     (publish! :cl-notebook-updates (update :action 'new-book :book (notebook-id new) :book-name new-name))
     (hash :facts (current new) :history-size (total-entries new) :id (notebook-id new) :book-name new-name)))
@@ -184,8 +190,7 @@
 	(val-fact (first (lookup book :a cell-id :b :result)))
 	(cell-lang (caddar (lookup book :a cell-id :b :cell-language)))
 	(cell-type (caddar (lookup book :a cell-id :b :cell-type))))
-    (delete! book cont-fact)
-    (insert! book (list cell-id :contents contents))
+    (change! book cont-fact (list cell-id :contents contents))
     (publish! :cl-notebook-updates (update :book (notebook-id book) :cell cell-id :action 'content-changed :contents contents))
     (eval-cell book cell-id contents val-fact cell-lang cell-type))
   :ok)
@@ -193,9 +198,8 @@
 (define-json-handler (cl-notebook/notebook/change-cell-contents) ((book :notebook) (cell-id :integer) (contents :string))
   (let ((cont-fact (first (lookup book :a cell-id :b :contents))))
     (unless (string= contents (third cont-fact))
-      (delete! book cont-fact)
+      (change! book cont-fact (list cell-id :contents contents))
       (insert! book (list cell-id :stale t))
-      (insert! book (list cell-id :contents contents))
       (publish! :cl-notebook-updates (update :book (notebook-id book) :cell cell-id :action 'content-changed :contents contents))))
   :ok)
 
@@ -205,8 +209,7 @@
 	(cell-type (caddar (lookup book :a cell-id :b :cell-type)))
 	(lang-fact (first (lookup book :a cell-id :b :cell-language))))
     (unless (eq (third lang-fact) new-language)
-      (delete! book lang-fact)
-      (insert! book (list cell-id :cell-type new-language))
+      (change! book lang-fact (list cell-id :cell-type new-language))
       (publish! 
        :cl-notebook-updates 
        (update :book (notebook-id book) :cell cell-id :action 'change-cell-language :new-language new-language))
@@ -219,8 +222,7 @@
 	(cell-lang (caddar (lookup book :a cell-id :b :cell-language)))
 	(tp-fact (first (lookup book :a cell-id :b :cell-type))))
     (unless (eq (third tp-fact) new-type)
-      (delete! book tp-fact)
-      (insert! book (list cell-id :cell-type new-type))
+      (change! book tp-fact (list cell-id :cell-type new-type))
       (publish! 
        :cl-notebook-updates 
        (update :book (notebook-id book) :cell cell-id :action 'change-cell-type :new-type new-type))
@@ -237,8 +239,8 @@
   :ok)
 
 (define-json-handler (cl-notebook/notebook/reorder-cells) ((book :notebook) (cell-order :json))
-  (awhen (lookup book :b :cell-order)
-    (delete! book (car it)))
+  (awhen (first (lookup book :b :cell-order))
+    (delete! book it))
   (insert-new! book :cell-order cell-order)
   (write! book)
   (publish! :cl-notebook-updates (update :book (notebook-id book) :action 'reorder-cells :new-order cell-order))
@@ -251,10 +253,14 @@
   :ok)
 
 (define-json-handler (cl-notebook/notebook/change-cell-noise) ((book :notebook) (cell-id :integer) (new-noise :keyword))
-  (awhen (first (lookup book :a cell-id :b :noise))
-    (delete! book it))
-  (unless (eq new-noise :normal)
-    (insert! book (list cell-id :noise new-noise)))
+  (let ((old-noise-fact (first (lookup book :a cell-id :b :noise)))
+	(new-noise-fact (unless (eq new-noise :normal) (list cell-id :noise new-noise))))
+    (cond ((and old-noise-fact new-noise-fact)
+	   (change! book old-noise-fact new-noise-fact))
+	  (old-noise-fact
+	   (delete! book old-noise-fact))
+	  (new-noise-fact
+	   (insert! book new-noise-fact))))
   (publish! :cl-notebook-updates (update :book (notebook-id book) :cell cell-id :action 'change-cell-noise :new-noise new-noise))
   :ok)
 

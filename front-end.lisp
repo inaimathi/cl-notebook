@@ -451,7 +451,7 @@
 	(post/json "/cl-notebook/notebook/rewind" (create :book (notebook-id *notebook*) :index index)
 		   #'notebook!))
 
-      (defvar debounced-rewind (debounce #'rewind-book 50))
+      (defvar debounced-rewind (debounce #'rewind-book 10))
 
       (defun fork-book (callback)
 	(post/json "/cl-notebook/notebook/fork-at" (create :book (notebook-id *notebook*) :index (@ (by-selector "#book-history-slider") value))
