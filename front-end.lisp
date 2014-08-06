@@ -46,12 +46,8 @@
 	    (:select :id "book-list"
 		     :onchange "displayBook(this.value)"
 		     (:option :value "" "Choose book...")
-		     ;; TODO figure out why this doesn't work
-		     ;; (let ((books (loop for k being the hash-keys of *notebooks*
-		     ;; 		     for v being the hash-values of *notebooks*
-		     ;; 		     collect (list k (notebook-name v)))))
-		     ;;   (loop for (id name) in (sort books #'string<= :key #'second)
-		     ;; 	  do (htm :option :value id name)))
+		     ;; (loop for (id name) in (ordered-books)
+		     ;; 	do (htm (:option :value id (str name))))
 		     (loop for id being the hash-keys of *notebooks*
 			for book being the hash-values of *notebooks*
 			do (htm (:option :value id (str (notebook-name book))))))
