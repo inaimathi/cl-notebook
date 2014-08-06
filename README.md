@@ -34,6 +34,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 ### TODO
 ##### Thoughts
 - Cells are now updated if their content is different on a notebook-load. This means that books that contain timestamp-related cells or similar will always be changed when they're opened. Is that what we really want?
+	- Unsure. On the one hand, we don't want a cell to be re-saved every time on the basis that it contains a call to `random`. On the other hand, we don't want to say such changes never require a re-eval. The _easy_ way out seems to be dropping the eval-on-load thing. Or, at the very least, deferring it to the first time a given book is viewed in the lifetime of a server instance.
 
 ##### Bugs
 
@@ -53,11 +54,12 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 - Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
 - If there are no existing notebooks, we should write a default scratch book with some initial how-to instructions
 - We should go through history rather than just evaluating current cells in order (they may have initially been evaluated in a different order. Doing the general thing might be better all-round)
-- Build using buildapp?
-- Branching for notebooks
+- Get `buildapp` working properly with this
+	- Give the user a one-button interaction that turns a given notebook into a binary.
 
 ######## Front-end
 - Notebooks should be sorted by notebook-name, at the very least (in addition to the below noted fork-grouping)
+	- This may involve changes to some back-end systems; you need to order up the initial notebook list, _as well as_ inserting new notebooks in an ordered manner. Do we just bite the bullet and hit the server every time? Or maybe send out a complete notebooks list every time someone adds one?
 - History entries should be grouped with their parents. Guess you could pull out parent relationships at load-time? Sounds like you're getting closer and closer to sub-classing fact-base into a separate notebook class.
 - Really REALLY missing s-expression-based navigation. Look into it.
 	- [`subpar`](https://github.com/achengs/subpar) exists, apparently

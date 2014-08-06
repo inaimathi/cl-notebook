@@ -603,22 +603,6 @@
 	(chain r (select-node-contents elem))
 	(chain window (get-selection) (add-range r))))
 
-    (defun debounced-save (cell-id delay)
-      (let ((last-run (new -date))
-	    (save! 
-	     (lambda () 
-	       (change-cell-contents cell-id (cell-editor-contents cell-id))))
-	    (parting-shot))
-	(lambda (mirror change)
-	  (let ((now (new -date)))
-	    (when (or (= "+input" (@ change origin)) (= "+delete" (@ change origin)))
-	      (chain (by-cell-id cell-id) class-list (add "stale"))
-	      (clear-timeout parting-shot)
-	      (setf parting-shot (set-timeout #'save! delay))
-	      (when (> (- now last-run) (* delay 2))
-		(setf last-run now)
-		(funcall save!)))))))
-
     (defun in-present? ()
       (let ((slider (by-selector "#book-history-slider")))
 	(= (@ slider value) (chain slider (get-attribute :max)))))
@@ -687,8 +671,6 @@
 	(setf 
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
 	 (@ cell editor) mirror)
-	(when (= :markup (@ cell cell-type))
-	  (chain mirror (on :change (debounced-save cell-id 4000))))
 	mirror))
 
     ;; Notebook-related
