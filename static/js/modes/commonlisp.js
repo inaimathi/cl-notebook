@@ -1,16 +1,8 @@
 CodeMirror.defineMode("commonlisp", function (config) {
-    var assumeBody = /^with|^def|^do|^prog|^f?let|case$|^cond$|bind$|when$|unless$/;
+    var assumeBody = /^with|^def|^do|^prog|^f?let|case$|bind$|a?when$|a?unless$/;
     var numLiteral = /^(?:[+\-]?(?:\d+|\d*\.\d+)(?:[efd][+\-]?\d+)?|[+\-]?\d+(?:\/[+\-]?\d+)?|#b[+\-]?[01]+|#o[+\-]?[0-7]+|#x[+\-]?[\da-f]+)/;
     var symbol = /[^\s'`,@()\[\]";]/;
     var type;
-
-    function makeKeywords (str) {
-	var obj = {}, words = str.split(" ");
-	for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
-	return obj
-    }
-
-    var keywords = makeKeywords("loop when unless do for in")
 
     function readSym(stream) {
 	var ch;
@@ -31,7 +23,7 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	else if (ch == "(") { type = "open"; return "bracket"; }
 	else if (ch == ")" || ch == "]") { type = "close"; return "bracket"; }
 	else if (ch == ";") { stream.skipToEnd(); type = "ws"; return "comment"; }
-	else if (/[`,@]/.test(ch)) return null;
+	else if (/['`,@]/.test(ch)) return null;
 	else if (ch == "|") {
 	    if (stream.skipTo("|")) { stream.next(); return "symbol"; }
 	    else { stream.skipToEnd(); return "error"; }
@@ -45,17 +37,39 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	    else return "error";
 	} else {
 	    var name = readSym(stream);
-	    if (/^(def|with|f?let|labels)/.test(name)) return "def";
-	    if (/lambda/.test(name)) return "def";
-	    if (name in keywords) return "builtin";
 	    if (name == ".") return null;
-	    type = "symbol";
-	    if (name == "nil" || name == "t") return "string-2";
-	    if (name.charAt(0) == "'") return "atom";
-	    if (name.charAt(0) == ":" ) return "keyword";
+	    type = "symbol"
+
+	    // highlighting the names of defined terms (the first symbol after a definition form)
+	    if (state.ctx.prev.name_p) {
+		state.ctx.prev.name_p = false;
+		return "header"
+	    } else if (state.ctx.prev.var_p) {
+		state.ctx.prev.var_p = false;
+		return "variable-3"
+	    }
+
+	    if (/^def/.test(name)) {
+		if (name == "defvar" | name == "defparameter") {
+		    state.ctx.prev.var_p = true;
+		} else {
+		    state.ctx.prev.name_p = true;
+		}
+		return "def";
+	    }
+	    //////////////////////////////
+
+	    if (/^(error|warn)/.test(name)) return "error-related";
+	    if (/^(if|when|cond|lambda|case|f?let|loop|prog.)$/.test(name)) return "builtin";
+	    if (name == "nil" || name == "t") return "atom";
+	    if (name.charAt(0) == ":") return "keyword";
 	    if (name.charAt(0) == "&") return "variable-2";
 	    return "variable";
 	}
+    }
+
+    function inLocalBody(stream, state) {
+	return (state.ctx.prev && state.ctx.prev.prev && state.ctx.prev.prev.prev && state.ctx.prev.prev.prev.local_body_form_p)
     }
 
     function inString(stream, state) {
@@ -90,10 +104,19 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	    var style = state.tokenize(stream, state);
 	    if (type != "ws") {
 		if (state.ctx.indentTo == null) {
-		    if (assumeBody.test(stream.current()))
+		    var sym_p = (type == "symbol");
+		    var cur = stream.current();
+		    
+		    // Special case for flet/labels (whose properties should be indented as though body args)
+		    if (cur == "flet" | cur == "labels") {
+			state.ctx.prev.local_body_form_p = true;
+		    }
+
+		    if (sym_p && assumeBody.test(cur) | inLocalBody(stream, state))
 			state.ctx.indentTo = state.ctx.start + config.indentUnit;
 		    else
 			state.ctx.indentTo = "next";
+
 		} else if (state.ctx.indentTo == "next") {
 		    state.ctx.indentTo = stream.column();
 		}
