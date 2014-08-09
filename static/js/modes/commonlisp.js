@@ -43,10 +43,10 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	    // highlighting the names of defined terms (the first symbol after a definition form)
 	    if (state.ctx.prev.name_p) {
 		state.ctx.prev.name_p = false;
-		return "header"
+		return "header";
 	    } else if (state.ctx.prev.var_p) {
 		state.ctx.prev.var_p = false;
-		return "variable-3"
+		return "variable-3";
 	    }
 
 	    if (/^def/.test(name)) {
@@ -122,7 +122,11 @@ CodeMirror.defineMode("commonlisp", function (config) {
 		}
 	    }
 	    if (type == "open") state.ctx = {prev: state.ctx, start: stream.column(), indentTo: null};
-	    else if (type == "close") state.ctx = state.ctx.prev || state.ctx;
+	    else if (type == "close") {
+		state.ctx = state.ctx.prev || state.ctx;
+		state.ctx.name_p = false;
+		state.ctx.var_p = false;
+	    }
 	    return style;
 	},
 
