@@ -680,11 +680,15 @@
 		       "autoCloseBrackets" t
 		       "lineWrapping" t
 		       "viewportMargin" -infinity
+		       "smartIndent" t
 		       "extraKeys" (create "Ctrl-Enter"
 					   (lambda (cmd)
 					     (let ((contents (cell-editor-contents cell-id)))
 					       (notebook/eval-to-cell cell-id contents)))
-					   "Ctrl-Space" "autocomplete"))))
+					   "Ctrl-Space" "autocomplete"
+					   "Tab"
+					   (lambda (cm)
+					     (chain -code-mirror commands (indent-auto cm)))))))
 	(setf 
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
 	 (@ cell editor) mirror)
