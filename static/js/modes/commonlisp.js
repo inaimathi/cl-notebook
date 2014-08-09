@@ -41,18 +41,18 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	    type = "symbol"
 
 	    // highlighting the names of defined terms (the first symbol after a definition form)
-	    if (state.ctx.prev.name_p) {
+	    if (state.ctx.prev && state.ctx.prev.name_p) {
 		state.ctx.prev.name_p = false;
 		return "header";
-	    } else if (state.ctx.prev.var_p) {
+	    } else if (state.ctx.prev && state.ctx.prev.var_p) {
 		state.ctx.prev.var_p = false;
 		return "variable-3";
 	    }
 
 	    if (/^def/.test(name)) {
-		if (name == "defvar" | name == "defparameter") {
+		if (state.ctx.prev && (name == "defvar" | name == "defparameter")) {
 		    state.ctx.prev.var_p = true;
-		} else {
+		} else if (state.ctx.prev) {
 		    state.ctx.prev.name_p = true;
 		}
 		return "def";
