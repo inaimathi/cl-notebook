@@ -155,6 +155,16 @@ If the new name passed in is the same as the books' current name, we don't inser
   (publish! :cl-notebook-updates (update :action 'killed-eval))
   :ok)
 
+(define-json-handler (cl-notebook/system/complete) ((partial :string) (package :keyword))
+  (let ((p (string-upcase partial))
+	(res))
+    (do-symbols (s package)
+      (when (alexandria:starts-with-subseq p (symbol-name s))
+	(push s res)))
+    (sort (mapcar (lambda (s) (string-downcase (symbol-name s)))
+		  (remove-duplicates res))
+	  #'< :key #'length)))
+
 (define-json-handler (cl-notebook/notebook/rewind) ((book :notebook) (index :integer))
   (hash :facts (rewind-to book index) :history-size (total-entries book) :history-position index :id (notebook-id book)))
 

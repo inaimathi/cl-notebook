@@ -59,6 +59,8 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- Give the user a one-button interaction that turns a given notebook into a binary.
 
 ######## Front-end
+- Proper autocompletion (this may qualify as both front-end and back-end)
+	- Complete on local-scope symbols (such as those introduced by `let`, `let*`, `flet`, `labels`, `macrolet`) at a higher priority than global symbols
 - Notebooks should be sorted by notebook-name, at the very least (in addition to the below noted fork-grouping)
 	- This may involve changes to some back-end systems; you need to order up the initial notebook list, _as well as_ inserting new notebooks in an ordered manner. Do we just bite the bullet and hit the server every time? Or maybe send out a complete notebooks list every time someone adds one?
 - History entries should be grouped with their parents. Guess you could pull out parent relationships at load-time? Sounds like you're getting closer and closer to sub-classing fact-base into a separate notebook class.
@@ -73,7 +75,6 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 		- forward-sexp, backward-sexp
 		- slurp-sexp (forward/backward)
 		- barf-sexp (forward/backward)
-- Proper autocompletion (this may qualify as both front-end and back-end)
 - Argument hints (again, both front and back-end)
 - Better coloring
 - front-end cleanup.

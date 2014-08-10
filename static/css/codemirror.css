@@ -82,12 +82,12 @@ body { margin: 0px; }
 .cm-s-default .cm-operator { }
 .cm-s-default .cm-variable-2 { color: #05a; }
 .cm-s-default .cm-variable-3 { color: #085; }
-.cm-s-default .cm-comment {color: #a50;}
-.cm-s-default .cm-string {color: #a11;}
+.cm-s-default .cm-comment {color: #900;}
+.cm-s-default .cm-string {color: #c33;}
 .cm-s-default .cm-string-2 {color: #f50;}
 .cm-s-default .cm-meta {color: #555;}
 .cm-s-default .cm-qualifier {color: #555;}
-.cm-s-default .cm-builtin {color: #ff33cc;}
+.cm-s-default .cm-builtin {color: #f3c;}
 .cm-s-default .cm-bracket {color: #997;}
 .cm-s-default .cm-tag {color: #170;}
 .cm-s-default .cm-attribute {color: #00c;}
@@ -96,6 +96,7 @@ body { margin: 0px; }
 .cm-s-default .cm-hr {color: #999;}
 .cm-s-default .cm-link {color: #00c;}
 .cm-s-default .cm-error-related {color: #c00; }
+.cm-s-default .cm-special-variable { color: #c90 }
 
 .cm-negative {color: #d44;}
 .cm-positive {color: #292;}

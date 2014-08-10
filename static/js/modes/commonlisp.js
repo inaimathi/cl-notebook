@@ -1,7 +1,8 @@
 CodeMirror.defineMode("commonlisp", function (config) {
-    var assumeBody = /^with|^def|^do|^prog|^f?let|case$|bind$|a?when$|a?unless$/;
+    var assumeBody = /^with|^def|^do|^prog|^f?let\*?|case$|bind$|a?when$|a?unless$/;
     var numLiteral = /^(?:[+\-]?(?:\d+|\d*\.\d+)(?:[efd][+\-]?\d+)?|[+\-]?\d+(?:\/[+\-]?\d+)?|#b[+\-]?[01]+|#o[+\-]?[0-7]+|#x[+\-]?[\da-f]+)/;
     var symbol = /[^\s'`,@()\[\]";]/;
+    var builtin = /^(if|when|cond|lambda|case|f?let\*?|loop|prog.)$/;
     var type;
 
     function readSym(stream) {
@@ -60,8 +61,9 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	    //////////////////////////////
 
 	    if (/^(error|warn)/.test(name)) return "error-related";
-	    if (/^(if|when|cond|lambda|case|f?let|loop|prog.)$/.test(name)) return "builtin";
+	    if (builtin.test(name)) return "builtin";
 	    if (name == "nil" || name == "t") return "atom";
+	    if (name.charAt(0) == "*" && name.charAt(name.length-1) == "*") return "special-variable";
 	    if (name.charAt(0) == ":") return "keyword";
 	    if (name.charAt(0) == "&") return "variable-2";
 	    return "variable";

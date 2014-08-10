@@ -898,13 +898,16 @@
 		(lambda (mirror callback options)
 		  (let* ((cur (chain mirror (get-cursor)))
 			 (tok (chain mirror (get-token-at cur))))
-		    (callback 
-		     (create :list (list "one" "two" "three")
-			     :from (chain -code-mirror (-pos (@ cur line) (@ tok start)))
-			     :to (chain -code-mirror (-pos (@ cur line) (@ tok end)))))))
+		    (get "/cl-notebook/system/complete" (create :partial (@ tok string) :package :cl-notebook)
+			 (lambda (res)
+			   (callback 
+			    (create :list (or (string->obj res) (new (-array)))
+				    :from (chain -code-mirror (-pos (@ cur line) (@ tok start)))
+				    :to (chain -code-mirror (-pos (@ cur line) (@ tok end)))))))))
 		:auto
 		(lambda (mirror options)
-		  (chain -code-mirror commands (autocomplete mirror (@ -code-mirror hint ajax) (create :async t))))))
+		  (chain -code-mirror commands 
+			 (autocomplete mirror (@ -code-mirror hint ajax) (create :async t))))))
        
        (notebook-events)
        (hide! (by-selector ".footer"))
