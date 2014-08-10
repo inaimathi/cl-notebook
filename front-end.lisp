@@ -658,6 +658,13 @@
       (mirror! cell))
 
     ;; CodeMirror and utilities
+    (defun register-helpers (type object)
+      (map 
+       (lambda (fn name)
+	 (chain -code-mirror
+		(register-helper type name fn)))
+       object))
+    
     (defun show-editor (cell-id)
       (show! (by-cell-id cell-id ".CodeMirror"))
       (chain (cell-mirror cell-id) (focus)))
@@ -675,6 +682,7 @@
       (let* ((mirror)
 	     (cell-id (@ cell id))
 	     (options (create
+		       "async" t
 		       "lineNumbers" t
 		       "matchBrackets" t
 		       "autoCloseBrackets" t
@@ -686,9 +694,7 @@
 					     (let ((contents (cell-editor-contents cell-id)))
 					       (notebook/eval-to-cell cell-id contents)))
 					   "Ctrl-Space" "autocomplete"
-					   "Tab"
-					   (lambda (cm)
-					     (chain -code-mirror commands (indent-auto cm)))))))
+					   "Tab" "indentAuto"))))
 	(setf 
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
 	 (@ cell editor) mirror)
@@ -886,6 +892,20 @@
 
     (dom-ready
      (lambda ()
+       (register-helpers 
+	"hint"
+	(create :ajax
+		(lambda (mirror callback options)
+		  (let* ((cur (chain mirror (get-cursor)))
+			 (tok (chain mirror (get-token-at cur))))
+		    (callback 
+		     (create :list (list "one" "two" "three")
+			     :from (chain -code-mirror (-pos (@ cur line) (@ tok start)))
+			     :to (chain -code-mirror (-pos (@ cur line) (@ tok end)))))))
+		:auto
+		(lambda (mirror options)
+		  (chain -code-mirror commands (autocomplete mirror (@ -code-mirror hint ajax) (create :async t))))))
+       
        (notebook-events)
        (hide! (by-selector ".footer"))
        (chain 
