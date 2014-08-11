@@ -59,6 +59,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- Give the user a one-button interaction that turns a given notebook into a binary.
 
 ######## Front-end
+- You're already customizing the commonlisp mode all to hell; just go the whole nine and put in the proper Lisp-specific labels instead of this `variable-3`/`string-2` shit.
 - Complete on local-scope symbols (such as those introduced by `let`, `let*`, `flet`, `labels`, `macrolet`) at a higher priority than global symbols
 - Notebooks should be sorted by notebook-name, at the very least (in addition to the below noted fork-grouping)
 	- This may involve changes to some back-end systems; you need to order up the initial notebook list, _as well as_ inserting new notebooks in an ordered manner. Do we just bite the bullet and hit the server every time? Or maybe send out a complete notebooks list every time someone adds one?

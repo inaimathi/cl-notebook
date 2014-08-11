@@ -40,27 +40,28 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	    var name = readSym(stream);
 	    if (name == ".") return null;
 	    type = "symbol"
-
 	    if (!state.ctx.first) state.ctx.first = name;
 
 	    // highlighting the names of defined terms (the first symbol after a definition form)
-	    if (state.ctx.prev && state.ctx.prev.name_p) {
-		state.ctx.prev.name_p = false;
-		return "header";
-	    } else if (state.ctx.prev && state.ctx.prev.var_p) {
-		state.ctx.prev.var_p = false;
-		return "variable-3";
+	    if (state.ctx.prev && state.ctx.prev.looking_for_name_p) {
+		state.ctx.prev.looking_for_name_p = false;
+		if (state.ctx.prev.node_type == "def-var") return "variable-3"
+		if (state.ctx.prev.node_type == "def-fun") return "header"
 	    }
 
 	    if (/^def/.test(name)) {
-		if (state.ctx.prev && (name == "defvar" | name == "defparameter")) {
-		    state.ctx.prev.var_p = true;
-		} else if (state.ctx.prev) {
-		    state.ctx.prev.name_p = true;
+		if (state.ctx.prev) {
+		    if (name == "defvar" | name == "defparameter") {
+			state.ctx.prev.node_type = "def-var";
+		    } else {
+			state.ctx.prev.node_type = "def-fun";
+			state.ctx.prev.looking_for_args_p = true;
+		    }
+		    state.ctx.prev.looking_for_name_p = true;
 		}
 		return "def";
 	    }
-	    //////////////////////////////
+	    /////////////////////////////////////////////////////////////////////////////////////
 
 	    if (/^(error|warn)/.test(name)) return "error-related";
 	    if (builtin.test(name)) return "builtin";
@@ -71,7 +72,17 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	    return "variable";
 	}
     }
+    
+    function tagState(ctx, tag) {
+	if (ctx.prev) ctx.prev.node_tag = tag;
+    }
 
+    function checkTag(ctx, tag) {
+	if (ctx.prev) {
+	    return (ctx.prev.node_tag == tag | checkTag(ctx.prev))
+	} 
+    }
+    
     function inLocalBody(stream, state) {
 	return (state.ctx.prev && state.ctx.prev.prev && state.ctx.prev.prev.prev && state.ctx.prev.prev.prev.local_body_form_p)
     }
@@ -115,6 +126,7 @@ CodeMirror.defineMode("commonlisp", function (config) {
 		    if (cur == "flet" | cur == "labels") {
 			state.ctx.prev.local_body_form_p = true;
 		    }
+		    /////////////////////////////////////////////////////////////////////////////////////////
 
 		    if (sym_p && assumeBody.test(cur) | inLocalBody(stream, state))
 			state.ctx.indentTo = state.ctx.start + config.indentUnit;
@@ -125,12 +137,15 @@ CodeMirror.defineMode("commonlisp", function (config) {
 		    state.ctx.indentTo = stream.column();
 		}
 	    }
-	    if (type == "open") state.ctx = { prev: state.ctx, start: stream.column(), indentTo: null, opening: "(" };
-	    else if (type == "close") {
-		state.ctx = state.ctx.prev || state.ctx;
-		state.ctx.name_p = false;
-		state.ctx.var_p = false;
-	    }
+	    if (type == "open") { 
+		state.ctx = { prev: state.ctx, start: stream.column(), indentTo: null, opening: "(" }
+		// explicitly labelling arglists for arg-hinting purposes
+		if (state.ctx.prev.prev && state.ctx.prev.prev.looking_for_args_p) {
+		    state.ctx.prev.prev.looking_for_args_p = false;
+		    state.ctx.node_type = "arglist";
+		}
+		//////////////////////////////////////////////////////////////////////////////////////////////
+	    } else if (type == "close") { state.ctx = state.ctx.prev || state.ctx; }
 	    return style;
 	},
 
