@@ -21,7 +21,8 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	if (ch == "\\") ch = stream.next();
 
 	if (ch == '"') return (state.tokenize = inString)(stream, state);
-	else if (ch == "(") { type = "open"; return "bracket"; }
+	else if (ch == "(") { type = "open"; return "bracket"; 
+	}
 	else if (ch == ")" || ch == "]") { type = "close"; return "bracket"; }
 	else if (ch == ";") { stream.skipToEnd(); type = "ws"; return "comment"; }
 	else if (/['`,@]/.test(ch)) return null;
@@ -43,22 +44,9 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	    if (!state.ctx.first) state.ctx.first = name;
 
 	    // highlighting the names of defined terms (the first symbol after a definition form)
-	    if (state.ctx.prev && state.ctx.prev.looking_for_name_p) {
-		state.ctx.prev.looking_for_name_p = false;
-		if (state.ctx.prev.node_type == "def-var") return "variable-3"
-		if (state.ctx.prev.node_type == "def-fun") return "header"
-	    }
-
 	    if (/^def/.test(name)) {
-		if (state.ctx.prev) {
-		    if (name == "defvar" | name == "defparameter") {
-			state.ctx.prev.node_type = "def-var";
-		    } else {
-			state.ctx.prev.node_type = "def-fun";
-			state.ctx.prev.looking_for_args_p = true;
-		    }
-		    state.ctx.prev.looking_for_name_p = true;
-		}
+		if (state.ctx.prev && name != "defvar" && name != "defparameter" && name != "defconstant")
+		    state.ctx.prev.looking_for_args_p = true;
 		return "def";
 	    }
 	    /////////////////////////////////////////////////////////////////////////////////////
