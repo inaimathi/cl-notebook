@@ -447,6 +447,26 @@
   (ps (defun kill-thread ()
 	(post/json "/cl-notebook/system/kill-thread" (create)))
       
+      (defun arg-hint (symbol x y &key current-arg)
+	(post/json "/cl-notebook/system/arg-hint" (create :name symbol :package :cl-notebook)
+		   (lambda (res)
+		     (unless (and (@ res error) (= (@ res error) 'function-not-found))
+		       (dom-append (by-selector "body") 
+				   (who-ps-html (:div :class "notebook-arg-hint cm-s-default" 
+						      :style (+ "left:" x "px; top: " y "px")
+						      "(" (:span :class "name" symbol)
+						      (join (loop for arg in (@ res args)
+							       collect (cond ((and (string? arg) (= (@ arg 0) "&"))
+									      (who-ps-html (:span :class "modifier cm-variable-2" arg)))
+									     ((string? arg)
+									      (who-ps-html (:span :class "arg" arg)))
+									     (t
+									      (who-ps-html (:span :class "compound-arg" 
+												  "(" (join (loop for a in arg
+													       if (null a) 
+													       collect (who-ps-html (:span :class "arg" "NIL"))
+													       else collect (who-ps-html (:span :class "arg" a)))) ")")))))) ")")))))))
+      
       (defun rewind-book (index)
 	(post/json "/cl-notebook/notebook/rewind" (create :book (notebook-id *notebook*) :index index)
 		   #'notebook!))
@@ -698,6 +718,15 @@
 	(setf 
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
 	 (@ cell editor) mirror)
+	(chain mirror (on 'cursor-activity
+			  (lambda (mirror)
+			    (unless (chain mirror (something-selected))
+			      (chain mirror (exec-command 'show-arg-hint))))))
+	(unless (= (@ cell type) "markup")
+	  (chain mirror (on 'change
+			    (lambda (mirror change)
+			      (when (or (= "+input" (@ change origin)) (= "+delete" (@ change origin)))
+				(chain mirror (exec-command 'autocomplete)))))))
 	mirror))
 
     ;; Notebook-related
@@ -886,29 +915,45 @@
     (defvar *warning-filter* 
       (lambda (w)
 	(or (chain (@ w condition-type) (starts-with "REDEFINITION"))
-	    (and (@ w error-message) 
+	    (and (@ w error-message)
 		 (or  (chain (@ w error-message) (starts-with "undefined "))
 		      (chain (@ w error-message) (ends-with "never used.")))))))
 
     (dom-ready
      (lambda ()
+       ;;; Setting up some custom CodeMirror code ;;;;;;;;;;;;;;;;;;;;
        (register-helpers 
 	"hint"
 	(create :ajax
 		(lambda (mirror callback options)
 		  (let* ((cur (chain mirror (get-cursor)))
 			 (tok (chain mirror (get-token-at cur))))
-		    (get "/cl-notebook/system/complete" (create :partial (@ tok string) :package :cl-notebook)
-			 (lambda (res)
-			   (callback 
-			    (create :list (or (string->obj res) (new (-array)))
-				    :from (chain -code-mirror (-pos (@ cur line) (@ tok start)))
-				    :to (chain -code-mirror (-pos (@ cur line) (@ tok end)))))))))
+		    (when (> (length (@ tok string)) 2)
+		      (get "/cl-notebook/system/complete" (create :partial (@ tok string) :package :cl-notebook)
+			   (lambda (res)
+			     (callback 
+			      (create :list (or (string->obj res) (new (-array)))
+				      :from (chain -code-mirror (-pos (@ cur line) (@ tok start)))
+				      :to (chain -code-mirror (-pos (@ cur line) (@ tok end))))))))))
 		:auto
 		(lambda (mirror options)
 		  (chain -code-mirror commands 
 			 (autocomplete mirror (@ -code-mirror hint ajax) (create :async t))))))
-       
+
+       (setf (@ -code-mirror commands show-arg-hint)
+	     (lambda (mirror)
+	       ($aif (by-selector-all ".notebook-arg-hint")
+		     (map (lambda (elem) (chain elem (remove))) it))
+	       (labels ((find-first (ctx) 
+			  (cond ((null ctx) nil)
+				((= "(" (@ ctx opening)) (@ ctx first))
+				(t (find-first (@ ctx prev))))))
+		 (let* ((coords (chain mirror (cursor-coords)))
+			(cur (chain mirror (get-cursor)))
+			(tok (chain mirror (get-token-at cur))))
+		   ($aif (and tok (find-first (@ tok state ctx)))
+			 (arg-hint it (+ 1 (@ coords right)) (@ coords bottom)))))))
+       ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
        (notebook-events)
        (hide! (by-selector ".footer"))
        (chain 

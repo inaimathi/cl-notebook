@@ -165,6 +165,27 @@ If the new name passed in is the same as the books' current name, we don't inser
 		  (remove-duplicates res))
 	  #'< :key #'length)))
 
+(defmethod arglist ((fn symbol))
+  #+ccl (ccl:arglist fn)
+  #+lispworks (lw:function-lambda-list fn)
+  #+clisp (or (ignore-errors
+		(second (function-lambda-expression fn)))
+	      (ext:arglist fn))
+  #+sbcl(sb-introspect:function-lambda-list fn))
+
+(define-json-handler (cl-notebook/system/arg-hint) ((name :string) (package :keyword))
+  (let ((sym-name (intern (string-upcase name) package)))
+    (if (fboundp sym-name)
+	(hash :args (labels ((->names (thing)
+			       (cond ((and (listp thing) (eql (car thing) '&environment))
+				      (->names (cddr thing)))
+				     ((listp thing)
+				      (mapcar #'->names thing))
+				     (t
+				      (string-downcase (symbol-name thing))))))
+		      (->names (arglist sym-name))))
+	(hash :error :function-not-found))))
+
 (define-json-handler (cl-notebook/notebook/rewind) ((book :notebook) (index :integer))
   (hash :facts (rewind-to book index) :history-size (total-entries book) :history-position index :id (notebook-id book)))
 

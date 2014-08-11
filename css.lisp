@@ -33,6 +33,12 @@
      (".main-controls input" :visibility hidden :height auto :margin 0px :padding 0px :margin-bottom 3px)
      (".main-controls:hover button, .main-controls:hover select, .main-controls:hover input" :visibility visible :height auto)
 
+     (.notebook-arg-hint :position absolute :z-index 8 :padding 3px :border "1px solid #ccc" :border-radius 3px :background-color white :font-size small)
+     (".notebook-arg-hint span" :margin-right 6px)
+     (".notebook-arg-hint span:last-child" :margin-right 0px)
+     (".notebook-arg-hint .name")
+     (".notebook-arg-hint .modifier" :font-style oblique)
+
      (.footer :position fixed :bottom 1% :z-index 10 :padding 2px :border-radius "5px"
 	      :font-weight bold :color "rgba(255, 255, 255, .6)" 
 	      :width 80% :margin-left 10%

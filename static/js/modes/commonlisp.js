@@ -41,6 +41,8 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	    if (name == ".") return null;
 	    type = "symbol"
 
+	    if (!state.ctx.first) state.ctx.first = name;
+
 	    // highlighting the names of defined terms (the first symbol after a definition form)
 	    if (state.ctx.prev && state.ctx.prev.name_p) {
 		state.ctx.prev.name_p = false;
@@ -123,7 +125,7 @@ CodeMirror.defineMode("commonlisp", function (config) {
 		    state.ctx.indentTo = stream.column();
 		}
 	    }
-	    if (type == "open") state.ctx = {prev: state.ctx, start: stream.column(), indentTo: null};
+	    if (type == "open") state.ctx = { prev: state.ctx, start: stream.column(), indentTo: null, opening: "(" };
 	    else if (type == "close") {
 		state.ctx = state.ctx.prev || state.ctx;
 		state.ctx.name_p = false;
