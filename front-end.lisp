@@ -111,6 +111,8 @@
 	   do (chain lst (push elem)))
 	lst))
 
+    (defun lines (string) (chain string (split #\newline)))
+
     (defun join (strings &optional (separator "")) (chain strings (join separator)))
 
     ;; basic hash/array stuff
@@ -616,27 +618,67 @@
 
 (define-handler (js/pareditesque.js :content-type "application/javascript") ()
   (ps
+    (defun get-cur (mirror)
+      (with-slots (line ch) (chain mirror (get-cursor))
+	(create :line line :ch (+ ch 1)))) ;; compensating for codemirrors' alignment issues
     (defun token-type-at-cursor (mirror)
-      (chain mirror (get-token-type-at (chain mirror (get-cursor)))))
+      (chain mirror (get-token-type-at (get-cur mirror))))
     (defun token-at-cursor (mirror)
-      (chain mirror (get-token-at (chain mirror (get-cursor)))))
+      (chain mirror (get-token-at (get-cur mirror))))
     (defun go-group-right (mirror) (chain mirror (exec-command "goGroupRight")))
     (defun go-word-right (mirror) (chain mirror (exec-command "goWordRight")))
     (defun go-char-right (mirror) (chain mirror (exec-command "goCharRight")))
+    (defun mirror-contents (mirror)
+      (chain mirror (get-value)))
+
+    (defun char-at-cursor (mirror &optional (ls (lines (mirror-contents mirror))))
+      (with-slots (line ch) (chain mirror (get-cursor))
+	(aref ls line ch)))
+    (defun char-at-cursor? (char mirror &optional (ls (lines (mirror-contents mirror))))
+      (= char (char-at-cursor mirror ls)))
+
+    (defun skip-to (chars mirror &optional (ls (lines (mirror-contents mirror))))
+      (let ((s (new (-set chars))))
+	(loop do (go-char-right mirror)
+	   until (chain s (has (char-at-cursor mirror ls))))))
+    (defun skip-over (chars mirror &optional (ls (lines (mirror-contents mirror))))
+      (let ((s (new (-set chars))))
+	(loop do (go-char-right mirror)
+	   ;; TODO careful with this. Each of the skips should check that they're not at the end of the content
+	   while (or (= undefined (char-at-cursor mirror ls)) (chain s (has (char-at-cursor mirror ls)))))))
+    (defun skip-whitespace (mirror &optional (ls (lines (mirror-contents mirror))))
+      (skip-over (list #\space #\newline #\tab) mirror ls))
 
     (defun forward-sexp (mirror)
-      (when (= undefined (token-type-at-cursor mirror)) (go-group-right mirror))
-      (loop while (= nil (token-type-at-cursor mirror))
-	 do (go-char-right mirror))
-      (case (token-type-at-cursor mirror)
-	(:string (go-word-right mirror)) ;; finesse this so that it skips the entire string if you start at the opeining quote
-	(:bracket (when (= "(" (@ (token-at-cursor mirror) string))
-		    (loop do (go-char-right mirror)
-		       until (= ")" (@ (token-at-cursor mirror) string)))))
-	(t (go-word-right mirror)))
-      
-      (console.log (token-type-at-cursor mirror) (token-at-cursor mirror)))
-    (setf (@ -code-mirror commands forward-sexp) #'forward-sexp)
+      (let ((ls (lines (mirror-contents mirror))))
+	(skip-whitespace mirror ls)
+	(when (= undefined (token-type-at-cursor mirror)) 
+	    (go-group-right mirror))
+	(loop while (and (= nil (token-type-at-cursor mirror))
+			 (not (= "(" (char-at-cursor mirror ls)))
+			 (not (= "\"" (char-at-cursor mirror ls))))
+	   do (go-char-right mirror))
+	(loop while (and (= :bracket (token-type-at-cursor mirror))
+			 (not (char-at-cursor? "(" mirror ls))
+			 (not (char-at-cursor? ")" mirror ls)))
+	   do (go-char-right mirror))
+	(console.log ls (char-at-cursor mirror ls) (= (char-at-cursor mirror ls) " ") (token-type-at-cursor mirror))
+	(cond ((and (= :string (token-type-at-cursor mirror)) (not (char-at-cursor? "\"" mirror ls)))
+	       (skip-over " " mirror ls)
+	       (skip-to " " mirror ls))
+	      ;; ((= :string (token-type-at-cursor mirror))
+	      ;;  ;; skip to end of string
+	      ;;  )
+	      ((and (= :bracket (token-type-at-cursor mirror)) (char-at-cursor? "(" mirror ls))
+	       (loop with tally = 1
+		  do (go-char-right mirror)
+		  when (char-at-cursor? "(" mirror ls) do (incf tally)
+		  when (char-at-cursor? ")" mirror ls) do (decf tally)
+		  until (and (= ")" (char-at-cursor mirror ls)) (= 0 tally)))
+	       (go-char-right mirror))
+	      (t (skip-to " " mirror ls))))
+      (console.log (char-at-cursor mirror ls)))
+
     (defun backward-sexp (mirror))
     (defun kill-forward-sexp (mirror))
     (defun kill-backward-sexp (mirror))
@@ -717,6 +759,12 @@
 		(register-helper type name fn)))
        object))
     
+    (defun register-commands (object)
+      (map 
+       (lambda (fn name)
+	 (setf (aref -code-mirror :commands name) fn))
+       object))
+    
     (defun show-editor (cell-id)
       (show! (by-cell-id cell-id ".CodeMirror"))
       (chain (cell-mirror cell-id) (focus)))
@@ -746,7 +794,7 @@
 					     (let ((contents (cell-editor-contents cell-id)))
 					       (notebook/eval-to-cell cell-id contents)))
 					   "Ctrl-Space" 'autocomplete
-					   ;; "Ctrl-Right" (lambda (cmd) (forward-sexp (cell-mirror cell-id)))
+					   "Ctrl-Right" (lambda (cmd) (forward-sexp (cell-mirror cell-id)))
 					   "Tab" 'indent-auto))))
 	(setf 
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
@@ -976,26 +1024,26 @@
 		  (chain -code-mirror commands 
 			 (autocomplete mirror (@ -code-mirror hint ajax) (create :async t))))))
 
-       (setf (@ -code-mirror commands show-arg-hint)
-	     (debounce
-	      (lambda (mirror)
-		($aif (by-selector-all ".notebook-arg-hint")
-		      (map (lambda (elem) (chain elem (remove))) it))
-		(labels ((find-first (ctx) 
-			   (cond ((null ctx) nil)
-				 ((or (= "arglist" (@ ctx node_type))
-				      (and (@ ctx prev)
-					   (@ ctx prev node_type)
-					   (= "arglist" (@ ctx prev node_type)))) nil)
-				 ((= "(" (@ ctx opening)) (@ ctx first))
-				 (t (find-first (@ ctx prev))))))
-		  (let* ((coords (chain mirror (cursor-coords)))
-			 (cur (chain mirror (get-cursor)))
-			 (tok (chain mirror (get-token-at cur))))
-		    ($aif (and tok (find-first (@ tok state ctx)))
-			  (progn (console.log tok)
-				 (arg-hint it (+ 1 (@ coords right)) (@ coords bottom)))))))
-	      100))
+       (register-commands
+	(create show-arg-hint
+		(debounce
+		 (lambda (mirror)
+		   ($aif (by-selector-all ".notebook-arg-hint")
+			 (map (lambda (elem) (chain elem (remove))) it))
+		   (labels ((find-first (ctx) 
+			      (cond ((null ctx) nil)
+				    ((or (= "arglist" (@ ctx node_type))
+					 (and (@ ctx prev)
+					      (@ ctx prev node_type)
+					      (= "arglist" (@ ctx prev node_type)))) nil)
+				    ((= "(" (@ ctx opening)) (@ ctx first))
+				    (t (find-first (@ ctx prev))))))
+		     (let* ((coords (chain mirror (cursor-coords)))
+			    (cur (chain mirror (get-cursor)))
+			    (tok (chain mirror (get-token-at cur))))
+		       ($aif (and tok (find-first (@ tok state ctx)))
+			     (arg-hint it (+ 1 (@ coords right)) (@ coords bottom))))))
+		 100)))
        ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
        (notebook-events)
        (hide! (by-selector ".footer"))
