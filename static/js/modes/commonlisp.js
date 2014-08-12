@@ -61,16 +61,6 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	}
     }
     
-    function tagState(ctx, tag) {
-	if (ctx.prev) ctx.prev.node_tag = tag;
-    }
-
-    function checkTag(ctx, tag) {
-	if (ctx.prev) {
-	    return (ctx.prev.node_tag == tag | checkTag(ctx.prev))
-	} 
-    }
-    
     function inLocalBody(stream, state) {
 	return (state.ctx.prev && state.ctx.prev.prev && state.ctx.prev.prev.prev && state.ctx.prev.prev.prev.local_body_form_p)
     }
