@@ -618,10 +618,25 @@
   (ps
     (defun token-type-at-cursor (mirror)
       (chain mirror (get-token-type-at (chain mirror (get-cursor)))))
+    (defun token-at-cursor (mirror)
+      (chain mirror (get-token-at (chain mirror (get-cursor)))))
+    (defun go-group-right (mirror) (chain mirror (exec-command "goGroupRight")))
+    (defun go-word-right (mirror) (chain mirror (exec-command "goWordRight")))
+    (defun go-char-right (mirror) (chain mirror (exec-command "goCharRight")))
+
     (defun forward-sexp (mirror)
-      (when (= undefined (token-type-at-cursor mirror))
-	(chain mirror (exec-command "goGroupRight")))
-      (console.log (token-type-at-cursor mirror)))
+      (when (= undefined (token-type-at-cursor mirror)) (go-group-right mirror))
+      (loop while (= nil (token-type-at-cursor mirror))
+	 do (go-char-right mirror))
+      (case (token-type-at-cursor mirror)
+	(:string (go-word-right mirror)) ;; finesse this so that it skips the entire string if you start at the opeining quote
+	(:bracket (when (= "(" (@ (token-at-cursor mirror) string))
+		    (loop do (go-char-right mirror)
+		       until (= ")" (@ (token-at-cursor mirror) string)))))
+	(t (go-word-right mirror)))
+      
+      (console.log (token-type-at-cursor mirror) (token-at-cursor mirror)))
+    (setf (@ -code-mirror commands forward-sexp) #'forward-sexp)
     (defun backward-sexp (mirror))
     (defun kill-forward-sexp (mirror))
     (defun kill-backward-sexp (mirror))
@@ -730,8 +745,9 @@
 					   (lambda (cmd)
 					     (let ((contents (cell-editor-contents cell-id)))
 					       (notebook/eval-to-cell cell-id contents)))
-					   "Ctrl-Space" "autocomplete"
-					   "Tab" "indentAuto"))))
+					   "Ctrl-Space" 'autocomplete
+					   ;; "Ctrl-Right" (lambda (cmd) (forward-sexp (cell-mirror cell-id)))
+					   "Tab" 'indent-auto))))
 	(setf 
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
 	 (@ cell editor) mirror)
