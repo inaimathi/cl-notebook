@@ -725,8 +725,11 @@
 	(unless (= (@ cell type) "markup")
 	  (chain mirror (on 'change
 			    (lambda (mirror change)
-			      (when (= "+input" (@ change origin))
-				(chain mirror (exec-command 'autocomplete)))))))
+			      (when (or (= "+input" (@ change origin)) (= "+delete" (@ change origin)))
+				(chain -code-mirror commands 
+				       (autocomplete 
+					mirror (@ -code-mirror hint ajax)
+					(create :async t "completeSingle" false))))))))
 	mirror))
 
     ;; Notebook-related
