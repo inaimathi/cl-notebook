@@ -19,6 +19,7 @@
       (:script :type "text/javascript" :src "/js/templates.js")
       (:script :type "text/javascript" :src "/js/ajax.js")
       (:script :type "text/javascript" :src "/js/main.js")
+      (:script :type "text/javascript" :src "/js/pareditesque.js")
       (:script :type "text/javascript" :src "/js/book-actions.js")
       (:script :type "text/javascript" :src "/static/js/native-sortable.js")
 
@@ -613,6 +614,22 @@
 	    (funcall it)
 	    (console.log "NOT YET IMPLEMENTED: " action)))))
 
+(define-handler (js/pareditesque.js :content-type "application/javascript") ()
+  (ps
+    (defun token-type-at-cursor (mirror)
+      (chain mirror (get-token-type-at (chain mirror (get-cursor)))))
+    (defun forward-sexp (mirror)
+      (when (= undefined (token-type-at-cursor mirror))
+	(chain mirror (exec-command "goGroupRight")))
+      (console.log (token-type-at-cursor mirror)))
+    (defun backward-sexp (mirror))
+    (defun kill-forward-sexp (mirror))
+    (defun kill-backward-sexp (mirror))
+    (defun slurp-forward-sexp (mirror))
+    (defun slurp-backward-sexp (mirror))
+    (defun barf-forward-sexp (mirror))
+    (defun barf-backward-sexp (mirror))))
+
 (define-handler (js/main.js :content-type "application/javascript") ()
   (ps
     ;; cl-notebook specific utility
@@ -946,6 +963,8 @@
        (setf (@ -code-mirror commands show-arg-hint)
 	     (debounce
 	      (lambda (mirror)
+		($aif (by-selector-all ".notebook-arg-hint")
+		      (map (lambda (elem) (chain elem (remove))) it))
 		(labels ((find-first (ctx) 
 			   (cond ((null ctx) nil)
 				 ((or (= "arglist" (@ ctx node_type))
@@ -959,8 +978,6 @@
 			 (tok (chain mirror (get-token-at cur))))
 		    ($aif (and tok (find-first (@ tok state ctx)))
 			  (progn (console.log tok)
-				 ($aif (by-selector-all ".notebook-arg-hint")
-				       (map (lambda (elem) (chain elem (remove))) it))
 				 (arg-hint it (+ 1 (@ coords right)) (@ coords bottom)))))))
 	      100))
        ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
