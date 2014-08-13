@@ -714,6 +714,11 @@
 	(when (at-empty-line? mirror :ls ls) (go-line direction mirror))
       	(loop until (or (til mirror :ls ls) (at-empty-line? mirror :ls ls))
       	   do (go-line direction mirror))))
+
+    (defun select-block (direction mirror)
+      (let ((start (get-cur direction mirror)))
+	(go-block direction mirror)
+	(chain mirror (extend-selection (get-cur direction mirror) start))))
     
     (defun go-sexp (direction mirror)
       (destructuring-bind (paren til)
@@ -753,6 +758,11 @@
       (let ((start (get-cur direction mirror)))
 	(go-sexp direction mirror)
 	(chain mirror (replace-range "" start (get-cur :right mirror)))))
+
+    (defun select-sexp (direction mirror)
+      (let ((start (get-cur direction mirror)))
+	(go-sexp direction mirror)
+	(chain mirror (extend-selection (get-cur direction mirror) start))))
 
     (defun slurp-forward-sexp (mirror))
     (defun slurp-backward-sexp (mirror))
@@ -866,10 +876,17 @@
 					     (let ((contents (cell-editor-contents cell-id)))
 					       (notebook/eval-to-cell cell-id contents)))
 					   "Ctrl-Space" 'autocomplete
+
 					   "Ctrl-Right" (lambda (cmd) (go-sexp :right (cell-mirror cell-id)))
 					   "Ctrl-Left" (lambda (cmd) (go-sexp :left (cell-mirror cell-id)))
+					   "Shift-Ctrl-Right" (lambda (cmd) (select-sexp :right (cell-mirror cell-id)))
+					   "Shift-Ctrl-Left" (lambda (cmd) (select-sexp :left (cell-mirror cell-id)))
+
 					   "Ctrl-Down" (lambda (cmd) (go-block :down (cell-mirror cell-id)))
+					   "Shift-Ctrl-Down" (lambda (cmd) (select-block :down (cell-mirror cell-id)))
 					   "Ctrl-Up" (lambda (cmd) (go-block :up (cell-mirror cell-id)))
+					   "Shift-Ctrl-Up" (lambda (cmd) (select-block :up (cell-mirror cell-id)))
+					   
 					   "Ctrl-Alt-K" (lambda (cmd) (kill-sexp :right (cell-mirror cell-id)))
 					   "Shift-Ctrl-Alt-K" (lambda (cmd) (kill-sexp :left (cell-mirror cell-id)))
 					   "Tab" 'indent-auto))))
