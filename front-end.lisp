@@ -633,7 +633,7 @@
     ;; TODO fix and test these predicates
     (defun at-beginning? (mirror &key ls)
       (with-slots (line ch) (get-cur :right mirror)
-	  (and (>= 0 line) (>= 0 ch))))
+	  (and (>= 0 line) (>= -1 ch))))
     (defun at-end? (mirror &key (ls (lines (mirror-contents mirror))))
       (with-slots (line ch) (get-cur :right mirror)
 	(and (>= line (- (length ls) 1))
@@ -645,10 +645,12 @@
       (chain mirror (get-value)))
 
     (defun get-cur (direction mirror)
-      (chain mirror (get-cursor)))
+      (with-slots (line ch) (chain mirror (get-cursor))
+	(create :line line :ch (if (= direction :left) (- ch 1) ch))))
 
     (defun token-type-at-cursor (direction mirror)
-      (chain mirror (get-token-type-at (get-cur direction mirror))))
+      (with-slots (line ch) (get-cur direction mirror)
+	(chain mirror (get-token-type-at (create :line line :ch (+ 1 ch))))))
     (defun token-type-at-cursor? (direction mirror type)
       (= type (token-type-at-cursor direction mirror)))
     (defun string-at-cursor? (direction mirror)
@@ -682,7 +684,7 @@
 		   (:left #'at-beginning?)
 		   (:right #'at-end?))))
 	(loop do (go-char direction mirror) until (til mirror ls)
-	   while (fn (char-at-cursor direction mirror :ls ls)))))
+	   until (fn (char-at-cursor direction mirror :ls ls)))))
 
     (defun skip-to (direction mirror chars &key (ls (lines (mirror-contents mirror))))
       (let ((s (new (-set chars))))
@@ -704,10 +706,13 @@
 	      (other-paren (matching-brace paren)))
 	  (skip-whitespace direction mirror :ls ls)
 	  (cond ((and (string-at-cursor? direction mirror) (not (char-at-cursor? direction mirror "\"" :ls ls)))
-		 (skip-to direction mirror " \"" :ls ls))
-		;; ((= :string (token-type-at-cursor mirror))
-		;;  ;; skip to end of string
-		;;  )
+		 (skip-to direction mirror (list " " "\"" undefined) :ls ls))
+		((string-at-cursor? direction mirror)
+		 (skip-until 
+		  (lambda (c) (not (string-at-cursor? direction mirror)))
+		  mirror direction :ls ls))
+		((token-type-at-cursor? direction mirror :comment)
+		 (skip-to direction mirror (list " " undefined) :ls ls))
 		((and (bracket-at-cursor? direction mirror)
 		      (char-at-cursor? direction mirror other-paren :ls ls))
 		 (go-char direction mirror))
@@ -722,12 +727,14 @@
 			      (not (string-at-cursor? direction mirror)))
 		      do (decf tally)
 		    until (and (char-at-cursor? direction mirror other-paren :ls ls) (= 0 tally)))
-		 (unless (= :left direction) (go-char direction mirror)))
+		 (go-char direction mirror))
 		(t 
 		 (skip-to direction mirror (+ " " other-paren) :ls ls))))))
 
-    (defun forward-sexp (mirror) (go-sexp :right mirror))
-    (defun backward-sexp (mirror) (go-sexp :left mirror))
+    (defun forward-sexp (mirror)
+      (go-sexp :right mirror))
+    (defun backward-sexp (mirror) 
+      (go-sexp :left mirror))
 
     (defun kill-forward-sexp (mirror))
     (defun kill-backward-sexp (mirror))
