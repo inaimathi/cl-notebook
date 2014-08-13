@@ -618,89 +618,116 @@
 
 (define-handler (js/pareditesque.js :content-type "application/javascript") ()
   (ps
+    ;;;;;;;;;; Utility for s-exp navigation
+    ;;;;;;;;;;;;;;;
+    (defun matching-brace (brace)
+      (aref 
+       (create "(" ")" ")" "("
+	       "[" "]" "]" "["
+	       "{" "}" "}" "{"
+	       "<" ">" ">" "<")
+       brace))
+
+    ;;;;;;;;;; Basic codemirror-related predicates and getters
+    ;;;;;;;;;;;;;;;
+    ;; TODO fix and test these predicates
     (defun at-beginning? (mirror &key ls)
-      (with-slots (line ch) (get-cur mirror)
-	  (and (= 0 line) (>= 1 ch))))
+      (with-slots (line ch) (get-cur :right mirror)
+	  (and (>= 0 line) (>= 0 ch))))
     (defun at-end? (mirror &key (ls (lines (mirror-contents mirror))))
-      (with-slots (line ch) (get-cur mirror)
+      (with-slots (line ch) (get-cur :right mirror)
 	(and (>= line (- (length ls) 1))
-	     ;; the line length doesn't include newline, and codemirror misaligns current character by 1, 
-	     ;; so we need to add one here instead of subtracting it
-	     (>= ch (+ 1 (length (last ls)))))))
-    (defun get-cur (mirror &key (on :right))
-      (with-slots (line ch) (chain mirror (get-cursor))
-	(create :line line :ch (if (= on :right) (+ ch 1) ch)))) ;; the browser cursor is between two characters, not on one
-    (defun token-type-at-cursor (mirror &key (on :right))
-      (chain mirror (get-token-type-at (get-cur mirror :on on))))
-    (defun token-at-cursor (mirror &key (on :right))
-      (chain mirror (get-token-at (get-cur mirror :on on))))
-    (defun go-group-right (mirror) (chain mirror (exec-command "goGroupRight")))
-    (defun go-word-right (mirror) (chain mirror (exec-command "goWordRight")))
-    (defun go-char-right (mirror) (chain mirror (exec-command "goCharRight")))
-    (defun go-char-left (mirror) (chain mirror (exec-command "goCharLeft")))
+	     ;; the line length doesn't include newline
+	     ;; so we don't subtract one here
+	     (>= ch (length (last ls))))))
+
     (defun mirror-contents (mirror)
       (chain mirror (get-value)))
 
-    (defun char-at-cursor (mirror &key (ls (lines (mirror-contents mirror))) (on :right))
-      (with-slots (line ch) (chain mirror (get-cursor :on on))
+    (defun get-cur (direction mirror)
+      (chain mirror (get-cursor)))
+
+    (defun token-type-at-cursor (direction mirror)
+      (chain mirror (get-token-type-at (get-cur direction mirror))))
+    (defun token-type-at-cursor? (direction mirror type)
+      (= type (token-type-at-cursor direction mirror)))
+    (defun string-at-cursor? (direction mirror)
+      (token-type-at-cursor? direction mirror :string))
+    (defun bracket-at-cursor? (direction mirror)
+      (token-type-at-cursor? direction mirror :bracket))    
+
+    (defun go-char (direction mirror)
+      (chain mirror (exec-command
+		     (case direction
+		       (:left "goCharLeft")
+		       (:right "goCharRight")))))
+    
+    (defun char-at-cursor (direction mirror &key (ls (lines (mirror-contents mirror))))
+      (with-slots (line ch) (get-cur direction mirror)
 	(aref ls line ch)))
-    (defun char-at-cursor? (char mirror &key (ls (lines (mirror-contents mirror))) (on :right))
-      (= char (char-at-cursor mirror :ls ls)))
+    (defun char-at-cursor? (direction mirror char &key (ls (lines (mirror-contents mirror))))
+      (= char (char-at-cursor direction mirror :ls ls)))
 
-    (defun skip-to (chars mirror &key (ls (lines (mirror-contents mirror))) (direction :right))
-      (destructuring-bind (by til on)
+    ;;;;;;;;;; Character skipping for code-mirror contents
+    ;;;;;;;;;;;;;;;
+    (defun skip-while (fn mirror direction &key (ls (lines (mirror-contents mirror))))
+      (let ((til (case direction
+		   (:left #'at-beginning?)
+		   (:right #'at-end?))))
+	(loop do (go-char direction mirror) until (til mirror ls)
+	   while (fn (char-at-cursor direction mirror :ls ls)))))
+    
+    (defun skip-until (fn mirror direction &key (ls (lines (mirror-contents mirror))))
+      (let ((til (case direction
+		   (:left #'at-beginning?)
+		   (:right #'at-end?))))
+	(loop do (go-char direction mirror) until (til mirror ls)
+	   while (fn (char-at-cursor direction mirror :ls ls)))))
+
+    (defun skip-to (direction mirror chars &key (ls (lines (mirror-contents mirror))))
+      (let ((s (new (-set chars))))
+	(skip-until (lambda (char) (chain s (has char))) mirror direction :ls ls)))
+    (defun skip-over (direction mirror chars &key (ls (lines (mirror-contents mirror))))
+      (let ((s (new (-set chars))))
+	(skip-while (lambda (char) (chain s (has char))) mirror direction :ls ls)))
+    (defun skip-whitespace (direction mirror &key (ls (lines (mirror-contents mirror))))
+      (skip-over direction mirror (list #\space #\newline #\tab undefined) :ls ls))
+
+    ;;;;;;;;;; basic s-exp navigation
+    ;;;;;;;;;;;;;;;
+    (defun go-sexp (direction mirror)
+      (destructuring-bind (paren til)
 	  (case direction
-	    (:right (list #'go-char-right #'at-end? :right))
-	    (:left (list #'go-char-left #'at-beginning? :left)))
-	(let ((s (new (-set chars))))
-	  (loop do (by mirror) until (til mirror :ls ls)
-	     until (chain s (has (char-at-cursor mirror :ls ls :on on)))))))
-    (defun skip-over (chars mirror &key (ls (lines (mirror-contents mirror))) (direction :right))
-      (destructuring-bind (by til on)
-	  (case direction
-	    (:right (list #'go-char-right #'at-end? :right))
-	    (:left (list #'go-char-left #'at-beginning? :left)))
-	(let ((s (new (-set chars))))
-	  (loop do (by mirror) until (til mirror :ls ls)
-	     while (chain s (has (char-at-cursor mirror :ls ls :on on)))))))
-    (defun skip-whitespace (mirror &key (ls (lines (mirror-contents mirror))) (direction :right))
-      (skip-over (list #\space #\newline #\tab undefined) mirror :ls ls :direction direction))
+	    (:right (list "(" #'at-end?))
+	    (:left (list ")" #'at-beginning?)))
+	(let ((ls (lines (mirror-contents mirror)))
+	      (other-paren (matching-brace paren)))
+	  (skip-whitespace direction mirror :ls ls)
+	  (cond ((and (string-at-cursor? direction mirror) (not (char-at-cursor? direction mirror "\"" :ls ls)))
+		 (skip-to direction mirror " \"" :ls ls))
+		;; ((= :string (token-type-at-cursor mirror))
+		;;  ;; skip to end of string
+		;;  )
+		((and (bracket-at-cursor? direction mirror)
+		      (char-at-cursor? direction mirror other-paren :ls ls))
+		 (go-char direction mirror))
+		((and (bracket-at-cursor? direction mirror)
+		      (char-at-cursor? direction mirror paren :ls ls))
+		 (loop with tally = 1 until (til mirror ls)
+		    do (go-char direction mirror)
+		    when (and (char-at-cursor? direction mirror paren :ls ls) 
+			      (not (string-at-cursor? direction mirror))) 
+		      do (incf tally)
+		    when (and (char-at-cursor? direction mirror other-paren :ls ls)
+			      (not (string-at-cursor? direction mirror)))
+		      do (decf tally)
+		    until (and (char-at-cursor? direction mirror other-paren :ls ls) (= 0 tally)))
+		 (unless (= :left direction) (go-char direction mirror)))
+		(t 
+		 (skip-to direction mirror (+ " " other-paren) :ls ls))))))
 
-    (defun forward-sexp (mirror)
-      (let ((ls (lines (mirror-contents mirror))))
-	(skip-whitespace mirror :ls ls)
-	(cond ((and (= :string (token-type-at-cursor mirror)) (not (char-at-cursor? "\"" mirror :ls ls)))
-	       (skip-to " \"" mirror :ls ls))
-	      ;; ((= :string (token-type-at-cursor mirror))
-	      ;;  ;; skip to end of string
-	      ;;  )
-	      ((and (= :bracket (token-type-at-cursor mirror)) (char-at-cursor? ")" mirror :ls ls))
-	       (go-char-right mirror))
-	      ((and (= :bracket (token-type-at-cursor mirror)) (char-at-cursor? "(" mirror :ls ls))
-	       (loop with tally = 1
-		  do (go-char-right mirror)
-		  when (char-at-cursor? "(" mirror :ls ls) do (incf tally)
-		  when (char-at-cursor? ")" mirror :ls ls) do (decf tally)
-		  until (and (= ")" (char-at-cursor mirror :ls ls)) (= 0 tally)))
-	       (go-char-right mirror))
-	      (t (skip-to " )" mirror :ls ls)))))
-
-    (defun backward-sexp (mirror)
-      (let ((ls (lines (mirror-contents mirror))))
-      	(skip-whitespace mirror :ls ls :direction :left)
-	(console.log (get-cur mirror) (char-at-cursor mirror :ls ls :on :left) (token-type-at-cursor mirror :on :left) (char-at-cursor? "(" mirror :ls ls :on :left))
-      	(cond ((and (= :string (token-type-at-cursor mirror :on :left)) (not (char-at-cursor? "\"" mirror :ls ls :on :left)))
-      	       (skip-to " \"" mirror :ls ls :direction :left))
-      	      ((and (= :bracket (token-type-at-cursor mirror :on :left)) (char-at-cursor? "(" mirror :ls ls :on :left))
-      	       (go-char-left mirror))
-      	      ((and (= :bracket (token-type-at-cursor mirror :on :left)) (char-at-cursor? ")" mirror :ls ls :on :left))
-      	       (loop with tally = 1
-      		  do (go-char-left mirror)
-      		  when (char-at-cursor? ")" mirror :ls ls) do (incf tally)
-      		  when (char-at-cursor? "(" mirror :ls ls) do (decf tally)
-      		  until (and (= "(" (char-at-cursor mirror :ls ls)) (= 0 tally))))
-      	      (t (skip-to " (" mirror :ls ls :direction :left)))
-	))
+    (defun forward-sexp (mirror) (go-sexp :right mirror))
+    (defun backward-sexp (mirror) (go-sexp :left mirror))
 
     (defun kill-forward-sexp (mirror))
     (defun kill-backward-sexp (mirror))
