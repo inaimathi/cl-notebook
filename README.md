@@ -64,18 +64,10 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 - Notebooks should be sorted by notebook-name, at the very least (in addition to the below noted fork-grouping)
 	- This may involve changes to some back-end systems; you need to order up the initial notebook list, _as well as_ inserting new notebooks in an ordered manner. Do we just bite the bullet and hit the server every time? Or maybe send out a complete notebooks list every time someone adds one?
 - History entries should be grouped with their parents. Guess you could pull out parent relationships at load-time? Sounds like you're getting closer and closer to sub-classing fact-base into a separate notebook class.
-- Really REALLY missing s-expression-based navigation. Look into it.
-	- [`subpar`](https://github.com/achengs/subpar) exists, apparently
-	- You... may need to roll your own s-exp navigation/deletion stuff here. Useful information:
-		- `CodeMirror.runMode(byCellId(10, ".cell-contents").value, "commonlisp", function (token, type) { console.log(token, type)})` effectively tokenizes for you.
-		- The CodeMirror matching paren mode might also be a good way to get s-expresison-related stuff happening
-	- Things I actually want:
+- Really REALLY missing s-expression-based navigation. Basics implemented.
+	- Things I still want:
 		- kill-sexp (forward/backward)
-		- forward-sexp, backward-sexp
-			- if in string, move by word
-			- if at (/)/{/}/[/], move to the matching brace
-			- otherwise move by token
-			- Goddammit, why do I get the sinking feeling that I'm gonna have to resort to regex-related bullshit to do anything useful here...
+	- Things I still kinda want:
 		- slurp-sexp (forward/backward)
 		- barf-sexp (forward/backward)
 - front-end cleanup.
