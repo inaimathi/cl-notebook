@@ -631,15 +631,18 @@
     ;;;;;;;;;; Basic codemirror-related predicates and getters
     ;;;;;;;;;;;;;;;
     ;; TODO fix and test these predicates
-    (defun at-beginning? (mirror &key ls)
+    (defun at-beginning? (mirror &key (ls (lines (mirror-contents mirror))))
       (with-slots (line ch) (get-cur :right mirror)
-	  (and (>= 0 line) (>= -1 ch))))
+	  (and (>= 0 line) (>= 0 ch))))
     (defun at-end? (mirror &key (ls (lines (mirror-contents mirror))))
       (with-slots (line ch) (get-cur :right mirror)
 	(and (>= line (- (length ls) 1))
 	     ;; the line length doesn't include newline
 	     ;; so we don't subtract one here
 	     (>= ch (length (last ls))))))
+    (defun at-empty-line? (mirror &key (ls (lines (mirror-contents mirror))))
+      (with-slots (line ch) (get-cur :right mirror)
+	(= 0 (length (aref ls line)))))
 
     (defun mirror-contents (mirror)
       (chain mirror (get-value)))
@@ -663,6 +666,12 @@
 		     (case direction
 		       (:left "goCharLeft")
 		       (:right "goCharRight")))))
+
+    (defun go-line (direction mirror)
+      (chain mirror (exec-command
+		     (case direction
+		       (:up "goLineUp")
+		       (:down "goLineDown")))))
     
     (defun char-at-cursor (direction mirror &key (ls (lines (mirror-contents mirror))))
       (with-slots (line ch) (get-cur direction mirror)
@@ -697,6 +706,15 @@
 
     ;;;;;;;;;; basic s-exp navigation
     ;;;;;;;;;;;;;;;
+    (defun go-block (direction mirror)
+      (let ((til (case direction
+      		   (:up #'at-beginning?)
+      		   (:down #'at-end?)))
+      	    (ls (lines (mirror-contents mirror))))
+	(when (at-empty-line? mirror :ls ls) (go-line direction mirror))
+      	(loop until (or (til mirror :ls ls) (at-empty-line? mirror :ls ls))
+      	   do (go-line direction mirror))))
+    
     (defun go-sexp (direction mirror)
       (destructuring-bind (paren til)
 	  (case direction
@@ -718,7 +736,7 @@
 		 (go-char direction mirror))
 		((and (bracket-at-cursor? direction mirror)
 		      (char-at-cursor? direction mirror paren :ls ls))
-		 (loop with tally = 1 until (til mirror ls)
+		 (loop with tally = 1 until (til mirror :ls ls)
 		    do (go-char direction mirror)
 		    when (and (char-at-cursor? direction mirror paren :ls ls) 
 			      (not (string-at-cursor? direction mirror))) 
@@ -732,9 +750,13 @@
 		 (skip-to direction mirror (+ " " other-paren) :ls ls))))))
 
     (defun forward-sexp (mirror)
+      (console.log mirror (map (lambda (l) (length l)) (lines (mirror-contents mirror))))
       (go-sexp :right mirror))
     (defun backward-sexp (mirror) 
       (go-sexp :left mirror))
+
+    (defun forward-block (mirror) (go-block :down mirror))
+    (defun backward-block (mirror) (go-block :up mirror))
 
     (defun kill-forward-sexp (mirror))
     (defun kill-backward-sexp (mirror))
@@ -852,6 +874,8 @@
 					   "Ctrl-Space" 'autocomplete
 					   "Ctrl-Right" (lambda (cmd) (forward-sexp (cell-mirror cell-id)))
 					   "Ctrl-Left" (lambda (cmd) (backward-sexp (cell-mirror cell-id)))
+					   "Ctrl-Down" (lambda (cmd) (forward-block (cell-mirror cell-id)))
+					   "Ctrl-Up" (lambda (cmd) (backward-block (cell-mirror cell-id)))
 					   "Tab" 'indent-auto))))
 	(setf 
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
