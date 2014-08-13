@@ -749,17 +749,11 @@
 		(t 
 		 (skip-to direction mirror (+ " " other-paren) :ls ls))))))
 
-    (defun forward-sexp (mirror)
-      (console.log mirror (map (lambda (l) (length l)) (lines (mirror-contents mirror))))
-      (go-sexp :right mirror))
-    (defun backward-sexp (mirror) 
-      (go-sexp :left mirror))
+    (defun kill-sexp (direction mirror)
+      (let ((start (get-cur direction mirror)))
+	(go-sexp direction mirror)
+	(chain mirror (replace-range "" start (get-cur :right mirror)))))
 
-    (defun forward-block (mirror) (go-block :down mirror))
-    (defun backward-block (mirror) (go-block :up mirror))
-
-    (defun kill-forward-sexp (mirror))
-    (defun kill-backward-sexp (mirror))
     (defun slurp-forward-sexp (mirror))
     (defun slurp-backward-sexp (mirror))
     (defun barf-forward-sexp (mirror))
@@ -872,10 +866,12 @@
 					     (let ((contents (cell-editor-contents cell-id)))
 					       (notebook/eval-to-cell cell-id contents)))
 					   "Ctrl-Space" 'autocomplete
-					   "Ctrl-Right" (lambda (cmd) (forward-sexp (cell-mirror cell-id)))
-					   "Ctrl-Left" (lambda (cmd) (backward-sexp (cell-mirror cell-id)))
-					   "Ctrl-Down" (lambda (cmd) (forward-block (cell-mirror cell-id)))
-					   "Ctrl-Up" (lambda (cmd) (backward-block (cell-mirror cell-id)))
+					   "Ctrl-Right" (lambda (cmd) (go-sexp :right (cell-mirror cell-id)))
+					   "Ctrl-Left" (lambda (cmd) (go-sexp :left (cell-mirror cell-id)))
+					   "Ctrl-Down" (lambda (cmd) (go-block :down (cell-mirror cell-id)))
+					   "Ctrl-Up" (lambda (cmd) (go-block :up (cell-mirror cell-id)))
+					   "Ctrl-Alt-K" (lambda (cmd) (kill-sexp :right (cell-mirror cell-id)))
+					   "Shift-Ctrl-Alt-K" (lambda (cmd) (kill-sexp :left (cell-mirror cell-id)))
 					   "Tab" 'indent-auto))))
 	(setf 
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
