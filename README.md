@@ -53,6 +53,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 		- If it doesn't exist, start a new install in `~/.cl-notebook/quicklisp`
 	- What we want is a workflow where we transparently use the systems' existing `quicklisp` directory, if any, and create our own if one doesn't already exist (If they *have* a quicklisp folder, but re-configured `quicklisp` to store it somewhere other than the default, they'll have to similarly configure `cl-notebook`).
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
+	- Really, what we want here is automatic resolution. When a cell is evaluated, see where its defined values are used, and re-evaluate any cells that apply.
 - Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
 - If there are no existing notebooks, we should write a default scratch book with some initial how-to instructions
 - We should go through history rather than just evaluating current cells in order (they may have initially been evaluated in a different order. Doing the general thing might be better all-round)
