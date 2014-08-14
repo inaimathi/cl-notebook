@@ -45,6 +45,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- Maybe a separate cell type? It would contain just a package name change the package context of all cells coming after it (this would keep you from having to declare a new package in each cell, while allowing you to have a notebook span multiple packages)
 	- Each book has a package (and system) named after it? (Renaming just got really hard)
 	- This just bit again (failed to properly eval a `:cl-who` form because it wasn't being done in `:cl-notebook`). Right decision might be to default to `:cl-notebook`, but allow a system specification cell type that'd let users specify different info.
+	- Thinking one cell at the beginning of the notebook. Defaults to just `(in-package :cl-notebook-user)` (should be the assumed value if there isn't valid contents in the cell as well), but can be changed to include ASDF/package definition for the current notebook. Effectively locks a notebook to a single package, and may be easier to implement than notebook-name-is-package-name approach (especially with respect to re-naming)
 - Get `quicklisp` working properly with this.
 	- Let user configure where to check for a `quicklisp` folder (default to `~/quicklisp`)
 	- If `ql` package exists when loading, just use the defaults.
