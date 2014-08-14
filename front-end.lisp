@@ -644,11 +644,21 @@
       (with-slots (line ch) (get-cur :right mirror)
 	(= 0 (length (aref ls line)))))
 
+    (defun cur-compare (a b)
+      (cond ((and (= (@ a line) (@ b line)) (= (@ a ch) (@ b ch)))
+	     :eq)
+	    ((= (@ a line) (@ b line))
+	     (if (> (@ a ch) (@ b ch))
+		 :gt
+		 :lt))
+	    ((> (@ a line) (@ b line)) :gt)
+	    (t :lt)))
+
     (defun mirror-contents (mirror)
       (chain mirror (get-value)))
 
-    (defun get-cur (direction mirror)
-      (with-slots (line ch) (chain mirror (get-cursor))
+    (defun get-cur (direction mirror &optional (component :head))
+      (with-slots (line ch) (chain mirror (get-cursor component))
 	(create :line line :ch (if (= direction :left) (- ch 1) ch))))
 
     (defun token-type-at-cursor (direction mirror)
@@ -760,9 +770,17 @@
 	(chain mirror (replace-range "" start (get-cur :right mirror)))))
 
     (defun select-sexp (direction mirror)
-      (let ((start (get-cur direction mirror)))
-	(go-sexp direction mirror)
-	(chain mirror (extend-selection (get-cur direction mirror) start))))
+      (destructuring-bind (desired opposite)
+	  (case direction
+	    (:left (list :gt :right))
+	    (:right (list :lt :left)))
+	(let ((start (get-cur :right mirror :anchor))
+	      (end (get-cur :right mirror)))
+	  (go-sexp direction mirror)
+	  (if (and (chain mirror (something-selected))
+		   (= desired (cur-compare start end)))
+	      (chain mirror (extend-selection end))
+	      (chain mirror (set-selection start (get-cur :right mirror)))))))
 
     (defun slurp-forward-sexp (mirror))
     (defun slurp-backward-sexp (mirror))
