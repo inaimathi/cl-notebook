@@ -34,13 +34,15 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 ### TODO
 #### Notes
 - We are not going to automatically evaluate notebooks on book load, and we won't be automatically re-evaluating and saving cells whose values have changed. Some cells might contain things like calls to `random`, or file-writes to freshly-generated temp-files; that makes the second goal difficult if not impossible. The first goal is annoying in the absence of the second; it means re-evaling all cells and saving those that changed since last time. This would potentially cause a notebook to change every time it was opened with cl-notebook, which is unacceptable from the user perspective.
+	
+##### Thoughts
 - Charts need to support
 	- Being saved to a pure HTML+CSS (no javascript) file
 	- Resizing naturally with larger or smaller screen sizes
 	- Data sets large enough that not all x-axis labels will fit
 	- Print support is a nice-to-have, but conflicts heavily with the previous goal
-	
-##### Thoughts
+- SVG can work for charts; CSS selectors work the same way as with regular HTML entities AND it can take % dimensions specifications. We basically have no other options for line/pie/doghnut charts.
+
 - Do we want to provide a straight-up scratch REPL for each user?
 - Cells are now updated if their content is different on a notebook-load. This means that books that contain timestamp-related cells or similar will always be changed when they're opened. Is that what we really want?
 	- Unsure. On the one hand, we don't want a cell to be re-saved every time on the basis that it contains a call to `random`. On the other hand, we don't want to say such changes never require a re-eval. The _easy_ way out seems to be dropping the eval-on-load thing. Or, at the very least, deferring it to the first time a given book is viewed in the lifetime of a server instance.
