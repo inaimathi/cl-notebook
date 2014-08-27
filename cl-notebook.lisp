@@ -144,7 +144,6 @@ If the new name passed in is the same as the books' current name, we don't inser
 
 (defmethod load-notebook! ((name pathname))
   (let ((book (load! name :indices *default-indices* :in-memory? t)))
-    (eval-notebook-code book)
     (register-notebook! book)))
 
 ;;;;; HTTP Handlers
@@ -172,6 +171,12 @@ If the new name passed in is the same as the books' current name, we don't inser
 		(second (function-lambda-expression fn)))
 	      (ext:arglist fn))
   #+sbcl(sb-introspect:function-lambda-list fn))
+
+(define-handler (cl-notebook/system/macroexpand-1 :content-type "plain/text") ((expression :string))
+  (format nil "~s" (macroexpand-1 (read-from-string expression))))
+
+(define-handler (cl-notebook/system/macroexpand :content-type "plain/text") ((expression :string))
+  (format nil "~s" (macroexpand (read-from-string expression))))
 
 (define-json-handler (cl-notebook/system/arg-hint) ((name :string) (package :keyword))
   (multiple-value-bind (sym-name fresh?) (intern (string-upcase name) package)
@@ -208,7 +213,7 @@ If the new name passed in is the same as the books' current name, we don't inser
 	 (book (new-notebook! name)))
     (write! book)
     (publish! :cl-notebook-updates (update :action 'new-book :book (notebook-id book) :book-name name))
-    (hash :facts (current book) :history-size (total-entries book))))
+    (hash :facts (current book) :history-size (total-entries book) :id (notebook-id book))))
 
 (define-json-handler (cl-notebook/notebook/kill) ((book :notebook))
   (kill! book)

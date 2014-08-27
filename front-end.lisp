@@ -162,9 +162,10 @@
       (chain document (query-selector-all selector)))
 
     (defun dom-escape (string)
-      (chain string
-	     (replace "<" "&lt;")
-	     (replace ">" "&gt;")))
+      (when (string? string)
+	(chain string
+	       (replace "<" "&lt;")
+	       (replace ">" "&gt;"))))
 
     (defun dom-append (elem markup)
       (let ((new-content (chain document (create-element "span"))))

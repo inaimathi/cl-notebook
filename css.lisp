@@ -81,4 +81,16 @@
      (.condition-contents :list-style-type none :margin 0px :padding 0px)
      (".condition-contents .condition-type" :font-weight bolder)
      (".condition-contents .condition-property" :font-style oblique)
-     (".condition-contents .condition-property .label" :display inline-block :margin-right 5px :font-size .4em))))
+     (".condition-contents .condition-property .label" :display inline-block :margin-right 5px :font-size .4em)
+
+     (.chart :border "1px solid #ccc" :padding-bottom 3% :clear both :margin "1% 0")
+     (".chart .bar:hover" :z-index 90000)
+     (".chart .title" :font-weight bold :margin "2% 0 0 2%" :font-size x-large :color "#ccc")
+     
+     (.bar-graph :height 200px :width 100% :clear both :padding 1%)
+     (.bar :background-color "#66e" :background "linear-gradient(90deg, #33c, #66f)" :height 100% :float left)
+     (".bar .hider" :background-color white :width 100% :max-height 99.5%)
+     (".bar .spacer" :width 100% :min-height .5%)
+     (".bar .label" :display none :padding 5px :font-weight bold)
+     (".bar:hover" :background-color "#636" :background "linear-gradient(90deg, #3c3, #6f6)")
+     (".bar:hover .label" :display block))))

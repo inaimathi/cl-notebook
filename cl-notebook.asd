@@ -12,5 +12,6 @@
 	       (:file "css")
 	       (:file "front-end")
                (:file "cl-notebook")
+	       (:file "charts")
 	       (:file "start")))
 

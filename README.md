@@ -33,19 +33,23 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 ### TODO
 ##### Thoughts
+- Do we want to provide a straight-up scratch REPL for each user?
 - Cells are now updated if their content is different on a notebook-load. This means that books that contain timestamp-related cells or similar will always be changed when they're opened. Is that what we really want?
 	- Unsure. On the one hand, we don't want a cell to be re-saved every time on the basis that it contains a call to `random`. On the other hand, we don't want to say such changes never require a re-eval. The _easy_ way out seems to be dropping the eval-on-load thing. Or, at the very least, deferring it to the first time a given book is viewed in the lifetime of a server instance.
+	- No, we don't want cells evaluated on notebook load. Let the user take care of it as they need to. Should probably add an `Eval Book` option to the main menu
 - Do we want to differentiate between "someone forked a book" and "someone started a new book"? Right now, there's no difference, but we may want to treat forks differently for multi-user purposes later on.
 
 ##### Bugs
+- Remove the stale tags now that we no longer save between evals
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 	- Maybe a separate cell type? It would contain just a package name change the package context of all cells coming after it (this would keep you from having to declare a new package in each cell, while allowing you to have a notebook span multiple packages)
 	- Each book has a package (and system) named after it? (Renaming just got really hard)
+		- Did it? `rename-package` exists, and would let us pull this off fairly easily. We don't even need to sanitize input; package names can be arbitrary strings. The biggest problem is that we'd probably want a readable name for our title and a typeable name for our actual package name. Separate `:init` cell still sounds like the best idea, frankly.
 	- This just bit again (failed to properly eval a `:cl-who` form because it wasn't being done in `:cl-notebook`). Right decision might be to default to `:cl-notebook`, but allow a system specification cell type that'd let users specify different info.
-	- Thinking one cell at the beginning of the notebook. Defaults to just `(in-package :cl-notebook-user)` (should be the assumed value if there isn't valid contents in the cell as well), but can be changed to include ASDF/package definition for the current notebook. Effectively locks a notebook to a single package, and may be easier to implement than notebook-name-is-package-name approach (especially with respect to re-naming)
+	- Thinking one `init` cell at the beginning of the notebook. Defaults to just `(in-package :cl-notebook-user)` (should be the assumed value if there isn't valid contents in the cell as well), but can be changed to include package definition for the current notebook. We can pull out package info automatically for ASD generation
 - Get `quicklisp` working properly with this.
 	- Let user configure where to check for a `quicklisp` folder (default to `~/quicklisp`)
 	- If `ql` package exists when loading, just use the defaults.
@@ -61,6 +65,14 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- Give the user a one-button interaction that turns a given notebook into a binary.
 
 ######## Front-end
+- Need a keyboard-oriented way of jumping between cells
+	- C->/C-<
+	- Possibly replace C-[ and C-] (they fuck with indentation levels, which is handled automatically by the mode anyhow)
+- Comment region
+- Really REALLY missing s-expression-based navigation. Basics implemented.
+	- Things I still kinda want:
+		- slurp-sexp (forward/backward)
+		- barf-sexp (forward/backward)
 - You're already customizing the commonlisp mode all to hell; just go the whole nine and put in the proper Lisp-specific labels instead of this `variable-3`/`string-2` shit.
 - Macroexpander (this'll need some back-end stuff too)
 	- When you macroexpand in a cell, it should pop up a macroexpander div with an editor that has the highlighted results
@@ -71,10 +83,6 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 - Notebooks should be sorted by notebook-name, at the very least (in addition to the below noted fork-grouping)
 	- This may involve changes to some back-end systems; you need to order up the initial notebook list, _as well as_ inserting new notebooks in an ordered manner. Do we just bite the bullet and hit the server every time? Or maybe send out a complete notebooks list every time someone adds one?
 - History entries should be grouped with their parents. Guess you could pull out parent relationships at load-time? Sounds like you're getting closer and closer to sub-classing fact-base into a separate notebook class.
-- Really REALLY missing s-expression-based navigation. Basics implemented.
-	- Things I still kinda want:
-		- slurp-sexp (forward/backward)
-		- barf-sexp (forward/backward)
 - front-end cleanup.
 	- Possibly move it into a separate project?
 	- Might want to annihilate some syntactic rough edges with a `defpsmacro` or two.
