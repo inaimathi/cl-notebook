@@ -1,8 +1,5 @@
 (in-package #:cl-notebook)
 
-(defun px (num) (format nil "~apx" num)) ;; these should really be folded into cl-css
-(defun % (num) (format nil "~a%" num))
-
 (defun bar-graph (label/value-pairs &key x-axis y-axis title y-max)
   (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
                                       maximize v into m sum 1 into s

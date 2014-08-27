@@ -1,8 +1,6 @@
 # cl-notebook
 ###### A notebook-style in-browser editor for Common Lisp.
 
-Quick-ish video demo available [here](https://vimeo.com/97623064).
-
 > Tools, of course, can be the subtlest of traps.
 > One day I know I must smash the ~~emerald~~ Emacs.
 >
@@ -31,7 +29,17 @@ The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/)
 
 Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
+A quick-ish video demo is available [here](https://vimeo.com/97623064) to get you sort-of-started.
+
 ### TODO
+#### Notes
+- We are not going to automatically evaluate notebooks on book load, and we won't be automatically re-evaluating and saving cells whose values have changed. Some cells might contain things like calls to `random`, or file-writes to freshly-generated temp-files; that makes the second goal difficult if not impossible. The first goal is annoying in the absence of the second; it means re-evaling all cells and saving those that changed since last time. This would potentially cause a notebook to change every time it was opened with cl-notebook, which is unacceptable from the user perspective.
+- Charts need to support
+	- Being saved to a pure HTML+CSS (no javascript) file
+	- Resizing naturally with larger or smaller screen sizes
+	- Data sets large enough that not all x-axis labels will fit
+	- Print support is a nice-to-have, but conflicts heavily with the previous goal
+	
 ##### Thoughts
 - Do we want to provide a straight-up scratch REPL for each user?
 - Cells are now updated if their content is different on a notebook-load. This means that books that contain timestamp-related cells or similar will always be changed when they're opened. Is that what we really want?
@@ -65,6 +73,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 	- Give the user a one-button interaction that turns a given notebook into a binary.
 
 ######## Front-end
+- Add an `Eval Book` option to the menu. This could either be implemented as a fresh server-side handler that does `eval-notebook!` thing, or as a purely front-end sequence of `POST` requests for each cell in sequence. The async nature of the eval-cell feature might make the first one easier.
 - Need a keyboard-oriented way of jumping between cells
 	- C->/C-<
 	- Possibly replace C-[ and C-] (they fuck with indentation levels, which is handled automatically by the mode anyhow)
