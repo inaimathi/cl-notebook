@@ -79,6 +79,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - Need a keyboard-oriented way of jumping between cells
 	- C->/C-<
 	- Possibly replace C-[ and C-] (they fuck with indentation levels, which is handled automatically by the mode anyhow)
+- Similarly, keyboard-oriented way of moving cells up or down
 - Comment region
 - Really REALLY missing s-expression-based navigation. Basics implemented.
 	- Things I still kinda want:
