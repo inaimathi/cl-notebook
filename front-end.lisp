@@ -120,7 +120,27 @@
     (defun keys (obj) (map (lambda (v k) k) obj))
     (defun last (array) (aref array (- (length array) 1)))
 
+    ;; basic regex stuff
+    (defun regex-match (regex string)
+      (chain (-reg-exp regex) (test string)))
+    (defun regex-match-any (string &rest regexes)
+      (loop for reg in regexes
+	 when (regex-match reg string) return t
+	 finally (return nil)))
+
+    (defun matching? (regex)
+      (lambda (string) (regex-match regex string)))
+
     ;; basic DOM/event stuff
+    (defun sheet-text (sheet &optional (predicate identity))
+      (if (number? sheet)
+	  (sheet-text (aref (@ document style-sheets) sheet) predicate)
+	  (join
+	   (loop for rule in (@ sheet css-rules)
+	      for text = (@ rule css-text)
+	      when (predicate text) collect text)	   
+	   #\newline)))
+    
     (defun dom-ready (callback)
       (chain document (add-event-listener "DOMContentLoaded" callback)))
 
@@ -532,6 +552,8 @@
 		(create :book (notebook-id *notebook*) 
 			:cell-order ord))))))
 
+;; sheetText(2, matchingwhat("^.cm-s-default"))
+
 (define-handler (js/book-actions.js :content-type "application/javascript") ()
   (ps 
     (defvar *book-actions*
@@ -539,60 +561,34 @@
 	      (lambda ()
 		(save-file
 		 (+ (notebook-name *notebook*) ".html")
-		 (+
-		  (who-ps-html 
-		   (:style :type "text/css" :media "screen"
-			   "<!--
-.cm-s-default .cm-keyword {color: #708;}
-.cm-s-default .cm-atom {color: #219;}
-.cm-s-default .cm-number {color: #164;}
-.cm-s-default .cm-def {color: #00f;}
-.cm-s-default .cm-variable {color: black;}
-.cm-s-default .cm-variable-2 {color: #05a;}
-.cm-s-default .cm-variable-3 {color: #085;}
-.cm-s-default .cm-property {color: black;}
-.cm-s-default .cm-operator {color: black;}
-.cm-s-default .cm-comment {color: #a50;}
-.cm-s-default .cm-string {color: #a11;}
-.cm-s-default .cm-string-2 {color: #f50;}
-.cm-s-default .cm-meta {color: #555;}
-.cm-s-default .cm-qualifier {color: #555;}
-.cm-s-default .cm-builtin {color: #30a;}
-.cm-s-default .cm-bracket {color: #997;}
-.cm-s-default .cm-tag {color: #170;}
-.cm-s-default .cm-attribute {color: #00c;}
-.cm-s-default .cm-header {color: blue;}
-.cm-s-default .cm-quote {color: #090;}
-.cm-s-default .cm-hr {color: #999;}
-.cm-s-default .cm-link {color: #00c;}
-.cm-s-default .cm-error {color: #f00;}
-
-.result { border: 1px solid #ccc; background-color: #fff; list-style-type: none; margin: 0px; margin-top: 5px; padding: 0px; }
-.stdout { margin: 0px; padding: 5px; color: #8b2252; background-color: #efefef; }
-.result li { padding: 5px; }
-.result .type { color: #228b22; }
-.warnings .condition-contents { background-color: #fc6; color: #c60; border: 1px solid #c60; padding: 5px; margin: 5px 0px; }
-.result .error { background-color: #fdd; color: #933; }
-.condition-contents { list-style-type: none; margin: 0px; padding: 0px; }
-.condition-contents .condition-type { font-weight: bolder; }
-.condition-contents .condition-property { font-style: oblique; }
-.condition-contents .condition-property .label { display: inline-block; margin-right: 5px; font-size: small; }
--->")
-		   (:h1 (notebook-name *notebook*)))
-		  (join 
-		   (map (lambda (cell)
-			  (if (= 'markup (@ cell cell-type))
-			      (@ cell result 0 values 0 value)
-			      (let ((node (chain document (create-element "pre"))))
-				(chain node (set-attribute :class "cm-s-default"))
-				(chain -code-mirror (run-mode (@ cell contents) "commonlisp" node))
-				(+ (@ node outer-h-t-m-l)
-				   (if (not (= 'silent (@ cell noise)))
-				       ($aif (by-cell-id (@ cell id) ".cell-value" "pre")
-					     (@ it outer-h-t-m-l)
-					     "")
-				       "")))))
-			(notebook-cells *notebook*))))
+		 (+ (who-ps-html 
+		     (:style :type "text/css" :media "screen"
+			     (join
+			      (list "<!--"
+				    (sheet-text 2 (matching? "^.cm-s-default"))
+				    (sheet-text 0 (lambda (text)
+						    (regex-match-any 
+						     text
+						     "^.result" "^.stdout"
+						     "^.warnings" "^.condition-contents"
+						     "^.chart")))
+				    "-->")
+			      #\newline))
+		     (:h1 (notebook-name *notebook*)))
+		    (join 
+		     (map (lambda (cell)
+			    (if (= 'markup (@ cell cell-type))
+				(@ cell result 0 values 0 value)
+				(let ((node (chain document (create-element "pre"))))
+				  (chain node (set-attribute :class "cm-s-default"))
+				  (chain -code-mirror (run-mode (@ cell contents) "commonlisp" node))
+				  (+ (@ node outer-h-t-m-l)
+				     (if (not (= 'silent (@ cell noise)))
+					 ($aif (by-cell-id (@ cell id) ".cell-value" "pre")
+					       (@ it outer-h-t-m-l)
+					       "")
+					 "")))))
+			  (notebook-cells *notebook*))))
 		 "text/html;charset=utf-8"))
 	      :export-lisp
 	      (lambda ()
