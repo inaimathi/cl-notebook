@@ -83,6 +83,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - Comment region
 - Really REALLY missing s-expression-based navigation. Basics implemented.
 	- Things I still kinda want:
+		- transpose-sexp
 		- slurp-sexp (forward/backward)
 		- barf-sexp (forward/backward)
 - You're already customizing the commonlisp mode all to hell; just go the whole nine and put in the proper Lisp-specific labels instead of this `variable-3`/`string-2` shit.
