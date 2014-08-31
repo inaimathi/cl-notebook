@@ -4,7 +4,7 @@
   (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
 				   maximize v into m sum 1 into s
 				   finally (return (list m s)))
-    (let* ((h (or y-max max))
+    (let* ((h (or y-max (max 1 max))) ;; we want to handle the case where max turns out to be 0
            (bar-width (% (max .1 (float (/ 88 (max 1 len))))))
            (bar-margin (% (float (/ 10 (* 2 (max 1 len)))))))
       (with-html-output-to-string (*standard-output*)
@@ -24,7 +24,7 @@
   (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
 				   maximize v into m sum 1 into s
 				   finally (return (list m s)))
-    (let* ((h (or y-max max))
+    (let* ((h (or y-max (max 1 max)))
            (bar-width (max .1 (float (/ 88 (max 1 len)))))
            (bar-margin (float (/ 10 (* 2 (max 1 len))))))
       (with-html-output-to-string (*standard-output*)

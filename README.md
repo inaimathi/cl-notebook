@@ -66,6 +66,8 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 	- Otherwise, try to load from the user-specified `quicklisp` location.
 		- If it doesn't exist, start a new install in `~/.cl-notebook/quicklisp`
 	- What we want is a workflow where we transparently use the systems' existing `quicklisp` directory, if any, and create our own if one doesn't already exist (If they *have* a quicklisp folder, but re-configured `quicklisp` to store it somewhere other than the default, they'll have to similarly configure `cl-notebook`).
+- Put together better storage for charts
+- Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 	- Really, what we want here is automatic resolution. When a cell is evaluated, see where its defined values are used, and re-evaluate any cells that apply.
 - Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
@@ -93,6 +95,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 	- Hitting `<esc>` should hide all expander windows
 	- Not sure if we should support multiples
 - Complete on local-scope symbols (such as those introduced by `let`, `let*`, `flet`, `labels`, `macrolet`) at a higher priority than global symbols
+- Handle completion and arg-hints of symbols with package names (for example, `alexandria:hash-table-alist`)
 - Notebooks should be sorted by notebook-name, at the very least (in addition to the below noted fork-grouping)
 	- This may involve changes to some back-end systems; you need to order up the initial notebook list, _as well as_ inserting new notebooks in an ordered manner. Do we just bite the bullet and hit the server every time? Or maybe send out a complete notebooks list every time someone adds one?
 - History entries should be grouped with their parents. Guess you could pull out parent relationships at load-time? Sounds like you're getting closer and closer to sub-classing fact-base into a separate notebook class.

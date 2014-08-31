@@ -29,9 +29,9 @@ Only useful during the build process, where its called with an --eval flag."
 	      (write-sequence v stream))))
     (setf *static-files* nil)))
 
-(defun main (&optional argv)
+(defun main (&optional argv &key (port 4242))
   (multiple-value-bind (params) (parse-args! argv)
-    (let ((port (or (get-param '(:p :port) params) 4242)))
+    (let ((p (or (get-param '(:p :port) params) port)))
       (format t "Initializing storage directories...~%")
       (setf *storage* (sys-dir (merge-pathnames ".cl-notebook" (user-homedir-pathname)))
 	    *books* (sys-dir (merge-pathnames "books" *storage*))
@@ -52,15 +52,16 @@ Only useful during the build process, where its called with an --eval flag."
 	(format t "Starting in debug mode...~%")
 	(house::debug!))
       
-      (format t "Listening on '~s'...~%" port)
+      (format t "Listening on '~s'...~%" p)
       #+ccl (setf ccl:*break-hook*
 		  (lambda (cond hook)
 		    (declare (ignore cond hook))
 		    (ccl:quit)))
-      #-sbcl(start port)
+      #-sbcl(start p)
       #+sbcl(handler-case
-		(start port)
+		(start p)
 	      (sb-sys:interactive-interrupt (e)
+		(declare (ignore e))
 		(cl-user::exit))))))
 
 (defun main-dev ()
