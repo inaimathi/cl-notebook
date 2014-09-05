@@ -149,7 +149,7 @@
 	(chain elem parent-node (replace-child clone elem))
 	clone))
 
-    (defun prevent (ev) (chain ev (prevent-default)))
+    (defun prevent (ev) (when ev (chain ev (prevent-default))))
 
     (defun debounce (fn delay immediate?)
       (let ((timeout))
@@ -552,8 +552,6 @@
 		(create :book (notebook-id *notebook*) 
 			:cell-order ord))))))
 
-;; sheetText(2, matchingwhat("^.cm-s-default"))
-
 (define-handler (js/book-actions.js :content-type "application/javascript") ()
   (ps 
     (defvar *book-actions*
@@ -711,7 +709,7 @@
     (defun skip-whitespace (direction mirror &key (ls (lines (mirror-contents mirror))))
       (skip-over direction mirror (list #\space #\newline #\tab undefined) :ls ls))
 
-    ;;;;;;;;;; basic s-exp navigation
+    ;;;;;;;;;; block navigation
     ;;;;;;;;;;;;;;;
     (defun go-block (direction mirror)
       (let ((til (case direction
@@ -726,7 +724,9 @@
       (let ((start (get-cur direction mirror)))
 	(go-block direction mirror)
 	(chain mirror (extend-selection (get-cur direction mirror) start))))
-    
+
+    ;;;;;;;;;; s-exp navigation
+    ;;;;;;;;;;;;;;;   
     (defun go-sexp (direction mirror)
       (destructuring-bind (paren til)
 	  (case direction
@@ -761,11 +761,6 @@
 		(t 
 		 (skip-to direction mirror (+ " " other-paren) :ls ls))))))
 
-    (defun kill-sexp (direction mirror)
-      (let ((start (get-cur direction mirror)))
-	(go-sexp direction mirror)
-	(chain mirror (replace-range "" start (get-cur :right mirror)))))
-
     (defun select-sexp (direction mirror)
       (destructuring-bind (desired opposite)
 	  (case direction
@@ -779,10 +774,42 @@
 	      (chain mirror (extend-selection end))
 	      (chain mirror (set-selection start (get-cur :right mirror)))))))
 
-    (defun slurp-forward-sexp (mirror))
-    (defun slurp-backward-sexp (mirror))
-    (defun barf-forward-sexp (mirror))
-    (defun barf-backward-sexp (mirror))))
+    (defun kill-sexp (direction mirror)
+      (let ((start (get-cur direction mirror)))
+	(go-sexp direction mirror)
+	(chain mirror (replace-range "" start (get-cur :right mirror)))))
+
+    ;;;;;;;;;; s-exp extras
+    (defun slurp-sexp (direction mirror) (console.log "TODO"))
+    (defun barf-sexp (direction mirror) (console.log "TODO"))
+    (defun transpose-sexp (direction mirror))
+    (defun comment-region (mirror) (console.log "TODO"))
+    
+    ;;;;;;;;;; cell navigation
+    (defun go-cell (direction cell-id)
+      (let* ((cell (by-cell-id cell-id))
+	     (next (case direction
+		     (:down (@ cell next-sibling))
+		     (:up (@ cell previous-sibling)))))
+	(when next
+	  (scroll-to-elem next)
+	  (show-editor (elem->cell-id next)))))
+
+    (defun transpose-cell! (direction cell-id)
+      (let* ((cell (by-cell-id cell-id))
+	     (next (case direction
+		     (:down (@ cell next-sibling))
+		     (:up (@ cell previous-sibling)))))
+	(when next
+	  (cond ((== :up direction)
+		 (chain next parent-node (insert-before cell next)))
+		((and (== :down direction) (@ next next-sibling))
+		 (chain next parent-node (insert-before cell (@ next next-sibling))))
+		(t
+		 (chain next parent-node (append-child cell))))
+	  (reorder-cells nil)
+	  (scroll-to-elem cell)
+	  (show-editor cell-id))))))
 
 (define-handler (js/main.js :content-type "application/javascript") ()
   (ps
@@ -792,6 +819,15 @@
        (+ "#cell-" cell-id
 	  (if (> (length children) 0) " " "")
 	  (join children " "))))
+
+    (defun elem->cell-id (elem)
+      (parse-int
+       (chain elem (get-attribute "id") 
+	      (match (-reg-exp "cell-([1234567890]+)"))
+	      1)))
+
+    (defun elem-to-cell (elem)
+      (aref *notebook* :objects (elem->cell-id elem)))
 
     (defun markup-cell? (cell)
       (= 'markup (@ cell cell-type)))
@@ -904,7 +940,12 @@
 					   
 					   "Ctrl-Alt-K" (lambda (cmd) (kill-sexp :right (cell-mirror cell-id)))
 					   "Shift-Ctrl-Alt-K" (lambda (cmd) (kill-sexp :left (cell-mirror cell-id)))
-					   "Tab" 'indent-auto))))
+					   "Tab" 'indent-auto
+
+					   "Ctrl-]" (lambda (cmd) (go-cell :down cell-id))
+					   "Ctrl-[" (lambda (cmd) (go-cell :up cell-id))
+					   "Shift-Ctrl-]" (lambda (cmd) (transpose-cell! :down cell-id))
+					   "Shift-Ctrl-[" (lambda (cmd) (transpose-cell! :up cell-id))))))
 	(setf 
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
 	 (@ cell editor) mirror)

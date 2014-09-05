@@ -135,7 +135,7 @@
 
             if (e.dataTransfer) {
                 e.dataTransfer.effectAllowed = 'moving';
-                e.dataTransfer.setData('Text', "*"); // Need to set to something or else drag doesn't start
+                e.dataTransfer.setData('Text', ""); // Need to set to something or else drag doesn't start
             }
 
             currentlyDraggingElement = this;

@@ -44,20 +44,17 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - SVG can work for charts; CSS selectors work the same way as with regular HTML entities AND it can take % dimensions specifications. We basically have no other options for line/pie/doghnut charts.
 
 - Do we want to provide a straight-up scratch REPL for each user?
-- Cells are now updated if their content is different on a notebook-load. This means that books that contain timestamp-related cells or similar will always be changed when they're opened. Is that what we really want?
-	- Unsure. On the one hand, we don't want a cell to be re-saved every time on the basis that it contains a call to `random`. On the other hand, we don't want to say such changes never require a re-eval. The _easy_ way out seems to be dropping the eval-on-load thing. Or, at the very least, deferring it to the first time a given book is viewed in the lifetime of a server instance.
-	- No, we don't want cells evaluated on notebook load. Let the user take care of it as they need to. Should probably add an `Eval Book` option to the main menu
 - Do we want to differentiate between "someone forked a book" and "someone started a new book"? Right now, there's no difference, but we may want to treat forks differently for multi-user purposes later on.
 
 ##### Bugs
-- Remove the stale tags now that we no longer save between evals
+- Should show the orange border as soon as something is edited in a cell, not just between eval and completion
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 	- Maybe a separate cell type? It would contain just a package name change the package context of all cells coming after it (this would keep you from having to declare a new package in each cell, while allowing you to have a notebook span multiple packages)
 	- Each book has a package (and system) named after it? (Renaming just got really hard)
-		- Did it? `rename-package` exists, and would let us pull this off fairly easily. We don't even need to sanitize input; package names can be arbitrary strings. The biggest problem is that we'd probably want a readable name for our title and a typeable name for our actual package name. Separate `:init` cell still sounds like the best idea, frankly.
+		- Did it? `rename-package` exists, and would let us pull this off fairly easily. We don't even need to sanitize input; package names can be arbitrary strings. The biggest problem is that we'd probably want a readable name for our title and a typeable name for our actual package name. And this still wouldn't solve the dependencies problem. Separate `:init` cell still sounds like the best idea, frankly.
 	- This just bit again (failed to properly eval a `:cl-who` form because it wasn't being done in `:cl-notebook`). Right decision might be to default to `:cl-notebook`, but allow a system specification cell type that'd let users specify different info.
 	- Thinking one `init` cell at the beginning of the notebook. Defaults to just `(in-package :cl-notebook-user)` (should be the assumed value if there isn't valid contents in the cell as well), but can be changed to include package definition for the current notebook. We can pull out package info automatically for ASD generation
 - Get `quicklisp` working properly with this.
@@ -67,27 +64,22 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 		- If it doesn't exist, start a new install in `~/.cl-notebook/quicklisp`
 	- What we want is a workflow where we transparently use the systems' existing `quicklisp` directory, if any, and create our own if one doesn't already exist (If they *have* a quicklisp folder, but re-configured `quicklisp` to store it somewhere other than the default, they'll have to similarly configure `cl-notebook`).
 - Put together better storage for charts
+	- Is this even possible? We could defer computation until display time, but some charts take longer to compute than I'd like. Storing the full HTML output is harder on disk use though. As in "noticeably"; the `BGG corpus charts` article weighs `80mb` on disk, and no other noebook has even cracked `2mb` yet.
 - Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 	- Really, what we want here is automatic resolution. When a cell is evaluated, see where its defined values are used, and re-evaluate any cells that apply.
 - Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
 - If there are no existing notebooks, we should write a default scratch book with some initial how-to instructions
-- We should go through history rather than just evaluating current cells in order (they may have initially been evaluated in a different order. Doing the general thing might be better all-round)
 - Get `buildapp` working properly with this
 	- Give the user a one-button interaction that turns a given notebook into a binary.
 
 ######## Front-end
-- Add an `Eval Book` option to the menu. This could either be implemented as a fresh server-side handler that does `eval-notebook!` thing, or as a purely front-end sequence of `POST` requests for each cell in sequence. The async nature of the eval-cell feature might make the first one easier.
-- Need a keyboard-oriented way of jumping between cells
-	- C->/C-<
-	- Possibly replace C-[ and C-] (they fuck with indentation levels, which is handled automatically by the mode anyhow)
-- Similarly, keyboard-oriented way of moving cells up or down
+- Add an `Eval Book` option to the menu. This could either be implemented as a fresh server-side handler that does the `eval-notebook!` thing, or as a purely front-end sequence of `POST` requests for each cell in sequence. The async nature of the eval-cell feature might make the first one easier.
 - Comment region
-- Really REALLY missing s-expression-based navigation. Basics implemented.
-	- Things I still kinda want:
-		- transpose-sexp
-		- slurp-sexp (forward/backward)
-		- barf-sexp (forward/backward)
+- Things I still kinda want:
+	- transpose-sexp
+	- slurp-sexp (forward/backward)
+	- barf-sexp (forward/backward)
 - You're already customizing the commonlisp mode all to hell; just go the whole nine and put in the proper Lisp-specific labels instead of this `variable-3`/`string-2` shit.
 - Macroexpander (this'll need some back-end stuff too)
 	- When you macroexpand in a cell, it should pop up a macroexpander div with an editor that has the highlighted results
