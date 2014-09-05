@@ -26,6 +26,7 @@
       (:script :type "text/javascript" :src "/static/js/codemirror.js")
       
       (:script :type "text/javascript" :src "/static/js/modes/commonlisp.js")
+      (:script :type "text/javascript" :src "/static/js/addons/comment.js")
       (:script :type "text/javascript" :src "/static/js/addons/closebrackets.js")
       (:script :type "text/javascript" :src "/static/js/addons/matchbrackets.js")
       (:script :type "text/javascript" :src "/static/js/addons/search.js")
@@ -783,7 +784,13 @@
     (defun slurp-sexp (direction mirror) (console.log "TODO"))
     (defun barf-sexp (direction mirror) (console.log "TODO"))
     (defun transpose-sexp (direction mirror))
-    (defun comment-region (mirror) (console.log "TODO"))
+    (defun toggle-comment-region (mirror) 
+      (let ((anchor (get-cur :right mirror :anchor))
+	    (head (get-cur :right mirror :head)))
+	(destructuring-bind (from to) (if (> (@ anchor line) (@ head line)) (list head anchor) (list anchor head))
+	  (if (token-type-at-cursor? :right mirror :comment)
+	      (chain mirror (uncomment from to))
+	      (chain mirror (line-comment from to))))))
     
     ;;;;;;;;;; cell navigation
     (defun go-cell (direction cell-id)
@@ -945,7 +952,9 @@
 					   "Ctrl-]" (lambda (cmd) (go-cell :down cell-id))
 					   "Ctrl-[" (lambda (cmd) (go-cell :up cell-id))
 					   "Shift-Ctrl-]" (lambda (cmd) (transpose-cell! :down cell-id))
-					   "Shift-Ctrl-[" (lambda (cmd) (transpose-cell! :up cell-id))))))
+					   "Shift-Ctrl-[" (lambda (cmd) (transpose-cell! :up cell-id))
+
+					   "Ctrl-;" (lambda (cmd) (toggle-comment-region (cell-mirror cell-id)))))))
 	(setf 
 	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
 	 (@ cell editor) mirror)
