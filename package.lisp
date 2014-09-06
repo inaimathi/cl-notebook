@@ -28,4 +28,4 @@
 
 (define-http-type (:notebook)
     :type-expression `(get-notebook ,parameter)
-    :type-assertion  `(typep ,parameter 'fact-base))
+    :type-assertion  `(typep ,parameter 'notebook))

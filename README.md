@@ -31,10 +31,12 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 A quick-ish video demo is available [here](https://vimeo.com/97623064) to get you sort-of-started.
 
-### TODO
-#### Notes
+### Project Notes
 - We are not going to automatically evaluate notebooks on book load, and we won't be automatically re-evaluating and saving cells whose values have changed. Some cells might contain things like calls to `random`, or file-writes to freshly-generated temp-files; that makes the second goal difficult if not impossible. The first goal is annoying in the absence of the second; it means re-evaling all cells and saving those that changed since last time. This would potentially cause a notebook to change every time it was opened with cl-notebook, which is unacceptable from the user perspective.
-	
+
+### TODO
+- Need a complete how-to set of videos at some point
+
 ##### Thoughts
 - Charts need to support
 	- Being saved to a pure HTML+CSS (no javascript) file
@@ -52,11 +54,10 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 ##### Features (not necessarily in priority order)
 ######## Back-end
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
-	- Maybe a separate cell type? It would contain just a package name change the package context of all cells coming after it (this would keep you from having to declare a new package in each cell, while allowing you to have a notebook span multiple packages)
-	- Each book has a package (and system) named after it? (Renaming just got really hard)
-		- Did it? `rename-package` exists, and would let us pull this off fairly easily. We don't even need to sanitize input; package names can be arbitrary strings. The biggest problem is that we'd probably want a readable name for our title and a typeable name for our actual package name. And this still wouldn't solve the dependencies problem. Separate `:init` cell still sounds like the best idea, frankly.
-	- This just bit again (failed to properly eval a `:cl-who` form because it wasn't being done in `:cl-notebook`). Right decision might be to default to `:cl-notebook`, but allow a system specification cell type that'd let users specify different info.
-	- Thinking one `init` cell at the beginning of the notebook. Defaults to just `(in-package :cl-notebook-user)` (should be the assumed value if there isn't valid contents in the cell as well), but can be changed to include package definition for the current notebook. We can pull out package info automatically for ASD generation
+	- Optional entry type. Not cell (we don't want more than one in the book; keep it up with the notebook name)
+	- By default, notebook package name is the same as notebook title, it `:use`s `:cl`, `:cl-notebook` and `:cl-who`
+	- If the optional entry type is there and has a valid `defpackage` form, we use that package as the notebook namespace and `:use`/`:import`/`:shadowing-import`/`:export` all specified symbols
+	- `in-package` is not allowed (it'd pretty severely complicate package renaming)
 - Get `quicklisp` working properly with this.
 	- Let user configure where to check for a `quicklisp` folder (default to `~/quicklisp`)
 	- If `ql` package exists when loading, just use the defaults.
@@ -89,7 +90,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - Handle completion and arg-hints of symbols with package names (for example, `alexandria:hash-table-alist`)
 - Notebooks should be sorted by notebook-name, at the very least (in addition to the below noted fork-grouping)
 	- This may involve changes to some back-end systems; you need to order up the initial notebook list, _as well as_ inserting new notebooks in an ordered manner. Do we just bite the bullet and hit the server every time? Or maybe send out a complete notebooks list every time someone adds one?
-- History entries should be grouped with their parents. Guess you could pull out parent relationships at load-time? Sounds like you're getting closer and closer to sub-classing fact-base into a separate notebook class.
+- Forked notebook entries should be grouped with their parents in the top menu. Guess you could pull out parent relationships at load-time?
 
 ######## Multi-user related
 - Move to a thread-per-cell model to make multi-user development easier

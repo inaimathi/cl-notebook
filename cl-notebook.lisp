@@ -2,6 +2,7 @@
 
 ; Basic server-side definitions and handlers
 ;;;;; Read/eval-related
+(defvar *front-end-eval-thread* nil)
 (defmethod front-end-eval (cell-language cell-type (contents string))
   "A cell that fits no other description returns a"
   (list
@@ -33,7 +34,7 @@
 	    (error (e)
 	      (list (alist :type 'error :value (front-end-error nil e))))))))
 
-(defmethod eval-notebook-code ((book fact-base))
+(defmethod eval-notebook-code ((book notebook))
   (let ((all-ids (reverse (caddar (lookup book :b :cell-order)))))
     (loop for (id b c) in (lookup book :b :cell :c nil) do (pushnew id all-ids))
     (let ((ids (reverse all-ids)))
@@ -61,7 +62,7 @@
 (defmethod empty-expression? ((contents string))
   (when (cl-ppcre:scan "^[ \n\t\r]*$" contents) t))
 
-(defmethod eval-cell ((book fact-base) cell-id (contents string) res-fact cell-language cell-type)
+(defmethod eval-cell ((book notebook) cell-id (contents string) res-fact cell-language cell-type)
   (unless (empty-expression? contents)
     (when (and (bt:threadp *front-end-eval-thread*)
 	       (bt:thread-alive-p *front-end-eval-thread*))
@@ -70,81 +71,18 @@
     (setf *front-end-eval-thread*
 	  (bt:make-thread
 	   (lambda ()
-	     (in-package :cl-notebook)
-	     (let ((res (front-end-eval cell-language cell-type contents)))
-	       (when (and res-fact res)
-		 (change! book res-fact (list cell-id :result res))
-		 (delete! book (list cell-id :stale t))
-		 (write! book))
-	       (publish! :cl-notebook-updates 
-			 (update :book (notebook-id book) 
-				 :cell cell-id 
-				 :action 'finished-eval 
-				 :contents contents 
-				 :result res))))))))
-
-;;;;; Model-related
-(defvar *notebooks* (make-hash-table :test 'equal))
-(defvar *front-end-eval-thread* nil)
-
-(defmethod new-cell! ((book fact-base) &key (cell-language :common-lisp) (cell-type :code))
-  (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:cell-language ,cell-language) (:contents "") (:result ""))))
-
-(defun ordered-books ()
-  (sort
-   (loop for k being the hash-keys of *notebooks*
-      for v being the hash-values of *notebooks*
-      collect (list k (notebook-name v)))
-   #'string<= :key #'second))
-
-(defmethod remove-notebook! ((book fact-base))
-  (remhash (notebook-id book) *notebooks*))
-
-(defmethod register-notebook! ((book fact-base))
-  (setf (gethash (notebook-id book) *notebooks*) book))
-
-(defmethod get-notebook ((name string))
-  (gethash name *notebooks*))
-
-(defmethod notebook-id ((book fact-base))
-  (file-namestring (file-name book)))
-
-(defmethod notebook-name ((book fact-base))
-  (caddar (lookup book :b :notebook-name)))
-
-(defmethod rename-notebook! ((book fact-base) (new-name string))
-  "Takes a book and a new name.
-Returns two values; the renamed book, and a boolean specifying whether the name was changed.
-If the new name passed in is the same as the books' current name, we don't insert any new facts."
-  (let* ((name-fact (first (lookup book :b :notebook-name)))
-	 (same? (equal (third name-fact) new-name)))
-    (unless same?
-      (change! book name-fact (list (first name-fact) :notebook-name new-name)))
-    (values book (not same?))))
-
-(defun new-notebook! (name)
-  (let ((book (make-fact-base :indices *default-indices* :file-name (merge-pathnames (fact-base::temp-file-name) *books*))))
-    (insert-new! book :notebook-name name)
-    (register-notebook! book)
-    book))
-
-(defmethod make-unique-name-in ((dir pathname) (base-name string))
-  (assert (cl-fad:directory-pathname-p dir))
-  (let ((name (merge-pathnames base-name dir)))
-    (if (cl-fad:file-exists-p name)
-	(loop for i from 0
-	   for name = (merge-pathnames (format nil "~a-~a" base-name i) dir)
-	   unless (cl-fad:file-exists-p name) return name)
-	name)))
-
-(defmethod kill! ((book fact-base))
-  (let ((trash-name (make-unique-name-in *trash*  (file-namestring (file-name book)))))
-    (rename-file (file-name book) trash-name)
-    (remove-notebook! book)))
-
-(defmethod load-notebook! ((name pathname))
-  (let ((book (load! name :indices *default-indices* :in-memory? t)))
-    (register-notebook! book)))
+	     (let ((*package* (namespace book)))
+	       (let ((res (front-end-eval cell-language cell-type contents)))
+		 (when (and res-fact res)
+		   (change! book res-fact (list cell-id :result res))
+		   (delete! book (list cell-id :stale t))
+		   (write! book))
+		 (publish! :cl-notebook-updates 
+			   (update :book (notebook-id book) 
+				   :cell cell-id 
+				   :action 'finished-eval 
+				   :contents contents 
+				   :result res)))))))))
 
 ;;;;; HTTP Handlers
 (define-json-handler (cl-notebook/system/kill-thread) ()
@@ -164,6 +102,12 @@ If the new name passed in is the same as the books' current name, we don't inser
 		  (remove-duplicates res))
 	  #'< :key #'length)))
 
+(define-handler (cl-notebook/system/macroexpand-1 :content-type "plain/text") ((expression :string))
+  (format nil "~s" (macroexpand-1 (read-from-string expression))))
+
+(define-handler (cl-notebook/system/macroexpand :content-type "plain/text") ((expression :string))
+  (format nil "~s" (macroexpand (read-from-string expression))))
+
 (defmethod arglist ((fn symbol))
   #+ccl (ccl:arglist fn)
   #+lispworks (lw:function-lambda-list fn)
@@ -171,12 +115,6 @@ If the new name passed in is the same as the books' current name, we don't inser
 		(second (function-lambda-expression fn)))
 	      (ext:arglist fn))
   #+sbcl(sb-introspect:function-lambda-list fn))
-
-(define-handler (cl-notebook/system/macroexpand-1 :content-type "plain/text") ((expression :string))
-  (format nil "~s" (macroexpand-1 (read-from-string expression))))
-
-(define-handler (cl-notebook/system/macroexpand :content-type "plain/text") ((expression :string))
-  (format nil "~s" (macroexpand (read-from-string expression))))
 
 (define-json-handler (cl-notebook/system/arg-hint) ((name :string) (package :keyword))
   (multiple-value-bind (sym-name fresh?) (intern (string-upcase name) package)

@@ -11,6 +11,7 @@
 	       (:file "front-end-macros")
 	       (:file "css")
 	       (:file "front-end")
+	       (:file "model")
                (:file "cl-notebook")
 	       (:file "charts")
 	       (:file "start")))
