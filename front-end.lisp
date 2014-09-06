@@ -781,9 +781,12 @@
 	(chain mirror (replace-range "" start (get-cur :right mirror)))))
 
     ;;;;;;;;;; s-exp extras
-    (defun slurp-sexp (direction mirror) (console.log "TODO"))
-    (defun barf-sexp (direction mirror) (console.log "TODO"))
-    (defun transpose-sexp (direction mirror))
+    (defun slurp-sexp (direction mirror)
+      (console.log "TODO -- slurp-sexp"))
+    (defun barf-sexp (direction mirror) 
+      (console.log "TODO -- barf-sexp"))
+    (defun transpose-sexp (direction mirror)
+      (console.log "TODO -- transpose-sexp"))
     (defun toggle-comment-region (mirror) 
       (let ((anchor (get-cur :right mirror :anchor))
 	    (head (get-cur :right mirror :head)))
@@ -808,9 +811,9 @@
 		     (:down (@ cell next-sibling))
 		     (:up (@ cell previous-sibling)))))
 	(when next
-	  (cond ((== :up direction)
+	  (cond ((equal :up direction)
 		 (chain next parent-node (insert-before cell next)))
-		((and (== :down direction) (@ next next-sibling))
+		((and (equal :down direction) (@ next next-sibling))
 		 (chain next parent-node (insert-before cell (@ next next-sibling))))
 		(t
 		 (chain next parent-node (append-child cell))))
