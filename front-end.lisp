@@ -195,9 +195,12 @@
 	   do (chain elem (append-child (@ new-content first-child))))))
 
     (defun dom-replace (elem markup)
-      (let ((new-content (chain document (create-element "span"))))
+      (let ((new-content (chain document (create-element "span")))
+	    (parent (@ elem parent-node)))
 	(setf (@ new-content inner-h-t-m-l) markup)
-	(chain elem parent-node (replace-child new-content elem))))
+	(loop for elem in (@ new-content child-nodes)
+	   do (chain parent (insert-before new-content elem)))
+	(chain elem (remove))))
 
     (defun dom-set (elem markup)
       (setf (@ elem inner-h-t-m-l) markup))
