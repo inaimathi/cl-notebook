@@ -50,7 +50,6 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 ##### Bugs
 - Should show the orange border as soon as something is edited in a cell, not just between eval and completion
-- Can't move or transpose a cell whose type was just changed (for some reason, the result has no `nextSiblng` or `previousSibling` entries; probably has to do with how you defined `dom-replace`)
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
