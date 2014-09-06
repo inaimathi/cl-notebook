@@ -2,9 +2,9 @@
 
 (asdf:defsystem #:cl-notebook
   :serial t
-  :description "Describe cl-notebook here"
-  :author "Your Name <your.name@example.com>"
-  :license "Specify license here"
+  :description "A notebook-style in-browser editor for Common Lisp"
+  :author "Inaimathi <leo.zovic@gmail.com>"
+  :license "AGPL3"
   :depends-on (#:alexandria #:anaphora #:house #:fact-base #:parenscript #:cl-fad #:cl-who #:cl-css #:closer-mop)
   :components ((:file "package")
 	       (:file "util")

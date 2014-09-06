@@ -50,14 +50,27 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 ##### Bugs
 - Should show the orange border as soon as something is edited in a cell, not just between eval and completion
+- Can't move or transpose a cell whose type was just changed (for some reason, the result has no `nextSiblng` or `previousSibling` entries; probably has to do with how you defined `dom-replace`)
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
+- Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
+	- Eval all code and markup cells when opening a notebook
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
-	- Optional entry type. Not cell (we don't want more than one in the book; keep it up with the notebook name)
-	- By default, notebook package name is the same as notebook title, it `:use`s `:cl`, `:cl-notebook` and `:cl-who`
-	- If the optional entry type is there and has a valid `defpackage` form, we use that package as the notebook namespace and `:use`/`:import`/`:shadowing-import`/`:export` all specified symbols
-	- `in-package` is not allowed (it'd pretty severely complicate package renaming)
+	- Automatically generated entry type.
+		- Not cell, there can only be one per notebook. Keep it in with the notebook name cluster on the front-end
+	- Default value is
+		- `(defpackage <notebook name> (:use :cl :cl-notebook :cl-who :fact-base))`
+		- This should also be the assumed value in case there's an error parsing this entry
+	- On change:
+		- re-name package
+		- add new `use`d packages
+		- add new `import`/`shadowing-import`ed symbols
+		- add new `export`ed symbols
+	- Going backwards and forwards in history gets kind of interesting with this. Do we really want `rename-package` in that case?
+		- Yes. Going back in time doesn't mean evaluating/unevaluating anything. It means looking at a previous notebook state.
+		- Not... exactly. We want other users to be able to continue editing in the current namespace while someone else is looking through history.
+		- Also, we don't really want to change history at all. When a user decides to alter the past, we need to create a new namespace (if its changed from the source books' current namesace), but we otherwise don't need to worry about creating or deleting packages as we go.
 - Get `quicklisp` working properly with this.
 	- Let user configure where to check for a `quicklisp` folder (default to `~/quicklisp`)
 	- If `ql` package exists when loading, just use the defaults.
@@ -66,26 +79,26 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 	- What we want is a workflow where we transparently use the systems' existing `quicklisp` directory, if any, and create our own if one doesn't already exist (If they *have* a quicklisp folder, but re-configured `quicklisp` to store it somewhere other than the default, they'll have to similarly configure `cl-notebook`).
 - Put together better storage for charts
 	- Is this even possible? We could defer computation until display time, but some charts take longer to compute than I'd like. Storing the full HTML output is harder on disk use though. As in "noticeably"; the `BGG corpus charts` article weighs `80mb` on disk, and no other noebook has even cracked `2mb` yet.
-- Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 	- Really, what we want here is automatic resolution. When a cell is evaluated, see where its defined values are used, and re-evaluate any cells that apply.
 - Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
 - If there are no existing notebooks, we should write a default scratch book with some initial how-to instructions
 - Get `buildapp` working properly with this
 	- Give the user a one-button interaction that turns a given notebook into a binary.
+- Get poor-man's profiling built into cell results (use `local-time` timestamps for start/end time of operations; compute duration)
 
 ######## Front-end
-- Add an `Eval Book` option to the menu. This could either be implemented as a fresh server-side handler that does the `eval-notebook!` thing, or as a purely front-end sequence of `POST` requests for each cell in sequence. The async nature of the eval-cell feature might make the first one easier.
-- Things I still kinda want:
-	- transpose-sexp
-	- slurp-sexp (forward/backward)
-	- barf-sexp (forward/backward)
-- You're already customizing the commonlisp mode all to hell; just go the whole nine and put in the proper Lisp-specific labels instead of this `variable-3`/`string-2` shit.
 - Macroexpander (this'll need some back-end stuff too)
 	- When you macroexpand in a cell, it should pop up a macroexpander div with an editor that has the highlighted results
 	- If you macroexpand something in said expander div, it should be expanded in-place (replacing the original term in the expander div)
 	- Hitting `<esc>` should hide all expander windows
 	- Not sure if we should support multiples
+- Add a `run-tests` option to the main menu. Have it evaluate all test cells in the current notebook.
+- Things I still kinda want:
+	- transpose-sexp
+	- slurp-sexp (forward/backward)
+	- barf-sexp (forward/backward)
+- Already customizing the commonlisp mode all to hell; just go the whole nine and put in the proper Lisp-specific labels instead of this `variable-3`/`string-2` shit.
 - Complete on local-scope symbols (such as those introduced by `let`, `let*`, `flet`, `labels`, `macrolet`) at a higher priority than global symbols
 - Handle completion and arg-hints of symbols with package names (for example, `alexandria:hash-table-alist`)
 - Notebooks should be sorted by notebook-name, at the very least (in addition to the below noted fork-grouping)
