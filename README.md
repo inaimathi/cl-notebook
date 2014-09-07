@@ -53,8 +53,6 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
-- Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
-	- Eval all code and markup cells when opening a notebook
 - Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
 	- Automatically generated entry type.
 		- Not cell, there can only be one per notebook. Keep it in with the notebook name cluster on the front-end
@@ -76,6 +74,8 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 	- Otherwise, try to load from the user-specified `quicklisp` location.
 		- If it doesn't exist, start a new install in `~/.cl-notebook/quicklisp`
 	- What we want is a workflow where we transparently use the systems' existing `quicklisp` directory, if any, and create our own if one doesn't already exist (If they *have* a quicklisp folder, but re-configured `quicklisp` to store it somewhere other than the default, they'll have to similarly configure `cl-notebook`).
+- Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
+	- Eval all code and markup cells when opening a notebook
 - Put together better storage for charts
 	- Is this even possible? We could defer computation until display time, but some charts take longer to compute than I'd like. Storing the full HTML output is harder on disk use though. As in "noticeably"; the `BGG corpus charts` article weighs `80mb` on disk, and no other noebook has even cracked `2mb` yet.
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
