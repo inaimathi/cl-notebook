@@ -1044,9 +1044,10 @@
 	(setf *notebook* 
 	      (create :facts fs :objects (notebook-condense fs)
 		      :history-size (@ raw history-size)
-		      :id (@ raw :id) :name (loop for (a b c) in fs
-					       when (equal b "notebookName")
-					       do (return c))))
+		      :id (@ raw :id) 
+		      :name (loop for (a b c) in fs
+			       when (equal b "notebookName")
+			       do (return c))))
 	(dom-set 
 	 (by-selector "#notebook")
 	 (notebook-template *notebook*))

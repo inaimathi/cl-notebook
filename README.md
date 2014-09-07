@@ -64,10 +64,11 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 		- add new `use`d packages
 		- add new `import`/`shadowing-import`ed symbols
 		- add new `export`ed symbols
-	- Going backwards and forwards in history gets kind of interesting with this. Do we really want `rename-package` in that case?
-		- Yes. Going back in time doesn't mean evaluating/unevaluating anything. It means looking at a previous notebook state.
-		- Not... exactly. We want other users to be able to continue editing in the current namespace while someone else is looking through history.
-		- Also, we don't really want to change history at all. When a user decides to alter the past, we need to create a new namespace (if its changed from the source books' current namesace), but we otherwise don't need to worry about creating or deleting packages as we go.
+	- On rename notebook:
+		- If the package is the default value, do a package rename on that too
+	- On fork notebook:
+		- Create a new package and re-evaluate in-notebook code into that package
+			- Do we really want that?
 - Get `quicklisp` working properly with this.
 	- Let user configure where to check for a `quicklisp` folder (default to `~/quicklisp`)
 	- If `ql` package exists when loading, just use the defaults.

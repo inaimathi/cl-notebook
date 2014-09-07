@@ -20,6 +20,7 @@
 
      (.book-title :margin "40px 10px 10px 5px" :padding 0px)
      (".book-title h1" :cursor pointer :margin 0px :padding 0px)
+     (".book-title input" :margin-bottom 5px)
 
      (.main-controls 
       :background-color "#eee" :border "2px solid #ccc" :border-radius "0px 0px 5px 5px"
