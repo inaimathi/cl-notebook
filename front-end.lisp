@@ -448,20 +448,24 @@
 	  (cell-code-template cell)))
     
     (defun show-title-input () 
-      (let ((input (by-selector ".book-title input"))))
-      (show! input)
-      (chain input (focus))
-      (chain input (select))
-      (hide! (by-selector ".book-title h1")))
+      (let ((input (by-selector ".book-title input"))
+	    (textarea (by-selector ".book-title textarea")))
+	(show! input)
+	(show! textarea)
+	(chain input (focus))
+	(chain input (select))
+	(hide! (by-selector ".book-title h1"))))
 
     (defun hide-title-input () 
       (hide! (by-selector ".book-title input"))
+      (hide! (by-selector ".book-title textarea"))
       (show! (by-selector ".book-title h1")))
     
     (defun notebook-title-template (name)
       (who-ps-html
        (:div :class "book-title"
 	     (:input :class "text" :onchange "renameBook(this.value)" :value name)
+	     (:textarea :onchange "repackageBook(this.value)")
 	     (:h1 :onclick "showTitleInput()" name))))
 
     (defun notebook-template (notebook)
@@ -895,7 +899,7 @@
     
     (defun dom-replace-cell (cell)
       (dom-replace (by-cell-id (@ cell id)) (cell-template cell))
-      (mirror! cell))
+      (setup-cell-mirror! cell))
 
     ;; CodeMirror and utilities
     (defun register-helpers (type object)
@@ -924,46 +928,51 @@
     (defun cell-editor-contents (cell-id)
       (chain (cell-mirror cell-id) (get-value)))
 
-    (defun mirror! (cell)
-      (let* ((mirror)
-	     (cell-id (@ cell id))
-	     (options (create
-		       "async" t
-		       "lineNumbers" t
-		       "matchBrackets" t
-		       "autoCloseBrackets" t
-		       "lineWrapping" t
-		       "viewportMargin" -infinity
-		       "smartIndent" t
-		       "extraKeys" (create "Ctrl-Enter"
-					   (lambda (cmd)
+    (defun mirror! (text-area &key (extra-keys (create)))
+      (let ((options 
+	     (create
+	      "async" t
+	      "lineNumbers" t
+	      "matchBrackets" t
+	      "autoCloseBrackets" t
+	      "lineWrapping" t
+	      "viewportMargin" -infinity
+	      "smartIndent" t
+	      "extraKeys" (extend
+			   (create "Ctrl-Space" 'autocomplete
+				   
+				   "Ctrl-Right" (lambda (mirror) (go-sexp :right mirror))
+				   "Ctrl-Left" (lambda (mirror) (go-sexp :left mirror))
+				   "Shift-Ctrl-Right" (lambda (mirror) (select-sexp :right mirror))
+				   "Shift-Ctrl-Left" (lambda (mirror) (select-sexp :left mirror))
+
+				   "Ctrl-Down" (lambda (mirror) (go-block :down mirror))
+				   "Shift-Ctrl-Down" (lambda (mirror) (select-block :down mirror))
+				   "Ctrl-Up" (lambda (mirror) (go-block :up mirror))
+				   "Shift-Ctrl-Up" (lambda (mirror) (select-block :up mirror))
+				   
+				   "Ctrl-Alt-K" (lambda (mirror) (kill-sexp :right mirror))
+				   "Shift-Ctrl-Alt-K" (lambda (mirror) (kill-sexp :left mirror))
+				   "Tab" 'indent-auto
+
+				   "Ctrl-;" (lambda (mirror) (toggle-comment-region mirror)))
+			   extra-keys))))
+	(chain -code-mirror (from-text-area text-area options))))
+
+    (defun setup-cell-mirror! (cell)
+      (let* ((cell-id (@ cell id))
+	     (mirror (mirror! (by-cell-id cell-id ".cell-contents")
+			      :extra-keys (create
+					   "Ctrl-Enter"
+					   (lambda (mirror)
 					     (let ((contents (cell-editor-contents cell-id)))
 					       (notebook/eval-to-cell cell-id contents)))
-					   "Ctrl-Space" 'autocomplete
-
-					   "Ctrl-Right" (lambda (cmd) (go-sexp :right (cell-mirror cell-id)))
-					   "Ctrl-Left" (lambda (cmd) (go-sexp :left (cell-mirror cell-id)))
-					   "Shift-Ctrl-Right" (lambda (cmd) (select-sexp :right (cell-mirror cell-id)))
-					   "Shift-Ctrl-Left" (lambda (cmd) (select-sexp :left (cell-mirror cell-id)))
-
-					   "Ctrl-Down" (lambda (cmd) (go-block :down (cell-mirror cell-id)))
-					   "Shift-Ctrl-Down" (lambda (cmd) (select-block :down (cell-mirror cell-id)))
-					   "Ctrl-Up" (lambda (cmd) (go-block :up (cell-mirror cell-id)))
-					   "Shift-Ctrl-Up" (lambda (cmd) (select-block :up (cell-mirror cell-id)))
 					   
-					   "Ctrl-Alt-K" (lambda (cmd) (kill-sexp :right (cell-mirror cell-id)))
-					   "Shift-Ctrl-Alt-K" (lambda (cmd) (kill-sexp :left (cell-mirror cell-id)))
-					   "Tab" 'indent-auto
-
-					   "Ctrl-]" (lambda (cmd) (go-cell :down cell-id))
-					   "Ctrl-[" (lambda (cmd) (go-cell :up cell-id))
-					   "Shift-Ctrl-]" (lambda (cmd) (transpose-cell! :down cell-id))
-					   "Shift-Ctrl-[" (lambda (cmd) (transpose-cell! :up cell-id))
-
-					   "Ctrl-;" (lambda (cmd) (toggle-comment-region (cell-mirror cell-id)))))))
-	(setf 
-	 mirror (chain -code-mirror (from-text-area (by-cell-id cell-id ".cell-contents") options))
-	 (@ cell editor) mirror)
+					   "Ctrl-]" (lambda (mirror) (go-cell :down cell-id))
+					   "Ctrl-[" (lambda (mirror) (go-cell :up cell-id))
+					   "Shift-Ctrl-]" (lambda (mirror) (transpose-cell! :down cell-id))
+					   "Shift-Ctrl-[" (lambda (mirror) (transpose-cell! :up cell-id))))))
+	(setf (@ cell editor) mirror)
 	(chain mirror (on 'cursor-activity
 			  (lambda (mirror)
 			    (unless (chain mirror (something-selected))
@@ -1027,6 +1036,7 @@
 	      (@ slider value) pos
 	      (@ (by-selector "#book-history-text") value) pos)
 	(hide! (by-selector ".book-title input"))
+	(hide! (by-selector ".book-title textarea"))
 	(set-page-hash (create :book id))))
 
     (defun notebook! (raw)
@@ -1049,7 +1059,7 @@
 	       (set-attribute :selected "selected"))
 	(map (lambda (cell) 
 	       (with-slots (id cell-type) cell
-		 (mirror! cell)
+		 (setup-cell-mirror! cell)
 		 (when (= 'markup cell-type)
 		   (hide! (by-cell-id id ".CodeMirror")))))
 	     (notebook-cells *notebook*))))
@@ -1073,7 +1083,7 @@
 	      (chain (notebook-facts *notebook*) (unshift (list id 'cell nil)))
 	      (dom-append (by-selector ".cells")
 			  (cell-template cell))
-	      (mirror! cell)
+	      (setup-cell-mirror! cell)
 	      (scroll-to-elem (by-cell-id id))
 	      (show-editor id))))
 	'change-cell-type
