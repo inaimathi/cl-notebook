@@ -448,17 +448,16 @@
 	  (cell-code-template cell)))
     
     (defun show-title-input () 
-      (let ((input (by-selector ".book-title input"))
-	    (textarea (by-selector ".book-title textarea")))
+      (let ((input (by-selector ".book-title input")))
 	(show! input)
-	(show! textarea)
+	(show! (by-selector ".book-title .CodeMirror"))
 	(chain input (focus))
 	(chain input (select))
 	(hide! (by-selector ".book-title h1"))))
 
     (defun hide-title-input () 
       (hide! (by-selector ".book-title input"))
-      (hide! (by-selector ".book-title textarea"))
+      (hide! (by-selector ".book-title .CodeMirror"))
       (show! (by-selector ".book-title h1")))
     
     (defun notebook-title-template (name)
@@ -1036,7 +1035,8 @@
 	      (@ slider value) pos
 	      (@ (by-selector "#book-history-text") value) pos)
 	(hide! (by-selector ".book-title input"))
-	(hide! (by-selector ".book-title textarea"))
+	(mirror! (by-selector ".book-title textarea"))
+	(hide! (by-selector ".book-title .CodeMirror"))
 	(set-page-hash (create :book id))))
 
     (defun notebook! (raw)
