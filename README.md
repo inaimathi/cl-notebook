@@ -36,7 +36,6 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 ### TODO
 - `Ctrl-Ret` should run a `repackage-notebook` command. You'll need appropriate back-end handlers and a new `repackaged` event
-- Add `Ctrl-Ret` binding for `rename-notebook` to the title input, just for consistency.
 
 - Need a complete how-to set of videos at some point
 
