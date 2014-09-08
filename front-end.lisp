@@ -1166,7 +1166,7 @@
 	(lambda (res)
 	  (let ((id (@ res book)))
 	    (chain (by-selector (+ "#book-list option[value='" id "']")) (remove))
-	    (when (equal (notebook-id *notebook*) id)
+	    (when (equal (notebook-id *notebook*) id) ;; intentionally don't call relevant-event? here.
 	      ;; TODO. If someone else deletes the book you're editing, this could get confusing.
 	      ;;       Maybe put up a notice of "Book deleted" instead of moving on to some arbitrary "first book"?
 	      (display-book 
