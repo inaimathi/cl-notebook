@@ -460,11 +460,11 @@
       (hide! (by-selector ".book-title .CodeMirror"))
       (show! (by-selector ".book-title h1")))
     
-    (defun notebook-title-template (name)
+    (defun notebook-title-template (name &optional (package ""))
       (who-ps-html
        (:div :class "book-title"
 	     (:input :class "text" :onchange "renameBook(this.value)" :value name)
-	     (:textarea :onchange "repackageBook(this.value)")
+	     (:textarea :onchange "repackageBook(this.value)" package)
 	     (:h1 :onclick "showTitleInput()" name))))
 
     (defun notebook-template (notebook)
@@ -1175,9 +1175,12 @@
 	'rename-book
 	(lambda (res)
 	  (let ((id (@ res book))
-		(new-name (@ res new-name)))
+		(new-name (@ res new-name))
+		(new-package (@ res new-package)))
 	    (when (relevant-event? res)
-	      (dom-replace (by-selector ".book-title") (notebook-title-template new-name))
+	      (dom-replace 
+	       (by-selector ".book-title")
+	       (notebook-title-template new-name new-package))
 	      (set-notebook-name *notebook* new-name)
 	      (setup-package-mirror!)
 	      (hide-title-input))
