@@ -198,7 +198,7 @@
       (let ((new-content (chain document (create-element "span")))
 	    (parent (@ elem parent-node)))
 	(setf (@ new-content inner-h-t-m-l) markup)
-	(loop for elem in (@ new-content child-nodes)
+	(loop for child in (@ new-content child-nodes)
 	   do (chain parent (insert-before new-content elem)))
 	(chain elem (remove))))
 
@@ -1025,6 +1025,19 @@
     (defun notebook-cell (notebook id)
       (aref notebook :objects id))
     
+    (defun setup-package-mirror! ()
+      (mirror! 
+       (by-selector ".book-title textarea")
+       :extra-keys
+       (create "Ctrl-]"     (lambda (mirror) 
+			      (let ((next (by-selector ".cells .cell")))
+				(when next
+				  (hide-title-input)
+				  (scroll-to-elem next)
+				  (show-editor (elem->cell-id next)))))
+	       "Ctrl-Enter" (lambda (mirror) (console.log "TODO - calling `/repackage-notebook`"))))
+      (hide! (by-selector ".book-title .CodeMirror")))
+
     (defun surgical! (raw)
       (let* ((slider (by-selector "#book-history-slider"))		     
 	     (count (@ raw history-size))
@@ -1035,17 +1048,7 @@
 	      (@ slider value) pos
 	      (@ (by-selector "#book-history-text") value) pos)
 	(hide! (by-selector ".book-title input"))
-	(mirror! 
-	 (by-selector ".book-title textarea")
-	 :extra-keys
-	 (create "Ctrl-]"     (lambda (mirror) 
-				(let ((next (by-selector ".cells .cell")))
-				  (when next
-				    (hide-title-input)
-				    (scroll-to-elem next)
-				    (show-editor (elem->cell-id next)))))
-		 "Ctrl-Enter" (lambda (mirror) (console.log "TODO - calling `/repackage-notebook`"))))
-	(hide! (by-selector ".book-title .CodeMirror"))
+	(setup-package-mirror!)
 	(set-page-hash (create :book id))))
 
     (defun notebook! (raw)
@@ -1176,6 +1179,7 @@
 	    (when (relevant-event? res)
 	      (dom-replace (by-selector ".book-title") (notebook-title-template new-name))
 	      (set-notebook-name *notebook* new-name)
+	      (setup-package-mirror!)
 	      (hide-title-input))
 	    (chain (by-selector (+ "#book-list option[value='" id "']")) (remove))
 	    (dom-append (by-selector "#book-list")
