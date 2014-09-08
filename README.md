@@ -35,6 +35,9 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - We are not going to automatically evaluate notebooks on book load, and we won't be automatically re-evaluating and saving cells whose values have changed. Some cells might contain things like calls to `random`, or file-writes to freshly-generated temp-files; that makes the second goal difficult if not impossible. The first goal is annoying in the absence of the second; it means re-evaling all cells and saving those that changed since last time. This would potentially cause a notebook to change every time it was opened with cl-notebook, which is unacceptable from the user perspective.
 
 ### TODO
+- `Ctrl-Ret` should run a `repackage-notebook` command. You'll need appropriate back-end handlers and a new `repackaged` event
+- Add `Ctrl-Ret` binding for `rename-notebook` to the title input, just for consistency.
+
 - Need a complete how-to set of videos at some point
 
 ##### Thoughts
@@ -69,6 +72,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 	- On fork notebook:
 		- Create a new package and re-evaluate in-notebook code into that package
 			- Do we really want that?
+			- Probably, from the multi-user context; you don't want people who are editing disparate versions to suddenly start clobbering each others' code.
 - Get `quicklisp` working properly with this.
 	- Let user configure where to check for a `quicklisp` folder (default to `~/quicklisp`)
 	- If `ql` package exists when loading, just use the defaults.

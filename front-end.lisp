@@ -1035,7 +1035,16 @@
 	      (@ slider value) pos
 	      (@ (by-selector "#book-history-text") value) pos)
 	(hide! (by-selector ".book-title input"))
-	(mirror! (by-selector ".book-title textarea"))
+	(mirror! 
+	 (by-selector ".book-title textarea")
+	 :extra-keys
+	 (create "Ctrl-]"     (lambda (mirror) 
+				(let ((next (by-selector ".cells .cell")))
+				  (when next
+				    (hide-title-input)
+				    (scroll-to-elem next)
+				    (show-editor (elem->cell-id next)))))
+		 "Ctrl-Enter" (lambda (mirror) (console.log "TODO - calling `/repackage-notebook`"))))
 	(hide! (by-selector ".book-title .CodeMirror"))
 	(set-page-hash (create :book id))))
 
