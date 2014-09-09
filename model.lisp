@@ -14,6 +14,9 @@
 (defun new-notebook! (name)
   (let ((book (make-notebook)))
     (insert-new! book :notebook-name name)
+    (insert-new! 
+     book :notebook-package (default-package book))
+    (setf (namespace book) (notebook-package! book))
     (register-notebook! book)
     book))
 
@@ -24,6 +27,7 @@
       (loop for entry = (fact-base::read-entry! s) while entry
 	 do (incf (fact-base::entry-count book))
 	 do (fact-base::apply-entry! book entry)))
+    (setf (namespace book) (notebook-package! book))
     (register-notebook! book)))
 
 (defmethod kill! ((book notebook))
@@ -39,8 +43,37 @@
 (defmethod notebook-id ((book notebook))
   (file-namestring (file-name book)))
 
+(defmethod default-package ((book notebook))
+  (format nil "(defpackage ~s (:use :cl :fact-base :cl-notebook))" (notebook-name book)))
+
 (defmethod notebook-name ((book notebook))
   (caddar (lookup book :b :notebook-name)))
+
+(defmethod notebook-package-spec ((book notebook))
+  (let ((default (default-package book)))
+    (handler-case
+	(or (read-from-string (caddar (lookup book :b :notebook-package))) default)
+      (error (e)
+	(declare (ignore e))
+	(read-from-string default)))))
+
+(defmethod notebook-package! ((book notebook))
+  (let ((spec (notebook-package-spec book)))
+    (or (find-package (second spec)) (eval spec))))
+
+(defmethod repackage-notebook! ((book notebook) (new-package string))
+  (let ((package-form (read-from-string new-package))
+	(package-fact (first (lookup book :b :notebook-package)))
+	(old-name (package-name (namespace book))))
+    (handler-case
+	(progn (setf (namespace book) (rename-package (namespace book) (second package-form)))
+	       (eval package-form)
+	       (if package-fact
+		   (change! book package-fact (list (first package-fact) :notebook-package new-package))
+		   (insert-new! book :notebook-package new-package)))
+      (error (e)
+	(declare (ignore e))
+	(setf (namespace book) (rename-package (namespace book) old-name))))))
 
 (defmethod rename-notebook! ((book notebook) (new-name string))
   "Takes a book and a new name.
@@ -49,7 +82,9 @@ If the new name passed in is the same as the books' current name, we don't inser
   (let* ((name-fact (first (lookup book :b :notebook-name)))
 	 (same? (equal (third name-fact) new-name)))
     (unless same?
-      (change! book name-fact (list (first name-fact) :notebook-name new-name)))
+      (change! book name-fact (list (first name-fact) :notebook-name new-name))
+      (unless (lookup book :b :package-edited?)
+	(repackage-notebook! book (default-package book))))
     (values book (not same?))))
 
 ;;;;;;;;;; Notebooks table and related functions
