@@ -468,7 +468,7 @@
 	     (:h1 :onclick "showTitleInput()" name))))
 
     (defun notebook-template (notebook)
-      (+ (notebook-title-template (notebook-name notebook))
+      (+ (notebook-title-template (notebook-name notebook) (notebook-package notebook))
 	 (who-ps-html
 	  (:ul :class "cells"
 	       (join (map (lambda (cell) (cell-template cell))
@@ -999,6 +999,7 @@
 	res))
 
     (defun notebook-name (notebook) (@ notebook name))
+    (defun notebook-package (notebook) (@ notebook package))
     (defun notebook-id (notebook) (@ notebook id))
     (defun set-notebook-name (notebook new-name) (setf (@ notebook name) new-name))
 
@@ -1059,7 +1060,10 @@
 		      :id (@ raw :id) 
 		      :name (loop for (a b c) in fs
 			       when (equal b "notebookName")
-			       do (return c))))
+			       do (return c))
+		      :package (loop for (a b c) in fs
+				  when (equal b "notebookPackage")
+				  do (return c))))
 	(dom-set 
 	 (by-selector "#notebook")
 	 (notebook-template *notebook*))
@@ -1176,7 +1180,7 @@
 	(lambda (res)
 	  (let ((id (@ res book))
 		(new-name (@ res new-name))
-		(new-package (@ res new-package)))
+		(new-package (@ res package)))
 	    (when (relevant-event? res)
 	      (dom-replace 
 	       (by-selector ".book-title")

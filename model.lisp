@@ -49,10 +49,13 @@
 (defmethod notebook-name ((book notebook))
   (caddar (lookup book :b :notebook-name)))
 
+(defmethod notebook-package-spec-string ((book notebook))
+  (caddar (lookup book :b :notebook-package)))
+
 (defmethod notebook-package-spec ((book notebook))
   (let ((default (default-package book)))
     (handler-case
-	(or (read-from-string (caddar (lookup book :b :notebook-package))) default)
+	(or (read-from-string (notebook-package-spec-string book)) (read-from-string default))
       (error (e)
 	(declare (ignore e))
 	(read-from-string default)))))
@@ -65,15 +68,20 @@
   (let ((package-form (read-from-string new-package))
 	(package-fact (first (lookup book :b :notebook-package)))
 	(old-name (package-name (namespace book))))
-    (handler-case
-	(progn (setf (namespace book) (rename-package (namespace book) (second package-form)))
-	       (eval package-form)
-	       (if package-fact
-		   (change! book package-fact (list (first package-fact) :notebook-package new-package))
-		   (insert-new! book :notebook-package new-package)))
-      (error (e)
-	(declare (ignore e))
-	(setf (namespace book) (rename-package (namespace book) old-name))))))
+    (if (string= new-package (third package-fact))
+	(values book nil)
+	(handler-case
+	    (progn 
+	      (setf (namespace book) (rename-package (namespace book) (second package-form)))
+	      (eval package-form)
+	      (if package-fact ;; TODO - remove conditional eventually. All notebooks should have such facts.
+		  (change! book package-fact (list (first package-fact) :notebook-package new-package))
+		  (insert-new! book :notebook-package new-package))
+	      (values book t))
+	  (error (e)
+	    (declare (ignore e))
+	    (setf (namespace book) (rename-package (namespace book) old-name))
+	    (values book nil))))))
 
 (defmethod rename-notebook! ((book notebook) (new-name string))
   "Takes a book and a new name.

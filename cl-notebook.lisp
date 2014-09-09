@@ -158,11 +158,25 @@
   (publish! :cl-notebook-updates (update :action 'kill-book :book (notebook-id book)))
   :ok)
 
+(define-json-handler (cl-notebook/notebook/repackage) ((book :notebook) (new-package :string))
+  (multiple-value-bind (book repackaged?) (repackage-notebook! book new-package)
+    (when repackaged?
+      (unless (lookup book :b :package-edited?)
+	(insert-new! book :package-edited? t))
+      (write! book)
+      (publish! 
+       :cl-notebook-updates 
+       (update :action 'repackage-book :book (notebook-id book) :new-package new-package))))
+  :ok)
+
 (define-json-handler (cl-notebook/notebook/rename) ((book :notebook) (new-name :string))
   (multiple-value-bind (book renamed?) (rename-notebook! book new-name)
     (when renamed? 
       (write! book)
-      (publish! :cl-notebook-updates (update :action 'rename-book :book (notebook-id book) :new-name new-name))))
+      (publish!
+       :cl-notebook-updates 
+       (update :action 'rename-book :book (notebook-id book)
+	       :new-name new-name :package (notebook-package-spec-string book)))))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
