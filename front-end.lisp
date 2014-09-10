@@ -317,7 +317,7 @@
 			  (:li :class "condition-property" 
 			       (:span :class "label" k ":") (dom-escape v)))
 			 ""))
-		      err)))))
+		   err)))))
 
     (defun result-values-template (result-vals)
       (when result-vals
@@ -528,6 +528,9 @@
 
       (defun rename-book (new-name)
 	(post/fork "/cl-notebook/notebook/rename" (create :book (notebook-id *notebook*) :new-name new-name)))
+      
+      (defun repackage-book (new-package)
+	(post/fork "/cl-notebook/notebook/repackage" (create :book (notebook-id *notebook*) :new-package new-package)))
 
       (defun notebook/eval-to-cell (cell-id contents)
 	(post/fork "/cl-notebook/notebook/eval-to-cell" (create :book (notebook-id *notebook*) :cell-id cell-id :contents contents)))
@@ -923,7 +926,7 @@
 
     (defun cell-mirror (cell-id)
       (@ (notebook-cell *notebook* cell-id) editor))
-    
+
     (defun cell-editor-contents (cell-id)
       (chain (cell-mirror cell-id) (get-value)))
 
@@ -1036,7 +1039,8 @@
 				  (hide-title-input)
 				  (scroll-to-elem next)
 				  (show-editor (elem->cell-id next)))))
-	       "Ctrl-Enter" (lambda (mirror) (console.log "TODO - calling `/repackage-notebook`"))))
+	       "Ctrl-Enter" (lambda (mirror)
+			      (repackage-book (chain mirror (get-value))))))
       (hide! (by-selector ".book-title .CodeMirror")))
 
     (defun surgical! (raw)
@@ -1180,7 +1184,7 @@
 	(lambda (res)
 	  (let ((id (@ res book))
 		(new-name (@ res new-name))
-		(new-package (@ res package)))
+		(new-package (@ res new-package)))
 	    (when (relevant-event? res)
 	      (dom-replace 
 	       (by-selector ".book-title")

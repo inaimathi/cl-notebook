@@ -44,7 +44,7 @@
   (file-namestring (file-name book)))
 
 (defmethod default-package ((book notebook))
-  (format nil "(defpackage ~s (:use :cl :fact-base :cl-notebook))" (notebook-name book)))
+  (format nil "(defpackage ~s~%  (:use :cl :fact-base :cl-notebook))" (notebook-name book)))
 
 (defmethod notebook-name ((book notebook))
   (caddar (lookup book :b :notebook-name)))
@@ -56,8 +56,7 @@
   (let ((default (default-package book)))
     (handler-case
 	(or (read-from-string (notebook-package-spec-string book)) (read-from-string default))
-      (error (e)
-	(declare (ignore e))
+      (error ()
 	(read-from-string default)))))
 
 (defmethod notebook-package! ((book notebook))
@@ -73,13 +72,16 @@
 	(handler-case
 	    (progn 
 	      (setf (namespace book) (rename-package (namespace book) (second package-form)))
-	      (eval package-form)
+	      (handler-bind (#+sbcl (sb-ext:name-conflict 
+				     (lambda (e)
+				       (declare (ignore e))
+				       (invoke-restart 'sb-impl::take-new))))
+		(eval package-form))
 	      (if package-fact ;; TODO - remove conditional eventually. All notebooks should have such facts.
 		  (change! book package-fact (list (first package-fact) :notebook-package new-package))
 		  (insert-new! book :notebook-package new-package))
 	      (values book t))
-	  (error (e)
-	    (declare (ignore e))
+	  (error ()
 	    (setf (namespace book) (rename-package (namespace book) old-name))
 	    (values book nil))))))
 

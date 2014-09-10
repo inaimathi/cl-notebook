@@ -49,7 +49,8 @@
 			   (front-end-eval 
 			    :common-lisp :code 
 			    (caddar (lookup book :a cell-id :b :contents))))
-		       (sb-ext:timeout () :timed-out))))
+		       #-sbcl (bordeaux-threads:timeout () :timed-out)
+		       #+sbcl (sb-ext:timeout () :timed-out))))
 		(unless (eq :timed-out res)
 		  (when stale? (delete! book stale?))
 		  (unless (equalp (third res-fact) res)
@@ -137,9 +138,8 @@
   (hash :facts (current book) :history-size (total-entries book) :id (notebook-id book)))
 
 (define-json-handler (cl-notebook/notebook/fork-at) ((book :notebook) (index :integer))
-  (let ((new (load! 
-	      (fork-at book index :file-name (merge-pathnames (fact-base::temp-file-name) *books*))
-	      :indices *default-indices* :in-memory? t))
+  (let ((new (load! (fork-at book index :file-name (merge-pathnames (fact-base::temp-file-name) *books*))
+		    :indices *default-indices* :in-memory? t))
 	(new-name (format nil "Fork of ~a" (notebook-name book))))
     (rename-notebook! new new-name)
     (register-notebook! new)
@@ -165,8 +165,9 @@
 	(insert-new! book :package-edited? t))
       (write! book)
       (publish! 
-       :cl-notebook-updates 
-       (update :action 'repackage-book :book (notebook-id book) :new-package new-package))))
+       :cl-notebook-updates
+       (update :action 'rename-book :book (notebook-id book)
+	       :new-name (notebook-name book) :new-package new-package))))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/rename) ((book :notebook) (new-name :string))
@@ -176,7 +177,7 @@
       (publish!
        :cl-notebook-updates 
        (update :action 'rename-book :book (notebook-id book)
-	       :new-name new-name :package (notebook-package-spec-string book)))))
+	       :new-name new-name :new-package (notebook-package-spec-string book)))))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
