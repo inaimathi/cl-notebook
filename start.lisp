@@ -29,40 +29,56 @@ Only useful during the build process, where its called with an --eval flag."
 	      (write-sequence v stream))))
     (setf *static-files* nil)))
 
-(defun main (&optional argv &key (port 4242))
+(defun main (&optional argv &key (port 4242) (public? nil))
   (multiple-value-bind (params) (parse-args! argv)
-    (let ((p (or (get-param '(:p :port) params) port)))
-      (format t "Initializing storage directories...~%")
-      (setf *storage* (sys-dir (merge-pathnames ".cl-notebook" (user-homedir-pathname)))
-	    *books* (sys-dir (merge-pathnames "books" *storage*))
-	    *trash* (sys-dir (merge-pathnames "trash" *storage*)))
-      (unless *static*
-	(format t "Initializing static files...~%")
-	(setf *static* (sys-dir (merge-pathnames "static" *storage*)))
-	(write-statics :force? (get-param '(:f :force) params)))
+    (flet ((dir-exists? (path) (cl-fad:directory-exists-p path)))
+      (let ((p (or (get-param '(:p :port) params) port))
+	    (host (if (or (get-param '(:o :open :public) params) open?) usocket:*wildcard-host* #(127 0 0 1))))
+	(format t "Initializing storage directories...~%")
+	(setf *storage* (sys-dir (merge-pathnames ".cl-notebook" (user-homedir-pathname)))
+	      *books* (sys-dir (merge-pathnames "books" *storage*))
+	      *trash* (sys-dir (merge-pathnames "trash" *storage*)))
+	(unless *static*
+	  (format t "Initializing static files...~%")
+	  (setf *static* (sys-dir (merge-pathnames "static" *storage*)))
+	  (write-statics :force? (get-param '(:f :force) params)))
 
-      (in-package :cl-notebook)
-      (format t "Loading books...~%")
-      (dolist (book (cl-fad:list-directory *books*))
-	(format t "   Loading ~a...~%" book)
-	(load-notebook! book))
-      (define-file-handler *static* :stem-from "static")
+	(format t "Checking for quicklisp...~%")
+	(if (find-package :quicklisp)
+	    (format t "   quicklisp already loaded...~%")
+	    (let ((ql-dir 
+		   (or (dir-exists? "quicklisp")
+		       (dir-exists? (merge-pathnames "quicklisp" (user-homedir-pathname)))
+		       (dir-exists? (merge-pathnames "quicklisp" *storage*)))))
+	      (cond (ql-dir
+		     (format t "   Loading quicklisp from ~s...~%" ql-dir)
+		     (load (merge-pathnames "setup.lisp" ql-dir)))
+		    (t
+		     (format t "   No quicklisp found...~%")
+		     (format t "   TODO auto-install quicklisp to '~~/.cl-notebook/quicklisp/' at this point~%")))))
 
-      (when (get-param '(:d :debug) params)
-	(format t "Starting in debug mode...~%")
-	(house::debug!))
-      
-      (format t "Listening on '~s'...~%" p)
-      #+ccl (setf ccl:*break-hook*
-		  (lambda (cond hook)
-		    (declare (ignore cond hook))
-		    (ccl:quit)))
-      #-sbcl(start p)
-      #+sbcl(handler-case
-		(start p)
-	      (sb-sys:interactive-interrupt (e)
-		(declare (ignore e))
-		(cl-user::exit))))))
+	(in-package :cl-notebook)
+	(format t "Loading books...~%")
+	(dolist (book (cl-fad:list-directory *books*))
+	  (format t "   Loading ~a...~%" book)
+	  (load-notebook! book))
+	(define-file-handler *static* :stem-from "static")
+
+	(when (get-param '(:d :debug) params)
+	  (format t "Starting in debug mode...~%")
+	  (house::debug!))
+	
+	(format t "Listening on '~s'...~%" p)
+	#+ccl (setf ccl:*break-hook*
+		    (lambda (cond hook)
+		      (declare (ignore cond hook))
+		      (ccl:quit)))
+	#-sbcl(start p host)
+	#+sbcl(handler-case
+		  (start p host)
+		(sb-sys:interactive-interrupt (e)
+		  (declare (ignore e))
+		  (cl-user::exit)))))))
 
 (defun main-dev ()
   (house::debug!)

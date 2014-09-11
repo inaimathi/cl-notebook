@@ -61,6 +61,8 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 	- Otherwise, try to load from the user-specified `quicklisp` location.
 		- If it doesn't exist, start a new install in `~/.cl-notebook/quicklisp`
 	- What we want is a workflow where we transparently use the systems' existing `quicklisp` directory, if any, and create our own if one doesn't already exist (If they *have* a quicklisp folder, but re-configured `quicklisp` to store it somewhere other than the default, they'll have to similarly configure `cl-notebook`).
+	- We should also automatically try to load dependencies for specified notebook packages as they're opened
+	- Try to install directly from the beta site, or pack a quicklisp.lisp along with our semi-static files? Probably depends on whether the site is HTTPS or not (though keep in mind this also adds the drakma dependency)
 - Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
 	- Eval all code and markup cells when opening a notebook
 - Put together better storage for charts
