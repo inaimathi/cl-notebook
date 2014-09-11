@@ -482,21 +482,25 @@
 	(post/json "/cl-notebook/system/arg-hint" (create :name symbol :package :cl-notebook)
 		   (lambda (res)
 		     (unless (and (@ res error) (= (@ res error) 'function-not-found))
-		       (dom-append (by-selector "body") 
-				   (who-ps-html (:div :class "notebook-arg-hint cm-s-default" 
-						      :style (+ "left:" x "px; top: " y "px")
-						      "(" (:span :class "name" symbol)
-						      (join (loop for arg in (@ res args)
-							       collect (cond ((and (string? arg) (= (@ arg 0) "&"))
-									      (who-ps-html (:span :class "modifier cm-variable-2" arg)))
-									     ((string? arg)
-									      (who-ps-html (:span :class "arg" arg)))
-									     (t
-									      (who-ps-html (:span :class "compound-arg" 
-												  "(" (join (loop for a in arg
-													       if (null a) 
-													       collect (who-ps-html (:span :class "arg" "NIL"))
-													       else collect (who-ps-html (:span :class "arg" a)))) ")")))))) ")")))))))
+		       (dom-append 
+			(by-selector "body") 
+			(who-ps-html 
+			 (:div :class "notebook-arg-hint cm-s-default" 
+			       :style (+ "left:" x "px; top: " y "px")
+			       "(" (:span :class "name" symbol)
+			       (join (loop for arg in (@ res args)
+					collect (cond 
+						  ((and (string? arg) (= (@ arg 0) "&"))
+						   (who-ps-html (:span :class "modifier cm-variable-2" arg)))
+						  ((string? arg)
+						   (who-ps-html (:span :class "arg" arg)))
+						  (t
+						   (who-ps-html (:span :class "compound-arg" 
+								       "(" (join 
+									    (loop for a in arg
+									       if (null a) 
+									       collect (who-ps-html (:span :class "arg" "NIL"))
+									       else collect (who-ps-html (:span :class "arg" a)))) ")")))))) ")")))))))
       
       (defun rewind-book (index)
 	(post/json "/cl-notebook/notebook/rewind" (create :book (notebook-id *notebook*) :index index)

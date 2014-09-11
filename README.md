@@ -55,23 +55,6 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
-- Figure out what to do about packages (thinking about defining a `:cl-notebook-user` that binds everything you need for basics and uses that in the running thread)
-	- Automatically generated entry type.
-		- Not cell, there can only be one per notebook. Keep it in with the notebook name cluster on the front-end
-	- Default value is
-		- `(defpackage <notebook name> (:use :cl :cl-notebook :cl-who :fact-base))`
-		- This should also be the assumed value in case there's an error parsing this entry
-	- On change:
-		- re-name package
-		- add new `use`d packages
-		- add new `import`/`shadowing-import`ed symbols
-		- add new `export`ed symbols
-	- On rename notebook:
-		- If the package is the default value, do a package rename on that too
-	- On fork notebook:
-		- Create a new package and re-evaluate in-notebook code into that package
-			- Do we really want that?
-			- Probably, from the multi-user context; you don't want people who are editing disparate versions to suddenly start clobbering each others' code.
 - Get `quicklisp` working properly with this.
 	- Let user configure where to check for a `quicklisp` folder (default to `~/quicklisp`)
 	- If `ql` package exists when loading, just use the defaults.
@@ -113,6 +96,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - If you join a book in the middle of an already running computation, you currently aren't notified of this. Figure something out.
 - Moving cells around isn't propagated to other users
 - Editing a cell should be propagated between saves (back-end should probably figure out when to save, and it should run operational transforms on diffs to keep from clobbering any users' input)
+- When a notebook is forked, it should create a copy of its package for the fork to use (so that users working on different forks of the same book don't clobber each others in-image changes)
 
 ### License
 
