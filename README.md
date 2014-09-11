@@ -11,7 +11,7 @@
 
 ### Dependencies
 
-`alexandria`, `anaphora`, `cl-fad`, `closer-mop`, `optima`, `local-time`, `fact-base`, `house`
+`alexandria`, `anaphora`, `cl-fad`, `closer-mop`, `optima`, `local-time`, `fact-base`, `session-token`, `house`
 
 ### Usage
 
@@ -21,7 +21,7 @@ Download [this](http://173.255.226.138/cl-notebook-binaries/), run it (if you do
 
 **Or**
 
-You need to install the [`house` server](https://github.com/Inaimathi/house), the [`fact-base` triple-store](https://github.com/Inaimathi/fact-base) and [this repo](https://github.com/Inaimathi/cl-notebook) by cloning them.
+You need to install the [`house` server](https://github.com/Inaimathi/house), the [`session-token` random token generator](https://github.com/Inaimathi/session-token), the [`fact-base` triple-store](https://github.com/Inaimathi/fact-base) and [this repo](https://github.com/Inaimathi/cl-notebook) by cloning them.
 
 The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/), so you should then be able to hop into a lisp and do `(ql:quickload :cl-notebook)`, followed by `(cl-notebook:main)`. That'll start a server listening.
 
