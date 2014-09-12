@@ -33,7 +33,7 @@ Only useful during the build process, where its called with an --eval flag."
   (multiple-value-bind (params) (parse-args! argv)
     (flet ((dir-exists? (path) (cl-fad:directory-exists-p path)))
       (let ((p (or (get-param '(:p :port) params) port))
-	    (host (if (or (get-param '(:o :open :public) params) open?) usocket:*wildcard-host* #(127 0 0 1))))
+	    (host (if (or (get-param '(:o :open :public) params) public?) usocket:*wildcard-host* #(127 0 0 1))))
 	(format t "Initializing storage directories...~%")
 	(setf *storage* (sys-dir (merge-pathnames ".cl-notebook" (user-homedir-pathname)))
 	      *books* (sys-dir (merge-pathnames "books" *storage*))
