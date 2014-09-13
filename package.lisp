@@ -13,7 +13,8 @@
    #+allegro #:mop 
    #+clisp #:clos 
    #:class-slots #:slot-definition-name)
-  (:shadowing-import-from #:fact-base #:lookup))
+  (:shadowing-import-from #:fact-base #:lookup)
+  (:export :bar-graph :draw-bar-graph))
 
 (in-package #:cl-notebook)
 
@@ -23,6 +24,7 @@
 (defvar *static* nil)
 
 (defvar *static-files* nil)
+(defvar *quicklisp-file* nil)
 
 (defvar *default-indices* '(:a :b :ab :abc))
 

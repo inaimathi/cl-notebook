@@ -1,6 +1,5 @@
 (in-package :cl-notebook)
 
-
 ;;;;; Basic data structure stuff
 (defun hash (&rest entries)
   (let ((h (make-hash-table)))

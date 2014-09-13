@@ -35,7 +35,8 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - We are not going to automatically evaluate notebooks on book load, and we won't be automatically re-evaluating and saving cells whose values have changed. Some cells might contain things like calls to `random`, or file-writes to freshly-generated temp-files; that makes the second goal difficult if not impossible. The first goal is annoying in the absence of the second; it means re-evaling all cells and saving those that changed since last time. This would potentially cause a notebook to change every time it was opened with cl-notebook, which is unacceptable from the user perspective.
 
 ### TODO
-- `Ctrl-Ret` should run a `repackage-notebook` command. You'll need appropriate back-end handlers and a new `repackaged` event
+- Eval code cells on load (don't change values though). On notebook load, import all its relevant packages
+- Display errors and warnings on the package specification (for nonexistent package/symbol imports)
 
 - Need a complete how-to set of videos at some point
 
@@ -55,14 +56,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
-- Get `quicklisp` working properly with this.
-	- Let user configure where to check for a `quicklisp` folder (default to `~/quicklisp`)
-	- If `ql` package exists when loading, just use the defaults.
-	- Otherwise, try to load from the user-specified `quicklisp` location.
-		- If it doesn't exist, start a new install in `~/.cl-notebook/quicklisp`
-	- What we want is a workflow where we transparently use the systems' existing `quicklisp` directory, if any, and create our own if one doesn't already exist (If they *have* a quicklisp folder, but re-configured `quicklisp` to store it somewhere other than the default, they'll have to similarly configure `cl-notebook`).
-	- We should also automatically try to load dependencies for specified notebook packages as they're opened
-	- Try to install directly from the beta site, or pack a quicklisp.lisp along with our semi-static files? Probably depends on whether the site is HTTPS or not (though keep in mind this also adds the drakma dependency)
+- Let user configure where to check for a `quicklisp` folder (by default, check `~/quicklisp`, `~/.cl-notebook/quicklisp` and `quicklisp` in CWD)
 - Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
 	- Eval all code and markup cells when opening a notebook
 - Put together better storage for charts
@@ -108,6 +102,9 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 Do whatever you like, BUT afford the same freedoms to anyone you give this software or derivative works (yes, this includes the new stuff you do) to, and anyone you expose it to as a service.
 
+This project includes a copy of `quicklisp.lisp` for ease of use. The [`quicklisp` beta](http://www.quicklisp.org/beta/) is released under an [Expat-like license](http://www.quicklisp.org/beta/#license).
+
+This project uses [CodeMirror](http://codemirror.net/) as a front-end editor. CodeMirror [is released](http://codemirror.net/#community) under the [MIT Expat license](http://codemirror.net/LICENSE).
 ### Credits
 
 This project uses:
