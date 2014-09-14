@@ -31,9 +31,6 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 A quick-ish video demo is available [here](https://vimeo.com/97623064) to get you sort-of-started.
 
-### Project Notes
-- We are not going to automatically evaluate notebooks on book load, and we won't be automatically re-evaluating and saving cells whose values have changed. Some cells might contain things like calls to `random`, or file-writes to freshly-generated temp-files; that makes the second goal difficult if not impossible. The first goal is annoying in the absence of the second; it means re-evaling all cells and saving those that changed since last time. This would potentially cause a notebook to change every time it was opened with cl-notebook, which is unacceptable from the user perspective.
-
 ### TODO
 - Eval code cells on load (don't change values though). On notebook load, import all its relevant packages
 - Display errors and warnings on the package specification (for nonexistent package/symbol imports)
@@ -56,14 +53,16 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
+- Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
+	- Suddenly more relevant because we definitely want incremental updates for proper quicklisp use
 - Let user configure where to check for a `quicklisp` folder (by default, check `~/quicklisp`, `~/.cl-notebook/quicklisp` and `quicklisp` in CWD)
+- handle errors in the event of nonexistent packages (the error should be displayed on the front end, below the notebook info section)
 - Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
 	- Eval all code and markup cells when opening a notebook
 - Put together better storage for charts
 	- Is this even possible? We could defer computation until display time, but some charts take longer to compute than I'd like. Storing the full HTML output is harder on disk use though. As in "noticeably"; the `BGG corpus charts` article weighs `80mb` on disk, and no other noebook has even cracked `2mb` yet.
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 	- Really, what we want here is automatic resolution. When a cell is evaluated, see where its defined values are used, and re-evaluate any cells that apply.
-- Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
 - If there are no existing notebooks, we should write a default scratch book with some initial how-to instructions
 - Get `buildapp` working properly with this
 	- Give the user a one-button interaction that turns a given notebook into a binary.

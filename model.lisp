@@ -65,12 +65,15 @@
       (error ()
 	(read-from-string default)))))
 
-(defun load-dependencies (package-term)
-  ;; look through the term. Load all packages that appear in
-  ;; (:use . <here>)
-  ;; (:import-from <here> . symbols)
-  ;; (:shadowing-import-from <or here> . symbols)
-  )
+(defmethod load-dependencies ((package-term list))
+  (flet ((load-package (pack)
+	   (unless (find-package pack)
+	     (ql:quickload pack))))
+    (loop for exp in (cddr package-term)
+       do (case (car exp)
+	    (:use (mapc #'load-package (cdr exp)))
+	    (:import-from (load-package (second exp)))
+	    (:shadowing-import-from (load-package (second exp)))))))
 
 (defmethod notebook-package! ((book notebook))
   (let ((spec (notebook-package-spec book)))
