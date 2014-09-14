@@ -34,31 +34,30 @@
 	    (error (e)
 	      (list (alist :type 'error :value (front-end-error nil e))))))))
 
-(defmethod eval-notebook-code ((book notebook))
-  (let ((all-ids (reverse (caddar (lookup book :b :cell-order)))))
-    (loop for (id b c) in (lookup book :b :cell :c nil) do (pushnew id all-ids))
-    (let ((ids (reverse all-ids)))
-      (loop for cell-id in ids
-	 when (and (lookup book :a cell-id :b :cell-language :c :common-lisp)
-		   (lookup book :a cell-id :b :cell-type :c :code))
-	 do (let ((stale? (first (lookup book :a cell-id :b :stale :c t)))
-		  (res-fact (first (lookup book :a cell-id :b :result))))
-	      (let ((res 
-		     (handler-case
-			 (bt:with-timeout (.1)
-			   (front-end-eval 
-			    :common-lisp :code 
-			    (caddar (lookup book :a cell-id :b :contents))))
-		       #-sbcl (bordeaux-threads:timeout () :timed-out)
-		       #+sbcl (sb-ext:timeout () :timed-out))))
-		(unless (eq :timed-out res)
-		  (when stale? (delete! book stale?))
-		  (unless (equalp (third res-fact) res)
-		    (let ((new (list cell-id :result res)))
-		      (if res-fact 
-			  (change! book res-fact new)
-			  (insert! book new))))))))
-      (write! book))))
+(defmethod eval-notebook ((book notebook) &optional (cell-type :code))
+  (let ((ids (notebook-cell-order book)))
+    (loop for cell-id in ids
+       when (and (lookup book :a cell-id :b :cell-language :c :common-lisp)
+		 (lookup book :a cell-id :b :cell-type :c cell-type))
+       do (let ((stale? (first (lookup book :a cell-id :b :stale :c t)))
+		(res-fact (first (lookup book :a cell-id :b :result)))
+		(*package* (namespace book)))
+	    (let ((res 
+		   (handler-case
+		       (bt:with-timeout (.1)
+			 (front-end-eval 
+			  :common-lisp cell-type 
+			  (caddar (lookup book :a cell-id :b :contents))))
+		     #-sbcl (bordeaux-threads:timeout () :timed-out)
+		     #+sbcl (sb-ext:timeout () :timed-out))))
+	      (unless (eq :timed-out res)
+		(when stale? (delete! book stale?))
+		(unless (equalp (third res-fact) res)
+		  (let ((new (list cell-id :result res)))
+		    (if res-fact 
+			(change! book res-fact new)
+			(insert! book new))))))))
+    (write! book)))
 
 (defmethod empty-expression? ((contents string))
   (when (cl-ppcre:scan "^[ \n\t\r]*$" contents) t))

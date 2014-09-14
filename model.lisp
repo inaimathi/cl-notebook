@@ -28,6 +28,7 @@
 	 do (incf (fact-base::entry-count book))
 	 do (fact-base::apply-entry! book entry)))
     (setf (namespace book) (notebook-package! book))
+    (eval-notebook book)
     (register-notebook! book)))
 
 (defmethod kill! ((book notebook))
@@ -49,6 +50,11 @@
 (defmethod notebook-name ((book notebook))
   (caddar (lookup book :b :notebook-name)))
 
+(defmethod notebook-cell-order ((book notebook))
+  (let ((all-ids (reverse (caddar (lookup book :b :cell-order)))))
+    (loop for (id b c) in (lookup book :b :cell :c nil) do (pushnew id all-ids))
+    (reverse all-ids)))
+
 (defmethod notebook-package-spec-string ((book notebook))
   (caddar (lookup book :b :notebook-package)))
 
@@ -58,6 +64,13 @@
 	(or (read-from-string (notebook-package-spec-string book)) (read-from-string default))
       (error ()
 	(read-from-string default)))))
+
+(defun load-dependencies (package-term)
+  ;; look through the term. Load all packages that appear in
+  ;; (:use . <here>)
+  ;; (:import-from <here> . symbols)
+  ;; (:shadowing-import-from <or here> . symbols)
+  )
 
 (defmethod notebook-package! ((book notebook))
   (let ((spec (notebook-package-spec book)))
