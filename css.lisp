@@ -83,7 +83,7 @@
      (.condition-contents :list-style-type none :margin 0px :padding 0px)
      (".condition-contents .condition-type" :font-weight bolder)
      (".condition-contents .condition-property" :font-style oblique)
-     (".condition-contents .condition-property .label" :display inline-block :margin-right 5px :font-size .4em)
+     (".condition-contents .condition-property .label" :display inline-block :margin-right 5px :font-size .8em)
 
      (.chart :border "1px solid #ccc" :padding-bottom 3% :clear both :margin "1% 0")
      (".chart .bar:hover" :z-index 90000)

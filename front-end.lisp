@@ -460,10 +460,14 @@
       (hide! (by-selector ".book-package"))
       (show! (by-selector ".book-title h1")))
 
-    (defun notebook-package-template (package)
+    (defun notebook-package-template (package &optional result)
       (who-ps-html
        (:div :class "book-package"
-	     (:textarea :onchange "repackageBook(this.value)" package))))
+	     (:textarea :onchange "repackageBook(this.value)" package)
+	     (when result 
+	       (who-ps-html 
+		(:ul :class "result"
+		     (:li :class "error" (condition-template result))))))))
     
     (defun notebook-title-template (name)
       (who-ps-html
@@ -1155,12 +1159,15 @@
 	(lambda (res)
 	  (hide! (by-selector ".footer"))
 	  (let ((id (@ res book))
-		(new-package (@ res contents)))
+		(new-package (@ res contents))
+		(err (@ res result)))
 	    (when (relevant-event? res)
-	      (dom-replace (by-selector ".book-package") (notebook-package-template new-package))
+	      (dom-replace (by-selector ".book-package") (notebook-package-template new-package err))
 	      (set-notebook-package *notebook* new-package)
 	      (setup-package-mirror!)
-	      (hide-title-input))))
+	      (if err
+		  (show-title-input)
+		  (hide-title-input)))))
 	'content-changed
 	(lambda (res)
 	  (when (relevant-event? res)
