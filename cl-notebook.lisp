@@ -158,15 +158,20 @@
   :ok)
 
 (define-json-handler (cl-notebook/notebook/repackage) ((book :notebook) (new-package :string))
-  (multiple-value-bind (book repackaged?) (repackage-notebook! book new-package)
-    (when repackaged?
-      (unless (lookup book :b :package-edited?)
-	(insert-new! book :package-edited? t))
-      (write! book)
+  (handler-case
+      (multiple-value-bind (book repackaged?) (repackage-notebook! book new-package)
+	(when repackaged?
+	  (unless (lookup book :b :package-edited?)
+	    (insert-new! book :package-edited? t))
+	  (write! book)
+	  (publish! 
+	   :cl-notebook-updates
+	   (update :action 'rename-book :book (notebook-id book)
+		   :new-name (notebook-name book) :new-package new-package))))
+    (error (e)
       (publish! 
-       :cl-notebook-updates
-       (update :action 'rename-book :book (notebook-id book)
-	       :new-name (notebook-name book) :new-package new-package))))
+       :cl-notebook-updates 
+       (update :action 'package-error :book (notebook-id book) :package-error (front-end-error nil e)))))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/rename) ((book :notebook) (new-name :string))

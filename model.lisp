@@ -65,41 +65,44 @@
       (error ()
 	(read-from-string default)))))
 
-(defmethod load-dependencies ((package-term list))
+(defmethod notebook-package! ((book notebook))
+  ;; TODO handle loading and package-related errors here
+  (let ((spec (notebook-package-spec book)))
+    (load-dependencies (read-from-string spec))
+    (or (find-package (second spec)) (eval spec))))
+
+(defmethod load-dependencies ((package-form list))
   (flet ((load-package (pack)
 	   (unless (find-package pack)
 	     (ql:quickload pack))))
-    (loop for exp in (cddr package-term)
+    (loop for exp in (cddr package-form)
        do (case (car exp)
 	    (:use (mapc #'load-package (cdr exp)))
 	    (:import-from (load-package (second exp)))
 	    (:shadowing-import-from (load-package (second exp)))))))
 
-(defmethod notebook-package! ((book notebook))
-  (let ((spec (notebook-package-spec book)))
-    (or (find-package (second spec)) (eval spec))))
-
 (defmethod repackage-notebook! ((book notebook) (new-package string))
   (let ((package-form (read-from-string new-package))
 	(package-fact (first (lookup book :b :notebook-package)))
 	(old-name (package-name (namespace book))))
-    (if (string= new-package (third package-fact))
-	(values book nil)
-	(handler-case
-	    (progn 
-	      (setf (namespace book) (rename-package (namespace book) (second package-form)))
-	      (handler-bind (#+sbcl (sb-ext:name-conflict 
-				     (lambda (e)
-				       (declare (ignore e))
-				       (invoke-restart 'sb-impl::take-new))))
-		(eval package-form))
-	      (if package-fact ;; TODO - remove conditional eventually. All notebooks should have such facts.
-		  (change! book package-fact (list (first package-fact) :notebook-package new-package))
-		  (insert-new! book :notebook-package new-package))
-	      (values book t))
-	  (error ()
-	    (setf (namespace book) (rename-package (namespace book) old-name))
-	    (values book nil))))))
+    (handler-bind ((error (lambda (e) 
+			    (setf (namespace book) (rename-package (namespace book) old-name))
+			    (insert! book (list (first package-fact) :package-error (front-end-error package-form e))))))
+      (if (string= new-package (third package-fact))
+	  (values book nil)
+	  (progn 
+	    (setf (namespace book) (rename-package (namespace book) (second package-form)))
+	    (load-dependencies package-form)
+	    (handler-bind (#+sbcl (sb-ext:name-conflict 
+				   (lambda (e)
+				     (declare (ignore e))
+				     (invoke-restart 'sb-impl::take-new))))
+	      (eval package-form))
+	    (awhen (first (lookup book :b :package-error)) (delete! book it))
+	    (if package-fact ;; TODO - remove conditional eventually. All notebooks should have such facts.
+		(change! book package-fact (list (first package-fact) :notebook-package new-package))
+		(insert-new! book :notebook-package new-package))
+	    (values book t))))))
 
 (defmethod rename-notebook! ((book notebook) (new-name string))
   "Takes a book and a new name.
@@ -109,7 +112,7 @@ If the new name passed in is the same as the books' current name, we don't inser
 	 (same? (equal (third name-fact) new-name)))
     (unless same?
       (change! book name-fact (list (first name-fact) :notebook-name new-name))
-      (unless (lookup book :b :package-edited?)
+      (unless (or (lookup book :b :package-edited?) (lookup book :b :package-error))
 	(repackage-notebook! book (default-package book))))
     (values book (not same?))))
 
