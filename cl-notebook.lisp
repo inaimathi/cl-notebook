@@ -67,7 +67,7 @@
     (when (and (bt:threadp *front-end-eval-thread*)
 	       (bt:thread-alive-p *front-end-eval-thread*))
       (bt:destroy-thread *front-end-eval-thread*))
-    (publish! :cl-notebook-updates (update :book (notebook-id book) :target cell-id :action 'starting-eval))
+    (publish-update! book 'starting-eval :target cell-id)
     (setf *front-end-eval-thread*
 	  (bt:make-thread
 	   (lambda ()
@@ -77,18 +77,13 @@
 		   (change! book res-fact (list cell-id :result res))
 		   (delete! book (list cell-id :stale t))
 		   (write! book))
-		 (publish! :cl-notebook-updates 
-			   (update :book (notebook-id book) 
-				   :cell cell-id 
-				   :action 'finished-eval 
-				   :contents contents 
-				   :result res)))))))))
+		 (publish-update! book 'finished-eval :cell cell-id :contents contents :result res))))))))
 
 (defmethod eval-package ((book notebook) (contents string))
   (when (and (bt:threadp *front-end-eval-thread*)
 	     (bt:thread-alive-p *front-end-eval-thread*))
     (bt:destroy-thread *front-end-eval-thread*))
-  (publish! :cl-notebook-updates (update :book (notebook-id book) :target :package :action 'starting-eval))
+  (publish-update! book 'starting-eval :target :package)
   (setf *front-end-eval-thread*
 	(bt:make-thread
 	 (lambda ()
@@ -98,20 +93,16 @@
 		   (unless (lookup book :b :package-edited?)
 		     (insert-new! book :package-edited? t))
 		   (write! book)
-		   (publish! 
-		    :cl-notebook-updates
-		    (update :action 'finished-package-eval :book (notebook-id book) :contents contents))))
+		   (publish-update! book 'finished-package-eval :contents contents)))
 	     (error (e)
-	       (publish! 
-		:cl-notebook-updates 
-		(update :action 'finished-package-eval :book (notebook-id book) :contents contents :result (front-end-error nil e)))))))))
+	       (publish-update! book 'finished-package-eval :contents contents :result (front-end-error nil e))))))))
 
 ;;;;; HTTP Handlers
 (define-json-handler (cl-notebook/system/kill-thread) ()
   (when (and (bt:threadp *front-end-eval-thread*)
 	     (bt:thread-alive-p *front-end-eval-thread*))
     (bt:destroy-thread *front-end-eval-thread*))
-  (publish! :cl-notebook-updates (update :action 'killed-eval))
+  (publish-update! nil 'killed-eval)
   :ok)
 
 (define-json-handler (cl-notebook/system/complete) ((partial :string) (package :keyword))
@@ -164,19 +155,19 @@
 	(new-name (format nil "Fork of ~a" (notebook-name book))))
     (rename-notebook! new new-name)
     (register-notebook! new)
-    (publish! :cl-notebook-updates (update :action 'new-book :book (notebook-id new) :book-name new-name))
+    (publish-update! new 'new-book :book-name new-name)
     (hash :facts (current new) :history-size (total-entries new) :id (notebook-id new) :book-name new-name)))
 
 (define-json-handler (cl-notebook/notebook/new) ()
   (let* ((name (format nil "book-~a" (hash-table-count *notebooks*)))
 	 (book (new-notebook! name)))
     (write! book)
-    (publish! :cl-notebook-updates (update :action 'new-book :book (notebook-id book) :book-name name))
+    (publish-update! book 'new-book :book-name name)
     (hash :facts (current book) :history-size (total-entries book) :id (notebook-id book))))
 
 (define-json-handler (cl-notebook/notebook/kill) ((book :notebook))
   (kill! book)
-  (publish! :cl-notebook-updates (update :action 'kill-book :book (notebook-id book)))
+  (publish-update! book 'kill-book)
   :ok)
 
 (define-json-handler (cl-notebook/notebook/repackage) ((book :notebook) (new-package :string))
@@ -189,13 +180,9 @@
     (when renamed? 
       (unless (or (lookup book :b :package-edited?) (lookup book :b :package-error))
 	(repackage-notebook! book (default-package book))
-	(publish! 
-	 :cl-notebook-updates
-	 (update :action 'finished-package-eval :book (notebook-id book) :contents (notebook-package-spec-string book))))
+	(publish-update! book 'finished-package-eval :contents (notebook-package-spec-string book)))
       (write! book)
-      (publish!
-       :cl-notebook-updates 
-       (update :action 'rename-book :book (notebook-id book) :new-name new-name))))
+      (publish-update! book 'rename-book :new-name new-name)))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
@@ -204,7 +191,7 @@
 	(cell-lang (caddar (lookup book :a cell-id :b :cell-language)))
 	(cell-type (caddar (lookup book :a cell-id :b :cell-type))))
     (change! book cont-fact (list cell-id :contents contents))
-    (publish! :cl-notebook-updates (update :book (notebook-id book) :cell cell-id :action 'content-changed :contents contents))
+    (publish-update! book 'content-changed :cell cell-id :contents contents)
     (eval-cell book cell-id contents val-fact cell-lang cell-type))
   :ok)
 
@@ -213,7 +200,7 @@
     (unless (string= contents (third cont-fact))
       (change! book cont-fact (list cell-id :contents contents))
       (insert! book (list cell-id :stale t))
-      (publish! :cl-notebook-updates (update :book (notebook-id book) :cell cell-id :action 'content-changed :contents contents))))
+      (publish-update! book 'content-changed :cell cell-id :contents contents)))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/change-cell-language) ((book :notebook) (cell-id :integer) (new-language :keyword))
@@ -223,9 +210,7 @@
 	(lang-fact (first (lookup book :a cell-id :b :cell-language))))
     (unless (eq (third lang-fact) new-language)
       (change! book lang-fact (list cell-id :cell-type new-language))
-      (publish! 
-       :cl-notebook-updates 
-       (update :book (notebook-id book) :cell cell-id :action 'change-cell-language :new-language new-language))
+      (publish-update! book 'change-cell-language :cell cell-id :new-language new-language)
       (eval-cell book cell-id (third cont-fact) val-fact new-language cell-type)))
   :ok)
 
@@ -236,19 +221,14 @@
 	(tp-fact (first (lookup book :a cell-id :b :cell-type))))
     (unless (eq (third tp-fact) new-type)
       (change! book tp-fact (list cell-id :cell-type new-type))
-      (publish! 
-       :cl-notebook-updates 
-       (update :book (notebook-id book) :cell cell-id :action 'change-cell-type :new-type new-type))
+      (publish-update! book 'change-cell-type :cell cell-id :new-type new-type)
       (eval-cell book cell-id (third cont-fact) val-fact cell-lang new-type)))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/new-cell) ((book :notebook) (cell-language :keyword) (cell-type :keyword))
   (let ((cell-id (new-cell! book :cell-type cell-type :cell-language cell-language)))
     (write! book)
-    (publish! 
-     :cl-notebook-updates 
-     (update :book (notebook-id book) :action 'new-cell :cell-id cell-id 
-	     :cell-type cell-type :cell-language cell-language)))
+    (publish-update! book 'new-cell :cell-id cell-id :cell-type cell-type :cell-language cell-language))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/reorder-cells) ((book :notebook) (cell-order :json))
@@ -256,13 +236,13 @@
     (delete! book it))
   (insert-new! book :cell-order cell-order)
   (write! book)
-  (publish! :cl-notebook-updates (update :book (notebook-id book) :action 'reorder-cells :new-order cell-order))
+  (publish-update! book 'reorder-cells :new-order cell-order)
   :ok)
 
 (define-json-handler (cl-notebook/notebook/kill-cell) ((book :notebook) (cell-id :integer))
   (loop for f in (lookup book :a cell-id) do (delete! book f))
   (write! book)
-  (publish! :cl-notebook-updates (update :book (notebook-id book) :cell cell-id :action 'kill-cell))
+  (publish-update! book 'kill-cell :cell cell-id)
   :ok)
 
 (define-json-handler (cl-notebook/notebook/change-cell-noise) ((book :notebook) (cell-id :integer) (new-noise :keyword))
@@ -274,7 +254,7 @@
 	   (delete! book old-noise-fact))
 	  (new-noise-fact
 	   (insert! book new-noise-fact))))
-  (publish! :cl-notebook-updates (update :book (notebook-id book) :cell cell-id :action 'change-cell-noise :new-noise new-noise))
+  (publish-update! book 'change-cell-noise :cell cell-id :new-noise new-noise)
   :ok)
 
 (define-handler (cl-notebook/source :close-socket? nil) ()
