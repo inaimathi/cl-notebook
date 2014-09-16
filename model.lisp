@@ -68,7 +68,7 @@
 (defmethod notebook-package! ((book notebook))
   ;; TODO handle loading and package-related errors here
   (let ((spec (notebook-package-spec book)))
-    (load-dependencies (read-from-string spec))
+    (load-dependencies spec)
     (or (find-package (second spec)) (eval spec))))
 
 (defmethod load-dependencies ((package-form list))
@@ -111,9 +111,7 @@ If the new name passed in is the same as the books' current name, we don't inser
   (let* ((name-fact (first (lookup book :b :notebook-name)))
 	 (same? (equal (third name-fact) new-name)))
     (unless same?
-      (change! book name-fact (list (first name-fact) :notebook-name new-name))
-      (unless (or (lookup book :b :package-edited?) (lookup book :b :package-error))
-	(repackage-notebook! book (default-package book))))
+      (change! book name-fact (list (first name-fact) :notebook-name new-name)))
     (values book (not same?))))
 
 ;;;;;;;;;; Notebooks table and related functions

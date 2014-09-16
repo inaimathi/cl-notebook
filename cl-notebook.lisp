@@ -67,7 +67,7 @@
     (when (and (bt:threadp *front-end-eval-thread*)
 	       (bt:thread-alive-p *front-end-eval-thread*))
       (bt:destroy-thread *front-end-eval-thread*))
-    (publish! :cl-notebook-updates (update :book (notebook-id book) :cell cell-id :action 'starting-eval))
+    (publish! :cl-notebook-updates (update :book (notebook-id book) :target cell-id :action 'starting-eval))
     (setf *front-end-eval-thread*
 	  (bt:make-thread
 	   (lambda ()
@@ -83,6 +83,28 @@
 				   :action 'finished-eval 
 				   :contents contents 
 				   :result res)))))))))
+
+(defmethod eval-package ((book notebook) (contents string))
+  (when (and (bt:threadp *front-end-eval-thread*)
+	     (bt:thread-alive-p *front-end-eval-thread*))
+    (bt:destroy-thread *front-end-eval-thread*))
+  (publish! :cl-notebook-updates (update :book (notebook-id book) :target :package :action 'starting-eval))
+  (setf *front-end-eval-thread*
+	(bt:make-thread
+	 (lambda ()
+	   (handler-case
+	       (multiple-value-bind (book repackaged?) (repackage-notebook! book contents)
+		 (when repackaged?
+		   (unless (lookup book :b :package-edited?)
+		     (insert-new! book :package-edited? t))
+		   (write! book)
+		   (publish! 
+		    :cl-notebook-updates
+		    (update :action 'finished-package-eval :book (notebook-id book) :contents contents))))
+	     (error (e)
+	       (publish! 
+		:cl-notebook-updates 
+		(update :action 'finished-package-eval :book (notebook-id book) :contents contents :result (front-end-error nil e)))))))))
 
 ;;;;; HTTP Handlers
 (define-json-handler (cl-notebook/system/kill-thread) ()
@@ -158,30 +180,22 @@
   :ok)
 
 (define-json-handler (cl-notebook/notebook/repackage) ((book :notebook) (new-package :string))
-  (handler-case
-      (multiple-value-bind (book repackaged?) (repackage-notebook! book new-package)
-	(when repackaged?
-	  (unless (lookup book :b :package-edited?)
-	    (insert-new! book :package-edited? t))
-	  (write! book)
-	  (publish! 
-	   :cl-notebook-updates
-	   (update :action 'rename-book :book (notebook-id book)
-		   :new-name (notebook-name book) :new-package new-package))))
-    (error (e)
-      (publish! 
-       :cl-notebook-updates 
-       (update :action 'package-error :book (notebook-id book) :package-error (front-end-error nil e)))))
+  (unless (string= new-package (notebook-package-spec-string book))
+    (eval-package book new-package))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/rename) ((book :notebook) (new-name :string))
   (multiple-value-bind (book renamed?) (rename-notebook! book new-name)
     (when renamed? 
+      (unless (or (lookup book :b :package-edited?) (lookup book :b :package-error))
+	(repackage-notebook! book (default-package book))
+	(publish! 
+	 :cl-notebook-updates
+	 (update :action 'finished-package-eval :book (notebook-id book) :contents (notebook-package-spec-string book))))
       (write! book)
       (publish!
        :cl-notebook-updates 
-       (update :action 'rename-book :book (notebook-id book)
-	       :new-name new-name :new-package (notebook-package-spec-string book)))))
+       (update :action 'rename-book :book (notebook-id book) :new-name new-name))))
   :ok)
 
 (define-json-handler (cl-notebook/notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))

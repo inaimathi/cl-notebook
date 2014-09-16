@@ -450,25 +450,30 @@
     (defun show-title-input () 
       (let ((input (by-selector ".book-title input")))
 	(show! input)
-	(show! (by-selector ".book-title .CodeMirror"))
+	(show! (by-selector ".book-package"))
 	(chain input (focus))
 	(chain input (select))
 	(hide! (by-selector ".book-title h1"))))
 
     (defun hide-title-input () 
       (hide! (by-selector ".book-title input"))
-      (hide! (by-selector ".book-title .CodeMirror"))
+      (hide! (by-selector ".book-package"))
       (show! (by-selector ".book-title h1")))
+
+    (defun notebook-package-template (package)
+      (who-ps-html
+       (:div :class "book-package"
+	     (:textarea :onchange "repackageBook(this.value)" package))))
     
-    (defun notebook-title-template (name &optional (package ""))
+    (defun notebook-title-template (name)
       (who-ps-html
        (:div :class "book-title"
 	     (:input :class "text" :onchange "renameBook(this.value)" :value name)
-	     (:textarea :onchange "repackageBook(this.value)" package)
 	     (:h1 :onclick "showTitleInput()" name))))
 
     (defun notebook-template (notebook)
-      (+ (notebook-title-template (notebook-name notebook) (notebook-package notebook))
+      (+ (notebook-title-template (notebook-name notebook))
+	 (notebook-package-template (notebook-package notebook))
 	 (who-ps-html
 	  (:ul :class "cells"
 	       (join (map (lambda (cell) (cell-template cell))
@@ -1009,6 +1014,7 @@
     (defun notebook-package (notebook) (@ notebook package))
     (defun notebook-id (notebook) (@ notebook id))
     (defun set-notebook-name (notebook new-name) (setf (@ notebook name) new-name))
+    (defun set-notebook-package (notebook new-package) (setf (@ notebook package) new-package))
 
     (defun notebook-facts (notebook) (@ notebook facts))
     (defun notebook-objects (notebook) (@ notebook objects))
@@ -1035,7 +1041,7 @@
     
     (defun setup-package-mirror! ()
       (mirror! 
-       (by-selector ".book-title textarea")
+       (by-selector ".book-package textarea")
        :extra-keys
        (create "Ctrl-]"     (lambda (mirror) 
 			      (let ((next (by-selector ".cells .cell")))
@@ -1045,7 +1051,7 @@
 				  (show-editor (elem->cell-id next)))))
 	       "Ctrl-Enter" (lambda (mirror)
 			      (repackage-book (chain mirror (get-value))))))
-      (hide! (by-selector ".book-title .CodeMirror")))
+      (hide! (by-selector ".book-package")))
 
     (defun surgical! (raw)
       (let* ((slider (by-selector "#book-history-slider"))		     
@@ -1145,6 +1151,16 @@
 	      (delete (@ cell stale))
 	      (chain (by-cell-id (@ res cell)) class-list (remove "stale"))
 	      (dom-replace-cell-value cell))))
+	'finished-package-eval
+	(lambda (res)
+	  (hide! (by-selector ".footer"))
+	  (let ((id (@ res book))
+		(new-package (@ res contents)))
+	    (when (relevant-event? res)
+	      (dom-replace (by-selector ".book-package") (notebook-package-template new-package))
+	      (set-notebook-package *notebook* new-package)
+	      (setup-package-mirror!)
+	      (hide-title-input))))
 	'content-changed
 	(lambda (res)
 	  (when (relevant-event? res)
@@ -1184,17 +1200,14 @@
 	      (display-book 
 	       (chain (@ (by-selector-all "#book-list option") 1)
 		      (get-attribute :value))))))
+	
 	'rename-book
 	(lambda (res)
 	  (let ((id (@ res book))
-		(new-name (@ res new-name))
-		(new-package (@ res new-package)))
+		(new-name (@ res new-name)))
 	    (when (relevant-event? res)
-	      (dom-replace 
-	       (by-selector ".book-title")
-	       (notebook-title-template new-name new-package))
+	      (dom-replace (by-selector ".book-title") (notebook-title-template new-name))
 	      (set-notebook-name *notebook* new-name)
-	      (setup-package-mirror!)
 	      (hide-title-input))
 	    (chain (by-selector (+ "#book-list option[value='" id "']")) (remove))
 	    (dom-append (by-selector "#book-list")
