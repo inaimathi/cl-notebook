@@ -1168,6 +1168,17 @@
 	      (if err
 		  (show-title-input)
 		  (hide-title-input)))))
+
+	'loading-package
+	(lambda (res) 
+	  (console.log "LOADING PACKAGE" res))
+	'finished-loading-package
+	(lambda (res) 
+	  (console.log "FINISHED LOADING" res))
+	'package-load-failed
+	(lambda (res) 
+	  (console.log "PACKAGE LOAD FAILED" res))
+
 	'content-changed
 	(lambda (res)
 	  (when (relevant-event? res)

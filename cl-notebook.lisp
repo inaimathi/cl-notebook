@@ -92,8 +92,8 @@
 		 (when repackaged?
 		   (unless (lookup book :b :package-edited?)
 		     (insert-new! book :package-edited? t))
-		   (write! book)
-		   (publish-update! book 'finished-package-eval :contents contents)))
+		   (write! book))
+		 (publish-update! book 'finished-package-eval :contents contents))
 	     (error (e)
 	       (publish-update! book 'finished-package-eval :contents contents :result (front-end-error nil e))))))))
 
@@ -171,8 +171,7 @@
   :ok)
 
 (define-json-handler (cl-notebook/notebook/repackage) ((book :notebook) (new-package :string))
-  (unless (string= new-package (notebook-package-spec-string book))
-    (eval-package book new-package))
+  (eval-package book new-package)
   :ok)
 
 (define-json-handler (cl-notebook/notebook/rename) ((book :notebook) (new-name :string))
