@@ -10,11 +10,11 @@
 	       #:cl-who #:cl-css #:parenscript
 	       #:house #:fact-base)
   :components ((:file "package")
+	       (:file "model")
 	       (:file "util")
 	       (:file "front-end-macros")
 	       (:file "css")
 	       (:file "front-end")
-	       (:file "model")
                (:file "cl-notebook")
 	       (:file "charts")
 	       (:file "start")))

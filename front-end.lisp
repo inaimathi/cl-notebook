@@ -446,6 +446,13 @@
       (if (markup-cell? cell)
 	  (cell-markup-template cell)
 	  (cell-code-template cell)))
+
+    (defun show-footer! (&optional (notice "Processing"))
+      (dom-replace (by-selector ".footer .notice") (who-ps-html (:span :class "notice" notice)))
+      (show! (by-selector ".footer")))
+
+    (defun hide-footer! ()
+      (hide! (by-selector ".footer")))
     
     (defun show-title-input () 
       (let ((input (by-selector ".book-title input")))
@@ -1140,14 +1147,12 @@
 	      (setf (@ cell noise) (@ res new-noise))
 	      (dom-replace-cell-value cell))))
 	'starting-eval
-	(lambda (res)
-	  (show! (by-selector ".footer")))
+	(lambda (res) (show-footer!))
 	'killed-eval
-	(lambda (res)
-	  (hide! (by-selector ".footer")))
+	(lambda (res) (hide-footer!))
 	'finished-eval 
 	(lambda (res)
-	  (hide! (by-selector ".footer"))
+	  (hide-footer!)
 	  (when (relevant-event? res)
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
 	      (setf (@ cell contents) (@ res contents)
@@ -1157,7 +1162,7 @@
 	      (dom-replace-cell-value cell))))
 	'finished-package-eval
 	(lambda (res)
-	  (hide! (by-selector ".footer"))
+	  (hide-footer!)
 	  (let ((id (@ res book))
 		(new-package (@ res contents))
 		(err (@ res result)))
@@ -1170,14 +1175,11 @@
 		  (hide-title-input)))))
 
 	'loading-package
-	(lambda (res) 
-	  (console.log "LOADING PACKAGE" res))
+	(lambda (res) (show-footer! (+ "Loading package '" (@ res package) "'")))
 	'finished-loading-package
-	(lambda (res) 
-	  (console.log "FINISHED LOADING" res))
+	(lambda (res) (hide-footer!))
 	'package-load-failed
-	(lambda (res) 
-	  (console.log "PACKAGE LOAD FAILED" res))
+	(lambda (res) (hide-footer!))
 
 	'content-changed
 	(lambda (res)
@@ -1281,7 +1283,7 @@
 		 100)))
        ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
        (notebook-events)
-       (hide! (by-selector ".footer"))
+       (hide-footer!)
        (chain 
 	(by-selector "body") 
 	(add-event-listener 

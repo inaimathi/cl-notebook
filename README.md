@@ -32,19 +32,9 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 A quick-ish video demo is available [here](https://vimeo.com/97623064) to get you sort-of-started.
 
 ### TODO
-- Eval code cells on load (don't change values though). On notebook load, import all its relevant packages
-- Display errors and warnings on the package specification (for nonexistent package/symbol imports)
-- Add publish-update! (the `(publish :cl-notebook-updates (update :action <action> ...))` pattern shows up pretty much everywhere)
-
 - Need a complete how-to set of videos at some point
 
 ##### Thoughts
-- The defpackage form probably should be treated as a cell. We'll want to do a lot of the same error reporting on it as on regular cells, BUT
-	a - we want to evaluate it in a specific way
-	b - we only ever want there to be one such cell
-	c - we don't want it to show up at all (except for an edit button, maybe) if it contains the default value.
-	- NO! A package needs to be evaluated specially enough that it doesn't make sense to just use `capturing-eval` for this; we want it to be read first as a separate step, we want to load any unmet dependencies we can infer from the read version, we want a certain class of error to be automatically handled and eaten, AND we want all of this to be done in a namespace that doesn't correspond to the notebooks `namespace` (probably `cl-user` or `cl-notebook`). Oh, also, we don't particularly care about warnings here; we just want any errors that occur during the `read`/`eval` process
-
 - Charts need to support
 	- Being saved to a pure HTML+CSS (no javascript) file
 	- Resizing naturally with larger or smaller screen sizes
@@ -60,12 +50,11 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
-- Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
-	- Suddenly more relevant because we definitely want incremental updates for proper `quicklisp` use
 - Let user configure where to check for a `quicklisp` folder (by default, check `~/quicklisp`, `~/.cl-notebook/quicklisp` and `quicklisp` in CWD)
-- Handle errors in the event of nonexistent packages (the error should be displayed on the front end, below the notebook info section)
 - Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
 	- Eval all code and markup cells when opening a notebook
+- Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
+	- Suddenly more relevant because we definitely want incremental updates for proper `quicklisp` use
 - Put together better storage for charts
 	- Is this even possible? We could defer computation until display time, but some charts take longer to compute than I'd like. Storing the full HTML output is harder on disk use though. As in "noticeably"; the `BGG corpus charts` article weighs `80mb` on disk, and no other noebook has even cracked `2mb` yet.
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
