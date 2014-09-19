@@ -76,7 +76,7 @@
     (publish-update! nil 'loading-package :package package)
     (handler-bind ((error (lambda (e)
 			    (publish-update! nil 'package-load-failed :package package :error (front-end-error nil e)))))
-      (ql:quickload package)
+      (funcall (intern "QUICKLOAD" :ql) package)
       (publish-update! nil 'finished-loading-package :package package))))
 
 (defmethod load-dependencies ((package-form list))
