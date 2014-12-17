@@ -88,7 +88,6 @@
      ("#macro-expansion" 
       :width 50% :height 95% :position :fixed :top 3% :right 0 :opacity 0.6
       :z-index 9 :border-radius 5px :border "2px solid #ccc" :background-color "#eee")
-     ("#macro-expansion textarea" :width 100% :height 90% :margin "2% 0 2% 0")
 
      (.chart :border "1px solid #ccc" :padding-bottom 3% :clear both :margin "1% 0")
      (".chart .bar:hover" :z-index 90000)

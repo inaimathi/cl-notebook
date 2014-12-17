@@ -481,7 +481,13 @@
 
     (defun hide-footer! ()
       (hide! (by-selector ".footer")))
+
+    (defun show-macro-expansion! ()
+      (show! (by-selector "#macro-expansion")))
     
+    (defun hide-macro-expansion! ()
+      (hide! (by-selector "#macro-expansion")))
+
     (defun show-title-input () 
       (let ((input (by-selector ".book-title input")))
 	(show! input)
@@ -1037,10 +1043,14 @@
 					   "Ctrl-[" (lambda (mirror) (go-cell :up cell-id))
 					   "Shift-Ctrl-]" (lambda (mirror) (transpose-cell! :down cell-id))
 					   "Shift-Ctrl-[" (lambda (mirror) (transpose-cell! :up cell-id))
+					   "Shift-Ctrl-E" (lambda (mirror)
+							    (show-macro-expansion!)
+							    (chain *macro-expansion-mirror* (focus)))
 					   "Ctrl-E" (lambda (mirror) 
 						      (system/macroexpand-1 
 						       (sexp-at-point :right mirror)
 						       (lambda (res)
+							 (show-macro-expansion!)
 							 (chain *macro-expansion-mirror*
 								(set-value res)))))))))
 	(setf (@ cell editor) mirror)
@@ -1345,6 +1355,7 @@
        ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
        (notebook-events)
        (hide-footer!)
+       (hide-macro-expansion!)
        (chain 
 	(by-selector "body") 
 	(add-event-listener 
@@ -1352,6 +1363,7 @@
 		 <esc> (progn 
 			 (clear-selection)
 			 (hide-title-input)
+			 (hide-macro-expansion!)
 			 (map (lambda (cell)
 				(with-slots (id cell-type) cell
 				  (when (= 'markup cell-type)
