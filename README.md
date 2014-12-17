@@ -6,7 +6,7 @@
 >
 > *with apologies to Neil Gaiman*
 
-## With the addition of the macroexpander, this is now a beta
+## This is now a pre-beta
 ##### Use it at your own risk, and expect explosions
 
 ### Dependencies
