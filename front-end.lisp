@@ -1001,14 +1001,14 @@
     (defun cell-editor-contents (cell-id)
       (chain (cell-mirror cell-id) (get-value)))
 
-    (defun mirror! (text-area &key (extra-keys (create)))
+    (defun mirror! (text-area &key (extra-keys (create)) (line-wrapping? t))
       (let ((options 
 	     (create
 	      "async" t
 	      "lineNumbers" t
 	      "matchBrackets" t
 	      "autoCloseBrackets" t
-	      "lineWrapping" t
+	      "lineWrapping" line-wrapping?
 	      "viewportMargin" -infinity
 	      "smartIndent" t
 	      "extraKeys" (extend
@@ -1129,6 +1129,7 @@
       (setf *macro-expansion-mirror* 
 	    (mirror! 
 	     (by-selector "#macro-expansion textarea")
+	     :line-wrapping? nil
 	     :extra-keys
 	     (create "Ctrl-E" (lambda (mirror) 
 				(system/macroexpand-1 
