@@ -133,12 +133,16 @@
   (multiple-value-bind (sym-name fresh?) (intern (string-upcase name) package)
     (if (fboundp sym-name)
 	(hash :args (labels ((->names (thing)
-			       (cond ((and (listp thing) (eql (car thing) '&environment))
-				      (->names (cddr thing)))
-				     ((listp thing)
-				      (mapcar #'->names thing))
-				     (t
-				      (string-downcase (symbol-name thing))))))
+			       (typecase thing
+				 (list (case (car thing)
+					 (&environment (->names (cddr thing)))
+					 (quote 
+					  (if (cddr thing)
+					      (->names (cdr thing))
+					      (concatenate 'string "'" (->names (cadr thing)))))
+					 (t (mapcar #'->names thing))))
+				 (symbol (string-downcase (symbol-name thing)))
+				 (t thing))))
 		      (->names (arglist sym-name))))
 	(progn (when (not fresh?) (unintern sym-name))
 	       (hash :error :function-not-found)))))
