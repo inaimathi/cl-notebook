@@ -6,7 +6,7 @@
 >
 > *with apologies to Neil Gaiman*
 
-## This is now a pre-beta
+## With the addition of the macroexpander, this is now a beta
 ##### Use it at your own risk, and expect explosions
 
 ### Dependencies
@@ -65,11 +65,6 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - Get poor-man's profiling built into cell results (use `local-time` timestamps for start/end time of operations; compute duration)
 
 ######## Front-end
-- Macroexpander (this'll need some back-end stuff too)
-	- When you macroexpand in a cell, it should pop up a macroexpander div with an editor that has the highlighted results
-	- If you macroexpand something in said expander div, it should be expanded in-place (replacing the original term in the expander div)
-	- Hitting `<esc>` should hide all expander windows
-	- Not sure if we should support multiples
 - Add a `run-tests` option to the main menu. Have it evaluate all test cells in the current notebook.
 - Things I still kinda want:
 	- transpose-sexp
