@@ -63,7 +63,7 @@
 		     (:optgroup
 		      :label "Delete"
 		      (:option :value "kill-book" "Kill Book"))))
-      
+      (:div :id "macro-expansion" (:textarea :language "commonlisp"))
       (:div :id "notebook")
       (:div :class "footer"
 	    (:span :class "notice" "Processing")
@@ -120,6 +120,33 @@
     (defun vals (obj) (map identity obj))
     (defun keys (obj) (map (lambda (v k) k) obj))
     (defun last (array) (aref array (- (length array) 1)))
+
+    (defun member? (elem thing)
+      (if (object? thing)
+	  (in elem thing)
+	  (chain thing (index-of elem))))
+
+    (defun equal? (a b)
+      (let ((type-a (typeof a))
+	    (type-b (typeof b)))
+	(and (equal type-a type-b)
+	     (cond
+	       ((member? type-a (list "number" "string" "function"))
+		(equal a b))
+	       ((array? a)
+		(and
+		 (= (length a) (length b))
+		 (loop for elem-a in a for elem-b in b
+		    unless (equal? elem-a elem-b) return f
+		    finally (return t))))
+	       ((object? a)
+		;; object comparison here
+		;; and 
+		;;   all keys of a are in b
+		;;   all keys of b are in a
+		;;   all keys of a and b have the same values
+		nil
+		)))))
 
     ;; basic regex stuff
     (defun regex-match (regex string)
@@ -212,6 +239,7 @@
 
     (defun type? (obj type-string)
       (eql (chain -object prototype to-string (call obj)) type-string))
+    (defun array? (arr) (type? arr "[object Array]"))
     (defun object? (obj) (type? obj "[object Object]"))
 
     ;; basic encoding/decoding stuff
@@ -580,7 +608,16 @@
 		       collect (parse-int (chain elem (get-attribute :cell-id)))))))
 	  (post "/cl-notebook/notebook/reorder-cells" 
 		(create :book (notebook-id *notebook*) 
-			:cell-order ord))))))
+			:cell-order ord))))
+      
+      (defun system/macroexpand-1 (expression callback)
+	(post "/cl-notebook/system/macroexpand-1" 
+	      (create :expression expression)
+	      callback))
+      (defun system/macroexpand (expression callback)
+	(post "/cl-notebook/system/macroexpand"
+	      (create :expression expression)
+	      callback))))
 
 (define-handler (js/book-actions.js :content-type "application/javascript") ()
   (ps 
@@ -810,6 +847,12 @@
 	(chain mirror (replace-range "" start (get-cur :right mirror)))))
 
     ;;;;;;;;;; s-exp extras
+    (defun sexp-at-point (direction mirror)
+      (let ((start (get-cur direction mirror)))
+	(go-sexp direction mirror)
+	(let ((res (chain mirror (get-range start (get-cur :right mirror)))))
+	  (chain mirror (set-cursor start))
+	  res)))
     (defun slurp-sexp (direction mirror)
       (console.log "TODO -- slurp-sexp"))
     (defun barf-sexp (direction mirror) 
@@ -993,7 +1036,13 @@
 					   "Ctrl-]" (lambda (mirror) (go-cell :down cell-id))
 					   "Ctrl-[" (lambda (mirror) (go-cell :up cell-id))
 					   "Shift-Ctrl-]" (lambda (mirror) (transpose-cell! :down cell-id))
-					   "Shift-Ctrl-[" (lambda (mirror) (transpose-cell! :up cell-id))))))
+					   "Shift-Ctrl-[" (lambda (mirror) (transpose-cell! :up cell-id))
+					   "Ctrl-E" (lambda (mirror) 
+						      (system/macroexpand-1 
+						       (sexp-at-point :right mirror)
+						       (lambda (res)
+							 (chain *macro-expansion-mirror*
+								(set-value res)))))))))
 	(setf (@ cell editor) mirror)
 	(chain mirror (on 'cursor-activity
 			  (lambda (mirror)
@@ -1063,6 +1112,18 @@
 	       "Ctrl-Enter" (lambda (mirror)
 			      (repackage-book (chain mirror (get-value))))))
       (hide! (by-selector ".book-package")))
+
+    (defun setup-macro-expansion-mirror! ()
+      (setf *macro-expansion-mirror* 
+	    (mirror! 
+	     (by-selector "#macro-expansion textarea")
+	     :extra-keys
+	     (create "Ctrl-E" (lambda (mirror) 
+				(system/macroexpand-1 
+				 (sexp-at-point :right mirror)
+				 (lambda (res)
+				   (chain *macro-expansion-mirror*
+					  (set-value res)))))))))
 
     (defun surgical! (raw)
       (let* ((slider (by-selector "#book-history-slider"))		     
@@ -1299,5 +1360,6 @@
 
        (unless (get-page-hash)
 	 (set-page-hash (create :book (chain (@ (by-selector-all "#book-list option") 1) (get-attribute :value)))))
+       (setup-macro-expansion-mirror!)
        (setf (@ window onhashchange) #'hash-updated)
        (hash-updated)))))

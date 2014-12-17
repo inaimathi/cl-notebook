@@ -85,6 +85,11 @@
      (".condition-contents .condition-property" :font-style oblique)
      (".condition-contents .condition-property .label" :display inline-block :margin-right 5px :font-size .8em)
 
+     ("#macro-expansion" 
+      :width 50% :height 95% :position :fixed :top 3% :right 0 :opacity 0.6
+      :z-index 9 :border-radius 5px :border "2px solid #ccc" :background-color "#eee")
+     ("#macro-expansion textarea" :width 100% :height 90% :margin "2% 0 2% 0")
+
      (.chart :border "1px solid #ccc" :padding-bottom 3% :clear both :margin "1% 0")
      (".chart .bar:hover" :z-index 90000)
      (".chart .title" :font-weight bold :margin "2% 0 0 2%" :font-size x-large :color "#ccc")
