@@ -86,7 +86,7 @@
      (".condition-contents .condition-property .label" :display inline-block :margin-right 5px :font-size .8em)
 
      ("#macro-expansion" 
-      :width 50% :height 95% :position :fixed :top 3% :right 0 :opacity 0.6
+      :width 60% :height 95% :position :fixed :top 3% :right 0 :opacity 0.6
       :z-index 9 :border-radius 5px :border "2px solid #ccc" :background-color "#eee")
 
      (.chart :border "1px solid #ccc" :padding-bottom 3% :clear both :margin "1% 0")

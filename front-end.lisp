@@ -847,10 +847,8 @@
 	      (chain mirror (extend-selection end))
 	      (chain mirror (set-selection start (get-cur :right mirror)))))))
 
-    (defun kill-sexp (direction mirror)
-      (let ((start (get-cur direction mirror)))
-	(go-sexp direction mirror)
-	(chain mirror (replace-range "" start (get-cur :right mirror)))))
+    (defun kill-sexp (direction mirror) 
+      (replace-sexp-at-point direction mirror ""))
 
     ;;;;;;;;;; s-exp extras
     (defun sexp-at-point (direction mirror)
@@ -859,6 +857,10 @@
 	(let ((res (chain mirror (get-range start (get-cur :right mirror)))))
 	  (chain mirror (set-cursor start))
 	  res)))
+    (defun replace-sexp-at-point (direction mirror new-sexp)
+      (let ((start (get-cur direction mirror)))
+	(go-sexp direction mirror)
+	(chain mirror (replace-range new-sexp start (get-cur :right mirror)))))
     (defun slurp-sexp (direction mirror)
       (console.log "TODO -- slurp-sexp"))
     (defun barf-sexp (direction mirror) 
@@ -1132,8 +1134,11 @@
 				(system/macroexpand-1 
 				 (sexp-at-point :right mirror)
 				 (lambda (res)
-				   (chain *macro-expansion-mirror*
-					  (set-value res)))))))))
+				   (let ((start (get-cur :right mirror)))
+				     (replace-sexp-at-point :right mirror res)
+				     (chain mirror (set-selection start (get-cur :right mirror)))
+				     (chain mirror (exec-command 'indent-auto))
+				     (chain mirror (set-cursor start))))))))))
 
     (defun surgical! (raw)
       (let* ((slider (by-selector "#book-history-slider"))		     
