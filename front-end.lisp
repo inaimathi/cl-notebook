@@ -1138,8 +1138,10 @@
 				   (let ((start (get-cur :right mirror)))
 				     (replace-sexp-at-point :right mirror res)
 				     (chain mirror (set-selection start (get-cur :right mirror)))
-				     (chain mirror (exec-command 'indent-auto))
-				     (chain mirror (set-cursor start))))))))))
+				     (let ((h (chain mirror (get-history))))
+				       (chain mirror (exec-command 'indent-auto))
+				       (chain mirror (set-history h))
+				       (chain mirror (set-cursor start)))))))))))
 
     (defun surgical! (raw)
       (let* ((slider (by-selector "#book-history-slider"))		     
