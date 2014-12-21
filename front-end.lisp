@@ -78,6 +78,8 @@
     ;; basic functional stuff
     (defun identity (thing) thing)
 
+    (defun constantly (thing) (lambda () thing))
+
     (defun rest (array) (chain array (slice 1)))
 
     (defun map (fn thing)
@@ -1135,13 +1137,15 @@
 				(system/macroexpand-1 
 				 (sexp-at-point :right mirror)
 				 (lambda (res)
-				   (let ((start (get-cur :right mirror)))
-				     (replace-sexp-at-point :right mirror res)
-				     (chain mirror (set-selection start (get-cur :right mirror)))
-				     (let ((h (chain mirror (get-history))))
-				       (chain mirror (exec-command 'indent-auto))
-				       (chain mirror (set-history h))
-				       (chain mirror (set-cursor start)))))))))))
+				   (chain 
+				    mirror 
+				    (operation 
+				     (lambda ()
+				       (let ((start (get-cur :right mirror)))
+					 (replace-sexp-at-point :right mirror res)
+					 (chain mirror (set-selection start (get-cur :right mirror)))
+					 (chain mirror (exec-command 'indent-auto))
+					 (chain mirror (set-cursor start)))))))))))))
 
     (defun surgical! (raw)
       (let* ((slider (by-selector "#book-history-slider"))		     

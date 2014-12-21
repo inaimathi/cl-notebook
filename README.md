@@ -34,8 +34,6 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 ### TODO
 - Need a complete how-to set of videos at some point
 
-- Limit macroexpansion window height and put in scroll-bars
-- See if there's a way to make horizontal scroll-bars available too
 - Find a way to pop the indent action off the undo stack, or keep it from getting onto the stack in the first place
 
 ##### Thoughts
