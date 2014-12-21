@@ -700,7 +700,6 @@
 
     ;;;;;;;;;; Basic codemirror-related predicates and getters
     ;;;;;;;;;;;;;;;
-    ;; TODO fix and test these predicates
     (defun at-beginning? (mirror &key (ls (lines (mirror-contents mirror))))
       (with-slots (line ch) (get-cur :right mirror)
 	  (and (>= 0 line) (>= 0 ch))))

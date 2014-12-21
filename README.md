@@ -34,8 +34,6 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 ### TODO
 - Need a complete how-to set of videos at some point
 
-- Find a way to pop the indent action off the undo stack, or keep it from getting onto the stack in the first place
-
 ##### Thoughts
 - Charts need to support
 	- Being saved to a pure HTML+CSS (no javascript) file
@@ -58,7 +56,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
 	- Suddenly more relevant because we definitely want incremental updates for proper `quicklisp` use
 - Put together better storage for charts
-	- Is this even possible? We could defer computation until display time, but some charts take longer to compute than I'd like. Storing the full HTML output is harder on disk use though. As in "noticeably"; the `BGG corpus charts` article weighs `80mb` on disk, and no other noebook has even cracked `2mb` yet.
+	- Is this even possible? We could defer computation until display time, but some charts take longer to compute than I'd like. Storing the full HTML output is harder on disk use though. As in "noticeably"; the `BGG corpus charts` article weighs `80mb` on disk, and no other notebook has even cracked `2mb` yet.
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 	- Really, what we want here is automatic resolution. When a cell is evaluated, see where its defined values are used, and re-evaluate any cells that apply.
 - If there are no existing notebooks, we should write a default scratch book with some initial how-to instructions
