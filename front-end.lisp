@@ -1318,6 +1318,7 @@
     (defvar *warning-filter* 
       (lambda (w)
 	(or (chain (@ w condition-type) (starts-with "REDEFINITION"))
+	    (chain (@ w condition-type) (starts-with "IMPLICIT-GENERIC-"))
 	    (and (@ w error-message)
 		 (or  (chain (@ w error-message) (starts-with "undefined "))
 		      (chain (@ w error-message) (ends-with "never used.")))))))
