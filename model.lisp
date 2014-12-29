@@ -27,8 +27,12 @@
       (loop for entry = (fact-base::read-entry! s) while entry
 	 do (incf (fact-base::entry-count book))
 	 do (fact-base::apply-entry! book entry)))
-    (setf (namespace book) (notebook-package! book))
-    (eval-notebook book)
+    (handler-bind (#+sbcl (sb-ext:name-conflict 
+			   (lambda (e)
+			     (declare (ignore e))
+			     (invoke-restart 'sb-impl::take-new))))
+      (setf (namespace book) (notebook-package! book))
+      (eval-notebook book))
     (register-notebook! book)))
 
 (defmethod kill! ((book notebook))
