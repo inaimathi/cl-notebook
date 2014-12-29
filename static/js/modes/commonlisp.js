@@ -1,5 +1,5 @@
 CodeMirror.defineMode("commonlisp", function (config) {
-    var assumeBody = /^with|^def|^do|^prog|^f?let\*?|case$|bind$|a?when$|a?unless$/i;
+    var assumeBody = /^with|^def|^lambda|^do|^prog|^f?let\*?|case$|bind$|a?when$|a?unless$/i;
     var numLiteral = /^(?:[+\-]?(?:\d+|\d*\.\d+)(?:[efd][+\-]?\d+)?|[+\-]?\d+(?:\/[+\-]?\d+)?|#b[+\-]?[01]+|#o[+\-]?[0-7]+|#x[+\-]?[\da-f]+)/;
     var symbol = /[^\s'`,@()\[\]";]/;
     var builtin = /^(if|when|cond|lambda|case|f?let\*?|loop|prog.)$/i;
