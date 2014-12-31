@@ -47,9 +47,11 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 ##### Bugs
 - Should show the orange border as soon as something is edited in a cell, not just between eval and completion
+- `go-sexp` doesn't handle quoted terms well. For instance, you'd expect using it on `'((:one :two) (:three :four))` to land you at that last close paren, but it actuall lands you just to the right of the `e` in `:one`.
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
+- Really REALLY need tags. Named checkpoints that you can jump to in book history. This may in fact be a `:fact-base` feature, rather than a `:cl-notebook` feature
 - Let user configure where to check for a `quicklisp` folder (by default, check `~/quicklisp`, `~/.cl-notebook/quicklisp` and `quicklisp` in CWD)
 - Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
 	- Eval all code and markup cells when opening a notebook
@@ -65,11 +67,11 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - Get poor-man's profiling built into cell results (use `local-time` timestamps for start/end time of operations; compute duration)
 
 ######## Front-end
-- Add a `run-tests` option to the main menu. Have it evaluate all test cells in the current notebook.
 - Things I still kinda want:
 	- transpose-sexp
 	- slurp-sexp (forward/backward)
 	- barf-sexp (forward/backward)
+- Add a `run-tests` option to the main menu. Have it evaluate all test cells in the current notebook.
 - Already customizing the commonlisp mode all to hell; just go the whole nine and put in the proper Lisp-specific labels instead of this `variable-3`/`string-2` shit.
 - Complete on local-scope symbols (such as those introduced by `let`, `let*`, `flet`, `labels`, `macrolet`) at a higher priority than global symbols
 - Handle completion and arg-hints of symbols with package names (for example, `alexandria:hash-table-alist`)
