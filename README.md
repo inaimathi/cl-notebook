@@ -33,6 +33,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 ### TODO
 - Need a complete how-to set of videos at some point
+- Port to the proper way of using SSEs (with event tags rather than an action field in the payload)
 
 ##### Thoughts
 - Charts need to support
@@ -43,11 +44,14 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - SVG can work for charts; CSS selectors work the same way as with regular HTML entities AND it can take % dimensions specifications. We basically have no other options for line/pie/doghnut charts.
 
 - Do we want to provide a straight-up scratch REPL for each user?
+	- YES
+	- Also, we need additional logging buffers. It would have made debugging "Lemonade Stand" much easier to have a buffer keeping `:house` logging data
 - Do we want to differentiate between "someone forked a book" and "someone started a new book"? Right now, there's no difference, but we may want to treat forks differently for multi-user purposes later on.
 
 ##### Bugs
 - Should show the orange border as soon as something is edited in a cell, not just between eval and completion
 - `go-sexp` doesn't handle quoted terms well. For instance, you'd expect using it on `'((:one :two) (:three :four))` to land you at that last close paren, but it actuall lands you just to the right of the `e` in `:one`.
+- The counter in the client-side timeline doesn't update with newly added history states
 
 ##### Features (not necessarily in priority order)
 ######## Back-end

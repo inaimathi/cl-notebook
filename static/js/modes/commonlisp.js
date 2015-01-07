@@ -25,7 +25,7 @@ CodeMirror.defineMode("commonlisp", function (config) {
 	}
 	else if (ch == ")" || ch == "]") { type = "close"; return "bracket"; }
 	else if (ch == ";") { stream.skipToEnd(); type = "ws"; return "comment"; }
-	else if (/['`,@]/.test(ch)) return null;
+	else if (/['`,@]/.test(ch)) return "quote-char";
 	else if (ch == "|") {
 	    if (stream.skipTo("|")) { stream.next(); return "symbol"; }
 	    else { stream.skipToEnd(); return "error"; }

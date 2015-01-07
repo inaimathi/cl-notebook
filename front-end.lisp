@@ -738,7 +738,7 @@
     (defun string-at-cursor? (direction mirror)
       (token-type-at-cursor? direction mirror :string))
     (defun bracket-at-cursor? (direction mirror)
-      (token-type-at-cursor? direction mirror :bracket))    
+      (token-type-at-cursor? direction mirror :bracket))
 
     (defun go-char (direction mirror)
       (chain mirror (exec-command
@@ -817,6 +817,11 @@
 		  mirror direction :ls ls))
 		((token-type-at-cursor? direction mirror :comment)
 		 (skip-to direction mirror (list " " undefined) :ls ls))
+		((token-type-at-cursor? direction mirror :quote-char)
+		 (skip-until 
+		  (lambda (c) (not (token-type-at-cursor? direction mirror :quote-char)))
+		  mirror direction :ls ls)
+		 (go-sexp direction mirror))
 		((and (bracket-at-cursor? direction mirror)
 		      (char-at-cursor? direction mirror other-paren :ls ls))
 		 (go-char direction mirror))
@@ -1055,7 +1060,9 @@
 						       (lambda (res)
 							 (show-macro-expansion!)
 							 (chain *macro-expansion-mirror*
-								(set-value res)))))))))
+								(set-value res)))))
+					   "Ctrl-Space" (lambda (mirror)
+							  (console.log "TOKEN: " (token-type-at-cursor :right mirror)))))))
 	(setf (@ cell editor) mirror)
 	(chain mirror (on 'cursor-activity
 			  (lambda (mirror)
