@@ -50,7 +50,6 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 ##### Bugs
 - Should show the orange border as soon as something is edited in a cell, not just between eval and completion
-- `go-sexp` doesn't handle quoted terms well. For instance, you'd expect using it on `'((:one :two) (:three :four))` to land you at that last close paren, but it actuall lands you just to the right of the `e` in `:one`.
 - The counter in the client-side timeline doesn't update with newly added history states
 
 ##### Features (not necessarily in priority order)
