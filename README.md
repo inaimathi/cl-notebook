@@ -54,6 +54,8 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 ##### Features (not necessarily in priority order)
 ######## Back-end
+- Exports for projects, not just .lisp files (and the .lisp files should do something intelligent about the `package` forms).
+	- Look into [compression options](http://www.cliki.net/compression) for the project part (it'll have to be handled as multiple files)
 - Really REALLY need tags. Named checkpoints that you can jump to in book history. This may in fact be a `:fact-base` feature, rather than a `:cl-notebook` feature
 - Let user configure where to check for a `quicklisp` folder (by default, check `~/quicklisp`, `~/.cl-notebook/quicklisp` and `quicklisp` in CWD)
 - Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
