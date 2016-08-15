@@ -5,7 +5,7 @@
     (:html
      (:head
       (:title "cl-notebook")
-      
+
       (:link :rel "stylesheet" :href "/css/notebook.css")
       (:link :rel "stylesheet" :href "/static/css/genericons.css")
       (:link :rel "stylesheet" :href "/static/css/codemirror.css")
@@ -14,7 +14,7 @@
 
       (:script :type "text/javascript" :src "/static/js/Blob.js")
       (:script :type "text/javascript" :src "/static/js/FileSaver.js")
-      
+
       (:script :type "text/javascript" :src "/js/base.js")
       (:script :type "text/javascript" :src "/js/templates.js")
       (:script :type "text/javascript" :src "/js/ajax.js")
@@ -24,7 +24,7 @@
       (:script :type "text/javascript" :src "/static/js/native-sortable.js")
 
       (:script :type "text/javascript" :src "/static/js/codemirror.js")
-      
+
       (:script :type "text/javascript" :src "/static/js/modes/commonlisp.js")
       (:script :type "text/javascript" :src "/static/js/addons/comment.js")
       (:script :type "text/javascript" :src "/static/js/addons/closebrackets.js")
@@ -56,7 +56,7 @@
 	    (:select :id "book-actions"
 		     :onchange "runBookAction(this.value)"
 		     (:option :value "" "Stuff...")
-		     (:optgroup 
+		     (:optgroup
 		      :label "Export"
 		      (:option :value "export-html" "Export as HTML")
 		      (:option :value "export-lisp" "Export as .lisp"))
@@ -71,7 +71,7 @@
 	    (:button :onclick "killThread()" :class "right" "! Abort"))))))
 
 (define-handler (js/base.js :content-type "application/javascript") ()
-  (ps 
+  (ps
     ;;;; base.js contains general utilities that might be useful in other JS
     ;;;; applications too. Nothing notebook-specific here.
 
@@ -96,7 +96,7 @@
 	    (loop for elem in thing do (setf m (fn elem m))))
 	m))
 
-    (defun filter (fn thing)	
+    (defun filter (fn thing)
       (loop for elem in thing when (fn elem) collect elem))
 
     (defun extend (obj &rest other-objs)
@@ -143,7 +143,7 @@
 		    finally (return t))))
 	       ((object? a)
 		;; object comparison here
-		;; and 
+		;; and
 		;;   all keys of a are in b
 		;;   all keys of b are in a
 		;;   all keys of a and b have the same values
@@ -168,9 +168,9 @@
 	  (join
 	   (loop for rule in (@ sheet css-rules)
 	      for text = (@ rule css-text)
-	      when (predicate text) collect text)	   
+	      when (predicate text) collect text)
 	   #\newline)))
-    
+
     (defun dom-ready (callback)
       (chain document (add-event-listener "DOMContentLoaded" callback)))
 
@@ -187,7 +187,7 @@
 	  (let ((context this)
 		(args arguments))
 	    (clear-timeout timeout)
-	    (setf timeout (set-timeout 
+	    (setf timeout (set-timeout
 			   (lambda ()
 			     (setf timeout nil)
 			     (unless immediate?
@@ -250,7 +250,7 @@
 
     (defun decode (string)
       (decode-u-r-i string))
-    
+
     (defun string->obj (string)
       (chain -j-s-o-n (parse string)))
 
@@ -258,9 +258,9 @@
       (chain -j-s-o-n (stringify object)))
 
     (defun obj->params (object)
-      (join 
-       (map (lambda (v k) 
-	      (+ (encode k) "=" 
+      (join
+       (map (lambda (v k)
+	      (+ (encode k) "="
 		 (encode (if (object? v) (obj->string v) v))))
 	    object)
        "&"))
@@ -279,7 +279,7 @@
 	     for (k v) = (chain pair (split "="))
 	     do (setf (aref res (decode k)) (decode v)))
 	  res)))
-    
+
     (defun set-page-hash (hash-object)
       (setf (@ window location hash) (obj->params hash-object)))
 
@@ -334,17 +334,17 @@
 	stream))))
 
 (define-handler (js/templates.js :content-type "application/javascript") ()
-  (ps 
+  (ps
     (defun condition-template (err)
       (who-ps-html
        (:ul :class "condition-contents"
 	    (:li :class "condition-type" (@ err condition-type))
 	    (:li :class "condition-form" (@ err form))
-	    (join (map 
-		   (lambda (v k) 
+	    (join (map
+		   (lambda (v k)
 		     (if (and v (not (or (= k "conditionType") (= k "form"))))
-			 (who-ps-html 
-			  (:li :class "condition-property" 
+			 (who-ps-html
+			  (:li :class "condition-property"
 			       (:span :class "label" k ":") (dom-escape v)))
 			 ""))
 		   err)))))
@@ -359,11 +359,11 @@
 				     (who-ps-html (:li :class "error" (condition-template value)))
 				     (who-ps-html (:li (:span :class "value" (dom-escape value))
 						       (:span :class "type" " :: " type)))))))))))
-    
+
     (defun result-warnings-template (result-warnings)
       (who-ps-html
        (:span :onclick "selectContents(event, this)" :class "warnings"
-	      (join (loop for w in result-warnings 
+	      (join (loop for w in result-warnings
 		       collect (condition-template w))))))
 
     (defun result-stdout-template (stdout)
@@ -385,7 +385,7 @@
 		(chain all-stdout (push stdout))
 		(when warnings
 		  (loop for w in warnings
-		     unless (*warning-filter* w) 
+		     unless (*warning-filter* w)
 		     do (chain all-warnings (push w)))))
 	   finally (setf res (@ r values))))
       (who-ps-html
@@ -405,9 +405,9 @@
 
     (defun result-template (noise result)
       (when result
-	(who-ps-html 
+	(who-ps-html
 	 (:pre (case noise
-		 (:verbose 
+		 (:verbose
 		  (verbose-result-template result))
 		 (:terse
 		  (terse-result-template result))
@@ -416,23 +416,23 @@
 
     (defun cell-controls-template (cell)
       (who-ps-html
-       (:div :class "controls" 
+       (:div :class "controls"
 	     (:span :class "genericon genericon-draggable")
-	     (:button :class "genericon genericon-trash" 
+	     (:button :class "genericon genericon-trash"
 		      :onclick (+ "killCell(" (@ cell id) ")") "  ")
-	     (:select 
+	     (:select
 	      :onchange (+ "changeCellType(" (@ cell id) ", this.value)")
 	      (join (loop for tp in (list :markup :code :tests)
 		       if (= (@ cell cell-type) tp)
 		       collect (who-ps-html (:option :value tp :selected "selected" tp))
 		       else collect (who-ps-html (:option :value tp tp)))))
-	     ;; (:select 
+	     ;; (:select
 	     ;;  :onchange (+ "changeCellLanguage(" (@ cell id) ", this.value)")
 	     ;;  (join (loop for lang in (list :common-lisp)
 	     ;; 	       for lb in (list 'common-lisp) ;; curse these symbol case issues
 	     ;; 	       if (= (@ cell cell-type) lb)
 	     ;; 	       collect (who-ps-html (:option :value lang :selected "selected" lang))
-	     ;; 	       else 
+	     ;; 	       else
 	     ;; 	       collect (who-ps-html (:option :value lang lang)))))
 	     (:select
 	      :onchange (+ "changeCellNoise(" (@ cell id) ", this.value)")
@@ -442,7 +442,7 @@
 		       collect (who-ps-html (:option :value ns :selected "selected" ns))
 		       else
 		       collect (who-ps-html (:option :value ns ns))))))))
-    
+
     (defun cell-markup-result-template (result)
       (if result
 	  (let ((val (@ result 0 values 0 value)))
@@ -454,24 +454,24 @@
 
     (defun cell-markup-template (cell)
       (with-slots (id contents result language) cell
-	(who-ps-html 
-	 (:li :class (+ "cell markup" (if (@ cell stale) " stale" "")) :id (+ "cell-" id) :cell-id id 
+	(who-ps-html
+	 (:li :class (+ "cell markup" (if (@ cell stale) " stale" "")) :id (+ "cell-" id) :cell-id id
 	      :ondragend "reorderCells(event)" :draggable "true"
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
 	      (:div :onclick (+ "showEditor(" id ")")
 		    (:span :class "cell-value" (cell-markup-result-template result)))))))
-    
+
     (defun cell-code-template (cell)
       (with-slots (id contents result language) cell
-	(who-ps-html 
-	 (:li :class (+ "cell code" (if (@ cell stale) " stale" "")) :id (+ "cell-" id) :cell-id id 
+	(who-ps-html
+	 (:li :class (+ "cell code" (if (@ cell stale) " stale" "")) :id (+ "cell-" id) :cell-id id
 	      :ondragend "reorderCells(event)" :draggable "true"
 	      (cell-controls-template cell)
 	      (:textarea :class "cell-contents" :language (or language "commonlisp")  contents)
 	      (:span :class "cell-value"
 		     (result-template (@ cell noise) result))))))
-    
+
     (defun cell-template (cell)
       (if (markup-cell? cell)
 	  (cell-markup-template cell)
@@ -486,11 +486,11 @@
 
     (defun show-macro-expansion! ()
       (show! (by-selector "#macro-expansion")))
-    
+
     (defun hide-macro-expansion! ()
       (hide! (by-selector "#macro-expansion")))
 
-    (defun show-title-input () 
+    (defun show-title-input ()
       (let ((input (by-selector ".book-title input")))
 	(show! input)
 	(show! (by-selector ".book-package"))
@@ -498,7 +498,7 @@
 	(chain input (select))
 	(hide! (by-selector ".book-title h1"))))
 
-    (defun hide-title-input () 
+    (defun hide-title-input ()
       (hide! (by-selector ".book-title input"))
       (hide! (by-selector ".book-package"))
       (show! (by-selector ".book-title h1")))
@@ -507,11 +507,11 @@
       (who-ps-html
        (:div :class "book-package"
 	     (:textarea :onchange "repackageBook(this.value)" package)
-	     (when result 
-	       (who-ps-html 
+	     (when result
+	       (who-ps-html
 		(:ul :class "result"
 		     (:li :class "error" (condition-template result))))))))
-    
+
     (defun notebook-title-template (name)
       (who-ps-html
        (:div :class "book-title"
@@ -529,31 +529,31 @@
 (define-handler (js/ajax.js :content-type "application/javascript") ()
   (ps (defun kill-thread ()
 	(post/json "/cl-notebook/system/kill-thread" (create)))
-      
+
       (defun arg-hint (symbol x y &key current-arg)
 	(post/json "/cl-notebook/system/arg-hint" (create :name symbol :package :cl-notebook)
 		   (lambda (res)
 		     (unless (and (@ res error) (= (@ res error) 'function-not-found))
-		       (dom-append 
-			(by-selector "body") 
-			(who-ps-html 
-			 (:div :class "notebook-arg-hint cm-s-default" 
+		       (dom-append
+			(by-selector "body")
+			(who-ps-html
+			 (:div :class "notebook-arg-hint cm-s-default"
 			       :style (+ "left:" x "px; top: " y "px")
 			       "(" (:span :class "name" symbol)
 			       (join (loop for arg in (@ res args)
-					collect (cond 
+					collect (cond
 						  ((and (string? arg) (= (@ arg 0) "&"))
 						   (who-ps-html (:span :class "modifier cm-variable-2" arg)))
 						  ((string? arg)
 						   (who-ps-html (:span :class "arg" arg)))
 						  (t
-						   (who-ps-html (:span :class "compound-arg" 
-								       "(" (join 
+						   (who-ps-html (:span :class "compound-arg"
+								       "(" (join
 									    (loop for a in arg
-									       if (null a) 
+									       if (null a)
 									       collect (who-ps-html (:span :class "arg" "NIL"))
 									       else collect (who-ps-html (:span :class "arg" a)))) ")")))))) ")")))))))
-      
+
       (defun rewind-book (index)
 	(post/json "/cl-notebook/notebook/rewind" (create :book (notebook-id *notebook*) :index index)
 		   #'notebook!))
@@ -571,12 +571,12 @@
 		     ($aif (by-selector "#book-list option[selected='selected']")
 			   (chain it (remove-attribute :selected)))
 		     (setf (@ (by-selector "#book-list") selected-index) 0)
-		     (dom-set 
+		     (dom-set
 		      (by-selector "#notebook")
 		      (who-ps-html (:h2 "Notebook '" name "' not found..."))))))
 
-      (defun new-book () 
-	(post/json "/cl-notebook/notebook/new" (create) 
+      (defun new-book ()
+	(post/json "/cl-notebook/notebook/new" (create)
 		   #'notebook!))
 
       (defun kill-book ()
@@ -584,7 +584,7 @@
 
       (defun rename-book (new-name)
 	(post/fork "/cl-notebook/notebook/rename" (create :book (notebook-id *notebook*) :new-name new-name)))
-      
+
       (defun repackage-book (new-package)
 	(post/fork "/cl-notebook/notebook/repackage" (create :book (notebook-id *notebook*) :new-package new-package)))
 
@@ -596,13 +596,13 @@
 
       (defun kill-cell (cell-id)
 	(post/fork "/cl-notebook/notebook/kill-cell" (create :book (notebook-id *notebook*) :cell-id cell-id)))
-      
+
       (defun change-cell-contents (cell-id contents)
 	(post/fork "/cl-notebook/notebook/change-cell-contents" (create :book (notebook-id *notebook*) :cell-id cell-id :contents contents)))
 
       (defun change-cell-type (cell-id new-type)
 	(post/fork "/cl-notebook/notebook/change-cell-type" (create :book (notebook-id *notebook*) :cell-id cell-id :new-type new-type)))
-      
+
       (defun change-cell-language (cell-id new-language)
 	(post/fork "/cl-notebook/notebook/change-cell-language" (create :book (notebook-id *notebook*) :cell-id cell-id :new-language new-language)))
 
@@ -614,12 +614,12 @@
 	(let ((ord (obj->string
 		    (loop for elem in (by-selector-all ".cell")
 		       collect (parse-int (chain elem (get-attribute :cell-id)))))))
-	  (post "/cl-notebook/notebook/reorder-cells" 
-		(create :book (notebook-id *notebook*) 
+	  (post "/cl-notebook/notebook/reorder-cells"
+		(create :book (notebook-id *notebook*)
 			:cell-order ord))))
-      
+
       (defun system/macroexpand-1 (expression callback)
-	(post "/cl-notebook/system/macroexpand-1" 
+	(post "/cl-notebook/system/macroexpand-1"
 	      (create :expression expression)
 	      callback))
       (defun system/macroexpand (expression callback)
@@ -628,19 +628,19 @@
 	      callback))))
 
 (define-handler (js/book-actions.js :content-type "application/javascript") ()
-  (ps 
+  (ps
     (defvar *book-actions*
       (create :export-html
 	      (lambda ()
 		(save-file
 		 (+ (notebook-name *notebook*) ".html")
-		 (+ (who-ps-html 
+		 (+ (who-ps-html
 		     (:style :type "text/css" :media "screen"
 			     (join
 			      (list "<!--"
 				    (sheet-text 2 (matching? "^.cm-s-default"))
 				    (sheet-text 0 (lambda (text)
-						    (regex-match-any 
+						    (regex-match-any
 						     text
 						     "^.result" "^.stdout"
 						     "^.warnings" "^.condition-contents"
@@ -648,7 +648,7 @@
 				    "-->")
 			      #\newline))
 		     (:h1 (notebook-name *notebook*)))
-		    (join 
+		    (join
 		     (map (lambda (cell)
 			    (if (= 'markup (@ cell cell-type))
 				(@ cell result 0 values 0 value)
@@ -665,10 +665,10 @@
 		 "text/html;charset=utf-8"))
 	      :export-lisp
 	      (lambda ()
-		(save-file 
+		(save-file
 		 (+ (notebook-name *notebook*) ".lisp")
 		 (+ "; Generated by cl-notebook from " (notebook-name *notebook*) ".base"
-		    (join 
+		    (join
 		     (loop for cell in (notebook-cells *notebook*)
 			when (and (= 'common-lisp (@ cell cell-language))
 				  (= 'code (@ cell cell-type)))
@@ -677,9 +677,9 @@
 				   #\newline
 				   (@ cell contents)))))
 		 "text/x-common-lisp;charset=utf-8"))
-	      :kill-book 
+	      :kill-book
 	      #'kill-book))
-    
+
     (defun run-book-action (action)
       (setf (@ (by-selector "#book-actions") selected-index) 0)
       ($aif (aref *book-actions* action)
@@ -691,7 +691,7 @@
     ;;;;;;;;;; Utility for s-exp navigation
     ;;;;;;;;;;;;;;;
     (defun matching-brace (brace)
-      (aref 
+      (aref
        (create "(" ")" ")" "("
 	       "[" "]" "]" "["
 	       "{" "}" "}" "{"
@@ -751,7 +751,7 @@
 		     (case direction
 		       (:up "goLineUp")
 		       (:down "goLineDown")))))
-    
+
     (defun char-at-cursor (direction mirror &key (ls (lines (mirror-contents mirror))))
       (with-slots (line ch) (get-cur direction mirror)
 	(aref ls line ch)))
@@ -764,9 +764,9 @@
       (let ((til (case direction
 		   (:left #'at-beginning?)
 		   (:right #'at-end?))))
-	(loop do (go-char direction mirror) until (til mirror ls)
-	   while (fn (char-at-cursor direction mirror :ls ls)))))
-    
+	(loop until (til mirror ls) while (fn (char-at-cursor direction mirror :ls ls))
+	   do (go-char direction mirror))))
+
     (defun skip-until (fn mirror direction &key (ls (lines (mirror-contents mirror))))
       (let ((til (case direction
 		   (:left #'at-beginning?)
@@ -800,7 +800,7 @@
 	(chain mirror (extend-selection (get-cur direction mirror) start))))
 
     ;;;;;;;;;; s-exp navigation
-    ;;;;;;;;;;;;;;;   
+    ;;;;;;;;;;;;;;;
     (defun go-sexp (direction mirror)
       (destructuring-bind (paren til)
 	  (case direction
@@ -812,13 +812,13 @@
 	  (cond ((and (string-at-cursor? direction mirror) (not (char-at-cursor? direction mirror "\"" :ls ls)))
 		 (skip-to direction mirror (list " " "\"" undefined) :ls ls))
 		((string-at-cursor? direction mirror)
-		 (skip-until 
+		 (skip-until
 		  (lambda (c) (not (string-at-cursor? direction mirror)))
 		  mirror direction :ls ls))
 		((token-type-at-cursor? direction mirror :comment)
 		 (skip-to direction mirror (list " " undefined) :ls ls))
 		((token-type-at-cursor? direction mirror :quote-char)
-		 (skip-until 
+		 (skip-until
 		  (lambda (c) (not (token-type-at-cursor? direction mirror :quote-char)))
 		  mirror direction :ls ls)
 		 (go-sexp direction mirror))
@@ -829,15 +829,15 @@
 		      (char-at-cursor? direction mirror paren :ls ls))
 		 (loop with tally = 1 until (til mirror :ls ls)
 		    do (go-char direction mirror)
-		    when (and (char-at-cursor? direction mirror paren :ls ls) 
-			      (not (string-at-cursor? direction mirror))) 
+		    when (and (char-at-cursor? direction mirror paren :ls ls)
+			      (not (string-at-cursor? direction mirror)))
 		      do (incf tally)
 		    when (and (char-at-cursor? direction mirror other-paren :ls ls)
 			      (not (string-at-cursor? direction mirror)))
 		      do (decf tally)
 		    until (and (char-at-cursor? direction mirror other-paren :ls ls) (= 0 tally)))
 		 (go-char direction mirror))
-		(t 
+		(t
 		 (skip-to direction mirror (+ " " other-paren) :ls ls))))))
 
     (defun select-sexp (direction mirror)
@@ -853,7 +853,7 @@
 	      (chain mirror (extend-selection end))
 	      (chain mirror (set-selection start (get-cur :right mirror)))))))
 
-    (defun kill-sexp (direction mirror) 
+    (defun kill-sexp (direction mirror)
       (replace-sexp-at-point direction mirror ""))
 
     ;;;;;;;;;; s-exp extras
@@ -869,18 +869,18 @@
 	(chain mirror (replace-range new-sexp start (get-cur :right mirror)))))
     (defun slurp-sexp (direction mirror)
       (console.log "TODO -- slurp-sexp"))
-    (defun barf-sexp (direction mirror) 
+    (defun barf-sexp (direction mirror)
       (console.log "TODO -- barf-sexp"))
     (defun transpose-sexp (direction mirror)
       (console.log "TODO -- transpose-sexp"))
-    (defun toggle-comment-region (mirror) 
+    (defun toggle-comment-region (mirror)
       (let ((anchor (get-cur :right mirror :anchor))
 	    (head (get-cur :right mirror :head)))
 	(destructuring-bind (from to) (if (> (@ anchor line) (@ head line)) (list head anchor) (list anchor head))
 	  (if (token-type-at-cursor? :right mirror :comment)
 	      (chain mirror (uncomment from to))
 	      (chain mirror (line-comment from to))))))
-    
+
     ;;;;;;;;;; cell navigation
     (defun go-cell (direction cell-id)
       (let* ((cell (by-cell-id cell-id))
@@ -918,7 +918,7 @@
 
     (defun elem->cell-id (elem)
       (parse-int
-       (chain elem (get-attribute "id") 
+       (chain elem (get-attribute "id")
 	      (match (-reg-exp "cell-([1234567890]+)"))
 	      1)))
 
@@ -927,7 +927,7 @@
 
     (defun markup-cell? (cell)
       (= 'markup (@ cell cell-type)))
-    
+
     (defun clear-selection ()
       (let ((sel (chain window (get-selection))))
 	(if (@ sel empty)
@@ -947,7 +947,7 @@
       (let ((slider (by-selector "#book-history-slider")))
 	(= (@ slider value) (chain slider (get-attribute :max)))))
 
-    (defun post/fork (uri args on-success on-fail) 
+    (defun post/fork (uri args on-success on-fail)
       (if (in-present?)
 	  (post/json uri args on-success on-fail)
 	  (fork-book (lambda (res)
@@ -956,7 +956,7 @@
 		       (setf (@ args :book) (@ res id))
 		       (dom-replace (by-selector ".book-title") (notebook-title-template (@ res book-name)))
 		       (post/json uri args on-success on-fail)))))
-    
+
     ;; cl-notebook specific DOM manipulation
     (defun display-book (book-name)
       (when book-name
@@ -975,25 +975,25 @@
 		   (if (markup-cell? cell)
 		       (cell-markup-result-template (@ cell result))
 		       (result-template (@ cell noise) (@ cell result) :stale? (@ cell stale)))))))
-    
+
     (defun dom-replace-cell (cell)
       (dom-replace (by-cell-id (@ cell id)) (cell-template cell))
       (setup-cell-mirror! cell))
 
     ;; CodeMirror and utilities
     (defun register-helpers (type object)
-      (map 
+      (map
        (lambda (fn name)
 	 (chain -code-mirror
 		(register-helper type name fn)))
        object))
-    
+
     (defun register-commands (object)
-      (map 
+      (map
        (lambda (fn name)
 	 (setf (aref -code-mirror :commands name) fn))
        object))
-    
+
     (defun show-editor (cell-id)
       (show! (by-cell-id cell-id ".CodeMirror"))
       (chain (cell-mirror cell-id) (focus)))
@@ -1008,7 +1008,7 @@
       (chain (cell-mirror cell-id) (get-value)))
 
     (defun mirror! (text-area &key (extra-keys (create)) (line-wrapping? t))
-      (let ((options 
+      (let ((options
 	     (create
 	      "async" t
 	      "lineNumbers" t
@@ -1019,7 +1019,7 @@
 	      "smartIndent" t
 	      "extraKeys" (extend
 			   (create "Ctrl-Space" 'autocomplete
-				   
+
 				   "Ctrl-Right" (lambda (mirror) (go-sexp :right mirror))
 				   "Ctrl-Left" (lambda (mirror) (go-sexp :left mirror))
 				   "Shift-Ctrl-Right" (lambda (mirror) (select-sexp :right mirror))
@@ -1029,7 +1029,7 @@
 				   "Shift-Ctrl-Down" (lambda (mirror) (select-block :down mirror))
 				   "Ctrl-Up" (lambda (mirror) (go-block :up mirror))
 				   "Shift-Ctrl-Up" (lambda (mirror) (select-block :up mirror))
-				   
+
 				   "Ctrl-Alt-K" (lambda (mirror) (kill-sexp :right mirror))
 				   "Shift-Ctrl-Alt-K" (lambda (mirror) (kill-sexp :left mirror))
 				   "Tab" 'indent-auto
@@ -1046,7 +1046,7 @@
 					   (lambda (mirror)
 					     (let ((contents (cell-editor-contents cell-id)))
 					       (notebook/eval-to-cell cell-id contents)))
-					   
+
 					   "Ctrl-]" (lambda (mirror) (go-cell :down cell-id))
 					   "Ctrl-[" (lambda (mirror) (go-cell :up cell-id))
 					   "Shift-Ctrl-]" (lambda (mirror) (transpose-cell! :down cell-id))
@@ -1054,8 +1054,8 @@
 					   "Shift-Ctrl-E" (lambda (mirror)
 							    (show-macro-expansion!)
 							    (chain *macro-expansion-mirror* (focus)))
-					   "Ctrl-E" (lambda (mirror) 
-						      (system/macroexpand-1 
+					   "Ctrl-E" (lambda (mirror)
+						      (system/macroexpand-1
 						       (sexp-at-point :right mirror)
 						       (lambda (res)
 							 (show-macro-expansion!)
@@ -1072,8 +1072,8 @@
 	  (chain mirror (on 'change
 			    (lambda (mirror change)
 			      (when (or (= "+input" (@ change origin)) (= "+delete" (@ change origin)))
-				(chain -code-mirror commands 
-				       (autocomplete 
+				(chain -code-mirror commands
+				       (autocomplete
 					mirror (@ -code-mirror hint ajax)
 					(create :async t "completeSingle" false))))))))
 	mirror))
@@ -1102,8 +1102,8 @@
     (defun notebook-cell-ordering (notebook)
       (let ((ord (loop for (a b c) in (notebook-facts notebook)
 		    when (= b 'cell-order) do (return c)))
-	    (all-cell-ids 
-	     (loop for (a b c) in (notebook-facts notebook) 
+	    (all-cell-ids
+	     (loop for (a b c) in (notebook-facts notebook)
 		when (and (= b 'cell) (null c)) collect a)))
 	(chain all-cell-ids (reverse))
 	(if ord
@@ -1118,12 +1118,12 @@
 
     (defun notebook-cell (notebook id)
       (aref notebook :objects id))
-    
+
     (defun setup-package-mirror! ()
-      (mirror! 
+      (mirror!
        (by-selector ".book-package textarea")
        :extra-keys
-       (create "Ctrl-]"     (lambda (mirror) 
+       (create "Ctrl-]"     (lambda (mirror)
 			      (let ((next (by-selector ".cells .cell")))
 				(when next
 				  (hide-title-input)
@@ -1134,18 +1134,18 @@
       (hide! (by-selector ".book-package")))
 
     (defun setup-macro-expansion-mirror! ()
-      (setf *macro-expansion-mirror* 
-	    (mirror! 
+      (setf *macro-expansion-mirror*
+	    (mirror!
 	     (by-selector "#macro-expansion textarea")
 	     :line-wrapping? nil
 	     :extra-keys
-	     (create "Ctrl-E" (lambda (mirror) 
-				(system/macroexpand-1 
+	     (create "Ctrl-E" (lambda (mirror)
+				(system/macroexpand-1
 				 (sexp-at-point :right mirror)
 				 (lambda (res)
-				   (chain 
-				    mirror 
-				    (operation 
+				   (chain
+				    mirror
+				    (operation
 				     (lambda ()
 				       (let ((start (get-cur :right mirror)))
 					 (replace-sexp-at-point :right mirror res)
@@ -1154,7 +1154,7 @@
 					 (chain mirror (set-cursor start)))))))))))))
 
     (defun surgical! (raw)
-      (let* ((slider (by-selector "#book-history-slider"))		     
+      (let* ((slider (by-selector "#book-history-slider"))
 	     (count (@ raw history-size))
 	     (pos (or (@ raw history-position) count))
 	     (id (@ raw id)))
@@ -1168,17 +1168,17 @@
 
     (defun notebook! (raw)
       (let* ((fs (@ raw facts)))
-	(setf *notebook* 
+	(setf *notebook*
 	      (create :facts fs :objects (notebook-condense fs)
 		      :history-size (@ raw history-size)
-		      :id (@ raw :id) 
+		      :id (@ raw :id)
 		      :name (loop for (a b c) in fs
 			       when (equal b "notebookName")
 			       do (return c))
 		      :package (loop for (a b c) in fs
 				  when (equal b "notebookPackage")
 				  do (return c))))
-	(dom-set 
+	(dom-set
 	 (by-selector "#notebook")
 	 (notebook-template *notebook*))
 	(surgical! raw)
@@ -1188,7 +1188,7 @@
 	     (by-selector-all "#book-list option"))
 	(chain (by-selector (+ "#book-list option[value='" (notebook-id *notebook*) "']"))
 	       (set-attribute :selected "selected"))
-	(map (lambda (cell) 
+	(map (lambda (cell)
 	       (with-slots (id cell-type) cell
 		 (setup-cell-mirror! cell)
 		 (when (= 'markup cell-type)
@@ -1199,15 +1199,15 @@
       (and (in-present?) (equal (notebook-id *notebook*) (@ ev book))))
 
     (defun notebook-events ()
-      (event-source 
+      (event-source
        "/cl-notebook/source"
        (create
-	'new-cell 
+	'new-cell
 	(lambda (res)
 	  (when (relevant-event? res)
 	    (let ((id (@ res 'cell-id))
 		  (cell (create 'type "cell" 'contents "" 'result ""
-				'cell-type (@ res cell-type) 
+				'cell-type (@ res cell-type)
 				'cell-language (@ res cell-language)
 				'id (@ res 'cell-id))))
 	      (setf (aref (notebook-objects *notebook*) id) cell)
@@ -1239,7 +1239,7 @@
 	(lambda (res) (show-footer!))
 	'killed-eval
 	(lambda (res) (hide-footer!))
-	'finished-eval 
+	'finished-eval
 	(lambda (res)
 	  (hide-footer!)
 	  (when (relevant-event? res)
@@ -1281,18 +1281,18 @@
 	      (chain (by-cell-id (@ res cell)) class-list (add "stale"))
 	      (chain mirror (set-value (@ res contents)))
 	      (chain mirror (set-cursor cursor)))))
-	'kill-cell 
+	'kill-cell
 	(lambda (res)
 	  (when (relevant-event? res)
 	    (delete (aref *notebook* 'objects (@ res cell)))
 	    (chain (by-cell-id (@ res cell)) (remove))))
-	
-	'reorder-cells 
+
+	'reorder-cells
 	(lambda (res)
 	  (when (relevant-event? res)
 	    ;; TODO change order here to support proper multi-user noting
 	    (console.log "Changed cell order" res)))
-	
+
 	'new-book
 	(lambda (res)
 	  (let ((id (@ res book))
@@ -1306,10 +1306,10 @@
 	    (when (equal (notebook-id *notebook*) id) ;; intentionally don't call relevant-event? here.
 	      ;; TODO. If someone else deletes the book you're editing, this could get confusing.
 	      ;;       Maybe put up a notice of "Book deleted" instead of moving on to some arbitrary "first book"?
-	      (display-book 
+	      (display-book
 	       (chain (@ (by-selector-all "#book-list option") 1)
 		      (get-attribute :value))))))
-	
+
 	'rename-book
 	(lambda (res)
 	  (let ((id (@ res book))
@@ -1322,7 +1322,7 @@
 	    (dom-append (by-selector "#book-list")
 			(who-ps-html (:option :value id new-name))))))))
 
-    (defvar *warning-filter* 
+    (defvar *warning-filter*
       (lambda (w)
 	(or (chain (@ w condition-type) (starts-with "REDEFINITION"))
 	    (chain (@ w condition-type) (starts-with "IMPLICIT-GENERIC-"))
@@ -1333,7 +1333,7 @@
     (dom-ready
      (lambda ()
        ;;; Setting up some custom CodeMirror code ;;;;;;;;;;;;;;;;;;;;
-       (register-helpers 
+       (register-helpers
 	"hint"
 	(create :ajax
 		(lambda (mirror callback options)
@@ -1342,13 +1342,13 @@
 		    (when (> (length (@ tok string)) 2)
 		      (get "/cl-notebook/system/complete" (create :partial (@ tok string) :package :cl-notebook)
 			   (lambda (res)
-			     (callback 
+			     (callback
 			      (create :list (or (string->obj res) (new (-array)))
 				      :from (chain -code-mirror (-pos (@ cur line) (@ tok start)))
 				      :to (chain -code-mirror (-pos (@ cur line) (@ tok end))))))))))
 		:auto
 		(lambda (mirror options)
-		  (chain -code-mirror commands 
+		  (chain -code-mirror commands
 			 (autocomplete mirror (@ -code-mirror hint ajax) (create :async t))))))
 
        (register-commands
@@ -1357,7 +1357,7 @@
 		 (lambda (mirror)
 		   ($aif (by-selector-all ".notebook-arg-hint")
 			 (map (lambda (elem) (chain elem (remove))) it))
-		   (labels ((find-first (ctx) 
+		   (labels ((find-first (ctx)
 			      (cond ((null ctx) nil)
 				    ((or (= "arglist" (@ ctx node_type))
 					 (and (@ ctx prev)
@@ -1375,11 +1375,11 @@
        (notebook-events)
        (hide-footer!)
        (hide-macro-expansion!)
-       (chain 
-	(by-selector "body") 
-	(add-event-listener 
+       (chain
+	(by-selector "body")
+	(add-event-listener
 	 :keyup (key-listener
-		 <esc> (progn 
+		 <esc> (progn
 			 (clear-selection)
 			 (hide-title-input)
 			 (hide-macro-expansion!)
