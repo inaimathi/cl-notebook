@@ -2,19 +2,19 @@
 (defpackage #:cl-notebook
   (:use #:cl #:house #:parenscript #:cl-who #:fact-base)
   (:import-from #:cl-css #:inline-css)
-  (:shadowing-import-from #:cl-css #:%)  
+  (:shadowing-import-from #:cl-css #:%)
   (:import-from #:anaphora #:aif #:awhen #:it)
   (:import-from #:alexandria #:with-gensyms)
-  (:shadowing-import-from 
-   #+openmcl-native-threads #:ccl 
-   #+cmu #:pcl 
-   #+sbcl #:sb-pcl 
-   #+lispworks #:hcl 
-   #+allegro #:mop 
-   #+clisp #:clos 
+  (:shadowing-import-from
+   #+openmcl-native-threads #:ccl
+   #+cmu #:pcl
+   #+sbcl #:sb-pcl
+   #+lispworks #:hcl
+   #+allegro #:mop
+   #+clisp #:clos
    #:class-slots #:slot-definition-name)
   (:shadowing-import-from #:fact-base #:lookup)
-  (:export :bar-graph :draw-bar-graph))
+  (:export :bar-graph :draw-bar-graph :main))
 
 (in-package #:cl-notebook)
 

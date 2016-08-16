@@ -35,6 +35,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - Full setup needs work. Specifically, we need to write all the statics out initially, and we NEED a welcome notebook, otherwise things get really REALLY confusing.
 - Need a complete how-to set of videos at some point
 - Port to the proper way of using SSEs (with event tags rather than an action field in the payload)
+- Tests
 
 ##### Thoughts
 - Charts need to support
