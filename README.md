@@ -34,6 +34,32 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 ### Sytem Docs (Docs TODO)
 
 #### Building the Binary
+
+In order to build the `cl-notebook` binary, you need to
+
+1. Install a Common Lisp (I suggest, and have only tried this with, `sbcl`)
+2. Install and build `buildapp`
+3. Create an appropriate `build.manifest` file for loading `cl-notebook`
+4. Call buildapp with that `build.manifest` file, along with
+	- a bunch of `--load-system` calls that include everything `cl-notebook` needs
+    - an `--eval` call to `cl-notebook::read-statics` to include all the associated static files along with the binary
+    - an `--entry` of `cl-notebook:main`
+    - an `--output` of your choice of binary name (I suggest "`cl-notebook`")
+
+That will create a binary with the appropriate name that you can directly run on any machine of your OS and processor architecture.
+
+##### Linux
+
+If you're on a Debian-based linux distro, there is a `build.lisp` and `build.sh` included in this repo that do most of the above for you. All you need to do is make sure to install `sbcl`, then call `sh build.sh` in the `cl-notebook` repo. This will result in a `buildapp` binary and a `cl-notebook` binary being generated for you. The `cl-notebook` binary can then be run on any linux machine without worrying about installing a Lisp.
+
+##### OS X
+
+TODO - patches welcome, since I'm not an OS X user
+
+##### Windows
+
+TODO - patches welcome, since I'm not a Windows user
+
 #### Source Deployment
 #### Usage
 ##### Keybindings
@@ -95,6 +121,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - Notebooks should be sorted by notebook-name, at the very least (in addition to the below noted fork-grouping)
 	- This may involve changes to some back-end systems; you need to order up the initial notebook list, _as well as_ inserting new notebooks in an ordered manner. Do we just bite the bullet and hit the server every time? Or maybe send out a complete notebooks list every time someone adds one?
 - Forked notebook entries should be grouped with their parents in the top menu. Guess you could pull out parent relationships at load-time?
+- For general use, we'll want to expose customizable keybindings somehow. A session-keyed config page would work fine.
 
 ######## Multi-user related
 - Move to a thread-per-cell model to make multi-user development easier
@@ -102,7 +129,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - Moving cells around isn't propagated to other users
 - Editing a cell should be propagated between saves (back-end should probably figure out when to save, and it should run operational transforms on diffs to keep from clobbering any users' input)
 - When a notebook is forked, it should create a copy of its package for the fork to use (so that users working on different forks of the same book don't clobber each others in-image changes)
-- Authentication should be a thing
+- Authentication should be a thing, and saving user preferences likewise
 
 ### License
 
