@@ -37,8 +37,8 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 In order to build the `cl-notebook` binary, you need to
 
-1. Install a Common Lisp (I suggest, and have only tried this with, `sbcl`)
-2. Install and build `buildapp`
+1. Install a Common Lisp (I suggest, and have only tried this with, [`sbcl`](http://www.sbcl.org/platform-table.html))
+2. Install and build [`buildapp`](https://www.xach.com/lisp/buildapp/)
 3. Create an appropriate `build.manifest` file for loading `cl-notebook`
 4. Call buildapp with that `build.manifest` file, along with
 	- a bunch of `--load-system` calls that include everything `cl-notebook` needs
