@@ -1,6 +1,6 @@
 (in-package :cl-notebook)
 
-(define-handler (root) ()
+(define-handler (/) ()
   (with-html-output-to-string (s nil :prologue t :indent t)
     (:html
      (:head

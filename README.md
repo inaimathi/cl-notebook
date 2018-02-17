@@ -31,6 +31,16 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 A quick-ish video demo is available [here](https://vimeo.com/97623064) to get you sort-of-started.
 
+### Sytem Docs (Docs TODO)
+
+#### Building the Binary
+#### Source Deployment
+#### Usage
+##### Keybindings
+##### Building Programs/Executables
+##### Notebook Exporters
+##### Cell Compilers
+
 ### TODO
 - Full setup needs work. Specifically, we need to write all the statics out initially, and we NEED a welcome notebook, otherwise things get really REALLY confusing.
 - Need a complete how-to set of videos at some point
@@ -58,7 +68,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 ######## Back-end
 - Exports for projects, not just .lisp files (and the .lisp files should do something intelligent about the `package` forms).
 	- Look into [compression options](http://www.cliki.net/compression) for the project part (it'll have to be handled as multiple files)
-- Really REALLY need tags. Named checkpoints that you can jump to in book history. This may in fact be a `:fact-base` feature, rather than a `:cl-notebook` feature
+- Really REALLY need tags. Named checkpoints that you can jump to in book history. Implemented as part of `:fact-base`, now we need to add the proper interface here
 - Let user configure where to check for a `quicklisp` folder (by default, check `~/quicklisp`, `~/.cl-notebook/quicklisp` and `quicklisp` in CWD)
 - Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
 	- Eval all code and markup cells when opening a notebook
