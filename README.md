@@ -21,7 +21,7 @@ Download [this](http://static.inaimathi.ca/cl-notebook-binaries/), run it (if yo
 
 **Or**
 
-You need to install the [`house` server](https://github.com/Inaimathi/house), the [`session-token` random token generator](https://github.com/Inaimathi/session-token), the [`fact-base` triple-store](https://github.com/Inaimathi/fact-base) and [this repo](https://github.com/Inaimathi/cl-notebook) by cloning them.
+You need to install the [`house` server](https://github.com/Inaimathi/house), the [`fact-base` triple-store](https://github.com/Inaimathi/fact-base) and [this repo](https://github.com/Inaimathi/cl-notebook) by cloning them.
 
 The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/), so you should then be able to hop into a lisp and do `(ql:quickload :cl-notebook)`, followed by `(cl-notebook:main)`. That'll start a server listening.
 
@@ -102,6 +102,7 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 - Moving cells around isn't propagated to other users
 - Editing a cell should be propagated between saves (back-end should probably figure out when to save, and it should run operational transforms on diffs to keep from clobbering any users' input)
 - When a notebook is forked, it should create a copy of its package for the fork to use (so that users working on different forks of the same book don't clobber each others in-image changes)
+- Authentication should be a thing
 
 ### License
 
