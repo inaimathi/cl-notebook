@@ -6,16 +6,21 @@
 (defmethod front-end-eval (cell-language cell-type (contents string))
   "A cell that fits no other description returns a"
   (list
-   (alist 
+   (alist
     :stdout "" :warnings nil ; Without these, :json encodes this as an array rather than an object
-    :values (list (alist :type 'error :value 
-			 (alist 'condition-type "UNKNOWN-LANGUAGE:TYPE-COMBINATION" 
+    :values (list (alist :type 'error :value
+			 (alist 'condition-type "UNKNOWN-LANGUAGE:TYPE-COMBINATION"
 				'cell-language cell-language
 				'cell-type cell-type))))))
 
 (defmethod front-end-eval (cell-language cell-type (contents null)) "")
 
-(defmethod front-end-eval ((cell-language (eql :common-lisp)) cell-type (contents string))
+(defmethod front-end-eval ((cell-language (eql :common-lisp)) (cell-type (eql :test)) (contents string))
+  "A Common-Lisp:Test cell is just evaluated, capturing all warnings, stdout emissions and errors.
+It's treated differently in export situations."
+  (capturing-eval contents))
+
+(defmethod front-end-eval ((cell-language (eql :common-lisp)) (cell-type (eql :code)) (contents string))
   "A Common-Lisp:Code cell is just evaluated, capturing all warnings, stdout emissions and errors."
   (capturing-eval contents))
 
@@ -26,13 +31,22 @@
 	  :values
 	  (handler-case
 	      (list
-	       (alist 
+	       (alist
 		:type "string"
-		:value (eval 
-			`(with-html-output-to-string (s) 
+		:value (eval
+			`(with-html-output-to-string (s)
 			   ,@(read-all contents)))))
 	    (error (e)
 	      (list (alist :type 'error :value (front-end-error nil e))))))))
+
+;; (defun front-end-eval-formats ()
+;;   (let ((h (make-hash-table)))
+;;     (loop for m in (sb-mop:generic-function-methods #'front-end-eval)
+;;        for (a b _) = (sb-mop:method-specializers m)
+;;        when (and (typep a 'sb-mop:eql-specializer) (typep b 'sb-mop:eql-specializer))
+;;        do (push (sb-mop:eql-specializer-object b)
+;;                 (gethash (sb-mop:eql-specializer-object a) h nil)))
+;;     h))
 
 (defmethod eval-notebook ((book notebook) &optional (cell-type :code))
   (let ((ids (notebook-cell-order book)))
@@ -42,11 +56,11 @@
        do (let ((stale? (first (lookup book :a cell-id :b :stale :c t)))
 		(res-fact (first (lookup book :a cell-id :b :result)))
 		(*package* (namespace book)))
-	    (let ((res 
+	    (let ((res
 		   (handler-case
 		       (bt:with-timeout (.1)
-			 (front-end-eval 
-			  :common-lisp cell-type 
+			 (front-end-eval
+			  :common-lisp cell-type
 			  (caddar (lookup book :a cell-id :b :contents))))
 		     #-sbcl (bordeaux-threads:timeout () :timed-out)
 		     #+sbcl (sb-ext:timeout () :timed-out))))
@@ -54,7 +68,7 @@
 		(when stale? (delete! book stale?))
 		(unless (equalp (third res-fact) res)
 		  (let ((new (list cell-id :result res)))
-		    (if res-fact 
+		    (if res-fact
 			(change! book res-fact new)
 			(insert! book new))))))))
     (write! book)))
@@ -136,7 +150,7 @@
 			       (typecase thing
 				 (list (case (car thing)
 					 (&environment (->names (cddr thing)))
-					 (quote 
+					 (quote
 					  (if (cddr thing)
 					      (->names (cdr thing))
 					      (concatenate 'string "'" (->names (cadr thing)))))
@@ -180,7 +194,7 @@
 
 (define-json-handler (cl-notebook/notebook/rename) ((book :notebook) (new-name :string))
   (multiple-value-bind (book renamed?) (rename-notebook! book new-name)
-    (when renamed? 
+    (when renamed?
       (unless (or (lookup book :b :package-edited?) (lookup book :b :package-error))
 	(repackage-notebook! book (default-package book))
 	(publish-update! book 'finished-package-eval :contents (notebook-package-spec-string book)))
@@ -208,7 +222,7 @@
 
 (define-json-handler (cl-notebook/notebook/change-cell-language) ((book :notebook) (cell-id :integer) (new-language :keyword))
   (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
-	(val-fact (first (lookup book :a cell-id :b :result)))	
+	(val-fact (first (lookup book :a cell-id :b :result)))
 	(cell-type (caddar (lookup book :a cell-id :b :cell-type)))
 	(lang-fact (first (lookup book :a cell-id :b :cell-language))))
     (unless (eq (third lang-fact) new-language)
