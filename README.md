@@ -71,6 +71,7 @@ TODO - patches welcome, since I'm not a Windows user
 - Full setup needs work. Specifically, we need to write all the statics out initially, and we NEED a welcome notebook, otherwise things get really REALLY confusing.
 - Need a complete how-to set of videos at some point
 - Port to the proper way of using SSEs (with event tags rather than an action field in the payload)
+-
 - Tests
 
 ##### Thoughts
@@ -87,6 +88,7 @@ TODO - patches welcome, since I'm not a Windows user
 - Do we want to differentiate between "someone forked a book" and "someone started a new book"? Right now, there's no difference, but we may want to treat forks differently for multi-user purposes later on.
 
 ##### Bugs
+- cl-who cells do weird stuff with `str` and `htm`. Might be a `front-end-eval` bug
 - Should show the orange border as soon as something is edited in a cell, not just between eval and completion
 - The counter in the client-side timeline doesn't update with newly added history states
 
@@ -94,7 +96,7 @@ TODO - patches welcome, since I'm not a Windows user
 ######## Back-end
 - Exports for projects, not just .lisp files (and the .lisp files should do something intelligent about the `package` forms).
 	- Look into [compression options](http://www.cliki.net/compression) for the project part (it'll have to be handled as multiple files)
-- Really REALLY need tags. Named checkpoints that you can jump to in book history. Implemented as part of `:fact-base`, now we need to add the proper interface here
+- Really REALLY need tags. Named checkpoints that you can jump to in book history. Implemented as part of `:fact-base`, now we need to add the proper interface here (this includes a thing for adding checkpoints, and an addition to the history slider to let it specifically jump to tagged points)
 - Let user configure where to check for a `quicklisp` folder (by default, check `~/quicklisp`, `~/.cl-notebook/quicklisp` and `quicklisp` in CWD)
 - Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
 	- Eval all code and markup cells when opening a notebook

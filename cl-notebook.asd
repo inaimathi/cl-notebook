@@ -12,10 +12,17 @@
   :components ((:module
                 src :components
                 ((:file "package")
-                 (:file "model") (:file "util")
+                 (:file "model")
+                 (:file "util")
 
-                 (:file "front-end-macros") (:file "css") (:file "front-end")
-                 (:file "evaluators") (:file "cl-notebook")
+                 (:module
+                  front-end :components
+                  ((:file "macros")
+                   (:file "css")
+                   (:file "core")))
+
+                 (:file "evaluators")
+                 (:file "cl-notebook")
 
                  (:file "charts")
 
