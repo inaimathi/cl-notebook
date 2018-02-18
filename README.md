@@ -50,7 +50,7 @@ That will create a binary with the appropriate name that you can directly run on
 
 ##### Linux
 
-If you're on a Debian-based linux distro, there is a `build.lisp` and `build.sh` included in this repo that do most of the above for you. All you need to do is make sure to install `sbcl`, then call `sh build.sh` in the `cl-notebook` repo. This will result in a `buildapp` binary and a `cl-notebook` binary being generated for you. The `cl-notebook` binary can then be run on any linux machine without worrying about installing a Lisp.
+If you're on a Debian-based linux distro, there is a `build.lisp` and `build.sh` included in the `build/` subdirectory of this repo that do most of the above for you. All you need to do is make sure to install `sbcl`, then call `sh build.sh` in the `build` directory. This will result in a `buildapp` binary and a `cl-notebook` binary being generated for you. The `cl-notebook` binary can then be run on any linux machine without worrying about installing a Lisp.
 
 ##### OS X
 
