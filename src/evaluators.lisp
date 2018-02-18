@@ -13,7 +13,7 @@
 
 (defmethod front-end-eval (cell-language cell-type (contents null)) "")
 
-(defmethod front-end-eval ((cell-language (eql :common-lisp)) (cell-type (eql :test)) (contents string))
+(defmethod front-end-eval ((cell-language (eql :common-lisp)) (cell-type (eql :tests)) (contents string))
   "A Common-Lisp:Test cell is just evaluated, capturing all warnings, stdout emissions and errors.
 It's treated differently in export situations."
   (capturing-eval contents))
