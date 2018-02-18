@@ -12,11 +12,11 @@
   :components ((:module
                 src :components
                 ((:file "package")
-                 (:file "model")
-                 (:file "util")
-                 (:file "front-end-macros")
-                 (:file "css")
-                 (:file "front-end")
-                 (:file "cl-notebook")
+                 (:file "model") (:file "util")
+
+                 (:file "front-end-macros") (:file "css") (:file "front-end")
+                 (:file "evaluators") (:file "cl-notebook")
+
                  (:file "charts")
+
                  (:file "start")))))

@@ -134,6 +134,15 @@ Formats the error for front-end display, including a reference to the form."
 	   else if (not (ignored-error-prop? a))
 	   collect (cons a b)))))
 
+;;;;; Lisp internal stuff
+(defmethod arglist ((fn symbol))
+  #+ccl (ccl:arglist fn)
+  #+lispworks (lw:function-lambda-list fn)
+  #+clisp (or (ignore-errors
+		(second (function-lambda-expression fn)))
+	      (ext:arglist fn))
+  #+sbcl(sb-introspect:function-lambda-list fn))
+
 (defmethod capturing-eval ((str stream))
   "Takes the next s-expression from a stream and tries to evaluate it.
    Returns either NIL (if there are no further expressions)
