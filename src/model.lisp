@@ -6,15 +6,15 @@
   ((namespace :accessor namespace :initform (find-package :cl-notebook) :initarg :namespace)))
 
 (defun make-notebook (&key (file-name (merge-pathnames (fact-base::temp-file-name) *books*)))
-  (make-instance 
+  (make-instance
    'notebook :file-name file-name :in-memory? t
-   :index (fact-base::make-index *default-indices*) 
+   :index (fact-base::make-index *default-indices*)
    :history (fact-base::queue)))
 
 (defun new-notebook! (name)
   (let ((book (make-notebook)))
     (insert-new! book :notebook-name name)
-    (insert-new! 
+    (insert-new!
      book :notebook-package (default-package book))
     (setf (namespace book) (notebook-package! book))
     (register-notebook! book)
@@ -27,18 +27,13 @@
       (loop for entry = (fact-base::read-entry! s) while entry
 	 do (incf (fact-base::entry-count book))
 	 do (fact-base::apply-entry! book entry)))
-    (handler-bind (#+sbcl (sb-ext:name-conflict 
+    (handler-bind (#+sbcl (sb-ext:name-conflict
 			   (lambda (e)
 			     (declare (ignore e))
 			     (invoke-restart 'sb-impl::take-new))))
       (setf (namespace book) (notebook-package! book))
       (eval-notebook book))
     (register-notebook! book)))
-
-(defmethod kill! ((book notebook))
-  (let ((trash-name (make-unique-name-in *trash*  (file-namestring (file-name book)))))
-    (rename-file (file-name book) trash-name)
-    (remove-notebook! book)))
 
 ;;;;;;;;;; Notebook methods
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -94,15 +89,15 @@
   (let ((package-form (read-from-string new-package))
 	(package-fact (first (lookup book :b :notebook-package)))
 	(old-name (package-name (namespace book))))
-    (handler-bind ((error (lambda (e) 
+    (handler-bind ((error (lambda (e)
 			    (setf (namespace book) (rename-package (namespace book) old-name))
 			    (insert! book (list (first package-fact) :package-error (front-end-error package-form e))))))
       (if (string= new-package (third package-fact))
 	  (values book nil)
-	  (progn 
+	  (progn
 	    (setf (namespace book) (rename-package (namespace book) (second package-form)))
 	    (load-dependencies package-form)
-	    (handler-bind (#+sbcl (sb-ext:name-conflict 
+	    (handler-bind (#+sbcl (sb-ext:name-conflict
 				   (lambda (e)
 				     (declare (ignore e))
 				     (invoke-restart 'sb-impl::take-new))))
@@ -143,4 +138,3 @@ If the new name passed in is the same as the books' current name, we don't inser
 
 (defmethod get-notebook ((name string))
   (gethash name *notebooks*))
-

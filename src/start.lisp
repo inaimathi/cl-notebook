@@ -12,7 +12,7 @@ Only useful during the build process, where its called with an --eval flag."
 	       data))))
     (let ((root (asdf:system-source-directory :cl-notebook)))
       (setf *quicklisp-file* (read-file (merge-pathnames "quicklisp.lisp" root)))
-      (cl-fad:walk-directory 
+      (cl-fad:walk-directory
        (sys-dir (merge-pathnames "static" root))
        (lambda (filename)
 	 (unless (eql #\~ (last-char filename))
@@ -24,7 +24,7 @@ Only useful during the build process, where its called with an --eval flag."
        for v being the hash-values of *static-files*
        for file = (merge-pathnames (stem-path k "static") *storage*)
        unless (and (cl-fad:file-exists-p file) (not force?))
-       do (progn 
+       do (progn
 	    (format t "   Writing ~a ...~%" file)
 	    (ensure-directories-exist file)
 	    (with-open-file (stream file :direction :output :element-type '(unsigned-byte 8) :if-exists :supersede :if-does-not-exist :create)
@@ -38,8 +38,7 @@ Only useful during the build process, where its called with an --eval flag."
 	    (host (if (or (get-param '(:o :open :public) params) public?) usocket:*wildcard-host* #(127 0 0 1))))
 	(format t "Initializing storage directories...~%")
 	(setf *storage* (sys-dir (merge-pathnames ".cl-notebook" (user-homedir-pathname)))
-	      *books* (sys-dir (merge-pathnames "books" *storage*))
-	      *trash* (sys-dir (merge-pathnames "trash" *storage*)))
+	      *books* (sys-dir (merge-pathnames "books" *storage*)))
 	(unless *static*
 	  (format t "Initializing static files...~%")
 	  (setf *static* (sys-dir (merge-pathnames "static" *storage*)))
@@ -48,7 +47,7 @@ Only useful during the build process, where its called with an --eval flag."
 	(format t "Checking for quicklisp...~%")
 	(if (find-package :quicklisp)
 	    (format t "   quicklisp already loaded...~%")
-	    (let ((ql-dir 
+	    (let ((ql-dir
 		   (or (dir-exists? "quicklisp")
 		       (dir-exists? (merge-pathnames "quicklisp" (user-homedir-pathname)))
 		       (dir-exists? (merge-pathnames "quicklisp" *storage*)))))
@@ -78,7 +77,7 @@ Only useful during the build process, where its called with an --eval flag."
 	(when (get-param '(:d :debug) params)
 	  (format t "Starting in debug mode...~%")
 	  (house::debug!))
-	
+
 	(format t "Listening on '~s'...~%" p)
 	#+ccl (setf ccl:*break-hook*
 		    (lambda (cond hook)
@@ -94,5 +93,5 @@ Only useful during the build process, where its called with an --eval flag."
 (defun main-dev ()
   (house::debug!)
   (setf *static* (sys-dir (merge-pathnames "static" (asdf:system-source-directory :cl-notebook))))
-  (bt:make-thread 
+  (bt:make-thread
    (lambda () (main))))

@@ -59,10 +59,7 @@
 		     (:optgroup
 		      :label "Export"
 		      (:option :value "export-html" "Export as HTML")
-		      (:option :value "export-lisp" "Export as .lisp"))
-		     (:optgroup
-		      :label "Delete"
-		      (:option :value "kill-book" "Kill Book"))))
+		      (:option :value "export-lisp" "Export as .lisp"))))
       (:div :id "macro-expansion" (:textarea :language "commonlisp"))
       (:div :id "notebook")
       (:div :class "footer"
@@ -579,9 +576,6 @@
 	(post/json "/cl-notebook/notebook/new" (create)
 		   #'notebook!))
 
-      (defun kill-book ()
-	(post/json "/cl-notebook/notebook/kill" (create :book (notebook-id *notebook*))))
-
       (defun rename-book (new-name)
 	(post/fork "/cl-notebook/notebook/rename" (create :book (notebook-id *notebook*) :new-name new-name)))
 
@@ -678,8 +672,7 @@
 
     (defvar *book-actions*
       (create :export-html #'export-html
-	      :export-lisp #'export-lisp
-	      :kill-book   #'kill-book))
+	      :export-lisp #'export-lisp))
 
     (defun run-book-action (action)
       (setf (@ (by-selector "#book-actions") selected-index) 0)
@@ -1300,16 +1293,6 @@
 		(name (@ res book-name)))
 	    (dom-append (by-selector "#book-list")
 			(who-ps-html (:option :value id name)))))
-	'kill-book
-	(lambda (res)
-	  (let ((id (@ res book)))
-	    (chain (by-selector (+ "#book-list option[value='" id "']")) (remove))
-	    (when (equal (notebook-id *notebook*) id) ;; intentionally don't call relevant-event? here.
-	      ;; TODO. If someone else deletes the book you're editing, this could get confusing.
-	      ;;       Maybe put up a notice of "Book deleted" instead of moving on to some arbitrary "first book"?
-	      (display-book
-	       (chain (@ (by-selector-all "#book-list option") 1)
-		      (get-attribute :value))))))
 
 	'rename-book
 	(lambda (res)

@@ -20,7 +20,6 @@
 
 (defvar *storage* nil)
 (defvar *books* nil)
-(defvar *trash* nil)
 (defvar *static* nil)
 
 (defvar *static-files* nil)

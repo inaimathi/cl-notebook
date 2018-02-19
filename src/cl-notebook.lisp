@@ -63,12 +63,7 @@
 	 (book (new-notebook! name)))
     (write! book)
     (publish-update! book 'new-book :book-name name)
-    (hash :facts (current book) :history-size (total-entries book) :id (notebook-id book))))
-
-(define-json-handler (cl-notebook/notebook/kill) ((book :notebook))
-  (kill! book)
-  (publish-update! book 'kill-book)
-  :ok)
+    (hash :facts (current book) :history-size (total-entries book) :id (notebook-id book))))\
 
 (define-json-handler (cl-notebook/notebook/repackage) ((book :notebook) (new-package :string))
   (eval-package book new-package)
