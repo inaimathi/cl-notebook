@@ -72,7 +72,6 @@ TODO - patches welcome, since I'm not a Windows user
 	- We also need a way to configure which local directories to allow. Command line arg? What does it default to? Probably users' home folder.
     - Wait, what? If there's remote users doing stuff here, they can absolutely use Lisp code with shell interfaces to do stupid things with the local disk. The sysadmin will have to restrict this at the user level (as in the user running the public notebook will have to be heavily restricted in some way), so there's not much point in doing it in-program. So, local disk notebooks, full-stop.
 - Give users an interface to upload new notebooks from their local environments to the notebook instances' local (we need this for the multi-user situation)
-- Remove the trash system (which we can do thanks to the above being implemented properly; wanna kill a notebook? use a scratch cell, or an actuall shell command in terminal)
 - Full setup needs work. Specifically, we need to write all the statics out initially, and we NEED a welcome notebook, otherwise things get really REALLY confusing.
 - Need a complete how-to set of videos at some point
 - Port to the proper way of using SSEs (with event tags rather than an action field in the payload)
