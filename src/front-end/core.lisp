@@ -51,8 +51,7 @@
 		     ;; (loop for (id name) in (ordered-books)
 		     ;; 	do (htm (:option :value id (str name))))
 		     (loop for id being the hash-keys of *notebooks*
-			for book being the hash-values of *notebooks*
-			do (htm (:option :value id (str (notebook-name book))))))
+			do (htm (:option :value id (str id)))))
 	    (:select :id "book-actions"
 		     :onchange "runBookAction(this.value)"
 		     (:option :value "" "Stuff...")
@@ -572,9 +571,7 @@
 		      (by-selector "#notebook")
 		      (who-ps-html (:h2 "Notebook '" name "' not found..."))))))
 
-      (defun new-book ()
-	(post/json "/cl-notebook/notebook/new" (create)
-		   #'notebook!))
+      (defun new-book () (post/json "/cl-notebook/notebook/new" (create) #'notebook!))
 
       (defun rename-book (new-name)
 	(post/fork "/cl-notebook/notebook/rename" (create :book (notebook-id *notebook*) :new-name new-name)))

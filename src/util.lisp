@@ -67,7 +67,8 @@
        do (setf (gethash k hash) v))
     (setf (gethash :book hash) book
 	  (gethash :action hash) action)
-    (publish! :cl-notebook-updates (json:encode-json-to-string hash))))
+    (publish! :cl-notebook-updates (json:encode-json-to-string hash))
+    nil))
 
 (defmethod publish-update! (book (action symbol) &rest k/v-pairs)
   (publish-update-internal! book action k/v-pairs))

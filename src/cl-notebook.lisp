@@ -59,10 +59,10 @@
     (hash :facts (current new) :history-size (total-entries new) :id (notebook-id new) :book-name new-name)))
 
 (define-json-handler (cl-notebook/notebook/new) ()
-  (let* ((name (format nil "book-~a" (hash-table-count *notebooks*)))
+  (let* ((name (make-unique-name-in *books* "new-book"))
 	 (book (new-notebook! name)))
     (write! book)
-    (publish-update! book 'new-book :book-name name)
+    (publish-update! nil 'new-book :book-name (pathname-name name))
     (hash :facts (current book) :history-size (total-entries book) :id (notebook-id book))))
 
 (define-json-handler (cl-notebook/notebook/repackage) ((book :notebook) (new-package :string))

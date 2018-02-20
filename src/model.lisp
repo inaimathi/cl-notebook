@@ -11,9 +11,9 @@
    :index (fact-base::make-index *default-indices*)
    :history (fact-base::queue)))
 
-(defun new-notebook! (name)
-  (let ((book (make-notebook :file-name (make-unique-name-in *books* name))))
-    (insert-new! book :notebook-name name)
+(defun new-notebook! (path)
+  (let ((book (make-notebook :file-name path)))
+    (insert-new! book :notebook-name (pathname-name path))
     (insert-new!
      book :notebook-package (default-package book))
     (setf (namespace book) (notebook-package! book))
