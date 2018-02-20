@@ -5,14 +5,14 @@
 (defclass notebook (fact-base)
   ((namespace :accessor namespace :initform (find-package :cl-notebook) :initarg :namespace)))
 
-(defun make-notebook (&key (file-name (merge-pathnames (fact-base::temp-file-name) *books*)))
+(defun make-notebook (&key (file-name (make-unique-name-in *books* "new-book")))
   (make-instance
    'notebook :file-name file-name :in-memory? t
    :index (fact-base::make-index *default-indices*)
    :history (fact-base::queue)))
 
 (defun new-notebook! (name)
-  (let ((book (make-notebook)))
+  (let ((book (make-notebook :file-name (make-unique-name-in *books* name))))
     (insert-new! book :notebook-name name)
     (insert-new!
      book :notebook-package (default-package book))
