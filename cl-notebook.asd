@@ -24,6 +24,4 @@
                  (:file "evaluators")
                  (:file "cl-notebook")
 
-                 (:file "charts")
-
                  (:file "start")))))
