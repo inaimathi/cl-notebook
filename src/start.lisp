@@ -22,13 +22,14 @@ Only useful during the build process, where its called with an --eval flag."
   (when *static-files*
     (loop for k being the hash-keys of *static-files*
        for v being the hash-values of *static-files*
-       for file = (merge-pathnames (stem-path k "static") *storage*)
-       unless (and (cl-fad:file-exists-p file) (not force?))
-       do (progn
-	    (format t "   Writing ~a ...~%" file)
-	    (ensure-directories-exist file)
-	    (with-open-file (stream file :direction :output :element-type '(unsigned-byte 8) :if-exists :supersede :if-does-not-exist :create)
-	      (write-sequence v stream))))
+       do (let ((file (if (string= "_notebook" (pathname-name k))
+                          (merge-pathnames (pathname-name k) *books*)
+                          (merge-pathnames (stem-path k "static") *storage*))))
+            (unless (and (cl-fad:file-exists-p file) (not force?))
+              (format t "   Writing ~a ...~%" file)
+              (ensure-directories-exist file)
+              (with-open-file (stream file :direction :output :element-type '(unsigned-byte 8) :if-exists :supersede :if-does-not-exist :create)
+                (write-sequence v stream)))))
     (setf *static-files* nil)))
 
 (defun main (&optional argv &key (port 4242) (public? nil))
