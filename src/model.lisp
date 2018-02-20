@@ -127,11 +127,8 @@ If the new name passed in is the same as the books' current name, we don't inser
   (sort
    (loop for k being the hash-keys of *notebooks*
       for v being the hash-values of *notebooks*
-      collect (list k (notebook-name v)))
-   #'string<= :key #'second))
-
-(defmethod remove-notebook! ((book notebook))
-  (remhash (notebook-id book) *notebooks*))
+      collect (list k v))
+   #'string<= :key #'first))
 
 (defmethod register-notebook! ((book notebook))
   (setf (gethash (notebook-id book) *notebooks*) book))

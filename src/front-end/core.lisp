@@ -48,10 +48,8 @@
 	    (:select :id "book-list"
 		     :onchange "displayBook(this.value)"
 		     (:option :value "" "Choose book...")
-		     ;; (loop for (id name) in (ordered-books)
-		     ;; 	do (htm (:option :value id (str name))))
-		     (loop for id being the hash-keys of *notebooks*
-			do (htm (:option :value id (str id)))))
+		     (loop for (id name) in (ordered-books)
+		     	do (htm (:option :value id (str id)))))
 	    (:select :id "book-actions"
 		     :onchange "runBookAction(this.value)"
 		     (:option :value "" "Stuff...")
