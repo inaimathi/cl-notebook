@@ -135,3 +135,239 @@
      (:VALUES
       ((:TYPE . "string") (:VALUE . "<h2>Chart-related functions</h2>"))))))))
 ((6565 10133 376174000) :DELETE (5 :STALE T))
+((6565 11326 482952000) :CHANGE
+ ((3 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN")
+       (:NAME . "DRAW-SVG-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-SVG-BAR-GRAPH {1009412E7B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-SVG-BAR-GRAPH"))))))
+  (3 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN")
+       (:NAME . "DRAW-SVG-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-SVG-BAR-GRAPH {10054853DB}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-SVG-BAR-GRAPH"))))))))
+((6565 11326 485754000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10094DF9EB}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100551732B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6565 11401 635718000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100551732B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1004591F2B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6565 11439 531333000) :INSERT (2 :NOISE :VERBOSE))
+((6565 11446 72059000) :INSERT (3 :NOISE :VERBOSE))
+((6565 11480 749227000) :CHANGE
+ ((2 :CONTENTS
+   "(defun draw-bar-graph (label/value-pairs &key x-axis y-axis title y-max)
+  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
+				   maximize v into m sum 1 into s
+				   finally (return (list m s)))
+    (let* ((h (or y-max (max 1 max))) ;; we want to handle the case where max turns out to be 0
+           (bar-width (% (max .1 (float (/ 88 (max 1 len))))))
+           (bar-margin (% (float (/ 10 (* 2 (max 1 len)))))))
+      (with-html-output-to-string (*standard-output*)
+        (:div :class \"chart\"
+              (when title (htm (:div :class \"title\" (str title))))
+              (:div :class \"bar-graph\"
+                    (loop for (label . value) in label/value-pairs
+		       for i from 0
+		       for hider-height = (round (* 100 (/ (- h value) h)))
+		       do (htm (:div :class \"bar\" :style (inline-css `(:width ,bar-width :margin ,bar-margin))
+				     (:div :class \"hider\" :style (inline-css `(:height ,(% hider-height))))
+				     (:div :class \"spacer\" :style (inline-css `(:height ,(% (- 100 hider-height)))))
+				     (:div :class \"label\" :style (inline-css `(,@(when (< i (* 3 (/ len 4))) '(:white-space nowrap))))
+					   (fmt \"~a (~a)\" label value)))))))))))")
+  (2 :CONTENTS "(defun draw-bar-graph (label/value-pairs &key title y-max)
+  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
+				   maximize v into m sum 1 into s
+				   finally (return (list m s)))
+    (let* ((h (or y-max (max 1 max))) ;; we want to handle the case where max turns out to be 0
+           (bar-width (% (max .1 (float (/ 88 (max 1 len))))))
+           (bar-margin (% (float (/ 10 (* 2 (max 1 len)))))))
+      (with-html-output-to-string (*standard-output*)
+        (:div :class \"chart\"
+              (when title (htm (:div :class \"title\" (str title))))
+              (:div :class \"bar-graph\"
+                    (loop for (label . value) in label/value-pairs
+		       for i from 0
+		       for hider-height = (round (* 100 (/ (- h value) h)))
+		       do (htm (:div :class \"bar\" :style (inline-css `(:width ,bar-width :margin ,bar-margin))
+				     (:div :class \"hider\" :style (inline-css `(:height ,(% hider-height))))
+				     (:div :class \"spacer\" :style (inline-css `(:height ,(% (- 100 hider-height)))))
+				     (:div :class \"label\" :style (inline-css `(,@(when (< i (* 3 (/ len 4))) '(:white-space nowrap))))
+					   (fmt \"~a (~a)\" label value)))))))))))")))
+((6565 11480 860702000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {10088BC25B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))
+  (2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {100532849B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6565 11480 860735000) :DELETE (2 :STALE T))
+((6565 11482 569715000) :CHANGE
+ ((3 :CONTENTS
+   "(defun draw-svg-bar-graph (label/value-pairs &key x-axis y-axis title y-max)
+  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
+				   maximize v into m sum 1 into s
+				   finally (return (list m s)))
+    (let* ((h (or y-max (max 1 max)))
+           (bar-width (max .1 (float (/ 88 (max 1 len)))))
+           (bar-margin (float (/ 10 (* 2 (max 1 len))))))
+      (with-html-output-to-string (*standard-output*)
+        (:svg :class \"chart bar-graph\"
+              (when title (htm (:text :class \"title\" :x \"1%\" :y \"10%\" (str title))))
+              (loop for (label . value) in label/value-pairs
+		 for i from 0
+		 do (let ((x (% (+ (* bar-width i) (* i bar-margin)))))
+		      (htm (:g :class \"bar\"
+			       (:rect :x x :y (% (round (* 100 (/ (- h value) h)))) :width (% bar-width) :height (% (round (* 100 (/ value h)))))
+			       (:text :class \"label\" :x x :y (% (+ 5 h)) (fmt \"~a (~a)\" label value)))))))))))")
+  (3 :CONTENTS "(defun draw-svg-bar-graph (label/value-pairs &key title y-max)
+  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
+				   maximize v into m sum 1 into s
+				   finally (return (list m s)))
+    (let* ((h (or y-max (max 1 max)))
+           (bar-width (max .1 (float (/ 88 (max 1 len)))))
+           (bar-margin (float (/ 10 (* 2 (max 1 len))))))
+      (with-html-output-to-string (*standard-output*)
+        (:svg :class \"chart bar-graph\"
+              (when title (htm (:text :class \"title\" :x \"1%\" :y \"10%\" (str title))))
+              (loop for (label . value) in label/value-pairs
+		 for i from 0
+		 do (let ((x (% (+ (* bar-width i) (* i bar-margin)))))
+		      (htm (:g :class \"bar\"
+			       (:rect :x x :y (% (round (* 100 (/ (- h value) h)))) :width (% bar-width) :height (% (round (* 100 (/ value h)))))
+			       (:text :class \"label\" :x x :y (% (+ 5 h)) (fmt \"~a (~a)\" label value)))))))))))")))
+((6565 11482 692956000) :CHANGE
+ ((3 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN")
+       (:NAME . "DRAW-SVG-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-SVG-BAR-GRAPH {10054853DB}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-SVG-BAR-GRAPH"))))))
+  (3 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN")
+       (:NAME . "DRAW-SVG-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-SVG-BAR-GRAPH {1005EDAE6B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-SVG-BAR-GRAPH"))))))))
+((6565 11482 692982000) :DELETE (3 :STALE T))
+((6565 11511 548422000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1004591F2B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10075C32DB}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6565 11598 953676000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {100532849B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))
+  (2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6565 11599 53087000) :CHANGE
+ ((3 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN")
+       (:NAME . "DRAW-SVG-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-SVG-BAR-GRAPH {1005EDAE6B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-SVG-BAR-GRAPH"))))))
+  (3 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-SVG-BAR-GRAPH"))))))))
+((6565 11599 56047000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10075C32DB}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6565 11687 674213000) :CHANGE
+ ((4 :CONTENTS
+   "(defmacro bar-graph (label/value-pairs &key x-axis y-axis title y-max)
+  `(str (draw-bar-graph ,label/value-pairs :x-axis ,x-axis :y-axis ,y-axis :title ,title :y-max ,y-max)))")
+  (4 :CONTENTS
+   "(defmacro bar-graph (label/value-pairs &key x-axis y-axis title y-max)
+  `(str (draw-bar-graph ,label/value-pairs :title ,title :y-max ,y-max)))")))
+((6565 11687 699050000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10098D602B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6565 11687 699075000) :DELETE (4 :STALE T))
