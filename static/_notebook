@@ -1,0 +1,137 @@
+((6565 6110 884887000) :INSERT (0 :NOTEBOOK-NAME "_notebook"))
+((6565 6110 884923000) :INSERT
+ (1 :NOTEBOOK-PACKAGE "(in-package :cl-notebook)"))
+((6565 10003 116921000) :INSERT (2 :CELL NIL))
+((6565 10003 116936000) :INSERT (2 :CELL-TYPE :CODE))
+((6565 10003 116939000) :INSERT (2 :CELL-LANGUAGE :COMMON-LISP))
+((6565 10003 116941000) :INSERT (2 :CONTENTS ""))
+((6565 10003 116943000) :INSERT (2 :RESULT ""))
+((6565 10020 727771000) :CHANGE
+ ((2 :CONTENTS "")
+  (2 :CONTENTS
+   "(defun draw-bar-graph (label/value-pairs &key x-axis y-axis title y-max)
+  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
+				   maximize v into m sum 1 into s
+				   finally (return (list m s)))
+    (let* ((h (or y-max (max 1 max))) ;; we want to handle the case where max turns out to be 0
+           (bar-width (% (max .1 (float (/ 88 (max 1 len))))))
+           (bar-margin (% (float (/ 10 (* 2 (max 1 len)))))))
+      (with-html-output-to-string (*standard-output*)
+        (:div :class \"chart\"
+              (when title (htm (:div :class \"title\" (str title))))
+              (:div :class \"bar-graph\"
+                    (loop for (label . value) in label/value-pairs
+		       for i from 0
+		       for hider-height = (round (* 100 (/ (- h value) h)))
+		       do (htm (:div :class \"bar\" :style (inline-css `(:width ,bar-width :margin ,bar-margin))
+				     (:div :class \"hider\" :style (inline-css `(:height ,(% hider-height))))
+				     (:div :class \"spacer\" :style (inline-css `(:height ,(% (- 100 hider-height)))))
+				     (:div :class \"label\" :style (inline-css `(,@(when (< i (* 3 (/ len 4))) '(:white-space nowrap))))
+					   (fmt \"~a (~a)\" label value)))))))))))")))
+((6565 10020 858016000) :CHANGE
+ ((2 :RESULT "")
+  (2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {10088BC25B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6565 10020 858044000) :DELETE (2 :STALE T))
+((6565 10024 813565000) :INSERT (3 :CELL NIL))
+((6565 10024 813584000) :INSERT (3 :CELL-TYPE :CODE))
+((6565 10024 813594000) :INSERT (3 :CELL-LANGUAGE :COMMON-LISP))
+((6565 10024 813607000) :INSERT (3 :CONTENTS ""))
+((6565 10024 813611000) :INSERT (3 :RESULT ""))
+((6565 10031 39521000) :CHANGE
+ ((3 :CONTENTS "")
+  (3 :CONTENTS
+   "(defun draw-svg-bar-graph (label/value-pairs &key x-axis y-axis title y-max)
+  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
+				   maximize v into m sum 1 into s
+				   finally (return (list m s)))
+    (let* ((h (or y-max (max 1 max)))
+           (bar-width (max .1 (float (/ 88 (max 1 len)))))
+           (bar-margin (float (/ 10 (* 2 (max 1 len))))))
+      (with-html-output-to-string (*standard-output*)
+        (:svg :class \"chart bar-graph\"
+              (when title (htm (:text :class \"title\" :x \"1%\" :y \"10%\" (str title))))
+              (loop for (label . value) in label/value-pairs
+		 for i from 0
+		 do (let ((x (% (+ (* bar-width i) (* i bar-margin)))))
+		      (htm (:g :class \"bar\"
+			       (:rect :x x :y (% (round (* 100 (/ (- h value) h)))) :width (% bar-width) :height (% (round (* 100 (/ value h)))))
+			       (:text :class \"label\" :x x :y (% (+ 5 h)) (fmt \"~a (~a)\" label value)))))))))))")))
+((6565 10031 189470000) :CHANGE
+ ((3 :RESULT "")
+  (3 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN")
+       (:NAME . "DRAW-SVG-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-SVG-BAR-GRAPH {1009412E7B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-SVG-BAR-GRAPH"))))))))
+((6565 10031 189496000) :DELETE (3 :STALE T))
+((6565 10035 982588000) :INSERT (4 :CELL NIL))
+((6565 10035 982606000) :INSERT (4 :CELL-TYPE :CODE))
+((6565 10035 982611000) :INSERT (4 :CELL-LANGUAGE :COMMON-LISP))
+((6565 10035 982615000) :INSERT (4 :CONTENTS ""))
+((6565 10035 982627000) :INSERT (4 :RESULT ""))
+((6565 10038 42426000) :CHANGE
+ ((4 :CONTENTS "")
+  (4 :CONTENTS
+   "(defmacro bar-graph (label/value-pairs &key x-axis y-axis title y-max)
+  `(str (draw-bar-graph ,label/value-pairs :x-axis ,x-axis :y-axis ,y-axis :title ,title :y-max ,y-max)))")))
+((6565 10038 48371000) :CHANGE
+ ((4 :RESULT "")
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10094DF9EB}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6565 10038 48415000) :DELETE (4 :STALE T))
+((6565 10111 819370000) :INSERT (5 :CELL NIL))
+((6565 10111 819386000) :INSERT (5 :CELL-TYPE :CODE))
+((6565 10111 819389000) :INSERT (5 :CELL-LANGUAGE :COMMON-LISP))
+((6565 10111 819392000) :INSERT (5 :CONTENTS ""))
+((6565 10111 819395000) :INSERT (5 :RESULT ""))
+((6565 10118 450241000) :INSERT (6 :CELL-ORDER (5 2 3 4)))
+((6565 10130 531988000) :CHANGE
+ ((5 :CONTENTS "") (5 :CONTENTS "(:h2 \"Chart-related functions\")")))
+((6565 10130 535413000) :CHANGE
+ ((5 :RESULT "")
+  (5 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "undefined function: :H2")))
+     (:VALUES
+      ((:TYPE . ERROR)
+       (:VALUE (CONDITION-TYPE . "UNDEFINED-FUNCTION")
+        (:FORM . "(:H2 \"Chart-related functions\")") (:NAME . ":H2")))))))))
+((6565 10130 535447000) :DELETE (5 :STALE T))
+((6565 10133 352581000) :CHANGE ((5 :CELL-TYPE :CODE) (5 :CELL-TYPE :MARKUP)))
+((6565 10133 376139000) :CHANGE
+ ((5 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "undefined function: :H2")))
+     (:VALUES
+      ((:TYPE . ERROR)
+       (:VALUE (CONDITION-TYPE . "UNDEFINED-FUNCTION")
+        (:FORM . "(:H2 \"Chart-related functions\")") (:NAME . ":H2")))))))
+  (5 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string") (:VALUE . "<h2>Chart-related functions</h2>"))))))))
+((6565 10133 376174000) :DELETE (5 :STALE T))
