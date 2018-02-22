@@ -48,7 +48,7 @@
 	    (:select :id "book-list"
 		     :onchange "displayBook(this.value)"
 		     (:option :value "" "Choose book...")
-		     (loop for (id name) in (ordered-books)
+		     (loop for (id name) in (loaded-books)
 		     	do (htm (:option :value id (str id)))))
 	    (:select :id "book-actions"
 		     :onchange "runBookAction(this.value)"

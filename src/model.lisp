@@ -41,7 +41,7 @@
   (multi-insert! book `((:cell nil) (:cell-type ,cell-type) (:cell-language ,cell-language) (:contents "") (:result ""))))
 
 (defmethod notebook-id ((book notebook))
-  (file-namestring (file-name book)))
+  (namestring (file-name book)))
 
 (defmethod default-package ((book notebook))
   (format nil "(defpackage ~s~%  (:use :cl :fact-base :cl-notebook))" (notebook-name book)))
@@ -122,7 +122,7 @@ If the new name passed in is the same as the books' current name, we don't inser
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar *notebooks* (make-hash-table :test 'equal))
 
-(defun ordered-books ()
+(defun loaded-books ()
   (sort
    (loop for k being the hash-keys of *notebooks*
       for v being the hash-values of *notebooks*
@@ -133,4 +133,4 @@ If the new name passed in is the same as the books' current name, we don't inser
   (setf (gethash (notebook-id book) *notebooks*) book))
 
 (defmethod get-notebook ((name string))
-  (gethash name *notebooks*))
+  (gethash (house::uri-decode name) *notebooks*))

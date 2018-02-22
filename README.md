@@ -69,7 +69,7 @@ TODO - patches welcome, since I'm not a Windows user
 
 ### TODO
 - add a little tutorial to `_notebook` book (or maybe make separate config books)
-- Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
+- Leave notebooks on disk; just figure out their names and load them on demand when opened.
 	- Eval all code and markup cells when opening a notebook
 - Give users an interface to open things up from the local disk (this should simplify a bunch of things :P)
 	- We also need a way to configure which local directories to allow. Command line arg? What does it default to? Probably users' home folder.
