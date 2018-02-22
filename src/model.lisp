@@ -132,5 +132,7 @@ If the new name passed in is the same as the books' current name, we don't inser
 (defmethod register-notebook! ((book notebook))
   (setf (gethash (notebook-id book) *notebooks*) book))
 
-(defmethod get-notebook ((name string))
-  (gethash (house::uri-decode name) *notebooks*))
+(defmethod get-notebook! ((name string))
+  (let ((n (house::uri-decode name)))
+    (or (gethash n *notebooks*)
+        (setf (gethash n *notebooks*) (load-notebook! name)))))

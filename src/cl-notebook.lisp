@@ -2,6 +2,7 @@
 
 ; Basic server-side definitions and handlers
 ;;;;; HTTP Handlers
+;;;;;;;;;; System-level hooks
 (define-json-handler (cl-notebook/system/kill-thread) ()
   (when (and (bt:threadp *front-end-eval-thread*)
 	     (bt:thread-alive-p *front-end-eval-thread*))
@@ -9,6 +10,10 @@
   (publish-update! nil 'killed-eval)
   :ok)
 
+(define-handler (cl-notebook/source :close-socket? nil) ()
+  (subscribe! :cl-notebook-updates sock))
+
+;;;;;;;;;; Server-side hint hooks
 (define-json-handler (cl-notebook/system/complete) ((partial :string) (package :keyword))
   (let ((p (string-upcase partial))
 	(res))
@@ -43,6 +48,7 @@
 	(progn (when (not fresh?) (unintern sym-name))
 	       (hash :error :function-not-found)))))
 
+;;;;;;;;;; Notebook-level hooks
 (define-json-handler (cl-notebook/notebook/rewind) ((book :notebook) (index :integer))
   (hash :facts (rewind-to book index) :history-size (total-entries book) :history-position index :id (notebook-id book)))
 
@@ -57,6 +63,14 @@
     (register-notebook! new)
     (publish-update! new 'new-book :book-name new-name)
     (hash :facts (current new) :history-size (total-entries new) :id (notebook-id new) :book-name new-name)))
+
+(define-json-handler (cl-notebook/notebook/reorder-cells) ((book :notebook) (cell-order :json))
+  (awhen (first (lookup book :b :cell-order))
+    (delete! book it))
+  (insert-new! book :cell-order cell-order)
+  (write! book)
+  (publish-update! book 'reorder-cells :new-order cell-order)
+  :ok)
 
 (define-json-handler (cl-notebook/notebook/new) ()
   (let* ((name (make-unique-name-in *books* "new-book"))
@@ -79,6 +93,7 @@
       (publish-update! book 'rename-book :new-name new-name)))
   :ok)
 
+;;;;;;;;;; Cell-level hooks
 (define-json-handler (cl-notebook/notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
   (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
 	(val-fact (first (lookup book :a cell-id :b :result)))
@@ -119,26 +134,6 @@
       (eval-cell book cell-id (third cont-fact) val-fact cell-lang new-type)))
   :ok)
 
-(define-json-handler (cl-notebook/notebook/new-cell) ((book :notebook) (cell-language :keyword) (cell-type :keyword))
-  (let ((cell-id (new-cell! book :cell-type cell-type :cell-language cell-language)))
-    (write! book)
-    (publish-update! book 'new-cell :cell-id cell-id :cell-type cell-type :cell-language cell-language))
-  :ok)
-
-(define-json-handler (cl-notebook/notebook/reorder-cells) ((book :notebook) (cell-order :json))
-  (awhen (first (lookup book :b :cell-order))
-    (delete! book it))
-  (insert-new! book :cell-order cell-order)
-  (write! book)
-  (publish-update! book 'reorder-cells :new-order cell-order)
-  :ok)
-
-(define-json-handler (cl-notebook/notebook/kill-cell) ((book :notebook) (cell-id :integer))
-  (loop for f in (lookup book :a cell-id) do (delete! book f))
-  (write! book)
-  (publish-update! book 'kill-cell :cell cell-id)
-  :ok)
-
 (define-json-handler (cl-notebook/notebook/change-cell-noise) ((book :notebook) (cell-id :integer) (new-noise :keyword))
   (let ((old-noise-fact (first (lookup book :a cell-id :b :noise)))
 	(new-noise-fact (unless (eq new-noise :normal) (list cell-id :noise new-noise))))
@@ -151,5 +146,14 @@
   (publish-update! book 'change-cell-noise :cell cell-id :new-noise new-noise)
   :ok)
 
-(define-handler (cl-notebook/source :close-socket? nil) ()
-  (subscribe! :cl-notebook-updates sock))
+(define-json-handler (cl-notebook/notebook/new-cell) ((book :notebook) (cell-language :keyword) (cell-type :keyword))
+  (let ((cell-id (new-cell! book :cell-type cell-type :cell-language cell-language)))
+    (write! book)
+    (publish-update! book 'new-cell :cell-id cell-id :cell-type cell-type :cell-language cell-language))
+  :ok)
+
+(define-json-handler (cl-notebook/notebook/kill-cell) ((book :notebook) (cell-id :integer))
+  (loop for f in (lookup book :a cell-id) do (delete! book f))
+  (write! book)
+  (publish-update! book 'kill-cell :cell cell-id)
+  :ok)

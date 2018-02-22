@@ -28,5 +28,5 @@
 (defvar *default-indices* '(:a :b :ab :abc))
 
 (define-http-type (:notebook)
-    :type-expression `(get-notebook ,parameter)
+    :type-expression `(get-notebook! ,parameter)
     :type-assertion  `(typep ,parameter 'notebook))
