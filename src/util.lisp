@@ -108,13 +108,12 @@ Returns primitive type specifications as-is."
 		:new-location)))
 
 (defun stringified-error-prop? (prop-name)
-  (member prop-name
-	  '(:name :new-function :specializers :old-method :datum :expected-type :generic-function)))
+  (member prop-name '(:name :new-function :specializers :old-method :datum :expected-type :generic-function)))
 
 (defun printable-readably? (thing)
   (handler-case
       (let ((*print-readably* t))
-        (prin1-to-string thing))
+        (values t (prin1-to-string thing)))
     (print-not-readable ()
       nil)))
 

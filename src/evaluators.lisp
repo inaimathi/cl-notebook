@@ -46,11 +46,10 @@ It's treated differently in export situations."
 ;;                 (gethash (sb-mop:eql-specializer-object a) h nil)))
 ;;     h))
 
-(defmethod eval-notebook ((book notebook) &optional (cell-type :code))
+(defmethod eval-notebook ((book notebook) &key (cell-type :code))
   (let ((ids (notebook-cell-order book)))
     (loop for cell-id in ids
-       when (and (lookup book :a cell-id :b :cell-language :c :common-lisp)
-		 (lookup book :a cell-id :b :cell-type :c cell-type))
+       when (lookup book :a cell-id :b :cell-type :c cell-type)
        do (let ((stale? (first (lookup book :a cell-id :b :stale :c t)))
 		(res-fact (first (lookup book :a cell-id :b :result)))
 		(*package* (namespace book)))
@@ -58,7 +57,8 @@ It's treated differently in export situations."
 		   (handler-case
 		       (bt:with-timeout (.1)
 			 (front-end-eval
-			  :common-lisp cell-type
+			  (caddar (lookup book :a cell-id :b :cell-language))
+                          cell-type
 			  (caddar (lookup book :a cell-id :b :contents))))
 		     #-sbcl (bordeaux-threads:timeout () :timed-out)
 		     #+sbcl (sb-ext:timeout () :timed-out))))

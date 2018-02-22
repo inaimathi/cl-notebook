@@ -31,7 +31,7 @@ Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
 A quick-ish video demo is available [here](https://vimeo.com/97623064) to get you sort-of-started.
 
-### Sytem Docs (Docs TODO)
+### Sytem Docs
 
 #### Building the Binary
 
@@ -68,11 +68,12 @@ TODO - patches welcome, since I'm not a Windows user
 ##### Cell Compilers
 
 ### TODO
-- add a little tutorial to `_notebook` book
-- probably shouldn't load all notebooks at start time :/
+- add a little tutorial to `_notebook` book (or maybe make separate config books)
+- Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
+	- Eval all code and markup cells when opening a notebook
 - Give users an interface to open things up from the local disk (this should simplify a bunch of things :P)
 	- We also need a way to configure which local directories to allow. Command line arg? What does it default to? Probably users' home folder.
-    - Wait, what? If there's remote users doing stuff here, they can absolutely use Lisp code with shell interfaces to do stupid things with the local disk. The sysadmin will have to restrict this at the user level (as in the user running the public notebook will have to be heavily restricted in some way), so there's not much point in doing it in-program. So, local disk notebooks, full-stop.
+    - Wait, what? If there's remote users doing stuff here, they can absolutely use Lisp code with shell interfaces to do stupid things with the local filesystem. The sysadmin will have to restrict this at the user level (as in the user running the public notebook will have to be heavily restricted in some way), so there's not much point in doing it in-program. So, local disk notebooks, full-stop.
 - Give users an interface to upload new notebooks from their local environments to the notebook instances' local (we need this for the multi-user situation)
 - Need a complete how-to set of videos at some point
 - Port to the proper way of using SSEs (with event tags rather than an action field in the payload)
@@ -86,12 +87,10 @@ TODO - patches welcome, since I'm not a Windows user
 - SVG can work for charts; CSS selectors work the same way as with regular HTML entities AND it can take % dimensions specifications. We basically have no other options for line/pie/doghnut charts.
 
 - Do we want to provide a straight-up scratch REPL for each user?
-	- YES
-	- Also, we need additional logging buffers. It would have made debugging "Lemonade Stand" much easier to have a buffer keeping `:house` logging data
+	- No I don't think so, but we need additional logging buffers. It would have made debugging "Lemonade Stand" much easier to have a buffer keeping `:house` logging data
 - Do we want to differentiate between "someone forked a book" and "someone started a new book"? Right now, there's no difference, but we may want to treat forks differently for multi-user purposes later on.
 
 ##### Bugs
-- cl-who cells do weird stuff with `str` and `htm`. Might be a `front-end-eval` bug
 - Should show the orange border as soon as something is edited in a cell, not just between eval and completion
 - The counter in the client-side timeline doesn't update with newly added history states
 
@@ -101,8 +100,6 @@ TODO - patches welcome, since I'm not a Windows user
 	- Look into [compression options](http://www.cliki.net/compression) for the project part (it'll have to be handled as multiple files)
 - Really REALLY need tags. Named checkpoints that you can jump to in book history. Implemented as part of `:fact-base`, now we need to add the proper interface here (this includes a thing for adding checkpoints, and an addition to the history slider to let it specifically jump to tagged points)
 - Let user configure where to check for a `quicklisp` folder (by default, check `~/quicklisp`, `~/.cl-notebook/quicklisp` and `quicklisp` in CWD)
-- Leave notebooks on disk; just figure out their names and load them on demand when opened. You might need to re-jig naming again as a result of this; the fact that a notebooks' human-readable name is kept INSIDE the notebook will fight you on it
-	- Eval all code and markup cells when opening a notebook
 - Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
 	- Suddenly more relevant because we definitely want incremental updates for proper `quicklisp` use
 - Put together better storage for charts

@@ -120,7 +120,6 @@ If the new name passed in is the same as the books' current name, we don't inser
 
 ;;;;;;;;;; Notebooks table and related functions
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defvar *notebooks* (make-hash-table :test 'equal))
 
 (defun ordered-books ()
