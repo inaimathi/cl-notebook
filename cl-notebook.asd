@@ -21,7 +21,10 @@
                     http-front-end :components
                     ((:file "macros")
                      (:file "css")
-                     (:file "core")))))
+                     (:file "core")
+
+                     (:file "base") (:file "templates") (:file "api")
+                     (:file "pareditesque")))))
 
                  (:file "evaluators")
                  (:file "cl-notebook")
