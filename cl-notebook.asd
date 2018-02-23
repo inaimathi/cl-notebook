@@ -24,7 +24,7 @@
                      (:file "core")
 
                      (:file "base") (:file "templates") (:file "api")
-                     (:file "pareditesque")))))
+                     (:file "notebook-selector") (:file "pareditesque")))))
 
                  (:file "evaluators")
                  (:file "cl-notebook")

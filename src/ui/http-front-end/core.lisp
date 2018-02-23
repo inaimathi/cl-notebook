@@ -20,6 +20,7 @@
       (:script :type "text/javascript" :src "/js/ajax.js")
       (:script :type "text/javascript" :src "/js/core.js")
       (:script :type "text/javascript" :src "/js/pareditesque.js")
+      (:script :type "text/javascript" :src "/js/notebook-selector.js")
       (:script :type "text/javascript" :src "/js/book-actions.js")
       (:script :type "text/javascript" :src "/static/js/native-sortable.js")
 
@@ -43,6 +44,7 @@
       (:div :class "main-controls"
 	    (:input :id "book-history-slider" :onchange "rewindBook(this.value)" :oninput "debouncedRewind(this.value)" :type "range" :min 0 :max 500 :value 500)
 	    (:input :id "book-history-text" :onchange "rewindBook(this.value)")
+            (:span :id "notebook-selector")
 	    (:button :onclick "newCell()" "+ New Cell")
 	    (:button :onclick "newBook()" "+ New Book")
 	    (:select :id "book-list"
