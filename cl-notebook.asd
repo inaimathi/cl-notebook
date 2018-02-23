@@ -16,10 +16,12 @@
                  (:file "util")
 
                  (:module
-                  front-end :components
-                  ((:file "macros")
-                   (:file "css")
-                   (:file "core")))
+                  ui :components
+                  ((:module
+                    http-front-end :components
+                    ((:file "macros")
+                     (:file "css")
+                     (:file "core")))))
 
                  (:file "evaluators")
                  (:file "cl-notebook")

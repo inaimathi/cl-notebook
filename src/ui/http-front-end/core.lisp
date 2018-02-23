@@ -569,7 +569,8 @@
 		      (by-selector "#notebook")
 		      (who-ps-html (:h2 "Notebook '" name "' not found..."))))))
 
-      (defun new-book () (post/json "/cl-notebook/notebook/new" (create) #'notebook!))
+      (defun new-book ()
+        (post/json "/cl-notebook/notebook/new" (create) #'notebook!))
 
       (defun load-book (path)
         (post/json "/cl-notebook/notebook/load" (create :path path) #'notebook!))
