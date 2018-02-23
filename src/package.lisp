@@ -30,3 +30,7 @@
 (define-http-type (:notebook)
     :type-expression `(get-notebook! ,parameter)
     :type-assertion  `(typep ,parameter 'notebook))
+
+(define-http-type (:existing-filepath)
+    :type-expression `(pathname ,parameter)
+    :type-assertion `(cl-fad:file-exists-p ,parameter))

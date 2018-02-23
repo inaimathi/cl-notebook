@@ -76,7 +76,12 @@
   (let* ((name (make-unique-name-in *books* "new-book"))
 	 (book (new-notebook! name)))
     (write! book)
-    (publish-update! nil 'new-book :book-name (pathname-name name))
+    (publish-update! book 'new-book :book-name (notebook-name book))
+    (hash :facts (current book) :history-size (total-entries book) :id (notebook-id book))))
+
+(define-json-handler (cl-notebook/notebook/load) ((path :existing-filepath))
+  (let ((book (load-notebook! path)))
+    (publish-update! book 'new-book :book-name (notebook-name book))
     (hash :facts (current book) :history-size (total-entries book) :id (notebook-id book))))
 
 (define-json-handler (cl-notebook/notebook/repackage) ((book :notebook) (new-package :string))

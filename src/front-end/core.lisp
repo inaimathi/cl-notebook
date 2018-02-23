@@ -571,6 +571,9 @@
 
       (defun new-book () (post/json "/cl-notebook/notebook/new" (create) #'notebook!))
 
+      (defun load-book (path)
+        (post/json "/cl-notebook/notebook/load" (create :path path) #'notebook!))
+
       (defun rename-book (new-name)
 	(post/fork "/cl-notebook/notebook/rename" (create :book (notebook-id *notebook*) :new-name new-name)))
 
@@ -1284,10 +1287,9 @@
 
 	'new-book
 	(lambda (res)
-	  (let ((id (@ res book))
-		(name (@ res book-name)))
+	  (let ((id (@ res book)))
 	    (dom-append (by-selector "#book-list")
-			(who-ps-html (:option :value id name)))))
+			(who-ps-html (:option :value id id)))))
 
 	'rename-book
 	(lambda (res)

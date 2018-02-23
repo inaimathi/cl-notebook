@@ -76,14 +76,6 @@
 (defmethod publish-update! ((book notebook) (action symbol) &rest k/v-pairs)
   (publish-update-internal! (notebook-id book) action k/v-pairs))
 
-(defmethod read-all ((str stream))
-  (let ((eof (gensym "EOF-")))
-    (loop for s-exp = (read str nil eof) until (eq s-exp eof)
-       collect s-exp)))
-
-(defmethod read-all ((str string))
-  (read-all (make-string-input-stream str)))
-
 ;;;;; Error-related
 (defun instance->alist (instance)
   (loop for s in (closer-mop:class-slots (class-of instance))
@@ -142,6 +134,14 @@ Formats the error for front-end display, including a reference to the form."
 		(second (function-lambda-expression fn)))
 	      (ext:arglist fn))
   #+sbcl(sb-introspect:function-lambda-list fn))
+
+(defmethod read-all ((str stream))
+  (let ((eof (gensym "EOF-")))
+    (loop for s-exp = (read str nil eof) until (eq s-exp eof)
+       collect s-exp)))
+
+(defmethod read-all ((str string))
+  (read-all (make-string-input-stream str)))
 
 (defmethod capturing-eval ((str stream))
   "Takes the next s-expression from a stream and tries to evaluate it.
