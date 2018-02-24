@@ -136,10 +136,14 @@
     (defun hide! (elem)
       (setf (@ elem hidden) t))
 
-    (defun by-selector (selector)
-      (chain document (query-selector selector)))
-    (defun by-selector-all (selector)
-      (chain document (query-selector-all selector)))
+    (defun by-selector (a &optional b)
+      (let ((object (if b a document))
+            (selector (or b a)))
+        (chain object (query-selector selector))))
+    (defun by-selector-all (a &optional b)
+      (let ((object (if b a document))
+            (selector (or b a)))
+        (chain object (query-selector-all selector))))
 
     (defun dom-escape (string)
       (when (string? string)
@@ -224,6 +228,12 @@
 	(chain req (open :GET (if params (+ uri "?" (obj->params params)) uri) t))
 	(chain req (send))))
 
+    (defun get/json (uri params callback)
+      (get uri params
+           (lambda (raw)
+             (when (function? callback)
+               (callback (string->obj raw))))))
+
     (defun post (uri params on-success on-fail)
       (let ((req (new (-x-m-l-http-request)))
 	    (encoded-params (obj->params params)))
@@ -246,8 +256,7 @@
       (post uri params
 	    (lambda (raw)
 	      (when (function? on-success)
-		(let ((res (string->obj raw)))
-		  (on-success res))))
+                (on-success (string->obj raw))))
 	    on-fail))
 
     (defun event-source (uri bindings)

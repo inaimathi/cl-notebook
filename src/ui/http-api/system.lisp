@@ -1,0 +1,53 @@
+(in-package #:cl-notebook)
+
+;;;;;;;;;; System-level hooks
+(define-json-handler (cl-notebook/system/kill-thread) ()
+  (when (and (bt:threadp *front-end-eval-thread*)
+	     (bt:thread-alive-p *front-end-eval-thread*))
+    (bt:destroy-thread *front-end-eval-thread*))
+  (publish-update! nil 'killed-eval)
+  :ok)
+
+(define-json-handler (cl-notebook/system/ls) ((dir :existing-directory))
+  (mapcar #'namestring (cl-fad:list-directory dir)))
+
+(define-handler (cl-notebook/source :close-socket? nil) ()
+  (subscribe! :cl-notebook-updates sock))
+
+(define-json-handler (cl-notebook/loaded-books) ()
+  (mapcar #'car (loaded-books)))
+
+;;;;;;;;;; Server-side hint hooks
+(define-json-handler (cl-notebook/system/complete) ((partial :string) (package :keyword))
+  (let ((p (string-upcase partial))
+	(res))
+    (do-symbols (s package)
+      (when (alexandria:starts-with-subseq p (symbol-name s))
+	(push s res)))
+    (sort (mapcar (lambda (s) (string-downcase (symbol-name s)))
+		  (remove-duplicates res))
+	  #'< :key #'length)))
+
+(define-handler (cl-notebook/system/macroexpand-1 :content-type "plain/text") ((expression :string))
+  (format nil "~s" (macroexpand-1 (read-from-string expression))))
+
+(define-handler (cl-notebook/system/macroexpand :content-type "plain/text") ((expression :string))
+  (format nil "~s" (macroexpand (read-from-string expression))))
+
+(define-json-handler (cl-notebook/system/arg-hint) ((name :string) (package :keyword))
+  (multiple-value-bind (sym-name fresh?) (intern (string-upcase name) package)
+    (if (fboundp sym-name)
+	(hash :args (labels ((->names (thing)
+			       (typecase thing
+				 (list (case (car thing)
+					 (&environment (->names (cddr thing)))
+					 (quote
+					  (if (cddr thing)
+					      (->names (cdr thing))
+					      (concatenate 'string "'" (->names (cadr thing)))))
+					 (t (mapcar #'->names thing))))
+				 (symbol (string-downcase (symbol-name thing)))
+				 (t thing))))
+		      (->names (arglist sym-name))))
+	(progn (when (not fresh?) (unintern sym-name))
+	       (hash :error :function-not-found)))))
