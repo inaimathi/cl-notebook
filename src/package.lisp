@@ -34,3 +34,7 @@
 (define-http-type (:existing-filepath)
     :type-expression `(pathname ,parameter)
     :type-assertion `(cl-fad:file-exists-p ,parameter))
+
+(define-http-type (:existing-directory)
+    :type-expression `(pathname ,parameter)
+    :type-assertion `(cl-fad:directory-exists-p ,parameter))
