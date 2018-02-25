@@ -39,8 +39,10 @@
 
      (.notebook-selector :background-color "#eee" :padding 10px)
      (".notebook-selector .current-notebook" :font-weight bolder :margin 0px)
-     (".notebook-selector .loaded-books-list" :list-style-type none :background-color white :height 100px :overflow auto :padding-left 5px)
-     (".notebook-selector .filesystem-list" :list-style-type none :columns 5 :background-color white :padding-left 5px)
+     (".notebook-selector .filesystem-input" :width 90%)
+     (".notebook-selector .loaded-books-list" :list-style-type none :columns "5 100px" :background-color white :padding-left 5px)
+     (".notebook-selector .loaded-books-list li" :padding 5px)
+     (".notebook-selector .filesystem-list" :list-style-type none :columns "5 100px" :background-color white :padding-left 5px)
 
      (.notebook-arg-hint :position absolute :z-index 8 :padding 3px :border "1px solid #ccc" :border-radius 3px :background-color white :font-size small)
      (".notebook-arg-hint span" :margin-right 6px)
