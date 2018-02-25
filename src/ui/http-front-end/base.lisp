@@ -77,8 +77,7 @@
 		;;   all keys of a are in b
 		;;   all keys of b are in a
 		;;   all keys of a and b have the same values
-		nil
-		)))))
+		nil)))))
 
     ;; basic regex stuff
     (defun regex-match (regex string)

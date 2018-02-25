@@ -8,8 +8,22 @@
   (publish-update! nil 'killed-eval)
   :ok)
 
+(define-json-handler (cl-notebook/system/home-path) ()
+  (namestring (user-homedir-pathname)))
+
 (define-json-handler (cl-notebook/system/ls) ((dir :existing-directory))
-  (mapcar #'namestring (cl-fad:list-directory dir)))
+  (let ((dirs nil)
+        (files nil))
+    (loop for f in (cl-fad:list-directory dir)
+       do (let* ((dir (pathname-directory f))
+                 (p (hash :string (namestring f)
+                          :path-type (first dir)
+                          :directory (rest dir)
+                          :name (pathname-name f))))
+            (if (cl-fad:directory-pathname-p f)
+                (push p dirs)
+                (push p files))))
+    (hash :files (nreverse files) :directories (nreverse dirs))))
 
 (define-handler (cl-notebook/source :close-socket? nil) ()
   (subscribe! :cl-notebook-updates sock))

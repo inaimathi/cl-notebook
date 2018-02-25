@@ -44,7 +44,6 @@
       (:div :class "main-controls"
 	    (:input :id "book-history-slider" :onchange "rewindBook(this.value)" :oninput "debouncedRewind(this.value)" :type "range" :min 0 :max 500 :value 500)
 	    (:input :id "book-history-text" :onchange "rewindBook(this.value)")
-            (:span :id "notebook-selector")
 	    (:button :onclick "newCell()" "+ New Cell")
 	    (:button :onclick "newBook()" "+ New Book")
 	    (:select :id "book-list"
@@ -58,7 +57,8 @@
 		     (:optgroup
 		      :label "Export"
 		      (:option :value "export-html" "Export as HTML")
-		      (:option :value "export-lisp" "Export as .lisp"))))
+		      (:option :value "export-lisp" "Export as .lisp")))
+            (:span :id "notebook-selector"))
       (:div :id "macro-expansion" (:textarea :language "commonlisp"))
       (:div :id "notebook")
       (:div :class "footer"
