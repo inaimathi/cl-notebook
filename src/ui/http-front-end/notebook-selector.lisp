@@ -27,10 +27,16 @@
               (+ (join (map directory-template (@ listing :directories)))
                  (join (map file-template (@ listing :files)))))))
 
+      (defun filter-fs-listing (listing prefix)
+        (let ((f (lambda (path) (chain (@ path :string) (starts-with prefix)))))
+          (create :directories (filter f (@ listing :directories))
+                  :files (filter f (@ listing :files)))))
+
       (defun filesystem! (input-elem elem directory)
         (get/json
          "/cl-notebook/system/ls" (create :dir directory)
          (lambda (dat)
+           (console.log "FILTERED" (filter-fs-listing dat (+ directory ".b")))
            (dom-set elem (filesystem-template dat)))))
 
       (defun loaded-books! (elem)
