@@ -56,7 +56,7 @@
     (defun member? (elem thing)
       (if (object? thing)
 	  (in elem thing)
-	  (chain thing (index-of elem))))
+	  (> (chain thing (index-of elem)) -1)))
 
     (defun equal? (a b)
       (let ((type-a (typeof a))
