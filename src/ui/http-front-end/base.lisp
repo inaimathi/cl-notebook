@@ -144,10 +144,6 @@
             (selector (or b a)))
         (chain object (query-selector-all selector))))
 
-    (defun string-escape (string)
-      (when (string? string)
-        (chain (dom-escape string) (replace "/" "\/"))))
-
     (defun dom-escape (string)
       (when (string? string)
 	(chain string

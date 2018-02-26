@@ -15,9 +15,21 @@
     (defvar filesystem-input-change
       (debounce
        (lambda (event elem)
-         (console.log "BLAH" event elem)
-         (let ((filtered (filter-fs-listing *current-fs-listing* (@ elem value))))
-           (render-filesystem! (by-selector ".filesystem-view") filtered)))
+         (let ((filtered (filter-fs-listing *current-fs-listing* (@ elem value)))
+               (key-code (@ event key-code)))
+           (cond
+             ((or (= 13 key-code) (= 8 key-code) (= 46 key-code))
+              (console.log "FOUND MODIFYING NON-CHAR KEYPRESS" key-code "RE-RUNNING ls REQUEST"))
+             ((not (= 0 (@ event char-code)))
+              (console.log "FOUND CHAR KEYPRESS")
+              (render-filesystem! (by-selector ".filesystem-view") filtered)
+              (cond
+                ((and (= (length (@ filtered :directories)) 1)
+                      (= (length (@ filtered :files)) 0))
+                 (console.log "MOVING TO OTHER DIRECTORY" (@ filtered :directories)))
+                ((and (= (length (@ filtered :directories)) 0)
+                      (= (length (@ filtered :files)) 1))
+                 (console.log "OPENING A FILE" (@ filtered :files 1))))))))
        100))
 
     (defun filesystem-directory-click (directory)
@@ -47,8 +59,8 @@
     (defun filesystem-template (listing)
       (who-ps-html
        (:ul :class "filesystem-list"
-            (+ (join (map directory-template (or (@ listing :directories) (list))))
-               (join (map file-template (or (@ listing :files) (list))))))))
+            (+ (join (map directory-template (@ listing :directories)))
+               (join (map file-template (@ listing :files)))))))
 
     (defun filter-fs-listing (listing prefix)
       (let ((f (lambda (path) (chain (@ path :string) (starts-with prefix)))))
@@ -61,9 +73,10 @@
     (defun filesystem! (elem directory)
       (get/json "/cl-notebook/system/ls" (create :dir directory)
                 (lambda (dat)
-                  (console.log "GOT ls RESPONSE!" directory dat)
-                  (setf *current-fs-listing* dat)
-                  (render-filesystem! elem dat))))
+                  (setf *current-fs-listing*
+                        (create :directories (or (@ dat :directories) (list))
+                                :files (or (@ dat :files) (list))))
+                  (render-filesystem! elem *current-fs-listing*))))
 
     (defun loaded-books! (elem current-notebook-id)
       (get/json "/cl-notebook/loaded-books" (create)
