@@ -25,24 +25,20 @@
 
      (.main-controls
       :background-color "#eee" :border "2px solid #ccc" :border-radius "0px 0px 5px 5px"
-      :z-index 10 :position fixed :top -5px :height 15px :padding 0px :margin 0px
-      :width 80% :left 10%)
+      :z-index 10 :position fixed :top -5px :padding 0px :margin 0px
+      :width 80% :left 10% :padding 1%)
      (".main-controls #book-history-slider" :width 80%)
      (".main-controls #book-history-text" :width 10%)
-     (".main-controls:hover" :top -2px :height 6% :padding 1%)
-     (".main-controls button" :visibility hidden :width 16% :min-height 32px)
-     (".main-controls select" :visibility hidden :font-size 1em :width 28% :padding-top 4px :min-height 32px)
-     (".main-controls .ui-element" :visibility hidden :display inline-block :font-size 1em :width 28% :padding-top 4px :min-height 32px)
-     (".main-controls input" :visibility hidden :height auto :margin 0px :padding 0px :margin-bottom 3px)
-     (".main-controls:hover button, .main-controls:hover select, .main-controls:hover input, .main-controls:hover .ui-element"
-      :visibility visible :height auto)
+     (".main-controls button" :width 16% :min-height 32px)
+     (".main-controls select" :font-size 1em :width 28% :padding-top 4px :min-height 32px)
+     (".main-controls .ui-element" :display inline-block :font-size 1em :width 28% :padding-top 4px :min-height 32px)
+     (".main-controls input" :margin 0px :padding 0px :margin-bottom 3px)
 
      (.notebook-selector :background-color "#eee" :padding 10px)
-     (".notebook-selector .current-notebook" :font-weight bolder :margin 0px)
-     (".notebook-selector .filesystem-input" :width 90%)
-     (".notebook-selector .loaded-books-list" :list-style-type none :columns "5 100px" :background-color white :padding-left 5px)
+     (".notebook-selector .filesystem-input" :width 80%)
+     (".notebook-selector .loaded-books-list" :list-style-type none :columns "5 100px" :background-color white :padding-left 5px :max-height 200px :overflow auto)
      (".notebook-selector .loaded-books-list li" :padding 5px)
-     (".notebook-selector .filesystem-list" :list-style-type none :columns "5 100px" :background-color white :padding-left 5px)
+     (".notebook-selector .filesystem-list" :list-style-type none :columns "5 100px" :background-color white :padding-left 5px :margin 0px :max-height 200px :overflow auto)
 
      (.notebook-arg-hint :position absolute :z-index 8 :padding 3px :border "1px solid #ccc" :border-radius 3px :background-color white :font-size small)
      (".notebook-arg-hint span" :margin-right 6px)

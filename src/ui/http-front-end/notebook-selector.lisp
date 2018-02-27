@@ -55,10 +55,9 @@
       (setf (@ (by-selector ".filesystem-input") value) directory)
       (filesystem! (by-selector ".filesystem-view") directory))
 
-    (defun selector-template (current-notebook)
+    (defun selector-template ()
       (who-ps-html
        (:div :class "notebook-selector"
-             (:p :title (@ current-notebook :id) :class "current-notebook" (@ current-notebook :name))
              (:ul :class "loaded-books-list")
              (:input :class "filesystem-input" :onkeypress "filesystemInputChange(event, this)")
              (:span :class "filesystem-view"))))
@@ -116,7 +115,7 @@
 
     (defun notebook-selector! (selector)
       (let ((elem (by-selector selector)))
-        (dom-set elem (selector-template *notebook*))
+        (dom-set elem (selector-template))
         (loaded-books! (by-selector elem ".loaded-books-list") (@ *notebook* id))
         (get/json "/cl-notebook/system/home-path" (create)
                   (lambda (initial-dir)

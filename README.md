@@ -69,12 +69,10 @@ TODO - patches welcome, since I'm not a Windows user
 
 ### TODO
 - add a little tutorial to `_notebook` book (or maybe make separate config books)
-- Leave notebooks on disk; just figure out their names and load them on demand when opened.
-	- Eval all code and markup cells when opening a notebook
 - Give users an interface to open things up from the local disk (this should simplify a bunch of things :P)
-	- We also need a way to configure which local directories to allow. Command line arg? What does it default to? Probably users' home folder.
-    - Wait, what? If there's remote users doing stuff here, they can absolutely use Lisp code with shell interfaces to do stupid things with the local filesystem. The sysadmin will have to restrict this at the user level (as in the user running the public notebook will have to be heavily restricted in some way), so there's not much point in doing it in-program. So, local disk notebooks, full-stop.
+	- Load all books in `~/.cl-notebook/books` automatically on startup. Load others as requested
 - Give users an interface to upload new notebooks from their local environments to the notebook instances' local (we need this for the multi-user situation)
+- Give users ability to specify name and filepath of new notebook when they start one
 - Need a complete how-to set of videos at some point
 - Port to the proper way of using SSEs (with event tags rather than an action field in the payload)
 
