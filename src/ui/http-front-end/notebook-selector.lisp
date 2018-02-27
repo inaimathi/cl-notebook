@@ -4,6 +4,18 @@
   (ps
     (defvar *current-fs-listing* nil)
 
+    (defun common-prefix-of (starting-point strings)
+      (let ((max-prefix (loop for s in strings minimize (length s)))
+            (same-at? (lambda (ix)
+                        (let ((chr (aref strings 0 ix))
+                              (res t))
+                          (loop for s in strings unless (string= (aref s ix) chr) do (setf res f))
+                          res))))
+        (+ starting-point
+           (join
+            (loop for i from (length starting-point) to max-prefix
+               when (same-at? i) collect (aref strings 0 i))))))
+
     (defun notebook-link-template (notebook current-notebook-id)
       (if (equal? current-notebook-id (@ notebook :path))
           (who-ps-html
@@ -21,18 +33,16 @@
                 (fnames (map (lambda (d) (@ d :string)) (@ filtered :files)))
                 (dirnames (map (lambda (d) (@ d :string)) (@ filtered :directories)))
                 (key-code (@ event key-code)))
-           (console.log "KEY CODE" key-code)
            (cond
              ((= 9 key-code)
               (chain event (prevent-default))
               (chain elem (focus))
-              (console.log "FOUND TAB KEYPRESS" "TODO"))
+              (setf (@ elem value) (common-prefix-of val (chain fnames (concat dirnames)))))
              ((and (= 13 key-code) (member? val fnames))
               (setf (@ window location href) (+ "/#book=" val)))
              ((and (= 13 key-code) (member? dval dirnames))
               (filesystem! (by-selector ".filesystem-view") dval))
              ((or (= 8 key-code) (= 46 key-code))
-              (console.log "FOUND DELETING NON-CHAR KEYPRESS" key-code "RE-RUNNING ls REQUEST")
               (filesystem!
                (by-selector ".filesystem-view")
                (+ (chain val (split "/") (slice 0 -1) (join "/")) "/")
@@ -43,7 +53,6 @@
                 (cond
                   ((and (= (length (@ filtered :directories)) 1)
                         (= (length (@ filtered :files)) 0))
-                   (console.log "FOUND UNIQUE DIRECTORY")
                    (setf (@ elem value) (@ filtered :directories 0 :string))
                    (filesystem! (by-selector ".filesystem-view") (@ filtered :directories 0 :string)))
                   ((and (= (length (@ filtered :directories)) 0)
