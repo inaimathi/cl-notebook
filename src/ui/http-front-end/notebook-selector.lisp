@@ -90,9 +90,11 @@
                (join (map file-template (@ listing :files)))))))
 
     (defun filter-fs-listing (listing prefix)
-      (let ((f (lambda (path) (chain (@ path :string) (starts-with prefix)))))
-        (create :directories (filter f (@ listing :directories))
-                :files (filter f (@ listing :files)))))
+      (if listing
+          (let ((f (lambda (path) (chain (@ path :string) (starts-with prefix)))))
+            (create :directories (filter f (@ listing :directories))
+                    :files (filter f (@ listing :files))))
+          (create :directories (list) :files (list))))
 
     (defun render-filesystem! (elem listing)
       (dom-set elem (filesystem-template listing)))

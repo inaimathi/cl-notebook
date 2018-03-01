@@ -18,6 +18,9 @@
                  (:module
                   ui :components
                   ((:module
+                    http-api :components
+                    ((:file "system")))
+                   (:module
                     http-front-end :components
                     ((:file "macros")
                      (:file "css")
