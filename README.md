@@ -78,6 +78,8 @@ TODO - patches welcome, since I'm not a Windows user
 - add a default code cell to each newly created book
 - when a cell is clicked, show its control halo (this'll make mobile use possible)
 - Move charts css out to the charts notebook along with the implementation code
+- Add support for more cell types; at minimum `markdown`, and javascript would probably also do nicely
+- Expose hooks so that notebooks can make changes to the front-end CSS/javascript system
 - Need a complete how-to set of videos at some point
 - Port to the proper way of using SSEs (with event tags rather than an action field in the payload)
 
