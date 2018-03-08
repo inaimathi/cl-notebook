@@ -41,16 +41,18 @@
       (:script :type "text/javascript" :src "/static/js/addons/runmode/runmode.js"))
 
      (:body
+      (:div :id "macro-expansion" (:textarea :language "commonlisp"))
+      (:div :id "notebook")
       (:div :class "main-controls"
 	    (:input :id "book-history-slider" :onchange "rewindBook(this.value)" :oninput "debouncedRewind(this.value)" :type "range" :min 0 :max 500 :value 500)
-	    (:input :id "book-history-text" :onchange "rewindBook(this.value)")
 	    (:button :onclick "newCell()" "+ New Cell")
 	    (:button :onclick "newBook()" "+ New Book")
+            ;; (:button :id "notebook-selector")
 	    (:select :id "book-list"
-		     :onchange "displayBook(this.value)"
-		     (:option :value "" "Choose book...")
-		     (loop for (id name) in (loaded-books)
-		     	do (htm (:option :value id (str id)))))
+	             :onchange "displayBook(this.value)"
+	             (:option :value "" "Choose book...")
+	             (loop for (id name) in (loaded-books)
+	             	do (htm (:option :value id (str id)))))
 	    (:select :id "book-actions"
 		     :onchange "runBookAction(this.value)"
 		     (:option :value "" "Stuff...")
@@ -58,13 +60,10 @@
 		      :label "Export"
 		      (:option :value "export-html" "Export as HTML")
 		      (:option :value "export-lisp" "Export as .lisp")))
-            (:span :id "notebook-selector"))
-      (:div :id "macro-expansion" (:textarea :language "commonlisp"))
-      (:div :id "notebook")
-      (:div :class "footer"
-	    (:span :class "notice" "Processing")
-	    (:img :src "/static/img/dots.png")
-	    (:button :onclick "killThread()" :class "right" "! Abort"))))))
+            (:div :class "thread-controls"
+                  (:span :class "notice" "Processing")
+                  (:img :src "/static/img/dots.png")
+                  (:button :onclick "killThread()" :class "right" "! Abort")))))))
 
 (define-handler (js/core.js :content-type "application/javascript") ()
   (ps
@@ -319,8 +318,7 @@
 	     (id (@ raw id)))
 	(chain slider (set-attribute :max count))
 	(setf (@ *notebook* id) id
-	      (@ slider value) pos
-	      (@ (by-selector "#book-history-text") value) pos)
+	      (@ slider value) pos)
 	(hide! (by-selector ".book-title input"))
 	(setup-package-mirror!)
 	(set-page-hash (create :book id))))
@@ -395,12 +393,12 @@
 	      (setf (@ cell noise) (@ res new-noise))
 	      (dom-replace-cell-value cell))))
 	'starting-eval
-	(lambda (res) (show-footer!))
+	(lambda (res) (show-thread-controls!))
 	'killed-eval
-	(lambda (res) (hide-footer!))
+	(lambda (res) (hide-thread-controls!))
 	'finished-eval
 	(lambda (res)
-	  (hide-footer!)
+	  (hide-thread-controls!)
 	  (when (relevant-event? res)
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
 	      (setf (@ cell contents) (@ res contents)
@@ -410,7 +408,7 @@
 	      (dom-replace-cell-value cell))))
 	'finished-package-eval
 	(lambda (res)
-	  (hide-footer!)
+	  (hide-thread-controls!)
 	  (let ((id (@ res book))
 		(new-package (@ res contents))
 		(err (@ res result)))
@@ -423,11 +421,11 @@
 		  (hide-title-input)))))
 
 	'loading-package
-	(lambda (res) (show-footer! (+ "Loading package '" (@ res package) "'")))
+	(lambda (res) (show-thread-controls! (+ "Loading package '" (@ res package) "'")))
 	'finished-loading-package
-	(lambda (res) (hide-footer!))
+	(lambda (res) (hide-thread-controls!))
 	'package-load-failed
-	(lambda (res) (hide-footer!))
+	(lambda (res) (hide-thread-controls!))
 
 	'content-changed
 	(lambda (res)
@@ -521,7 +519,7 @@
 		 100)))
        ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
        (notebook-events)
-       (hide-footer!)
+       (hide-thread-controls!)
        (hide-macro-expansion!)
        (chain
 	(by-selector "body")

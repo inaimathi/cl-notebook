@@ -25,20 +25,30 @@
 
      (.main-controls
       :background-color "#eee" :border "2px solid #ccc" :border-radius "0px 0px 5px 5px"
-      :z-index 10 :position fixed :top -5px :padding 0px :margin 0px
-      :width 80% :left 10% :padding 1%)
-     (".main-controls #book-history-slider" :width 80%)
-     (".main-controls #book-history-text" :width 10%)
-     (".main-controls button" :width 16% :min-height 32px)
-     (".main-controls select" :font-size 1em :width 28% :padding-top 4px :min-height 32px)
-     (".main-controls .ui-element" :display inline-block :font-size 1em :width 28% :padding-top 4px :min-height 32px)
+      :z-index 10 :position fixed :bottom 0px :padding 0px :margin 0px
+      :width 100% :padding 1%)
+     (".main-controls #book-history-slider" :width 98% :margin "5px 0px")
+     (".main-controls button" :width 20% :min-height 32px)
+     (".main-controls select" :font-size 1em :width 24% :padding-top 4px :min-height 32px)
+     (".main-controls .ui-element" :font-size 1em :width 28% :padding-top 4px :min-height 32px)
      (".main-controls input" :margin 0px :padding 0px :margin-bottom 3px)
 
-     (.notebook-selector :background-color "#eee" :padding 10px)
+     (.notebook-selector :background-color "#eee" :padding 10px :max-height 80vh)
      (".notebook-selector .filesystem-input" :width 80%)
-     (".notebook-selector .loaded-books-list" :list-style-type none :columns "5 100px" :background-color white :padding-left 5px :max-height 200px :overflow auto)
+     (".notebook-selector .loaded-books-list" :list-style-type none :columns "5 100px" :background-color white :padding-left 5px :height 20% :overflow auto)
      (".notebook-selector .loaded-books-list li" :padding 5px)
-     (".notebook-selector .filesystem-list" :list-style-type none :columns "5 100px" :background-color white :padding-left 5px :margin 0px :max-height 200px :overflow auto)
+     (".notebook-selector .filesystem-list" :list-style-type none :columns "5 100px" :background-color white :padding-left 5px :margin 0px :height 50% :overflow auto)
+
+     (.thread-controls :padding "8px 0px" :border-radius "5px"
+                       :font-weight bold :color "rgba(255, 255, 255, .6)"
+                       :width 98% :background-color "rgba(50, 50, 200, .4)" :border "2px solid rgba(50, 50, 200, .6)"
+                       :margin-top 10px)
+     (".thread-controls .notice" :padding-left 5px)
+     (".thread-controls img" :height 1.6em :opacity .6)
+     (".thread-controls button" :background-color "rgba(50, 50, 200, .4)" :font-size 1em
+                                :color "rgba(255, 255, 255, .6)" :border-color "rgba(255, 255, 255, .6)"
+                                :margin-right 8px)
+     (".thread-controls button:hover" :border-color white :color white :background-color "rgba(75, 75, 200, .4)")
 
      (.notebook-arg-hint :position absolute :z-index 8 :padding 3px :border "1px solid #ccc" :border-radius 3px :background-color white :font-size small)
      (".notebook-arg-hint span" :margin-right 6px)
@@ -46,17 +56,7 @@
      (".notebook-arg-hint .name")
      (".notebook-arg-hint .modifier" :font-style oblique)
 
-     (.footer :position fixed :bottom 1% :z-index 10 :padding 2px :border-radius "5px"
-	      :font-weight bold :color "rgba(255, 255, 255, .6)"
-	      :width 80% :margin-left 10%
-	      :background-color "rgba(50, 50, 200, .4)" :border "2px solid rgba(50, 50, 200, .6)")
-     (".footer .notice" :padding-left 5px :display inline-block)
-     (".footer img" :height 1.6em :opacity .6 :margin-bottom -.3em :margin-left -5px)
-     (".footer button" :background-color "rgba(50, 50, 200, .4)" :font-size 1em
-		       :color "rgba(255, 255, 255, .6)" :border-color "rgba(255, 255, 255, .6)")
-     (".footer button:hover" :border-color white :color white :background-color "rgba(75, 75, 200, .4)")
-
-     (.cells :list-style-type none :padding 0px :margin 0px)
+     (.cells :list-style-type none :padding 0px :margin 0px :margin-bottom 20%)
      (".cells .cell" :padding 5px :margin-bottom 10px :border-top "3px solid transparent" :background-color "#fff")
      (".cells .cell.stale" :border "2px solid orange")
      (".cells .cell.code" :background-color "#eee")

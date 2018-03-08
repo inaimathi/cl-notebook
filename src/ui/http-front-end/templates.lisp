@@ -144,12 +144,12 @@
 	  (cell-markup-template cell)
 	  (cell-code-template cell)))
 
-    (defun show-footer! (&optional (notice "Processing"))
-      (dom-replace (by-selector ".footer .notice") (who-ps-html (:span :class "notice" notice)))
-      (show! (by-selector ".footer")))
+    (defun show-thread-controls! (&optional (notice "Processing"))
+      (dom-replace (by-selector ".thread-controls .notice") (who-ps-html (:span :class "notice" notice)))
+      (show! (by-selector ".thread-controls")))
 
-    (defun hide-footer! ()
-      (hide! (by-selector ".footer")))
+    (defun hide-thread-controls! ()
+      (hide! (by-selector ".thread-controls")))
 
     (defun show-macro-expansion! ()
       (show! (by-selector "#macro-expansion")))
