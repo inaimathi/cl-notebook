@@ -117,6 +117,9 @@
 	(set-page-hash (create :book book-name))
 	(hash-updated)))
 
+    (defun hide-open-book-menu! ()
+      (dom-set (by-selector "#notebook-selector") ""))
+
     (defun toggle-open-book-menu ()
       (let ((el (by-selector "#notebook-selector")))
         (if (dom-empty? el)
@@ -524,6 +527,7 @@
 			 (clear-selection)
 			 (hide-title-input)
 			 (hide-macro-expansion!)
+                         (hide-open-book-menu!)
 			 (map (lambda (cell)
 				(with-slots (id cell-type) cell
 				  (when (= 'markup cell-type)
