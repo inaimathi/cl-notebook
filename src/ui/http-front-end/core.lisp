@@ -44,10 +44,11 @@
       (:div :id "macro-expansion" (:textarea :language "commonlisp"))
       (:div :id "notebook")
       (:div :class "main-controls"
+            (:div :id "notebook-selector")
 	    (:input :id "book-history-slider" :onchange "rewindBook(this.value)" :oninput "debouncedRewind(this.value)" :type "range" :min 0 :max 500 :value 500)
 	    (:button :onclick "newCell()" "+ New Cell")
 	    (:button :onclick "newBook()" "+ New Book")
-            ;; (:button :id "notebook-selector")
+            (:button :onclick "toggleOpenBookMenu()" "Open Book")
 	    (:select :id "book-list"
 	             :onchange "displayBook(this.value)"
 	             (:option :value "" "Choose book...")
@@ -121,10 +122,17 @@
 	(set-page-hash (create :book book-name))
 	(hash-updated)))
 
+    (defun toggle-open-book-menu ()
+      (let ((el (by-selector "#notebook-selector")))
+        (if (dom-empty? el)
+            (notebook-selector! "#notebook-selector")
+            (dom-set el ""))))
+
     (defun hash-updated ()
       (let ((book-name (@ (get-page-hash) :book)))
 	(when book-name
-	  (notebook/current book-name))))
+	  (notebook/current book-name))
+        (dom-set (by-selector "#notebook-selector") "")))
 
     (defun dom-replace-cell-value (cell)
       (when (@ cell result)

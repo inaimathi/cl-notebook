@@ -144,6 +144,9 @@
             (selector (or b a)))
         (chain object (query-selector-all selector))))
 
+    (defun dom-empty? (elem)
+      (string= "" (@ elem inner-h-t-m-l)))
+
     (defun dom-escape (string)
       (when (string? string)
 	(chain string
