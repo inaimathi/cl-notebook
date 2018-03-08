@@ -72,8 +72,10 @@ TODO - patches welcome, since I'm not a Windows user
 - Give users an interface to upload new notebooks from their local environments to the notebook instances' local (we need this for the multi-user situation)
 - Give users ability to specify name and filepath of new notebook when they start one
 - add a little tutorial to `_notebook` book (or maybe make separate config books)
+	- Config books is the right answer I think; we should have a `_welcome`, followed by a bunch of module books (including `charts`, and maybe `minibuffer` at least)
 - add a default code cell to each newly created book
 - when a cell is clicked, show its control halo (this'll make mobile use possible)
+- Move charts css out to the charts notebook along with the implementation code
 - Need a complete how-to set of videos at some point
 - Port to the proper way of using SSEs (with event tags rather than an action field in the payload)
 
