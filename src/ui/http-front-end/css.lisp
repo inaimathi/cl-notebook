@@ -5,7 +5,7 @@
 
 (define-handler (css/notebook.css :content-type "text/css") ()
   (cl-css:css
-   `((body :font-family sans-serif)
+   `((body :font-family sans-serif :overflow-x hidden)
 
      ("button" ,@+css-input+ :min-width 34px :font-size 1em :float left :margin-right 1% :color "#666" :cursor pointer)
      ("button.right" :float right)
