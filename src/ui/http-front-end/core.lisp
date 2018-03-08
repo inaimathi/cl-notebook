@@ -111,6 +111,24 @@
 		       (dom-replace (by-selector ".book-title") (notebook-title-template (@ res book-name)))
 		       (post/json uri args on-success on-fail)))))
 
+    ;; cl-notebook specific events
+    (defun hash-updated ()
+      (let ((book-name (@ (get-page-hash) :book)))
+	(when book-name
+	  (notebook/current book-name))
+        (dom-set (by-selector "#notebook-selector") "")))
+
+    (defun esc-pressed ()
+      (clear-selection)
+      (hide-title-input)
+      (hide-macro-expansion!)
+      (hide-open-book-menu!)
+      (map (lambda (cell)
+             (with-slots (id cell-type) cell
+               (when (= 'markup cell-type)
+                 (hide-editor id))))
+           (notebook-cells *notebook*)))
+
     ;; cl-notebook specific DOM manipulation
     (defun display-book (book-name)
       (when book-name
@@ -125,12 +143,6 @@
         (if (dom-empty? el)
             (notebook-selector! "#notebook-selector")
             (dom-set el ""))))
-
-    (defun hash-updated ()
-      (let ((book-name (@ (get-page-hash) :book)))
-	(when book-name
-	  (notebook/current book-name))
-        (dom-set (by-selector "#notebook-selector") "")))
 
     (defun dom-replace-cell-value (cell)
       (when (@ cell result)
@@ -523,16 +535,7 @@
 	(by-selector "body")
 	(add-event-listener
 	 :keyup (key-listener
-		 <esc> (progn
-			 (clear-selection)
-			 (hide-title-input)
-			 (hide-macro-expansion!)
-                         (hide-open-book-menu!)
-			 (map (lambda (cell)
-				(with-slots (id cell-type) cell
-				  (when (= 'markup cell-type)
-				    (hide-editor id))))
-			      (notebook-cells *notebook*))))))
+		 <esc> (esc-pressed))))
 
        (unless (get-page-hash)
          (get/json
