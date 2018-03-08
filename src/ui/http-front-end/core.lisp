@@ -49,11 +49,6 @@
 	    (:button :onclick "newCell()" "+ New Cell")
 	    (:button :onclick "newBook()" "+ New Book")
             (:button :onclick "toggleOpenBookMenu()" "Open Book")
-	    (:select :id "book-list"
-	             :onchange "displayBook(this.value)"
-	             (:option :value "" "Choose book...")
-	             (loop for (id name) in (loaded-books)
-	             	do (htm (:option :value id (str id)))))
 	    (:select :id "book-actions"
 		     :onchange "runBookAction(this.value)"
 		     (:option :value "" "Stuff...")
@@ -349,10 +344,6 @@
 	(surgical! raw)
 	(setf document.title (+ (notebook-name *notebook*) " - cl-notebook"))
 	(nativesortable (by-selector "ul.cells"))
-	(map (lambda (opt) (chain opt (remove-attribute :selected)))
-	     (by-selector-all "#book-list option"))
-	(chain (by-selector (+ "#book-list option[value='" (notebook-id *notebook*) "']"))
-	       (set-attribute :selected "selected"))
 	(map (lambda (cell)
 	       (with-slots (id cell-type) cell
 		 (setup-cell-mirror! cell)
@@ -461,8 +452,7 @@
 	'new-book
 	(lambda (res)
 	  (let ((id (@ res book)))
-	    (dom-append (by-selector "#book-list")
-			(who-ps-html (:option :value id id)))))
+	    (console.log "NEW BOOK CREATED" book)))
 
 	'rename-book
 	(lambda (res)
@@ -471,10 +461,7 @@
 	    (when (relevant-event? res)
 	      (dom-replace (by-selector ".book-title") (notebook-title-template new-name))
 	      (set-notebook-name *notebook* new-name)
-	      (hide-title-input))
-	    (chain (by-selector (+ "#book-list option[value='" id "']")) (remove))
-	    (dom-append (by-selector "#book-list")
-			(who-ps-html (:option :value id new-name))))))))
+	      (hide-title-input)))))))
 
     (defvar *warning-filter*
       (lambda (w)
@@ -544,7 +531,10 @@
 			      (notebook-cells *notebook*))))))
 
        (unless (get-page-hash)
-	 (set-page-hash (create :book (chain (@ (by-selector-all "#book-list option") 1) (get-attribute :value)))))
+         (get/json
+          "/cl-notebook/loaded-books" (create)
+          (lambda (dat)
+            (set-page-hash (create :book (@ dat 0 path))))))
        (setup-macro-expansion-mirror!)
        (setf (@ window onhashchange) #'hash-updated)
        (hash-updated)))))

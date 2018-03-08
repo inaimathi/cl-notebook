@@ -42,9 +42,6 @@
 	(post/json "/cl-notebook/notebook/current" (create :book name)
 		   #'notebook!
 		   (lambda (res)
-		     ($aif (by-selector "#book-list option[selected='selected']")
-			   (chain it (remove-attribute :selected)))
-		     (setf (@ (by-selector "#book-list") selected-index) 0)
 		     (dom-set
 		      (by-selector "#notebook")
 		      (who-ps-html (:h2 "Notebook '" name "' not found..."))))))

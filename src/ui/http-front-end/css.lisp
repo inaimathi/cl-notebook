@@ -18,7 +18,7 @@
 
      (input.text ,@+css-input+ :padding 3px)
 
-     (.book-title :margin "40px 10px 5px 5px" :padding 0px)
+     (.book-title :margin "10px 10px 5px 5px" :padding 0px)
      (".book-title h1" :cursor pointer :margin 0px :margin-bottom 5px :padding 0px)
      (".book-title input" :margin-bottom 5px :width 50%)
      (.book-package :margin "0px 5px 10px 5px" :padding 0px)
