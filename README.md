@@ -69,8 +69,10 @@ TODO - patches welcome, since I'm not a Windows user
 
 ### TODO (also, this section should eventually be moved to the github issue tracker)
 
-- Give users an interface to upload new notebooks from their local environments to the notebook instances' local (we need this for the multi-user situation)
 - Give users ability to specify name and filepath of new notebook when they start one
+	- You can do this almost trivially by letting them open nonexistent files in the `open` dialog, and having that create a new book
+- BUG: if you're viewing an existing but unloaded book at server restart, it doesn't get loaded (it should the first time its viewed)
+- Give users an interface to upload new notebooks from their local environments to the notebook instances' local (we need this for the multi-user situation)
 - add a little tutorial to `_notebook` book (or maybe make separate config books)
 	- Config books is the right answer I think; we should have a `_welcome`, followed by a bunch of module books (including `charts`, and maybe `minibuffer` at least)
 - add a default code cell to each newly created book
