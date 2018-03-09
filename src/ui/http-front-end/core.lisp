@@ -46,9 +46,8 @@
       (:div :class "main-controls"
             (:div :id "notebook-selector")
 	    (:input :id "book-history-slider" :onchange "rewindBook(this.value)" :oninput "debouncedRewind(this.value)" :type "range" :min 0 :max 500 :value 500)
-	    (:button :onclick "newCell()" "+ New Cell")
-	    (:button :onclick "newBook()" "+ New Book")
-            (:button :onclick "toggleOpenBookMenu()" "Open Book")
+	    (:button :onclick "newCell()" "> New Cell")
+            (:button :onclick "toggleOpenBookMenu()" "> Open Book")
 	    (:select :id "book-actions"
 		     :onchange "runBookAction(this.value)"
 		     (:option :value "" "Stuff...")

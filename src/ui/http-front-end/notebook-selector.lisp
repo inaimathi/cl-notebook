@@ -42,6 +42,8 @@
               (setf (@ window location href) (+ "/#book=" val)))
              ((and (= 13 key-code) (member? dval dirnames))
               (filesystem! (by-selector ".filesystem-view") dval))
+             ((and (= 13 key-code))
+              (new-book val))
              ((or (= 8 key-code) (= 46 key-code))
               (filesystem!
                (by-selector ".filesystem-view")
