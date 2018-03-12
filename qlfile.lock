@@ -1,0 +1,25 @@
+("quicklisp" .
+ (:class qlot.source.ql:source-ql-all
+  :initargs (:project-name "quicklisp" :%version :latest)
+  :version "2018-02-28"))
+("house" .
+ (:class qlot.source.github:source-github
+  :initargs (:project-name "house" :repos "inaimathi/house" :ref nil :branch nil :tag nil)
+  :version "github-fb47533304b4580b24d7c95eef93397fd647856e"
+  :repos "inaimathi/house"
+  :url "https://github.com/inaimathi/house/archive/fb47533304b4580b24d7c95eef93397fd647856e.tar.gz"
+  :ref "fb47533304b4580b24d7c95eef93397fd647856e"))
+("fact-base" .
+ (:class qlot.source.github:source-github
+  :initargs (:project-name "fact-base" :repos "inaimathi/fact-base" :ref nil :branch nil :tag nil)
+  :version "github-fb7e2996b61ee1974084a3c4d84569cc2b91e5ca"
+  :repos "inaimathi/fact-base"
+  :url "https://github.com/inaimathi/fact-base/archive/fb7e2996b61ee1974084a3c4d84569cc2b91e5ca.tar.gz"
+  :ref "fb7e2996b61ee1974084a3c4d84569cc2b91e5ca"))
+("defmain" .
+ (:class qlot.source.github:source-github
+  :initargs (:project-name "defmain" :repos "40ants/defmain" :ref nil :branch nil :tag nil)
+  :version "github-38efd1723c921984ec30000f859a894a8cda73ee"
+  :repos "40ants/defmain"
+  :url "https://github.com/40ants/defmain/archive/38efd1723c921984ec30000f859a894a8cda73ee.tar.gz"
+  :ref "38efd1723c921984ec30000f859a894a8cda73ee"))

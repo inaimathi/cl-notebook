@@ -21,13 +21,18 @@ Download [this](http://static.inaimathi.ca/cl-notebook-binaries/), run it (if yo
 
 **Or**
 
-You need to install the [`house` server](https://github.com/Inaimathi/house), the [`fact-base` triple-store](https://github.com/Inaimathi/fact-base) and [this repo](https://github.com/Inaimathi/cl-notebook) by cloning them.
+You need to install [qlot](https://github.com/fukamachi/qlot) and [roswell](https://github.com/roswell/roswell) to mange Common Lisp distributions. They are usefull not only for running cl-notebook, but for any other CL project.
 
-The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/), so you should then be able to hop into a lisp and do `(ql:quickload :cl-notebook)`, followed by `(cl-notebook:main)`. That'll start a server listening.
+Then clone [cl-notebook](https://github.com/Inaimathi/cl-notebook) and in it's directory do:
+
+```
+qlot install
+qlot exec roswell/cl-notebook.ros --port 8080
+```
 
 **Then**
 
-Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
+Hop into a browser and go to `localhost:8080/` (or whatever port you chose)
 
 A quick-ish video demo is available [here](https://vimeo.com/97623064) to get you sort-of-started.
 
@@ -35,30 +40,14 @@ A quick-ish video demo is available [here](https://vimeo.com/97623064) to get yo
 
 #### Building the Binary
 
-In order to build the `cl-notebook` binary, you need to
+In order to build the `cl-notebook` binary, you need to:
 
-1. Install a Common Lisp (I suggest, and have only tried this with, [`sbcl`](http://www.sbcl.org/platform-table.html))
-2. Install and build [`buildapp`](https://www.xach.com/lisp/buildapp/)
-3. Create an appropriate `build.manifest` file for loading `cl-notebook`
-4. Call buildapp with that `build.manifest` file, along with
-	- a bunch of `--load-system` calls that include everything `cl-notebook` needs
-    - an `--eval` call to `cl-notebook::read-statics` to include all the associated static files along with the binary
-    - an `--entry` of `cl-notebook:main`
-    - an `--output` of your choice of binary name (I suggest "`cl-notebook`")
+1. Run `qlot exec ros build roswell/cl-notebook.ros`.
 
-That will create a binary with the appropriate name that you can directly run on any machine of your OS and processor architecture.
+   That will create a binary with the appropriate name that you can directly run on any machine of your OS and processor architecture.
+2. Grab your binary at `roswell/cl-notebook`.
 
-##### Linux
-
-If you're on a Debian-based linux distro, there is a `build.lisp` and `build.sh` included in the `build/` subdirectory of this repo that do most of the above for you. All you need to do is make sure to install `sbcl`, then call `sh build.sh` in the `build` directory. This will result in a `buildapp` binary and a `cl-notebook` binary being generated for you. The `cl-notebook` binary can then be run on any linux machine without worrying about installing a Lisp.
-
-##### OS X
-
-TODO - patches welcome, since I'm not an OS X user
-
-##### Windows
-
-TODO - patches welcome, since I'm not a Windows user
+This should work under the Linux, OSX and Windows.
 
 #### Source Deployment
 #### Usage
