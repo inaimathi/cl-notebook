@@ -139,9 +139,7 @@ If the new name passed in is the same as the books' current name, we don't inser
   (setf (gethash (notebook-id book) *notebooks*) book))
 
 (defmethod get-notebook! ((name string))
-  (format t "GETTING NOTEBOOK ~s~%" name)
   (let ((n (house::uri-decode name)))
-    (format t "  DECODED ~s~%" n)
     (aif (gethash n *notebooks*)
          it
          (let ((book (load-notebook! (pathname n))))
