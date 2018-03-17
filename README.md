@@ -69,12 +69,11 @@ TODO - patches welcome, since I'm not a Windows user
 
 ### TODO (also, this section should eventually be moved to the github issue tracker)
 
-- BUG: loading an existing but unloaded book with new packages in it causes loading hiccups after server restart time.
-	- We should store type tags as strings (not symbols) on disk to avoid some of this mess. That would make sure we can load a notebook before we have to initialize its dependence packages.
-    - Because of the way we handle this, `quicklisp` is now basically a requirement of `cl-notebook`. We're already loading it as part of `main`
-    - We should request the latest one from `https://beta.quicklisp.org/quicklisp.lisp` instead of packaging one with the static files in this repo. That was a pretty bad hack in retrospect.
 - Move charts css out to the charts notebook along with the implementation code
 - Expose hooks so that notebooks can make changes to the front-end CSS/javascript system
+- BUG: loading an existing but unloaded book with new packages in it causes loading hiccups after server restart time.
+    - Because of the way we handle this, `quicklisp` is now basically a requirement of `cl-notebook`. We're already loading it as part of `main`
+    - We should request the latest one from `https://beta.quicklisp.org/quicklisp.lisp` instead of packaging one with the static files in this repo. That was a pretty bad hack in retrospect.
 - Triage the old bugs (do they still happen? If so; prioritize)
 - add a little tutorial to `_notebook` book (or maybe make separate config books)
 	- Config books is the right answer I think; we should have a `_welcome`, followed by a bunch of module books (including `charts`, and maybe `minibuffer` at least)
