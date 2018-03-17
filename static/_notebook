@@ -10,7 +10,7 @@
  ((2 :CONTENTS "")
   (2 :CONTENTS
    "(defun draw-bar-graph (label/value-pairs &key x-axis y-axis title y-max)
-  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
+  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs
 				   maximize v into m sum 1 into s
 				   finally (return (list m s)))
     (let* ((h (or y-max (max 1 max))) ;; we want to handle the case where max turns out to be 0
@@ -50,7 +50,7 @@
  ((3 :CONTENTS "")
   (3 :CONTENTS
    "(defun draw-svg-bar-graph (label/value-pairs &key x-axis y-axis title y-max)
-  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
+  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs
 				   maximize v into m sum 1 into s
 				   finally (return (list m s)))
     (let* ((h (or y-max (max 1 max)))
@@ -193,7 +193,7 @@
 ((6565 11480 749227000) :CHANGE
  ((2 :CONTENTS
    "(defun draw-bar-graph (label/value-pairs &key x-axis y-axis title y-max)
-  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
+  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs
 				   maximize v into m sum 1 into s
 				   finally (return (list m s)))
     (let* ((h (or y-max (max 1 max))) ;; we want to handle the case where max turns out to be 0
@@ -212,7 +212,7 @@
 				     (:div :class \"label\" :style (inline-css `(,@(when (< i (* 3 (/ len 4))) '(:white-space nowrap))))
 					   (fmt \"~a (~a)\" label value)))))))))))")
   (2 :CONTENTS "(defun draw-bar-graph (label/value-pairs &key title y-max)
-  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
+  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs
 				   maximize v into m sum 1 into s
 				   finally (return (list m s)))
     (let* ((h (or y-max (max 1 max))) ;; we want to handle the case where max turns out to be 0
@@ -251,7 +251,7 @@
 ((6565 11482 569715000) :CHANGE
  ((3 :CONTENTS
    "(defun draw-svg-bar-graph (label/value-pairs &key x-axis y-axis title y-max)
-  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
+  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs
 				   maximize v into m sum 1 into s
 				   finally (return (list m s)))
     (let* ((h (or y-max (max 1 max)))
@@ -267,7 +267,7 @@
 			       (:rect :x x :y (% (round (* 100 (/ (- h value) h)))) :width (% bar-width) :height (% (round (* 100 (/ value h)))))
 			       (:text :class \"label\" :x x :y (% (+ 5 h)) (fmt \"~a (~a)\" label value)))))))))))")
   (3 :CONTENTS "(defun draw-svg-bar-graph (label/value-pairs &key title y-max)
-  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs 
+  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs
 				   maximize v into m sum 1 into s
 				   finally (return (list m s)))
     (let* ((h (or y-max (max 1 max)))
@@ -371,3 +371,895 @@
        (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
      (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
 ((6565 11687 699075000) :DELETE (4 :STALE T))
+((6566 67558 122563000) :CHANGE
+ ((3 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-SVG-BAR-GRAPH"))))))
+  (3 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN")
+       (:NAME . "DRAW-SVG-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-SVG-BAR-GRAPH {100549832B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-SVG-BAR-GRAPH"))))))))
+((6566 67558 134602000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10098D602B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100553C58B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6566 73912 505632000) :CHANGE
+ ((3 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN")
+       (:NAME . "DRAW-SVG-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-SVG-BAR-GRAPH {100549832B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-SVG-BAR-GRAPH"))))))
+  (3 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN")
+       (:NAME . "DRAW-SVG-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-SVG-BAR-GRAPH {10054A032B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-SVG-BAR-GRAPH"))))))))
+((6566 73912 510683000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100553C58B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100553718B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6566 73922 469525000) :DELETE
+ (3 :RESULT
+  (((:STDOUT . "")
+    (:WARNINGS
+     ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN")
+      (:NAME . "DRAW-SVG-BAR-GRAPH")
+      (:NEW-FUNCTION . "#<FUNCTION DRAW-SVG-BAR-GRAPH {10054A032B}>")))
+    (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-SVG-BAR-GRAPH")))))))
+((6566 73922 469540000) :DELETE
+ (3 :CONTENTS "(defun draw-svg-bar-graph (label/value-pairs &key title y-max)
+  (destructuring-bind (max len) (loop for (k . v) in label/value-pairs
+				   maximize v into m sum 1 into s
+				   finally (return (list m s)))
+    (let* ((h (or y-max (max 1 max)))
+           (bar-width (max .1 (float (/ 88 (max 1 len)))))
+           (bar-margin (float (/ 10 (* 2 (max 1 len))))))
+      (with-html-output-to-string (*standard-output*)
+        (:svg :class \"chart bar-graph\"
+              (when title (htm (:text :class \"title\" :x \"1%\" :y \"10%\" (str title))))
+              (loop for (label . value) in label/value-pairs
+		 for i from 0
+		 do (let ((x (% (+ (* bar-width i) (* i bar-margin)))))
+		      (htm (:g :class \"bar\"
+			       (:rect :x x :y (% (round (* 100 (/ (- h value) h)))) :width (% bar-width) :height (% (round (* 100 (/ value h)))))
+			       (:text :class \"label\" :x x :y (% (+ 5 h)) (fmt \"~a (~a)\" label value)))))))))))"))
+((6566 73922 469560000) :DELETE (3 :NOISE :VERBOSE))
+((6566 73922 469566000) :DELETE (3 :CELL-LANGUAGE :COMMON-LISP))
+((6566 73922 469571000) :DELETE (3 :CELL-TYPE :CODE))
+((6566 73922 469575000) :DELETE (3 :CELL NIL))
+((6566 73935 475022000) :DELETE
+ (5 :RESULT
+  (((:STDOUT . "") (:WARNINGS)
+    (:VALUES
+     ((:TYPE . "string") (:VALUE . "<h2>Chart-related functions</h2>")))))))
+((6566 73935 475044000) :DELETE (5 :CELL-TYPE :MARKUP))
+((6566 73935 475054000) :DELETE
+ (5 :CONTENTS "(:h2 \"Chart-related functions\")"))
+((6566 73935 475063000) :DELETE (5 :CELL-LANGUAGE :COMMON-LISP))
+((6566 73935 475069000) :DELETE (5 :CELL NIL))
+((6566 81920 345726000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100553718B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6567 160 670574000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10051D29DB}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6567 3380 655591000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10051D29DB}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100446537B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6567 6417 488231000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100446537B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6567 6756 653222000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1003F3905B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6567 12160 472173000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))
+  (2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {1003FADB2B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6567 12160 476362000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1003F3905B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100403F48B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6567 12169 638555000) :CHANGE
+ ((4 :CONTENTS
+   "(defmacro bar-graph (label/value-pairs &key x-axis y-axis title y-max)
+  `(str (draw-bar-graph ,label/value-pairs :title ,title :y-max ,y-max)))")
+  (4 :CONTENTS "(defmacro bar-graph (label/value-pairs &key title y-max)
+  `(str (draw-bar-graph ,label/value-pairs :title ,title :y-max ,y-max)))")))
+((6567 12169 662023000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100403F48B}>"))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable Y-AXIS is defined but never used."))
+      ((CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "The variable X-AXIS is defined but never used.")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100472492B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6567 12169 662149000) :DELETE (4 :STALE T))
+((6567 12173 441643000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {1003FADB2B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))
+  (2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {10052EDB2B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6567 12173 443867000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100472492B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100541644B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6567 57477 550794000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {10052EDB2B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))
+  (2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {100448049B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6567 57477 552953000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100541644B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10044E8E4B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6568 16758 49701000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10044E8E4B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6568 71354 360478000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {100448049B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))
+  (2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6568 71354 363207000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1009A10B3B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6568 71530 49351000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1009A10B3B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6568 83078 332339000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))
+  (2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {10060F049B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6568 83078 334989000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100615B08B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6568 83640 516751000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {10060F049B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))
+  (2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6568 83640 519085000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100615B08B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6569 685 481418000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100465ABBB}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6569 23079 27990000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100465ABBB}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10040DD46B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6569 57588 370624000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))
+  (2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {100440049B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6569 57588 372827000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10040DD46B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100446983B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6570 10602 20015000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {100440049B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))
+  (2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {100480849B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6570 10602 22331000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100446983B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1004878F5B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6570 12301 637256000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {100480849B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))
+  (2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {10048F049B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6570 12301 639446000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1004878F5B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10049595AB}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6570 17109 340753000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10049595AB}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10052E213B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6570 17436 910599000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10052E213B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10024CBCAB}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6574 480 474668000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10024CBCAB}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6574 5035 285742000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFUN") (:NAME . "DRAW-BAR-GRAPH")
+       (:NEW-FUNCTION . "#<FUNCTION DRAW-BAR-GRAPH {10048F049B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))
+  (2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6574 5035 288238000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1004AC1B2B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6580 81917 412150000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1004AC1B2B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6580 84219 756537000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100924DC4B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6581 20843 138704000) :INSERT (7 :CELL NIL))
+((6581 20843 138754000) :INSERT (7 :CELL-TYPE :CODE))
+((6581 20843 138758000) :INSERT (7 :CELL-LANGUAGE :COMMON-LISP))
+((6581 20843 138761000) :INSERT (7 :CONTENTS ""))
+((6581 20843 138765000) :INSERT (7 :RESULT ""))
+((6581 20849 477458000) :DELETE (7 :RESULT ""))
+((6581 20849 477488000) :DELETE (7 :CONTENTS ""))
+((6581 20849 477500000) :DELETE (7 :CELL-LANGUAGE :COMMON-LISP))
+((6581 20849 477512000) :DELETE (7 :CELL-TYPE :CODE))
+((6581 20849 477523000) :DELETE (7 :CELL NIL))
+((6582 20392 418554000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100924DC4B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6582 21120 374110000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100436875B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6582 72203 266306000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100436875B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6582 72253 517668000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1009009D8B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6587 1485 307670000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1009009D8B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6590 60536 772302000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100510C6DB}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6590 60953 614554000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100510C6DB}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6590 61109 422826000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1003E2D46B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6590 65586 940440000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1003E2D46B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1004D1C92B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6590 65895 335376000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1004D1C92B}>")))
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))))
+((6590 67583 793074000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . "SYMBOL") (:VALUE . "BAR-GRAPH"))))))))
+((6590 67767 984365000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . SYMBOL) (:VALUE . "DRAW-BAR-GRAPH"))))))
+  (2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . "SYMBOL") (:VALUE . "DRAW-BAR-GRAPH"))))))))
+((6590 67767 987880000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . "SYMBOL") (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100581901B}>")))
+     (:VALUES ((:TYPE . "SYMBOL") (:VALUE . "BAR-GRAPH"))))))))
+((6590 67801 918069000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {100581901B}>")))
+     (:VALUES ((:TYPE . "SYMBOL") (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . "SYMBOL") (:VALUE . "BAR-GRAPH"))))))))
+((6590 68738 842540000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . "SYMBOL") (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1005D77CDB}>")))
+     (:VALUES ((:TYPE . "SYMBOL") (:VALUE . "BAR-GRAPH"))))))))
+((6590 68885 170376000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {1005D77CDB}>")))
+     (:VALUES ((:TYPE . "SYMBOL") (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . "SYMBOL") (:VALUE . "BAR-GRAPH"))))))))
+((6590 85215 337127000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . "SYMBOL") (:VALUE . "BAR-GRAPH"))))))
+  (4 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CONDITION-TYPE . "REDEFINITION-WITH-DEFMACRO") (:NAME . "BAR-GRAPH")
+       (:NEW-FUNCTION
+        . "#<FUNCTION (MACRO-FUNCTION BAR-GRAPH) {10044802FB}>")))
+     (:VALUES ((:TYPE . "SYMBOL") (:VALUE . "BAR-GRAPH"))))))))
+((6590 85427 348279000) :INSERT (8 :CELL NIL))
+((6590 85427 348308000) :INSERT (8 :CELL-TYPE :CODE))
+((6590 85427 348332000) :INSERT (8 :CELL-LANGUAGE :COMMON-LISP))
+((6590 85427 348338000) :INSERT (8 :CONTENTS ""))
+((6590 85427 348342000) :INSERT (8 :RESULT ""))
+((6590 85429 903409000) :DELETE (6 :CELL-ORDER (5 2 3 4)))
+((6590 85429 903534000) :INSERT (9 :CELL-ORDER (8 2 4)))
+((6590 85433 186021000) :CHANGE
+ ((8 :CONTENTS "")
+  (8 :CONTENTS "(define-css \"chart\"
+    '((.chart :border \"1px solid #ccc\" :padding-bottom 3% :clear both :margin \"1% 0\")
+      (\".chart .bar:hover\" :z-index 90000)
+      (\".chart .title\" :font-weight bold :margin \"2% 0 0 2%\" :font-size x-large :color \"#ccc\")
+
+      (\".chart .bar-graph, .chart.bar-graph\" :height 200px :width 100% :clear both :padding 1%)
+      (\".chart .bar\" :background-color \"#66e\" :background \"linear-gradient(90deg, #33c, #66f)\" :height 100% :float left)
+      (\".chart .bar .hider\" :background-color white :width 100% :max-height 99.5%)
+      (\".chart .bar .spacer\" :width 100% :min-height .5%)
+      (\".chart .bar .label\" :display none :padding 5px :font-weight bold)
+      (\".chart .bar:hover\" :background-color \"#636\" :background \"linear-gradient(90deg, #3c3, #6f6)\")
+      (\".chart .bar:hover .label\" :display block)))")))
+((6590 85433 199489000) :CHANGE
+ ((8 :RESULT "")
+  (8 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "CONS")
+       (:VALUE
+        . "((.CHART :BORDER \"1px solid #ccc\" :PADDING-BOTTOM 3% :CLEAR BOTH :MARGIN
+  \"1% 0\")
+ (\".chart .bar:hover\" :Z-INDEX 90000)
+ (\".chart .title\" :FONT-WEIGHT BOLD :MARGIN \"2% 0 0 2%\" :FONT-SIZE X-LARGE
+  :COLOR \"#ccc\")
+ (\".chart .bar-graph, .chart.bar-graph\" :HEIGHT 200PX :WIDTH 100% :CLEAR BOTH
+  :PADDING 1%)
+ (\".chart .bar\" :BACKGROUND-COLOR \"#66e\" :BACKGROUND
+  \"linear-gradient(90deg, #33c, #66f)\" :HEIGHT 100% :FLOAT LEFT)
+ (\".chart .bar .hider\" :BACKGROUND-COLOR WHITE :WIDTH 100% :MAX-HEIGHT 99.5%)
+ (\".chart .bar .spacer\" :WIDTH 100% :MIN-HEIGHT .5%)
+ (\".chart .bar .label\" :DISPLAY NONE :PADDING 5PX :FONT-WEIGHT BOLD)
+ (\".chart .bar:hover\" :BACKGROUND-COLOR \"#636\" :BACKGROUND
+  \"linear-gradient(90deg, #3c3, #6f6)\")
+ (\".chart .bar:hover .label\" :DISPLAY BLOCK))"))))))))
+((6590 85433 199533000) :DELETE (8 :STALE T))
+((6590 85468 256947000) :CHANGE
+ ((8 :CONTENTS "(define-css \"chart\"
+    '((.chart :border \"1px solid #ccc\" :padding-bottom 3% :clear both :margin \"1% 0\")
+      (\".chart .bar:hover\" :z-index 90000)
+      (\".chart .title\" :font-weight bold :margin \"2% 0 0 2%\" :font-size x-large :color \"#ccc\")
+
+      (\".chart .bar-graph, .chart.bar-graph\" :height 200px :width 100% :clear both :padding 1%)
+      (\".chart .bar\" :background-color \"#66e\" :background \"linear-gradient(90deg, #33c, #66f)\" :height 100% :float left)
+      (\".chart .bar .hider\" :background-color white :width 100% :max-height 99.5%)
+      (\".chart .bar .spacer\" :width 100% :min-height .5%)
+      (\".chart .bar .label\" :display none :padding 5px :font-weight bold)
+      (\".chart .bar:hover\" :background-color \"#636\" :background \"linear-gradient(90deg, #3c3, #6f6)\")
+      (\".chart .bar:hover .label\" :display block)))")
+  (8 :CONTENTS "(define-css \"chart\"
+    '((.chart :border \"1px solid #ccc\" :padding-bottom 3% :clear both :margin \"1% 0\")
+      (\".chart .bar:hover\" :z-index 90000)
+      (\".chart .title\" :font-weight bold :margin \"2% 0 0 2%\" :font-size x-large :color \"#ccc\")
+
+      (\".chart .bar-graph, .chart.bar-graph\" :height 200px :width 100% :clear both :padding 1%)
+      (\".chart .bar\" :background-color \"#66e\" :background \"linear-gradient(90deg, #33c, #66f)\" :height 100% :float left)
+      (\".chart .bar .hider\" :background-color white :width 100% :max-height 99.5%)
+      (\".chart .bar .spacer\" :width 100% :min-height .5%)
+      (\".chart .bar .label\" :display none :padding 5px :font-weight bold)
+      (\".chart .bar:hover\" :background-color \"#636\" :background \"linear-gradient(90deg, #3c3, #6f6)\")
+      (\".chart .bar:hover .label\" :display block)))")))
+((6590 85468 258668000) :CHANGE
+ ((8 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "CONS")
+       (:VALUE
+        . "((.CHART :BORDER \"1px solid #ccc\" :PADDING-BOTTOM 3% :CLEAR BOTH :MARGIN
+  \"1% 0\")
+ (\".chart .bar:hover\" :Z-INDEX 90000)
+ (\".chart .title\" :FONT-WEIGHT BOLD :MARGIN \"2% 0 0 2%\" :FONT-SIZE X-LARGE
+  :COLOR \"#ccc\")
+ (\".chart .bar-graph, .chart.bar-graph\" :HEIGHT 200PX :WIDTH 100% :CLEAR BOTH
+  :PADDING 1%)
+ (\".chart .bar\" :BACKGROUND-COLOR \"#66e\" :BACKGROUND
+  \"linear-gradient(90deg, #33c, #66f)\" :HEIGHT 100% :FLOAT LEFT)
+ (\".chart .bar .hider\" :BACKGROUND-COLOR WHITE :WIDTH 100% :MAX-HEIGHT 99.5%)
+ (\".chart .bar .spacer\" :WIDTH 100% :MIN-HEIGHT .5%)
+ (\".chart .bar .label\" :DISPLAY NONE :PADDING 5PX :FONT-WEIGHT BOLD)
+ (\".chart .bar:hover\" :BACKGROUND-COLOR \"#636\" :BACKGROUND
+  \"linear-gradient(90deg, #3c3, #6f6)\")
+ (\".chart .bar:hover .label\" :DISPLAY BLOCK))"))))))
+  (8 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "SIMPLE-ARRAY")
+       (:VALUE
+        . "\".chart { border: 1px solid #ccc; padding-bottom: 3%; clear: both; margin: 1% 0; }
+.chart .bar:hover { z-index: 90000; }
+.chart .title { font-weight: bold; margin: 2% 0 0 2%; font-size: x-large; color: #ccc; }
+.chart .bar-graph, .chart.bar-graph { height: 200px; width: 100%; clear: both; padding: 1%; }
+.chart .bar { background-color: #66e; background: linear-gradient(90deg, #33c, #66f); height: 100%; float: left; }
+.chart .bar .hider { background-color: white; width: 100%; max-height: 99.5%; }
+.chart .bar .spacer { width: 100%; min-height: .5%; }
+.chart .bar .label { display: none; padding: 5px; font-weight: bold; }
+.chart .bar:hover { background-color: #636; background: linear-gradient(90deg, #3c3, #6f6); }
+.chart .bar:hover .label { display: block; }
+\""))))))))
+((6590 85468 258696000) :DELETE (8 :STALE T))
