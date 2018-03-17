@@ -11,6 +11,7 @@
       (:link :rel "stylesheet" :href "/static/css/codemirror.css")
       (:link :rel "stylesheet" :href "/static/css/dialog.css")
       (:link :rel "stylesheet" :href "/static/css/show-hint.css")
+      (:link :rel "stylesheet" :href "/css/notebook-custom.css")
 
       (:script :type "text/javascript" :src "/static/js/Blob.js")
       (:script :type "text/javascript" :src "/static/js/FileSaver.js")
