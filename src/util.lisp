@@ -164,7 +164,7 @@ from each expression in turn."
 		   res (if (eq eof exp)
 			   :eof
 			   (mapcar
-			    (lambda (v) (alist :type (type-tag v) :value (write-to-string v)))
+			    (lambda (v) (alist :type (format nil "~s" (type-tag v)) :value (write-to-string v)))
 			    (multiple-value-list (eval exp))))))
 	      (error (e)
 		(setf res (list
