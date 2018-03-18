@@ -7,7 +7,7 @@
 > *with apologies to Neil Gaiman*
 
 ## This is now a pre-beta
-##### Use it at your own risk, and expect explosions
+##### Use it at your own risk, and expect occasional, minor explosions
 
 ### Dependencies
 
@@ -29,7 +29,7 @@ The rest of the dependencies are [quicklispable](http://www.quicklisp.org/beta/)
 
 Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
-A quick-ish video demo is available [here](https://vimeo.com/97623064) to get you sort-of-started.
+A quick-ish, and now slightly out-of-date video demo is available [here](https://vimeo.com/97623064) to get you sort-of-started.
 
 ### Sytem Docs
 
