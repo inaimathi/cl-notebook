@@ -95,11 +95,11 @@
       :z-index 9 :border-radius 5px :border "2px solid #ccc" :background-color "#eee")
      ("#macro-expansion .CodeMirror" :height 100% :width 100%))))
 
-(defparameter *custom-css-rules* (make-hash-table :test 'equalp))
+(defparameter *addon-css-rules* (make-hash-table :test 'equalp))
 
 (defun define-css (name rules)
-  (setf (gethash name *custom-css-rules*) rules)
+  (setf (gethash name *addon-css-rules*) rules)
   (cl-css:css rules))
 
-(define-handler (css/notebook-custom.css :content-type "text/css") ()
-  (cl-css:css (loop for v being the hash-values of *custom-css-rules* append v)))
+(define-handler (css/notebook-addons.css :content-type "text/css") ()
+  (cl-css:css (loop for v being the hash-values of *addon-css-rules* append v)))

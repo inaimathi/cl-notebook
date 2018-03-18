@@ -11,7 +11,6 @@
       (:link :rel "stylesheet" :href "/static/css/codemirror.css")
       (:link :rel "stylesheet" :href "/static/css/dialog.css")
       (:link :rel "stylesheet" :href "/static/css/show-hint.css")
-      (:link :rel "stylesheet" :href "/css/notebook-custom.css")
 
       (:script :type "text/javascript" :src "/static/js/Blob.js")
       (:script :type "text/javascript" :src "/static/js/FileSaver.js")
@@ -42,6 +41,9 @@
       (:script :type "text/javascript" :src "/static/js/addons/runmode/runmode.js"))
 
      (:body
+      (:span :id "cl-notebook-front-end-addons"
+             (:link :rel "stylesheet" :href "/css/notebook-addons.css")
+             (:script :type "text/javascript" :src "/js/notebook-addons.js"))
       (:div :id "macro-expansion" (:textarea :language "commonlisp"))
       (:div :id "notebook")
       (:div :class "main-controls"
@@ -112,6 +114,18 @@
 		       (post/json uri args on-success on-fail)))))
 
     ;; cl-notebook specific events
+    (defun reload-addon-resources! ()
+      ;; (get "/js/notebook-addons.js" (create)
+      ;;      (lambda (res)
+      ;;        (console.log "GOT notebook-addons.js RESPONSE" res)))
+
+      (dom-set
+       (by-selector "#cl-notebook-front-end-addons")
+       (who-ps-html
+        ;; TODO - fix JS reloading (this works for CSS, but not JS for some reason)
+        ;; (:script :type "text/javascript" :src (+ "/js/notebook-addons.js?now=" (now!)))
+        (:link :rel "stylesheet" :href (+ "/css/notebook-addons.css?now=" (now!))))))
+
     (defun hash-updated ()
       (let ((book-name (@ (get-page-hash) :book)))
 	(when book-name
@@ -545,3 +559,15 @@
        (setup-macro-expansion-mirror!)
        (setf (@ window onhashchange) #'hash-updated)
        (hash-updated)))))
+
+(defparameter *addon-js-forms* (make-hash-table :test 'equalp))
+
+(defmacro define-js (name &body forms)
+  `(progn (setf (gethash ',name *addon-js-forms*) ',forms)
+          (apply #'ps* ',forms)))
+
+;; (define-js testing
+;;   (defun a-test-function () (console.log "This is a test!")))
+
+(define-handler (js/notebook-addons.js :content-type "application/javascript") ()
+  (apply #'ps* (loop for v being the hash-values of *addon-js-forms* append v)))

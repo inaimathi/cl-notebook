@@ -5,6 +5,10 @@
     ;;;; base.js contains general utilities that might be useful in other JS
     ;;;; applications too. Nothing notebook-specific here.
 
+
+    (defun now! ()
+      (chain -date (now)))
+
     ;; basic functional stuff
     (defun identity (thing) thing)
 
