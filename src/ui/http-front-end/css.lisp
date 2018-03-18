@@ -99,6 +99,7 @@
 
 (defun define-css (name rules)
   (setf (gethash name *addon-css-rules*) rules)
+  (publish-update! nil 'addon-updated :addon-type :css :addon-name name)
   (cl-css:css rules))
 
 (define-handler (css/notebook-addons.css :content-type "text/css") ()

@@ -447,6 +447,10 @@
 	      (if err
 		  (show-title-input)
 		  (hide-title-input)))))
+        'addon-updated
+        (lambda (res)
+          (console.log "ADDON UPDATED! TODO: be surgical about this" res)
+          (reload-addon-resources!))
 
 	'loading-package
 	(lambda (res) (show-thread-controls! (+ "Loading package '" (@ res package) "'")))

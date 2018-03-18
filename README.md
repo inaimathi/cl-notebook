@@ -70,6 +70,8 @@ TODO - patches welcome, since I'm not a Windows user
 ### TODO (also, this section should eventually be moved to the github issue tracker)
 
 - Expose hooks so that notebooks can make changes to the front-end CSS/javascript system
+	- Make sure they're auto-reloaded at the front-end on `define-(js/css)` calls
+    - Make sure the auto-update only loads a minimal amount of server-side code on each update call (that way we don't end up loading the entire giant CSS/JS addon system each time an edit happens; this might take some serious changes)
 - Triage the old bugs (do they still happen? If so; prioritize)
 - add a little tutorial to `_notebook` book (or maybe make separate config books)
 	- Config books is the right answer I think; we should have a `_welcome`, followed by a bunch of module books (including `charts`, and maybe `minibuffer` at least)
