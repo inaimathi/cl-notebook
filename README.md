@@ -69,15 +69,12 @@ TODO - patches welcome, since I'm not a Windows user
 
 ### TODO (also, this section should eventually be moved to the github issue tracker)
 
-- Move charts css out to the charts notebook along with the implementation code
 - Expose hooks so that notebooks can make changes to the front-end CSS/javascript system
-- BUG: loading an existing but unloaded book with new packages in it causes loading hiccups after server restart time.
-    - Because of the way we handle this, `quicklisp` is now basically a requirement of `cl-notebook`. We're already loading it as part of `main`
-    - We should request the latest one from `https://beta.quicklisp.org/quicklisp.lisp` instead of packaging one with the static files in this repo. That was a pretty bad hack in retrospect.
 - Triage the old bugs (do they still happen? If so; prioritize)
 - add a little tutorial to `_notebook` book (or maybe make separate config books)
 	- Config books is the right answer I think; we should have a `_welcome`, followed by a bunch of module books (including `charts`, and maybe `minibuffer` at least)
 - add a default code cell to each newly created book
+- Download the latest `quicklisp.lisp` from `https://beta.quicklisp.org/quicklisp.lisp` rather than including one with the binary. We might want to include one too, just as a last resort, but we should try for the more interesting anyway
 - Give users an interface to upload new notebooks from their local environments to the notebook instances' local (we need this for the multi-user situation)
 - when a cell is clicked, show its control halo (this'll make mobile use possible)
 - Add support for more cell types; at minimum `markdown`, and javascript would probably also do nicely
