@@ -567,11 +567,11 @@
 (defparameter *addon-js-forms* (make-hash-table :test 'equalp))
 
 (defmacro define-js (name &body forms)
-  `(progn (setf (gethash ',name *addon-js-forms*) ',forms)
-          (apply #'ps* ',forms)))
-
-;; (define-js testing
-;;   (defun a-test-function () (console.log "This is a test!")))
+  `(let ((res (ps ,@forms)))
+     (setf (gethash ',name *addon-js-forms*) res)
+     res))
 
 (define-handler (js/notebook-addons.js :content-type "application/javascript") ()
-  (apply #'ps* (loop for v being the hash-values of *addon-js-forms* append v)))
+  (apply
+   #'concatenate 'string
+   (loop for v being the hash-values of *addon-js-forms* collect v)))

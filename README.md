@@ -69,6 +69,7 @@ TODO - patches welcome, since I'm not a Windows user
 
 ### TODO (also, this section should eventually be moved to the github issue tracker)
 
+- BUG: When there's an error in a notebook we're loading, we do the "Notebook blah not found" thing. Instead, we should stop evaluating at that point and flag the offending cell. (Alternatively, we could also NOT load a notebook on open, but instead provide an `eval-notebook` function)
 - Expose hooks so that notebooks can make changes to the front-end CSS/javascript system
 	- Make sure they're auto-reloaded at the front-end on `define-(js/css)` calls
     - Make sure the auto-update only loads a minimal amount of server-side code on each update call (that way we don't end up loading the entire giant CSS/JS addon system each time an edit happens; this might take some serious changes)
