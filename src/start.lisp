@@ -43,7 +43,8 @@ Only useful during the build process, where its called with an --eval flag."
 	(unless *static*
 	  (format t "Initializing static files...~%")
 	  (setf *static* (merge-pathnames "static" *storage*))
-          (when (and (not (cl-fad:directory-exists-p *static*))
+          (when (and (or (not (dir-exists? *static*))
+                         (null (cl-fad:list-directory *static*)))
                      (null *static-files*))
             (setf *static* (sys-dir *static*))
             (read-statics))
