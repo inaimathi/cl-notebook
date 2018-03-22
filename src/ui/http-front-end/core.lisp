@@ -41,6 +41,9 @@
       (:script :type "text/javascript" :src "/static/js/addons/runmode/runmode.js"))
 
      (:body
+      (:span :id "cl-notebook-front-end-addons"
+             (:link :rel "stylesheet" :href "/css/notebook-addons.css")
+             (:script :type "text/javascript" :src "/js/notebook-addons.js"))
       (:div :id "macro-expansion" (:textarea :language "commonlisp"))
       (:div :id "notebook")
       (:div :class "main-controls"
@@ -50,11 +53,9 @@
             (:button :onclick "toggleOpenBookMenu()" "> Open Book")
 	    (:select :id "book-actions"
 		     :onchange "runBookAction(this.value)"
-		     (:option :value "" "Stuff...")
-		     (:optgroup
-		      :label "Export"
-		      (:option :value "export-html" "Export as HTML")
-		      (:option :value "export-lisp" "Export as .lisp")))
+		     (:option :value "" "Export...")
+                     (:option :value "export-html" "as HTML")
+                     (:option :value "export-lisp" "as .lisp"))
             (:div :class "thread-controls"
                   (:span :class "notice" "Processing")
                   (:img :src "/static/img/dots.png")
@@ -111,6 +112,15 @@
 		       (post/json uri args on-success on-fail)))))
 
     ;; cl-notebook specific events
+    (defun reload-addon-resources! (resource-type resource-name)
+      (console.log "RELOADING" resource-type resource-name "(TODO - be surgical about this)")
+      (dom-set
+       (by-selector "#cl-notebook-front-end-addons")
+       (who-ps-html
+        (:link :rel "stylesheet" :href (+ "/css/notebook-addons.css?now=" (now!)))))
+      (get "/js/notebook-addons.js" (create)
+           (lambda (res) (window.eval res))))
+
     (defun hash-updated ()
       (let ((book-name (@ (get-page-hash) :book)))
 	(when book-name
@@ -432,6 +442,9 @@
 	      (if err
 		  (show-title-input)
 		  (hide-title-input)))))
+        'addon-updated
+        (lambda (res)
+          (reload-addon-resources! (@ res addon-type) (@ res addon-name)))
 
 	'loading-package
 	(lambda (res) (show-thread-controls! (+ "Loading package '" (@ res package) "'")))
@@ -544,3 +557,16 @@
        (setup-macro-expansion-mirror!)
        (setf (@ window onhashchange) #'hash-updated)
        (hash-updated)))))
+
+(defparameter *addon-js-forms* (make-hash-table :test 'equalp))
+
+(defmacro define-js (name &body forms)
+  `(let ((res (ps ,@forms)))
+     (setf (gethash ',name *addon-js-forms*) res)
+     (publish-update! nil 'addon-updated :addon-type :js :addon-name ',name)
+     res))
+
+(define-handler (js/notebook-addons.js :content-type "application/javascript") ()
+  (apply
+   #'concatenate 'string
+   (loop for v being the hash-values of *addon-js-forms* collect v)))

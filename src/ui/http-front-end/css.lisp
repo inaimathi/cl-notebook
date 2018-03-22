@@ -93,16 +93,14 @@
      ("#macro-expansion"
       :width 60% :height 95% :position :fixed :top 3% :right 0 :opacity 0.6
       :z-index 9 :border-radius 5px :border "2px solid #ccc" :background-color "#eee")
-     ("#macro-expansion .CodeMirror" :height 100% :width 100%)
+     ("#macro-expansion .CodeMirror" :height 100% :width 100%))))
 
-     (.chart :border "1px solid #ccc" :padding-bottom 3% :clear both :margin "1% 0")
-     (".chart .bar:hover" :z-index 90000)
-     (".chart .title" :font-weight bold :margin "2% 0 0 2%" :font-size x-large :color "#ccc")
+(defparameter *addon-css-rules* (make-hash-table :test 'equalp))
 
-     (".chart .bar-graph, .chart.bar-graph" :height 200px :width 100% :clear both :padding 1%)
-     (".chart .bar" :background-color "#66e" :background "linear-gradient(90deg, #33c, #66f)" :height 100% :float left)
-     (".chart .bar .hider" :background-color white :width 100% :max-height 99.5%)
-     (".chart .bar .spacer" :width 100% :min-height .5%)
-     (".chart .bar .label" :display none :padding 5px :font-weight bold)
-     (".chart .bar:hover" :background-color "#636" :background "linear-gradient(90deg, #3c3, #6f6)")
-     (".chart .bar:hover .label" :display block))))
+(defun define-css (name rules)
+  (setf (gethash name *addon-css-rules*) rules)
+  (publish-update! nil 'addon-updated :addon-type :css :addon-name name)
+  (cl-css:css rules))
+
+(define-handler (css/notebook-addons.css :content-type "text/css") ()
+  (cl-css:css (loop for v being the hash-values of *addon-css-rules* append v)))

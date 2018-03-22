@@ -1,77 +1,120 @@
 # cl-notebook
-###### A notebook-style in-browser editor for Common Lisp.
+##### A notebook-style in-browser editor for Common Lisp.
 
 > Tools, of course, can be the subtlest of traps.
 > One day I know I must smash the ~~emerald~~ Emacs.
 >
 > *with apologies to Neil Gaiman*
 
-## This is now a pre-beta
-##### Use it at your own risk, and expect explosions
+# This is now a pre-beta
+#### Use it at your own risk, and expect occasional, minor explosions
 
-### Dependencies
+## Dependencies
 
 `alexandria`, `anaphora`, `cl-fad`, `closer-mop`, `optima`, `local-time`, `fact-base`, `session-token`, `house`
 
-### Usage
+## Usage
 
-**Either**
+### Binary
 
 Download [this](http://static.inaimathi.ca/cl-notebook-binaries/), run it (if you downloaded the tarball instead of the naked binary, unpack it first, obviously)
 
-**Or**
+_At the moment, we've only got binaries for 64-bit Linux. Submissions for other architectures welcome._
 
-You need to install [qlot](https://github.com/fukamachi/qlot) and [roswell](https://github.com/roswell/roswell) to mange Common Lisp distributions. They are usefull not only for running cl-notebook, but for any other CL project.
+### With [`quicklisp`](http://www.quicklisp.org/beta/)
 
-Then clone [cl-notebook](https://github.com/Inaimathi/cl-notebook) and in it's directory do:
+- Install a Common Lisp (I suggest [`sbcl`](http://www.sbcl.org/platform-table.html))
+- Install [`quicklisp`](http://www.quicklisp.org/beta/)
+- Clone the [`house` server](https://github.com/Inaimathi/house), the [`fact-base` triple-store](https://github.com/Inaimathi/fact-base) and [this repo](https://github.com/Inaimathi/cl-notebook) into your `~quicklisp/local-projects.` directory.
+- Hop into a Lisp and do `(ql:quickload :cl-notebook)`, followed by `(cl-notebook:main)`
+
+### With [`roswell`](https://github.com/roswell/roswell) and [`qlot`](https://github.com/fukamachi/qlot)
+
+_These help you manage Common Lisp distributions. They are usefull not only for running cl-notebook, but for any other CL project, so consider them regardless of whether you want this project._
+
+- Install [`roswell`](https://github.com/roswell/roswell)
+- Install [`qlot`](https://github.com/fukamachi/qlot)
+- Clone [cl-notebook](https://github.com/Inaimathi/cl-notebook)
+
+In the `cl-notebook` directory you cloned to, do:
 
 ```
 qlot install
-qlot exec roswell/cl-notebook.ros --port 8080
+qlot exec roswell/cl-notebook.ros --port 4242
 ```
 
-**Then**
+**Once `cl-notebook` is Running**
 
-Hop into a browser and go to `localhost:8080/` (or whatever port you chose)
+Hop into a browser and go to `localhost:4242/` (or whatever port you chose)
 
-A quick-ish video demo is available [here](https://vimeo.com/97623064) to get you sort-of-started.
+A quick-ish, and now slightly out-of-date video demo is available [here](https://vimeo.com/97623064) to get you sort-of-started.
 
-### Sytem Docs
+## Sytem Docs
 
-#### Building the Binary
+### Building the Binary
 
-In order to build the `cl-notebook` binary, you need to:
+#### With [`roswell`](https://github.com/roswell/roswell) and [`qlot`](https://github.com/fukamachi/qlot)
 
-1. Run `qlot exec ros build roswell/cl-notebook.ros`.
+- Install [`roswell`](https://github.com/roswell/roswell)
+- Install [`qlot`](https://github.com/fukamachi/qlot)
+- Run `qlot exec ros build roswell/cl-notebook.ros` in the `cl-notebook` directory
 
    That will create a binary with the appropriate name that you can directly run on any machine of your OS and processor architecture.
-2. Grab your binary at `roswell/cl-notebook`.
+- Grab your binary at `roswell/cl-notebook`.
 
 This should work under the Linux, OSX and Windows.
 
-#### Source Deployment
-#### Usage
-##### Keybindings
-##### Building Programs/Executables
-##### Notebook Exporters
-##### Cell Compilers
+#### With [`buildapp`](https://www.xach.com/lisp/buildapp/)
 
-### TODO (also, this section should eventually be moved to the github issue tracker)
+In order to build the `cl-notebook` binary, you need to
 
-- BUG: if you're viewing an existing but unloaded book at server restart, it doesn't get loaded (it should the first time its viewed)
+- Install a Common Lisp (I suggest, and have only tried this with, [`sbcl`](http://www.sbcl.org/platform-table.html))
+- Install [`quicklisp`](http://www.quicklisp.org/beta/)
+- Install and build [`buildapp`](https://www.xach.com/lisp/buildapp/)
+- Create an appropriate `build.manifest` file for loading `cl-notebook`
+- Call `buildapp` with that `build.manifest` file, along with
+	- a bunch of `--load-system` calls that include everything `cl-notebook` needs
+    - an `--eval` call to `cl-notebook::read-statics` to include all the associated static files along with the binary
+    - an `--entry` of `cl-notebook:main`
+    - an `--output` of your choice of binary name (I suggest "`cl-notebook`")
+
+That will create a binary with the appropriate name that you can directly run on any machine of your OS and processor architecture.
+
+##### Linux
+
+If you're on a Debian-based linux distro, there is a `build.lisp` and `build.sh` included in the `build/` subdirectory of this repo that do most of the above for you. All you need to do is make sure to install `sbcl`, then call `sh build.sh` in the `build` directory. This will result in a `buildapp` binary and a `cl-notebook` binary being generated for you. The `cl-notebook` binary can then be run on any linux machine _(of the same CPU architecture)_ without worrying about installing a Lisp.
+
+##### OS X
+
+TODO - patches welcome, since I'm not an OS X user
+
+##### Windows
+
+TODO - patches welcome, since I'm not a Windows user
+
+### Source Deployment
+### Usage
+#### Keybindings
+#### Building Programs/Executables
+#### Notebook Exporters
+#### Cell Compilers
+
+## TODO (also, this section should eventually be moved to the github issue tracker)
+
 - Triage the old bugs (do they still happen? If so; prioritize)
-- Move charts css out to the charts notebook along with the implementation code
 - add a little tutorial to `_notebook` book (or maybe make separate config books)
 	- Config books is the right answer I think; we should have a `_welcome`, followed by a bunch of module books (including `charts`, and maybe `minibuffer` at least)
 - add a default code cell to each newly created book
-- Expose hooks so that notebooks can make changes to the front-end CSS/javascript system
+- Download the latest `quicklisp.lisp` from `https://beta.quicklisp.org/quicklisp.lisp` rather than including one with the binary. We might want to include one too, just as a last resort, but we should try for the more interesting anyway
 - Give users an interface to upload new notebooks from their local environments to the notebook instances' local (we need this for the multi-user situation)
 - when a cell is clicked, show its control halo (this'll make mobile use possible)
 - Add support for more cell types; at minimum `markdown`, and javascript would probably also do nicely
 - Need a complete how-to set of videos at some point
 - Port to the proper way of using SSEs (with event tags rather than an action field in the payload)
+- BUG: When there's an error in a notebook we're loading, we do the "Notebook blah not found" thing. Instead, we should stop evaluating at that point and flag the offending cell. (Alternatively, we could also NOT load a notebook on open, but instead provide an `eval-notebook` function)
+	- Had nothing to do with errors in notebook (those do actually get handled properly), this has to do with the approach for the `trurl` notebook, which ended up creating massive numbers of writes (it turns out that our storage approach isn't atomic under heavy enough load :/ This is going to be a deeper issue, and may percipitate the decision about moving to a non-fact-base storage solution)
 
-##### Thoughts
+#### Thoughts
 - Charts need to support
 	- Being saved to a pure HTML+CSS (no javascript) file
 	- Resizing naturally with larger or smaller screen sizes
@@ -83,12 +126,12 @@ This should work under the Linux, OSX and Windows.
 	- No I don't think so, but we need additional logging buffers. It would have made debugging "Lemonade Stand" much easier to have a buffer keeping `:house` logging data
 - Do we want to differentiate between "someone forked a book" and "someone started a new book"? Right now, there's no difference, but we may want to treat forks differently for multi-user purposes later on.
 
-##### Bugs
+#### Bugs
 - Should show the orange border as soon as something is edited in a cell, not just between eval and completion
 - The counter in the client-side timeline doesn't update with newly added history states
 
-##### Features (not necessarily in priority order)
-######## Back-end
+#### Features (not necessarily in priority order)
+####### Back-end
 - Exports for projects, not just .lisp files (and the .lisp files should do something intelligent about the `package` forms).
 	- Look into [compression options](http://www.cliki.net/compression) for the project part (it'll have to be handled as multiple files)
 - Really REALLY need tags. Named checkpoints that you can jump to in book history. Implemented as part of `:fact-base`, now we need to add the proper interface here (this includes a thing for adding checkpoints, and an addition to the history slider to let it specifically jump to tagged points)
@@ -104,7 +147,7 @@ This should work under the Linux, OSX and Windows.
 	- Give the user a one-button interaction that turns a given notebook into a binary.
 - Get poor-man's profiling built into cell results (use `local-time` timestamps for start/end time of operations; compute duration)
 
-######## Front-end
+####### Front-end
 - Things I still kinda want:
 	- transpose-sexp
 	- slurp-sexp (forward/backward)
@@ -118,7 +161,7 @@ This should work under the Linux, OSX and Windows.
 - Forked notebook entries should be grouped with their parents in the top menu. Guess you could pull out parent relationships at load-time?
 - For general use, we'll want to expose customizable keybindings somehow. A session-keyed config page would work fine.
 
-######## Multi-user related
+####### Multi-user related
 - Move to a thread-per-cell model to make multi-user development easier
 - If you join a book in the middle of an already running computation, you currently aren't notified of this. Figure something out.
 - Moving cells around isn't propagated to other users
@@ -126,7 +169,7 @@ This should work under the Linux, OSX and Windows.
 - When a notebook is forked, it should create a copy of its package for the fork to use (so that users working on different forks of the same book don't clobber each others in-image changes)
 - Authentication should be a thing, and saving user preferences likewise
 
-### License
+## License
 
 [AGPL3](https://www.gnu.org/licenses/agpl-3.0.html) (also found in the included copying.txt)
 
@@ -137,7 +180,8 @@ Do whatever you like, BUT afford the same freedoms to anyone you give this softw
 This project includes a copy of `quicklisp.lisp` for ease of use. The [`quicklisp` beta](http://www.quicklisp.org/beta/) is released under an [Expat-like license](http://www.quicklisp.org/beta/#license).
 
 This project uses [CodeMirror](http://codemirror.net/) as a front-end editor. CodeMirror [is released](http://codemirror.net/#community) under the [MIT Expat license](http://codemirror.net/LICENSE).
-### Credits
+
+## Credits
 
 This project uses:
 - [`nativesortable`](https://github.com/bgrins/nativesortable)

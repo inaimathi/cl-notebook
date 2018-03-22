@@ -24,14 +24,20 @@
   (assert (cl-fad:file-exists-p file-name) nil "Nonexistent file ~s" file-name)
   (let* ((book (make-notebook :file-name file-name)))
     (with-open-file (s file-name :direction :input)
-      (loop for entry = (fact-base::read-entry! s) while entry
+      (loop for entry = (handler-case
+                            (fact-base::read-entry! s)
+                          (#+sbcl sb-int:simple-reader-package-error #-sbcl error (e)
+                                  (ql:quickload (slot-value e 'package))
+                                  (fact-base::read-entry! s)))
+         while entry
 	 do (incf (fact-base::entry-count book))
 	 do (fact-base::apply-entry! book entry)))
     (handler-bind (#+sbcl (sb-ext:name-conflict
 			   (lambda (e)
 			     (declare (ignore e))
 			     (invoke-restart 'sb-impl::take-new))))
-      (setf (namespace book) (notebook-package! book))
+      (setf (namespace book)
+            (notebook-package! book))
       (eval-notebook book))
     (register-notebook! book)))
 
@@ -67,7 +73,7 @@
 (defmethod notebook-package! ((book notebook))
   ;; TODO handle loading and package-related errors here
   (let ((spec (notebook-package-spec book)))
-    (load-dependencies spec)
+    (load-dependencies! spec)
     (or (find-package (second spec)) (eval spec))))
 
 (defmethod load-package ((package symbol))
@@ -78,7 +84,7 @@
       (funcall (intern "QUICKLOAD" :ql) package)
       (publish-update! nil 'finished-loading-package :package package))))
 
-(defmethod load-dependencies ((package-form list))
+(defmethod load-dependencies! ((package-form list))
   (loop for exp in (cddr package-form)
      do (case (car exp)
 	  (:use (mapc #'load-package (cdr exp)))
@@ -96,7 +102,7 @@
 	  (values book nil)
 	  (progn
 	    (setf (namespace book) (rename-package (namespace book) (second package-form)))
-	    (load-dependencies package-form)
+	    (load-dependencies! package-form)
 	    (handler-bind (#+sbcl (sb-ext:name-conflict
 				   (lambda (e)
 				     (declare (ignore e))
@@ -134,5 +140,8 @@ If the new name passed in is the same as the books' current name, we don't inser
 
 (defmethod get-notebook! ((name string))
   (let ((n (house::uri-decode name)))
-    (or (gethash n *notebooks*)
-        (setf (gethash n *notebooks*) (load-notebook! (pathname name))))))
+    (aif (gethash n *notebooks*)
+         it
+         (let ((book (load-notebook! (pathname n))))
+           (setf (gethash n *notebooks*) book)
+           book))))
