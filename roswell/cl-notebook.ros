@@ -1,0 +1,23 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  (ql:quickload '(cl-notebook defmain) :silent t))
+
+(defpackage :ros.script.cl-notebook
+  (:use :cl)
+  (:import-from #:defmain
+                #:defmain))
+(in-package :ros.script.cl-notebook)
+
+
+;; Include all the associated static files along with the binary.
+(cl-notebook::read-statics)
+
+
+(defmain main ((port "TCP port to bind the server"
+                   :default 4242))
+  (cl-notebook:main nil :port port))
