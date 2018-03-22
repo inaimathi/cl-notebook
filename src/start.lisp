@@ -42,7 +42,11 @@ Only useful during the build process, where its called with an --eval flag."
 	      *books* (sys-dir (merge-pathnames "books" *storage*)))
 	(unless *static*
 	  (format t "Initializing static files...~%")
-	  (setf *static* (sys-dir (merge-pathnames "static" *storage*)))
+	  (setf *static* (merge-pathnames "static" *storage*))
+          (when (and (not (cl-fad:directory-exists-p *static*))
+                     (null *static-files*))
+            (setf *static* (sys-dir *static*))
+            (read-statics))
 	  (write-statics :force? (get-param '(:f :force) params)))
 
 	(format t "Checking for quicklisp...~%")
