@@ -69,10 +69,6 @@ TODO - patches welcome, since I'm not a Windows user
 
 ### TODO (also, this section should eventually be moved to the github issue tracker)
 
-- BUG: When there's an error in a notebook we're loading, we do the "Notebook blah not found" thing. Instead, we should stop evaluating at that point and flag the offending cell. (Alternatively, we could also NOT load a notebook on open, but instead provide an `eval-notebook` function)
-- Expose hooks so that notebooks can make changes to the front-end CSS/javascript system
-	- Make sure they're auto-reloaded at the front-end on `define-(js/css)` calls
-    - Make sure the auto-update only loads a minimal amount of server-side code on each update call (that way we don't end up loading the entire giant CSS/JS addon system each time an edit happens; this might take some serious changes)
 - Triage the old bugs (do they still happen? If so; prioritize)
 - add a little tutorial to `_notebook` book (or maybe make separate config books)
 	- Config books is the right answer I think; we should have a `_welcome`, followed by a bunch of module books (including `charts`, and maybe `minibuffer` at least)
@@ -83,6 +79,8 @@ TODO - patches welcome, since I'm not a Windows user
 - Add support for more cell types; at minimum `markdown`, and javascript would probably also do nicely
 - Need a complete how-to set of videos at some point
 - Port to the proper way of using SSEs (with event tags rather than an action field in the payload)
+- BUG: When there's an error in a notebook we're loading, we do the "Notebook blah not found" thing. Instead, we should stop evaluating at that point and flag the offending cell. (Alternatively, we could also NOT load a notebook on open, but instead provide an `eval-notebook` function)
+	- Had nothing to do with errors in notebook (those do actually get handled properly), this has to do with the approach for the `trurl` notebook, which ended up creating massive numbers of writes (it turns out that our storage approach isn't atomic under heavy enough load :/ This is going to be a deeper issue, and may percipitate the decision about moving to a non-fact-base storage solution)
 
 ##### Thoughts
 - Charts need to support

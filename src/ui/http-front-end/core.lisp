@@ -53,11 +53,9 @@
             (:button :onclick "toggleOpenBookMenu()" "> Open Book")
 	    (:select :id "book-actions"
 		     :onchange "runBookAction(this.value)"
-		     (:option :value "" "Stuff...")
-		     (:optgroup
-		      :label "Export"
-		      (:option :value "export-html" "Export as HTML")
-		      (:option :value "export-lisp" "Export as .lisp")))
+		     (:option :value "" "Export...")
+                     (:option :value "export-html" "as HTML")
+                     (:option :value "export-lisp" "as .lisp"))
             (:div :class "thread-controls"
                   (:span :class "notice" "Processing")
                   (:img :src "/static/img/dots.png")
@@ -114,17 +112,14 @@
 		       (post/json uri args on-success on-fail)))))
 
     ;; cl-notebook specific events
-    (defun reload-addon-resources! ()
-      ;; (get "/js/notebook-addons.js" (create)
-      ;;      (lambda (res)
-      ;;        (console.log "GOT notebook-addons.js RESPONSE" res)))
-
+    (defun reload-addon-resources! (resource-type resource-name)
+      (console.log "RELOADING" resource-type resource-name "(TODO - be surgical about this)")
       (dom-set
        (by-selector "#cl-notebook-front-end-addons")
        (who-ps-html
-        ;; TODO - fix JS reloading (this works for CSS, but not JS for some reason)
-        ;; (:script :type "text/javascript" :src (+ "/js/notebook-addons.js?now=" (now!)))
-        (:link :rel "stylesheet" :href (+ "/css/notebook-addons.css?now=" (now!))))))
+        (:link :rel "stylesheet" :href (+ "/css/notebook-addons.css?now=" (now!)))))
+      (get "/js/notebook-addons.js" (create)
+           (lambda (res) (window.eval res))))
 
     (defun hash-updated ()
       (let ((book-name (@ (get-page-hash) :book)))
@@ -449,8 +444,7 @@
 		  (hide-title-input)))))
         'addon-updated
         (lambda (res)
-          (console.log "ADDON UPDATED! TODO: be surgical about this" res)
-          (reload-addon-resources!))
+          (reload-addon-resources! (@ res addon-type) (@ res addon-name)))
 
 	'loading-package
 	(lambda (res) (show-thread-controls! (+ "Loading package '" (@ res package) "'")))
@@ -569,6 +563,7 @@
 (defmacro define-js (name &body forms)
   `(let ((res (ps ,@forms)))
      (setf (gethash ',name *addon-js-forms*) res)
+     (publish-update! nil 'addon-updated :addon-type :js :addon-name ',name)
      res))
 
 (define-handler (js/notebook-addons.js :content-type "application/javascript") ()
