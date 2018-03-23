@@ -121,11 +121,8 @@ TODO - patches welcome, since I'm not a Windows user
 - SVG can work for charts; CSS selectors work the same way as with regular HTML entities AND it can take % dimensions specifications. We basically have no other options for line/pie/doghnut charts.
 
 - Do we want to provide a straight-up scratch REPL for each user?
-	- No I don't think so, but we need additional logging buffers. It would have made debugging "Lemonade Stand" much easier to have a buffer keeping `:house` logging data
+	- No I don't think so, but we need additional logging buffers. Maybe one per notebook so that incremental debugging is a bit easier.
 - Do we want to differentiate between "someone forked a book" and "someone started a new book"? Right now, there's no difference, but we may want to treat forks differently for multi-user purposes later on.
-
-#### Bugs
-- Should show the orange border as soon as something is edited in a cell, not just between eval and completion
 
 #### Features (not necessarily in priority order)
 ####### Back-end

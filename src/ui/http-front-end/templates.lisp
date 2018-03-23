@@ -120,29 +120,28 @@
 	  (who-ps-html (:p (:b "[[EMPTY CELL]]")))))
 
     (defun cell-markup-template (cell)
-      (with-slots (id contents result language) cell
+      (with-slots (id result) cell
 	(who-ps-html
-	 (:li :class (+ "cell markup" (if (@ cell stale) " stale" "")) :id (+ "cell-" id) :cell-id id
-	      :ondragend "reorderCells(event)" :draggable "true"
-	      (cell-controls-template cell)
-	      (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
-	      (:div :onclick (+ "showEditor(" id ")")
-		    (:span :class "cell-value" (cell-markup-result-template result)))))))
+         (:div :onclick (+ "showEditor(" id ")")
+               (:span :class "cell-value"
+                      (cell-markup-result-template result))))))
 
     (defun cell-code-template (cell)
-      (with-slots (id contents result language) cell
+      (with-slots (noise result) cell
 	(who-ps-html
-	 (:li :class (+ "cell code" (if (@ cell stale) " stale" "")) :id (+ "cell-" id) :cell-id id
-	      :ondragend "reorderCells(event)" :draggable "true"
-	      (cell-controls-template cell)
-	      (:textarea :class "cell-contents" :language (or language "commonlisp")  contents)
-	      (:span :class "cell-value"
-		     (result-template (@ cell noise) result))))))
+         (:span :class "cell-value"
+                (result-template noise result)))))
 
     (defun cell-template (cell)
-      (if (markup-cell? cell)
-	  (cell-markup-template cell)
-	  (cell-code-template cell)))
+      (with-slots (id cell-type language contents stale) cell
+          (who-ps-html
+           (:li :class (+ "cell " cell-type (if stale " stale" "")) :id (+ "cell-" id) :cell-id id
+                :ondragend "reorderCells(event)" :draggable "true"
+                (cell-controls-template cell)
+                (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
+                (case (@ cell cell-type)
+                  (:markup (cell-markup-template cell))
+                  (otherwise (cell-code-template cell)))))))
 
     (defun show-thread-controls! (&optional (notice "Processing"))
       (dom-replace (by-selector ".thread-controls .notice") (who-ps-html (:span :class "notice" notice)))
