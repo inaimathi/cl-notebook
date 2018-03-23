@@ -115,21 +115,25 @@
                         (@ (by-selector ".filesystem-input") value))
                        *current-fs-listing*)))))
 
-    (defun loaded-books! (elem current-notebook-id)
-      (get/json "/cl-notebook/loaded-books" (create)
-                (lambda (dat)
-                  (dom-set
-                   elem
-                   (join
-                    (map
-                     (lambda (bk)
-                       (notebook-link-template bk current-notebook-id))
-                     dat))))))
+    (defun get-loaded-books! (elem current-notebook-id)
+      (get/json
+       "/cl-notebook/loaded-books" (create)
+       (lambda (dat)
+         (console.log "GOT LOADED BOOKS!" dat)
+         (dom-set
+          elem
+          (join
+           (map
+            (lambda (bk)
+              (notebook-link-template bk current-notebook-id))
+            dat))))))
 
     (defun notebook-selector! (selector)
       (let ((elem (by-selector selector)))
         (dom-set elem (selector-template))
-        (loaded-books! (by-selector elem ".loaded-books-list") (@ *notebook* id))
+        (get-loaded-books!
+         (by-selector elem ".loaded-books-list")
+         (@ *notebook* id))
         (get/json "/cl-notebook/system/home-path" (create)
                   (lambda (initial-dir)
                     (setf (@ (by-selector elem ".filesystem-input") value) initial-dir)

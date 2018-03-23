@@ -32,7 +32,7 @@
   (mapcar
    (lambda (book)
      (hash :path (car book) :title (notebook-name (second book))))
-   (loaded-books)))
+   (loaded-books!)))
 
 ;;;;;;;;;; Server-side hint hooks
 (define-json-handler (cl-notebook/system/complete) ((partial :string) (package :keyword))

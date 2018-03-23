@@ -128,11 +128,13 @@ If the new name passed in is the same as the books' current name, we don't inser
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar *notebooks* (make-hash-table :test 'equal))
 
-(defun loaded-books ()
+(defun loaded-books! ()
   (sort
    (loop for k being the hash-keys of *notebooks*
       for v being the hash-values of *notebooks*
-      collect (list k v))
+      if (cl-fad:file-exists-p k)
+      collect (list k v)
+      else do (remhash k *notebooks*))
    #'string<= :key #'first))
 
 (defmethod register-notebook! ((book notebook))
