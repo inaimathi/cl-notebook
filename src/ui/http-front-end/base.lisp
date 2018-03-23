@@ -253,8 +253,6 @@
 			(on-fail req))))))
 	(chain req (open :POST uri t))
 	(chain req (set-request-header "Content-type" "application/x-www-form-urlencoded"))
-	(chain req (set-request-header "Content-length" (length encoded-params)))
-	(chain req (set-request-header "Connection" "close"))
 	(chain req (send encoded-params))))
 
     (defun post/json (uri params on-success on-fail)
