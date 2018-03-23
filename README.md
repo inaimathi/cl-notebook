@@ -106,7 +106,7 @@ TODO - patches welcome, since I'm not a Windows user
 	- Config books is the right answer I think; we should have a `_welcome`, followed by a bunch of module books (including `charts`, and maybe `minibuffer` at least)
 - add a default code cell to each newly created book
 - Download the latest `quicklisp.lisp` from `https://beta.quicklisp.org/quicklisp.lisp` rather than including one with the binary. We might want to include one too, just as a last resort, but we should try for the more interesting anyway
-- Give users an interface to upload new notebooks from their local environments to the notebook instances' local (we need this for the multi-user situation)
+	- Also, use `qlot` instead of `ql` internally, both for ease of `quicklisp`ification, and because it opens up the possibility of per-notebook sandboxes
 - when a cell is clicked, show its control halo (this'll make mobile use possible)
 - Add support for more cell types; at minimum `markdown`, and javascript would probably also do nicely
 - Need a complete how-to set of videos at some point
@@ -124,44 +124,48 @@ TODO - patches welcome, since I'm not a Windows user
 	- No I don't think so, but we need additional logging buffers. Maybe one per notebook so that incremental debugging is a bit easier.
 - Do we want to differentiate between "someone forked a book" and "someone started a new book"? Right now, there's no difference, but we may want to treat forks differently for multi-user purposes later on.
 
-#### Features (not necessarily in priority order)
+#### Features (in priority order by section)
 ####### Back-end
 - Exports for projects, not just .lisp files (and the .lisp files should do something intelligent about the `package` forms).
 	- Look into [compression options](http://www.cliki.net/compression) for the project part (it'll have to be handled as multiple files)
-- Really REALLY need tags. Named checkpoints that you can jump to in book history. Implemented as part of `:fact-base`, now we need to add the proper interface here (this includes a thing for adding checkpoints, and an addition to the history slider to let it specifically jump to tagged points)
-- Let user configure where to check for a `quicklisp` folder (by default, check `~/quicklisp`, `~/.cl-notebook/quicklisp` and `quicklisp` in CWD)
-- Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
-	- Suddenly more relevant because we definitely want incremental updates for proper `quicklisp` use
-- Put together better storage for charts
-	- Is this even possible? We could defer computation until display time, but some charts take longer to compute than I'd like. Storing the full HTML output is harder on disk use though. As in "noticeably"; the `BGG corpus charts` article weighs `80mb` on disk, and no other notebook has even cracked `2mb` yet.
-- Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
-	- Really, what we want here is automatic resolution. When a cell is evaluated, see where its defined values are used, and re-evaluate any cells that apply.
-- If there are no existing notebooks, we should write a default scratch book with some initial how-to instructions
 - Get `buildapp` working properly with this
 	- Give the user a one-button interaction that turns a given notebook into a binary.
+- In fact, exporters should be corralled into a separate subsystem so that they can be extended properly. Right now, exports happen as a purely front-end process (see the `run-book-actions` section of `.../http-front-end/api.lisp`), but it should really be server-side for the most part (I think maybe the `HTML` export makes marginally more sense as a front-end thing, but it should otherwise be a method we can specialize on and dynamically grab options out of the way we currently do for `cell-language` and `cell-type`)
 - Get poor-man's profiling built into cell results (use `local-time` timestamps for start/end time of operations; compute duration)
+- Really REALLY need tags. Named checkpoints that you can jump to in book history.
+	- Implemented as part of `:fact-base`, now we need to add the proper interface here (this includes a thing for adding checkpoints, and an addition to the history slider to let it specifically jump to tagged points, so this is really both a back-end thing and a front-end thing)
+- Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
+	- Suddenly more relevant because we definitely want incremental updates for proper `quicklisp` use
+- If there are no existing notebooks, we should write a default scratch book with some initial how-to instructions
+- Put together better storage for charts
+	- Is this even possible? Sure, as long as we're ok with deferring computation until display-time. Storing the full HTML output is harder on disk use though. As in "noticeably"; the `BGG corpus charts` article weighs `80mb` on disk, and no other notebook has even cracked `2mb` yet.
+- Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
+	- Really, what we want here is automatic resolution. When a cell is evaluated, see where its defined values are used, and re-evaluate any cells that apply.
+- Let user configure where to check for a `quicklisp` folder (by default, check `~/quicklisp`, `~/.cl-notebook/quicklisp` and `quicklisp` in CWD)
 
 ####### Front-end
 - Things I still kinda want:
 	- transpose-sexp
 	- slurp-sexp (forward/backward)
 	- barf-sexp (forward/backward)
-- Add a `run-tests` option to the main menu. Have it evaluate all test cells in the current notebook.
+    not sure whether we've got the available keybingings for it though, unless there's some way of stealing them from the underlying browser.
+- Add a `run-tests` option to the main menu. Have it evaluate all test cells in the current notebook. Maybe have a dedicated tests output display (or that additional logging buffer I keep kinda wanting)
 - Already customizing the commonlisp mode all to hell; just go the whole nine and put in the proper Lisp-specific labels instead of this `variable-3`/`string-2` shit.
+- Update to the latest version of `CodeMirror`
 - Complete on local-scope symbols (such as those introduced by `let`, `let*`, `flet`, `labels`, `macrolet`) at a higher priority than global symbols
 - Handle completion and arg-hints of symbols with package names (for example, `alexandria:hash-table-alist`)
-- Notebooks should be sorted by notebook-name, at the very least (in addition to the below noted fork-grouping)
-	- This may involve changes to some back-end systems; you need to order up the initial notebook list, _as well as_ inserting new notebooks in an ordered manner. Do we just bite the bullet and hit the server every time? Or maybe send out a complete notebooks list every time someone adds one?
-- Forked notebook entries should be grouped with their parents in the top menu. Guess you could pull out parent relationships at load-time?
+- Forked notebook entries should be grouped with their parents in the open menu. Guess you could pull out parent relationships at load-time? Or fuck around with parsing filenames?
 - For general use, we'll want to expose customizable keybindings somehow. A session-keyed config page would work fine.
 
 ####### Multi-user related
-- Move to a thread-per-cell model to make multi-user development easier
+- Moving cells around isn't propagated to other users. It should be, just like any other front-end edit.
 - If you join a book in the middle of an already running computation, you currently aren't notified of this. Figure something out.
-- Moving cells around isn't propagated to other users
-- Editing a cell should be propagated between saves (back-end should probably figure out when to save, and it should run operational transforms on diffs to keep from clobbering any users' input)
-- When a notebook is forked, it should create a copy of its package for the fork to use (so that users working on different forks of the same book don't clobber each others in-image changes)
-- Authentication should be a thing, and saving user preferences likewise
+- Authentication should be a thing. OAuth from GitGoogFaceHooExchange, possibly along with a local password/admin system.
+- Saving user preferences should be a thing. Per user might be the right thing, but a `local storage` solution migh get us most of the way to this (and may actually be better if a single user tends to use a notebook from multiple devices).
+- Give users an interface to upload new notebooks from their local environments to the notebook instances' local (really, may as well give them arbitrary disk access since this _is_ a remote programming environment, but we might also consider restricting uploads to some known folder in `~/.cl-notebook/`)
+- Each user should be associated with a color. Show a halo around the cell other users' are editing (as well as an approximate cursor) in realtime
+- When a notebook is forked, it should create a copy of its package for the fork to use (so that users working on different forks of the same book don't clobber each others in-image changes). Does `qlot` give us any of this for free?
+- Move to a multi-threaded model with a cell-evaluation work-queue to make multi-user development easier (this involves both a thread-coordination subsystem, and a front-end interfaceto manage multiple threads)
 
 ## License
 
