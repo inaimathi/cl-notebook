@@ -374,7 +374,9 @@
 	       (with-slots (id cell-type) cell
 		 (setup-cell-mirror! cell)
 		 (when (= :markup cell-type)
-		   (hide! (by-cell-id id ".CodeMirror")))))
+		   (hide! (by-cell-id id ".CodeMirror")))
+                 (when (= :parenscript cell-type)
+                   (window.eval (@ cell result 0 values 0 value)))))
 	     (notebook-cells *notebook*))))
 
     (defun relevant-event? (ev)
@@ -431,7 +433,7 @@
 	      (delete (@ cell stale))
 	      (chain (by-cell-id (@ res cell)) class-list (remove "stale"))
               (when (= :parenscript (@ cell cell-type))
-                (eval (@ cell result 0 values 0 value)))
+                (window.eval (@ cell result 0 values 0 value)))
 	      (dom-replace-cell-value! cell))))
 	'finished-package-eval
 	(lambda (res)
