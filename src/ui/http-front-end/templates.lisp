@@ -81,6 +81,49 @@
 		 (:silent "")
 		 (t (normal-result-template result)))))))
 
+    (defun cell-ps-result-template (noise result)
+      (let ((val (@ result 0 values 0 value)))
+        (who-ps-html
+         (:pre (case noise
+                 (:terse
+                  (join
+                   (rest
+                    (loop for ln in (lines val)
+                       if (not
+                           (or (chain ln (starts-with " "))
+                               (chain ln (starts-with "	"))))
+                       collect "  ..." and collect ln))
+                   #\newline))
+                 (:silent "")
+                 (otherwise val))))))
+
+    (defun cell-markup-result-template (result)
+      (if result
+	  (let ((val (@ result 0 values 0 value)))
+	    (cond ((and (string? val) (= "" val))
+		   (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
+		  ((string? val) val)
+		  (t (result-template :verbose result))))
+	  (who-ps-html (:p (:b "[[EMPTY CELL]]")))))
+
+    (defun cell-value-template (cell)
+      (with-slots (cell-type result noise stale) cell
+        (case cell-type
+          (:markup (cell-markup-result-template result))
+          (:parenscript (cell-ps-result-template noise result))
+          (otherwise (result-template noise result :stale? stale)))))
+
+    (defun cell-ps-template (cell)
+      (who-ps-html (:span :class "cell-value" (cell-value-template cell))))
+
+    (defun cell-markup-template (cell)
+      (who-ps-html
+       (:div :onclick (+ "showEditor(" (@ cell id) ")")
+             (:span :class "cell-value" (cell-value-template cell)))))
+
+    (defun cell-code-template (cell)
+      (who-ps-html (:span :class "cell-value" (cell-value-template cell))))
+
     (defun cell-controls-template (cell)
       (who-ps-html
        (:div :class "controls"
@@ -110,28 +153,6 @@
 		       else
 		       collect (who-ps-html (:option :value ns ns))))))))
 
-    (defun cell-markup-result-template (result)
-      (if result
-	  (let ((val (@ result 0 values 0 value)))
-	    (cond ((and (string? val) (= "" val))
-		   (who-ps-html (:p (:b "[[EMPTY CELL]]"))))
-		  ((string? val) val)
-		  (t (result-template :verbose result))))
-	  (who-ps-html (:p (:b "[[EMPTY CELL]]")))))
-
-    (defun cell-markup-template (cell)
-      (with-slots (id result) cell
-	(who-ps-html
-         (:div :onclick (+ "showEditor(" id ")")
-               (:span :class "cell-value"
-                      (cell-markup-result-template result))))))
-
-    (defun cell-code-template (cell)
-      (with-slots (noise result) cell
-	(who-ps-html
-         (:span :class "cell-value"
-                (result-template noise result)))))
-
     (defun cell-template (cell)
       (with-slots (id cell-type language contents stale) cell
           (who-ps-html
@@ -141,6 +162,7 @@
                 (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
                 (case (@ cell cell-type)
                   (:markup (cell-markup-template cell))
+                  (:parenscript (cell-ps-template cell))
                   (otherwise (cell-code-template cell)))))))
 
     (defun show-thread-controls! (&optional (notice "Processing"))

@@ -138,7 +138,7 @@
       (hide-open-book-menu!)
       (map (lambda (cell)
              (with-slots (id cell-type) cell
-               (when (= 'markup cell-type)
+               (when (= :markup cell-type)
                  (hide-editor id))))
            (notebook-cells *notebook*)))
 
@@ -157,13 +157,11 @@
             (notebook-selector! "#notebook-selector")
             (dom-set el ""))))
 
-    (defun dom-replace-cell-value (cell)
+    (defun dom-replace-cell-value! (cell)
       (when (@ cell result)
 	(let ((res (@ cell result result)))
 	  (dom-set (by-cell-id (@ cell :id) ".cell-value")
-		   (if (= 'markup (@ cell cell-type))
-		       (cell-markup-result-template (@ cell result))
-		       (result-template (@ cell noise) (@ cell result) :stale? (@ cell stale)))))))
+                   (cell-value-template cell)))))
 
     (defun dom-replace-cell (cell)
       (dom-replace (by-cell-id (@ cell id)) (cell-template cell))
@@ -375,7 +373,7 @@
 	(map (lambda (cell)
 	       (with-slots (id cell-type) cell
 		 (setup-cell-mirror! cell)
-		 (when (= 'markup cell-type)
+		 (when (= :markup cell-type)
 		   (hide! (by-cell-id id ".CodeMirror")))))
 	     (notebook-cells *notebook*))))
 
@@ -418,7 +416,7 @@
 	  (when (relevant-event? res)
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
 	      (setf (@ cell noise) (@ res new-noise))
-	      (dom-replace-cell-value cell))))
+	      (dom-replace-cell-value! cell))))
 	'starting-eval
 	(lambda (res) (show-thread-controls!))
 	'killed-eval
@@ -432,7 +430,9 @@
 		    (@ cell result) (@ res result))
 	      (delete (@ cell stale))
 	      (chain (by-cell-id (@ res cell)) class-list (remove "stale"))
-	      (dom-replace-cell-value cell))))
+              (when (= :parenscript (@ cell cell-type))
+                (eval (@ cell result 0 values 0 value)))
+	      (dom-replace-cell-value! cell))))
 	'finished-package-eval
 	(lambda (res)
 	  (hide-thread-controls!)

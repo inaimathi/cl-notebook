@@ -118,7 +118,7 @@
            (:h1 (notebook-name *notebook*)))
           (join
            (map (lambda (cell)
-                  (if (= 'markup (@ cell cell-type))
+                  (if (= :markup (@ cell cell-type))
                       (@ cell result 0 values 0 value)
                       (let ((node (chain document (create-element "pre"))))
                         (chain node (set-attribute :class "cm-s-default"))

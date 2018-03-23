@@ -37,6 +37,19 @@ It's treated differently in export situations."
 	    (error (e)
 	      (list (alist :type 'error :value (front-end-error nil e))))))))
 
+(defmethod front-end-eval ((cell-language (eql :common-lisp)) (cell-type (eql :parenscript)) (contents string))
+  "A Common-Lisp:Parenscript cell is evaluated as a `ps` form"
+  (list
+   (alist :stdout "" :warnings nil
+          :values
+          (handler-case
+	      (list
+	       (alist
+		:type "string"
+		:value (apply #'ps* (read-all contents))))
+	    (error (e)
+	      (list (alist :type 'error :value (front-end-error nil e))))))))
+
 (defun front-end-eval-formats ()
   (let ((h (make-hash-table)))
     (loop for m in (closer-mop:generic-function-methods #'front-end-eval)
