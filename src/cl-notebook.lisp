@@ -10,9 +10,12 @@
   (hash :facts (current book) :history-size (total-entries book) :id (notebook-id book)))
 
 (defun fork-at! (book index)
-  (let ((new (load! (fork-at book index :file-name (merge-pathnames (fact-base::temp-file-name) *books*))
-		    :indices *default-indices* :in-memory? t))
-	(new-name (format nil "Fork of ~a" (notebook-name book))))
+  (let* ((old-path (file-name book))
+         (new-path (make-unique-name-in
+                    (make-pathname :directory (pathname-directory old-path))
+                    (format nil "~a.4k" (file-namestring old-path))))
+         (new (load-notebook! (fork-at book index :file-name new-path)))
+         (new-name (format nil "Fork of '~a'" (notebook-name book))))
     (rename-notebook! new new-name)
     (register-notebook! new)
     (publish-update! new 'new-book :book-name new-name)
