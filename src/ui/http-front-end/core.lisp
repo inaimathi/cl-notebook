@@ -12,10 +12,18 @@
       (:link :rel "stylesheet" :href "/static/css/dialog.css")
       (:link :rel "stylesheet" :href "/static/css/show-hint.css")
 
+      (:script
+       :type "text/javascript"
+       (str
+        (format
+         nil "var CLNOTEBOOK = { cellTypes: ~a }"
+         (json:encode-json-to-string (front-end-eval-formats)))))
+
+      (:script :type "text/javascript" :src "/js/base.js")
+
       (:script :type "text/javascript" :src "/static/js/Blob.js")
       (:script :type "text/javascript" :src "/static/js/FileSaver.js")
 
-      (:script :type "text/javascript" :src "/js/base.js")
       (:script :type "text/javascript" :src "/js/templates.js")
       (:script :type "text/javascript" :src "/js/ajax.js")
       (:script :type "text/javascript" :src "/js/core.js")
@@ -42,8 +50,7 @@
 
      (:body
       (:span :id "cl-notebook-front-end-addons"
-             (:link :rel "stylesheet" :href "/css/notebook-addons.css")
-             (:script :type "text/javascript" :src "/js/notebook-addons.js"))
+             (:link :rel "stylesheet" :href "/css/notebook-addons.css"))
       (:div :id "macro-expansion" (:textarea :language "commonlisp"))
       (:div :id "notebook")
       (:div :class "main-controls"
@@ -79,9 +86,6 @@
     (defun elem-to-cell (elem)
       (aref *notebook* :objects (elem->cell-id elem)))
 
-    (defun markup-cell? (cell)
-      (= 'markup (@ cell cell-type)))
-
     (defun clear-selection ()
       (let ((sel (chain window (get-selection))))
 	(if (@ sel empty)
@@ -114,12 +118,12 @@
     ;; cl-notebook specific events
     (defun reload-addon-resources! (resource-type resource-name)
       (console.log "RELOADING" resource-type resource-name "(TODO - be surgical about this)")
+      ;; (get "/js/notebook-addons.js" (create)
+      ;;      (lambda (res) (window.eval res)))
       (dom-set
        (by-selector "#cl-notebook-front-end-addons")
        (who-ps-html
-        (:link :rel "stylesheet" :href (+ "/css/notebook-addons.css?now=" (now!)))))
-      (get "/js/notebook-addons.js" (create)
-           (lambda (res) (window.eval res))))
+        (:link :rel "stylesheet" :href (+ "/css/notebook-addons.css?now=" (now!))))))
 
     (defun hash-updated ()
       (let ((book-name (@ (get-page-hash) :book)))
@@ -157,7 +161,7 @@
       (when (@ cell result)
 	(let ((res (@ cell result result)))
 	  (dom-set (by-cell-id (@ cell :id) ".cell-value")
-		   (if (markup-cell? cell)
+		   (if (= 'markup (@ cell cell-type))
 		       (cell-markup-result-template (@ cell result))
 		       (result-template (@ cell noise) (@ cell result) :stale? (@ cell stale)))))))
 
@@ -557,16 +561,3 @@
        (setup-macro-expansion-mirror!)
        (setf (@ window onhashchange) #'hash-updated)
        (hash-updated)))))
-
-(defparameter *addon-js-forms* (make-hash-table :test 'equalp))
-
-(defmacro define-js (name &body forms)
-  `(let ((res (ps ,@forms)))
-     (setf (gethash ',name *addon-js-forms*) res)
-     (publish-update! nil 'addon-updated :addon-type :js :addon-name ',name)
-     res))
-
-(define-handler (js/notebook-addons.js :content-type "application/javascript") ()
-  (apply
-   #'concatenate 'string
-   (loop for v being the hash-values of *addon-js-forms* collect v)))

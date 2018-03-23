@@ -111,8 +111,6 @@ TODO - patches welcome, since I'm not a Windows user
 - Add support for more cell types; at minimum `markdown`, and javascript would probably also do nicely
 - Need a complete how-to set of videos at some point
 - Port to the proper way of using SSEs (with event tags rather than an action field in the payload)
-- BUG: When there's an error in a notebook we're loading, we do the "Notebook blah not found" thing. Instead, we should stop evaluating at that point and flag the offending cell. (Alternatively, we could also NOT load a notebook on open, but instead provide an `eval-notebook` function)
-	- Had nothing to do with errors in notebook (those do actually get handled properly), this has to do with the approach for the `trurl` notebook, which ended up creating massive numbers of writes (it turns out that our storage approach isn't atomic under heavy enough load :/ This is going to be a deeper issue, and may percipitate the decision about moving to a non-fact-base storage solution)
 
 #### Thoughts
 - Charts need to support
@@ -128,7 +126,6 @@ TODO - patches welcome, since I'm not a Windows user
 
 #### Bugs
 - Should show the orange border as soon as something is edited in a cell, not just between eval and completion
-- The counter in the client-side timeline doesn't update with newly added history states
 
 #### Features (not necessarily in priority order)
 ####### Back-end
