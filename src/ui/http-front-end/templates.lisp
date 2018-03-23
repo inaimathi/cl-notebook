@@ -82,16 +82,17 @@
 		 (t (normal-result-template result)))))))
 
     (defun cell-ps-result-template (noise result)
-      (let ((val (@ result 0 values 0 value)))
+      (let ((val (@ result 0 values 0 value))
+            (skippable? (lambda (ln)
+                          (or (chain ln (starts-with " "))
+                              (chain ln (starts-with "	"))))))
         (who-ps-html
          (:pre (case noise
                  (:terse
                   (join
                    (rest
                     (loop for ln in (lines val)
-                       if (not
-                           (or (chain ln (starts-with " "))
-                               (chain ln (starts-with "	"))))
+                       if (not (skippable? ln))
                        collect "  ..." and collect ln))
                    #\newline))
                  (:silent "")
