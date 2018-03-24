@@ -21,9 +21,9 @@
 (defvar *storage* nil)
 (defvar *books* nil)
 (defvar *static* nil)
+(defvar *ql* nil)
 
 (defvar *static-files* nil)
-(defvar *quicklisp-file* nil)
 
 (defvar *default-indices* '(:a :b :ab :abc))
 
