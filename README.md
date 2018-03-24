@@ -99,19 +99,6 @@ TODO - patches welcome, since I'm not a Windows user
 #### Notebook Exporters
 #### Cell Compilers
 
-## TODO (also, this section should eventually be moved to the github issue tracker)
-
-- Triage the old bugs (do they still happen? If so; prioritize)
-- add a little tutorial to `_notebook` book (or maybe make separate config books)
-	- Config books is the right answer I think; we should have a `_welcome`, followed by a bunch of module books (including `charts`, and maybe `minibuffer` at least)
-- add a default code cell to each newly created book
-- Download the latest `quicklisp.lisp` from `https://beta.quicklisp.org/quicklisp.lisp` rather than including one with the binary. We might want to include one too, just as a last resort, but we should try for the more interesting anyway
-	- Also, use `qlot` instead of `ql` internally, both for ease of `quicklisp`ification, and because it opens up the possibility of per-notebook sandboxes
-- when a cell is clicked, show its control halo (this'll make mobile use possible)
-- Add support for more cell types; at minimum `markdown`, and javascript would probably also do nicely
-- Need a complete how-to set of videos at some point
-- Port to the proper way of using SSEs (with event tags rather than an action field in the payload)
-
 #### Thoughts
 - Charts need to support
 	- Being saved to a pure HTML+CSS (no javascript) file
@@ -141,7 +128,7 @@ TODO - patches welcome, since I'm not a Windows user
 	- Is this even possible? Sure, as long as we're ok with deferring computation until display-time. Storing the full HTML output is harder on disk use though. As in "noticeably"; the `BGG corpus charts` article weighs `80mb` on disk, and no other notebook has even cracked `2mb` yet.
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
 	- Really, what we want here is automatic resolution. When a cell is evaluated, see where its defined values are used, and re-evaluate any cells that apply.
-- Let user configure where to check for a `quicklisp` folder (by default, check `~/quicklisp`, `~/.cl-notebook/quicklisp` and `quicklisp` in CWD)
+- Let user configure where to check for a `quicklisp` folder (by default, check `~/quicklisp`, `~/.cl-notebook/quicklisp` and `quicklisp` in CWD) (Note that this task might be made unnecessary by `qlot` use)
 
 ####### Front-end
 - Things I still kinda want:
