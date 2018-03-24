@@ -27,7 +27,7 @@
       (loop for entry = (handler-case
                             (fact-base::read-entry! s)
                           (#+sbcl sb-int:simple-reader-package-error #-sbcl error (e)
-                                  (ql:quickload (slot-value e 'package))
+                                  (load-package (slot-value e 'package))
                                   (fact-base::read-entry! s)))
          while entry
 	 do (incf (fact-base::entry-count book))
@@ -76,7 +76,7 @@
     (load-dependencies! spec)
     (or (find-package (second spec)) (eval spec))))
 
-(defmethod load-package ((package symbol))
+(defun load-package (package)
   (unless (find-package package)
     (publish-update! nil 'loading-package :package package)
     (handler-bind ((error (lambda (e)
