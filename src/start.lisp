@@ -51,12 +51,10 @@ Only useful during the build process, where its called with an --eval flag."
 	  (write-statics :force? (get-param '(:f :force) params)))
 
 	(format t "Checking for quicklisp...~%")
+        (unless (dir-exists? *ql*) (qlot:install-quicklisp *ql*))
 	(if (find-package :quicklisp)
-	    (format t "   quicklisp already loaded...~%")
+            (format t "   quicklisp already loaded...~%")
             (progn
-              (unless (dir-exists? *ql*)
-                (format t "   Installing quicklisp at '~a'...~%" *ql*)
-                (qlot:install-quicklisp *ql*))
               (format t "   Loading quicklisp from ~s...~%" *ql*)
               (load (merge-pathnames "setup.lisp" ql-dir))))
 
