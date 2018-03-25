@@ -81,7 +81,9 @@
     (publish-update! nil 'loading-package :package package)
     (handler-bind ((error (lambda (e)
 			    (publish-update! nil 'package-load-failed :package package :error (front-end-error nil e)))))
-      (funcall (intern "QUICKLOAD" :ql) package)
+      (qlot:with-local-quicklisp (*storage*)
+        (qlot/util:with-package-functions :ql (quickload)
+          (quickload package)))
       (publish-update! nil 'finished-loading-package :package package))))
 
 (defmethod load-dependencies! ((package-form list))

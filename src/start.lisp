@@ -11,7 +11,6 @@ Only useful during the build process, where its called with an --eval flag."
 	       (read-sequence data stream)
 	       data))))
     (let ((root (asdf:system-source-directory :cl-notebook)))
-      (setf *quicklisp-file* (read-file (merge-pathnames "quicklisp.lisp" root)))
       (cl-fad:walk-directory
        (sys-dir (merge-pathnames "static" root))
        (lambda (filename)
@@ -39,7 +38,8 @@ Only useful during the build process, where its called with an --eval flag."
 	    (host (if (or (get-param '(:o :open :public) params) public?) usocket:*wildcard-host* #(127 0 0 1))))
 	(format t "Initializing storage directories...~%")
 	(setf *storage* (sys-dir (merge-pathnames ".cl-notebook" (user-homedir-pathname)))
-	      *books* (sys-dir (merge-pathnames "books" *storage*)))
+	      *books* (sys-dir (merge-pathnames "books" *storage*))
+              *ql* (merge-pathnames "quicklisp" *storage*))
 	(unless *static*
 	  (format t "Initializing static files...~%")
 	  (setf *static* (merge-pathnames "static" *storage*))
@@ -51,27 +51,12 @@ Only useful during the build process, where its called with an --eval flag."
 	  (write-statics :force? (get-param '(:f :force) params)))
 
 	(format t "Checking for quicklisp...~%")
+        (unless (dir-exists? *ql*) (qlot:install-quicklisp *ql*))
 	(if (find-package :quicklisp)
-	    (format t "   quicklisp already loaded...~%")
-	    (let ((ql-dir
-		   (or (dir-exists? "quicklisp")
-		       (dir-exists? (merge-pathnames "quicklisp" (user-homedir-pathname)))
-		       (dir-exists? (merge-pathnames "quicklisp" *storage*)))))
-	      (cond (ql-dir
-		     (format t "   Loading quicklisp from ~s...~%" ql-dir)
-		     (load (merge-pathnames "setup.lisp" ql-dir)))
-		    (t
-		     (format t "   No quicklisp found...~%")
-		     (let ((ql-setup-file (merge-pathnames "quicklisp.lisp" *storage*)))
-		       (format t "   TODO auto-install quicklisp to '~~/.cl-notebook/quicklisp/' at this point~%")
-		       (format t "   Writing quicklisp.lisp ...~%")
-		       (with-open-file (stream ql-setup-file :direction :output :element-type '(unsigned-byte 8) :if-exists :supersede :if-does-not-exist :create)
-			 (write-sequence *quicklisp-file* stream))
-		       (load ql-setup-file)
-		       (funcall
-			(intern "INSTALL" :quicklisp-quickstart)
-			:path (cl-fad:pathname-as-directory (merge-pathnames "quicklisp" *storage*))))))
-	      (setf *quicklisp-file* nil)))
+            (format t "   quicklisp already loaded...~%")
+            (progn
+              (format t "   Loading quicklisp from ~s...~%" *ql*)
+              (load (merge-pathnames "setup.lisp" ql-dir))))
 
 	(in-package :cl-notebook)
 	(format t "Loading books...~%")

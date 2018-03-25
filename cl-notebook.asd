@@ -5,7 +5,7 @@
   :description "A notebook-style in-browser editor for Common Lisp"
   :author "Inaimathi <leo.zovic@gmail.com>"
   :license "AGPL3"
-  :depends-on (#+sbcl #:sb-introspect
+  :depends-on (#+sbcl #:sb-introspect #:qlot
 	       #:alexandria #:anaphora #:cl-fad #:closer-mop
 	       #:cl-who #:cl-css #:parenscript
 	       #:house #:fact-base)
