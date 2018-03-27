@@ -8,6 +8,10 @@
   (publish-update! nil 'killed-eval)
   :ok)
 
+(define-json-handler (cl-notebook/system/formats) ()
+  (hash :eval (front-end-eval-formats)
+        :export (export-book-formats)))
+
 (define-json-handler (cl-notebook/system/home-path) ()
   (namestring (user-homedir-pathname)))
 
