@@ -34,8 +34,9 @@
 	 do (fact-base::apply-entry! book entry)))
     (handler-bind (#+sbcl (sb-ext:name-conflict
 			   (lambda (e)
-			     (declare (ignore e))
-			     (invoke-restart 'sb-impl::take-new))))
+			     (invoke-restart
+                              (or (find-restart 'sb-impl::take-new e)
+                                  (find-restart 'sb-impl::shadowing-import-it e))))))
       (setf (namespace book)
             (notebook-package! book))
       (eval-notebook book))
@@ -107,8 +108,9 @@
 	    (load-dependencies! package-form)
 	    (handler-bind (#+sbcl (sb-ext:name-conflict
 				   (lambda (e)
-				     (declare (ignore e))
-				     (invoke-restart 'sb-impl::take-new))))
+                                     (invoke-restart
+                                      (or (find-restart 'sb-impl::take-new e)
+                                          (find-restart 'sb-impl::shadowing-import-it e))))))
 	      (eval package-form))
 	    (awhen (first (lookup book :b :package-error)) (delete! book it))
 	    (if package-fact ;; TODO - remove conditional eventually. All notebooks should have such facts.
