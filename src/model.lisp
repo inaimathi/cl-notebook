@@ -67,6 +67,14 @@
                  :collect (cons ?k ?v)
                  :in book)))
 
+(defun map-cells (fn book)
+  (loop for id in (notebook-cell-order book)
+     collect (funcall fn (notebook-cell book id))))
+
+(defun do-cells (fn book)
+  (loop for id in (notebook-cell-order book)
+     do (funcall fn (notebook-cell book id))))
+
 (defmethod notebook-package-spec-string ((book notebook))
   (caddar (lookup book :b :notebook-package)))
 

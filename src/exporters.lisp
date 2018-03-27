@@ -3,10 +3,6 @@
 (defmethod export-cell (format cell-language cell-type cell-noise cell)
   (list :exported format cell-language cell-type cell-noise (mapcar #'car cell)))
 
-(defun map-cells (fn book)
-  (loop for id in (notebook-cell-order book)
-     collect (funcall fn (notebook-cell book id))))
-
 (defun export-cells (format book)
   (map-cells
    (lambda (cell)
@@ -87,11 +83,17 @@
   (html-to-str
    (-cell-comment cell)
    (:script :type "text/javascript" (str (-html-value cell)))))
-
 (defmethod export-cell ((format (eql :html)) (cell-language (eql :common-lisp)) (cell-type (eql :parenscript)) cell-noise cell)
   (html-to-str
    (-cell-comment cell)
    (:li :class (-cell-class cell)
+        (:pre :class "cell-contents" (str (aget :contents cell))))
+   (:script :type "text/javascript" (str (-html-value cell)))))
+(defmethod export-cell ((format (eql :html)) (cell-language (eql :common-lisp)) (cell-type (eql :parenscript)) (cell-noise (eql :verbose)) cell)
+  (html-to-str
+   (-cell-comment cell)
+   (:li :class (-cell-class cell)
+        (:pre :class "cell-contents" (str (aget :contents cell)))
         (:pre :class "result" (str (-html-value cell))))
    (:script :type "text/javascript" (str (-html-value cell)))))
 

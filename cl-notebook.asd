@@ -19,7 +19,8 @@
                   ui :components
                   ((:module
                     http-api :components
-                    ((:file "system")))
+                    ((:file "system")
+                     (:file "notebook")))
                    (:module
                     http-front-end :components
                     ((:file "macros")

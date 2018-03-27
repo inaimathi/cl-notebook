@@ -43,9 +43,10 @@
           (post/json "/cl-notebook/notebook/export"
                      (create :book (notebook-id *notebook*) :format format)
                      (lambda (data)
+                       (console.log data)
                        (save-file
                         (@ data :name)
-                        (@ data :content)
+                        (@ data :contents)
                         (+ (@ data :mimetype) ";charset=utf-8"))))
           (setf (@ (by-selector "#book-exporters") value) "")))
 
