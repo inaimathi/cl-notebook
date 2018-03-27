@@ -117,7 +117,6 @@ TODO - patches welcome, since I'm not a Windows user
 	- Look into [compression options](http://www.cliki.net/compression) for the project part (it'll have to be handled as multiple files)
 - Get `buildapp` working properly with this
 	- Give the user a one-button interaction that turns a given notebook into a binary.
-- In fact, exporters should be corralled into a separate subsystem so that they can be extended properly. Right now, exports happen as a purely front-end process (see the `run-book-actions` section of `.../http-front-end/api.lisp`), but it should really be server-side for the most part (I think maybe the `HTML` export makes marginally more sense as a front-end thing, but it should otherwise be a method we can specialize on and dynamically grab options out of the way we currently do for `cell-language` and `cell-type`)
 - Get poor-man's profiling built into cell results (use `local-time` timestamps for start/end time of operations; compute duration)
 - Really REALLY need tags. Named checkpoints that you can jump to in book history.
 	- Implemented as part of `:fact-base`, now we need to add the proper interface here (this includes a thing for adding checkpoints, and an addition to the history slider to let it specifically jump to tagged points, so this is really both a back-end thing and a front-end thing)
