@@ -43,3 +43,7 @@
     :type-expression `(pathname ,parameter)
     :type-assertion `(not (or (cl-fad:directory-exists-p ,parameter)
                               (cl-fad:file-exists-p ,parameter))))
+
+(define-http-type (:export-format)
+    :type-expression `(intern (string-upcase ,parameter) :keyword)
+    :type-assertion `(member ,parameter (export-book-formats)))

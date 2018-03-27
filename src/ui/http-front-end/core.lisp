@@ -29,11 +29,10 @@
       (:script :type "text/javascript" :src "/static/js/FileSaver.js")
 
       (:script :type "text/javascript" :src "/js/templates.js")
-      (:script :type "text/javascript" :src "/js/ajax.js")
+      (:script :type "text/javascript" :src "/js/api.js")
       (:script :type "text/javascript" :src "/js/core.js")
       (:script :type "text/javascript" :src "/js/pareditesque.js")
       (:script :type "text/javascript" :src "/js/notebook-selector.js")
-      (:script :type "text/javascript" :src "/js/book-actions.js")
       (:script :type "text/javascript" :src "/static/js/native-sortable.js")
 
       (:script :type "text/javascript" :src "/static/js/codemirror.js")
@@ -62,11 +61,12 @@
 	    (:input :id "book-history-slider" :onchange "rewindBook(this.value)" :oninput "debouncedRewind(this.value)" :type "range" :min 0 :max 500 :value 500)
 	    (:button :onclick "newCell()" "> New Cell")
             (:button :onclick "toggleOpenBookMenu()" "> Open Book")
-	    (:select :id "book-actions"
-		     :onchange "runBookAction(this.value)"
-		     (:option :value "" "Export...")
-                     (:option :value "export-html" "as HTML")
-                     (:option :value "export-lisp" "as .lisp"))
+	    (:select :id "book-exporters"
+		     :onchange "exportBook(this.value)"
+                     :onselect "exportBook(this.value)"
+		     (:option :value "" "Export as...")
+                     (loop for format in (export-book-formats)
+                             do (htm (:option :value format (str format)))))
             (:div :class "thread-controls"
                   (:span :class "notice" "Processing")
                   (:img :src "/static/img/dots.png")
