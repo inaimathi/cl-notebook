@@ -16,8 +16,12 @@
        :type "text/javascript"
        (str
         (format
-         nil "var CLNOTEBOOK = { cellTypes: ~a }"
-         (json:encode-json-to-string (front-end-eval-formats)))))
+         nil "var CLNOTEBOOK = ~a"
+         (json:encode-json-to-string
+          (hash
+           :formats
+           (hash :eval (front-end-eval-formats)
+                 :export (export-book-formats)))))))
 
       (:script :type "text/javascript" :src "/js/base.js")
 

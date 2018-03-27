@@ -30,6 +30,7 @@
                      (:file "notebook-selector") (:file "pareditesque")))))
 
                  (:file "evaluators")
+                 (:file "exporters")
                  (:file "cl-notebook")
 
                  (:file "start")))))

@@ -2,7 +2,7 @@
 
 (defvar *front-end-eval-thread* nil)
 (defmethod front-end-eval (cell-language cell-type (contents string))
-  "A cell that fits no other description returns a"
+  "A cell that fits no other description returns an error"
   (list
    (alist
     :stdout "" :warnings nil ; Without these, :json encodes this as an array rather than an object

@@ -3,7 +3,7 @@
 (defparameter +css-input+
   `(:border "2px solid #ccc" :border-right-color "#aaa" :border-bottom-color "#aaa" :border-radius 4px :height 24px :font-weight bold))
 
-(define-handler (css/notebook.css :content-type "text/css") ()
+(defparameter *notebook-css*
   (cl-css:css
    `((body :font-family sans-serif :overflow-x hidden)
 
@@ -94,6 +94,9 @@
       :width 60% :height 95% :position :fixed :top 3% :right 0 :opacity 0.6
       :z-index 9 :border-radius 5px :border "2px solid #ccc" :background-color "#eee")
      ("#macro-expansion .CodeMirror" :height 100% :width 100%))))
+
+(define-handler (css/notebook.css :content-type "text/css") ()
+  *notebook-css*)
 
 (defparameter *addon-css-rules* (make-hash-table :test 'equalp))
 

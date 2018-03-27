@@ -12,6 +12,9 @@
   (loop for (k v) on k/v-pairs by #'cddr
      collect (cons k v)))
 
+(defun aget (k alist)
+  (cdr (assoc k alist)))
+
 (defmethod first-char ((str string))
   (char str 0))
 

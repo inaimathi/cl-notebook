@@ -61,6 +61,12 @@
     (loop for (id b c) in (lookup book :b :cell :c nil) do (pushnew id all-ids))
     (reverse all-ids)))
 
+(defun notebook-cell (book cell-id)
+  (cons (cons :id cell-id)
+        (for-all `(,cell-id ?k ?v)
+                 :collect (cons ?k ?v)
+                 :in book)))
+
 (defmethod notebook-package-spec-string ((book notebook))
   (caddar (lookup book :b :notebook-package)))
 
