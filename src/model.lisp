@@ -57,9 +57,11 @@
   (caddar (lookup book :b :notebook-name)))
 
 (defmethod notebook-cell-order ((book notebook))
-  (let ((all-ids (reverse (caddar (lookup book :b :cell-order)))))
-    (loop for (id b c) in (lookup book :b :cell :c nil) do (pushnew id all-ids))
-    (reverse all-ids)))
+  (let* ((ordered-ids (caddar (lookup book :b :cell-order)))
+         (unordered-ids (set-difference
+                         (reverse (mapcar #'car (lookup book :b :cell :c nil)))
+                         ordered-ids)))
+    (concatenate 'list ordered-ids unordered-ids)))
 
 (defun notebook-cell (book cell-id)
   (cons (cons :id cell-id)

@@ -21,7 +21,7 @@ Only useful during the build process, where its called with an --eval flag."
   (when *static-files*
     (loop for k being the hash-keys of *static-files*
        for v being the hash-values of *static-files*
-       do (let ((file (if (string= "_notebook" (pathname-name k))
+       do (let ((file (if (string= "books" (car (last (pathname-directory k))))
                           (merge-pathnames (pathname-name k) *books*)
                           (merge-pathnames (stem-path k "static") *storage*))))
             (unless (and (cl-fad:file-exists-p file) (not force?))
@@ -40,6 +40,7 @@ Only useful during the build process, where its called with an --eval flag."
 	(setf *storage* (sys-dir (merge-pathnames ".cl-notebook" (user-homedir-pathname)))
 	      *books* (sys-dir (merge-pathnames "books" *storage*))
               *ql* (merge-pathnames "quicklisp" *storage*))
+
 	(unless *static*
 	  (format t "Initializing static files...~%")
 	  (setf *static* (merge-pathnames "static" *storage*))
@@ -59,7 +60,7 @@ Only useful during the build process, where its called with an --eval flag."
               (load (merge-pathnames "setup.lisp" ql-dir))))
 
 	(in-package :cl-notebook)
-	(format t "Loading books...~%")
+	(format t "Loading config books...~%")
 	(dolist (book (cl-fad:list-directory *books*))
 	  (format t "   Loading ~a...~%" book)
 	  (load-notebook! book))

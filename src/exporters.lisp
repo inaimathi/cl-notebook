@@ -1,7 +1,8 @@
 (in-package #:cl-notebook)
 
-(defmethod export-cell (format cell-language cell-type cell-noise cell)
-  (list :exported format cell-language cell-type cell-noise (mapcar #'car cell)))
+(defmethod export-cell (format cell-language cell-type cell)
+  (format t "~s~%" (list :default-cell format cell-language cell-type))
+  (list :exported format cell-language cell-type (mapcar #'car cell)))
 
 (defun export-cells (format book)
   (map-cells
@@ -10,7 +11,6 @@
       format
       (aget :cell-language cell)
       (aget :cell-type cell)
-      (aget :noise cell)
       cell))
    book))
 
@@ -27,9 +27,9 @@
           (notebook-id book)
           (export-cells :lisp book)))
 
-(defmethod export-cell ((format (eql :lisp)) (cell-language (eql :common-lisp)) cell-type cell-noise cell)
+(defmethod export-cell ((format (eql :lisp)) (cell-language (eql :common-lisp)) cell-type cell)
   nil)
-(defmethod export-cell ((format (eql :lisp)) (cell-language (eql :common-lisp)) (cell-type (eql :code)) cell-noise cell)
+(defmethod export-cell ((format (eql :lisp)) (cell-language (eql :common-lisp)) (cell-type (eql :code)) cell)
   (format nil ";;; Cell ~a~%~a" (aget :id cell) (aget :contents cell)))
 
 ;;;;;;;;;; Default :html exporter
@@ -63,39 +63,37 @@
       (:ul :class "cells"
            (str (format nil "~{~a~}" (export-cells format book))))))))
 
-(defmacro html-to-str (&rest forms)
-  `(with-html-output-to-string (s nil :indent t)
-     ,@forms))
-
 (defun -cell-class (cell)
   (format nil "cell ~(~a~)" (aget :cell-type cell)))
 (defun -cell-comment (cell)
   (format nil "<!-- Cell ~a -->~%" (aget :id cell)))
-
 (defun -html-value (cell)
   (aget :value (first (aget :values (first (aget :result cell))))))
 
-(defmethod export-cell ((format (eql :html)) cell-language (cell-type (eql :markup)) cell-noise cell)
+(defmethod export-cell ((format (eql :html)) cell-language (cell-type (eql :markup)) cell)
   (html-to-str
    (-cell-comment cell)
-   (:li :class (-cell-class cell) (str (-html-value cell)))))
-(defmethod export-cell ((format (eql :html)) (cell-language (eql :common-lisp)) (cell-type (eql :parenscript)) (cell-noise (eql :silent)) cell)
+   (:li :class (-cell-class cell) :cell-id (aget :id cell) (str (-html-value cell)))))
+(defmethod export-cell ((format (eql :html)) cell-language (cell-type (eql :code)) cell)
   (html-to-str
    (-cell-comment cell)
-   (:script :type "text/javascript" (str (-html-value cell)))))
-(defmethod export-cell ((format (eql :html)) (cell-language (eql :common-lisp)) (cell-type (eql :parenscript)) cell-noise cell)
-  (html-to-str
-   (-cell-comment cell)
-   (:li :class (-cell-class cell)
-        (:pre :class "cell-contents" (str (aget :contents cell))))
-   (:script :type "text/javascript" (str (-html-value cell)))))
-(defmethod export-cell ((format (eql :html)) (cell-language (eql :common-lisp)) (cell-type (eql :parenscript)) (cell-noise (eql :verbose)) cell)
-  (html-to-str
-   (-cell-comment cell)
-   (:li :class (-cell-class cell)
+   (:li :class (-cell-class cell) :cell-id (aget :id cell)
         (:pre :class "cell-contents" (str (aget :contents cell)))
-        (:pre :class "result" (str (-html-value cell))))
-   (:script :type "text/javascript" (str (-html-value cell)))))
+        (case (aget :cell-noise cell)
+          (:silent nil)
+          (t (htm (:pre :class "results" (str (-html-value cell)))))))))
+(defmethod export-cell ((format (eql :html)) (cell-language (eql :common-lisp)) (cell-type (eql :parenscript))  cell)
+  (html-to-str
+   (-cell-comment cell)
+   (:script :type "text/javascript" (str (-html-value cell)))
+   (case (aget :cell-noise cell)
+     (:silent nil)
+     (:verbose
+      (htm (:li :class (-cell-class cell) :cell-id (aget :id cell)
+                (:pre :class "cell-contents" (str (aget :contents cell)))
+                (:pre :class "result" (str (-html-value cell))))))
+     (t (htm (:li :class (-cell-class cell) :cell-id (aget :id cell)
+                  (:pre :class "cell-contents" (str (aget :contents cell)))))))))
 
 (defun export-book-formats ()
   (loop for m in (closer-mop:generic-function-methods #'export-as)

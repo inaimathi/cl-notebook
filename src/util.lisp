@@ -1,5 +1,10 @@
 (in-package :cl-notebook)
 
+;;;;; Basic HTML stuff
+(defmacro html-to-str (&rest forms)
+  `(with-html-output-to-string (s nil :indent t)
+     ,@forms))
+
 ;;;;; Basic data structure stuff
 (defun hash (&rest entries)
   (let ((h (make-hash-table)))

@@ -1,0 +1,2993 @@
+((6600 84304 238050000) :INSERT (0 :NOTEBOOK-NAME "_notebook"))
+((6600 84304 238165000) :INSERT
+ (1 :NOTEBOOK-PACKAGE "(defpackage \"_notebook\"
+  (:use :cl :fact-base :cl-notebook))"))
+((6600 84434 333581000) :INSERT (2 :CELL NIL))
+((6600 84434 333598000) :INSERT (2 :CELL-TYPE :CODE))
+((6600 84434 333602000) :INSERT (2 :CELL-LANGUAGE :COMMON-LISP))
+((6600 84434 333605000) :INSERT (2 :CONTENTS ""))
+((6600 84434 333608000) :INSERT (2 :RESULT ""))
+((6600 84449 683301000) :CHANGE ((2 :CELL-TYPE :CODE) (2 :CELL-TYPE :MARKUP)))
+((6600 84467 519077000) :CHANGE
+ ((2 :CONTENTS "")
+  (2 :CONTENTS
+   "(:p \"Welcome to CL Notebook. The Notebook-style editor for Common Lisp\")")))
+((6600 84467 549177000) :CHANGE
+ ((2 :RESULT "")
+  (2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Welcome to CL Notebook. The Notebook-style editor for Common Lisp</p>"))))))))
+((6600 84467 549239000) :DELETE (2 :STALE T))
+((6600 84494 923012000) :CHANGE
+ ((2 :CONTENTS
+   "(:p \"Welcome to CL Notebook. The Notebook-style editor for Common Lisp\")")
+  (2 :CONTENTS
+   "(:p \"Welcome to CL Notebook. The Notebook-style editor for Common Lisp.\")
+(:p \"This is a\" (:code \"markup\") \"cell. You can edit its code by clicking on it.\")")))
+((6600 84494 940620000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Welcome to CL Notebook. The Notebook-style editor for Common Lisp</p>"))))))
+  (2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Welcome to CL Notebook. The Notebook-style editor for Common Lisp.</p><p>This is a<code>markup</code>cell. You can edit its code by clicking on it.</p>"))))))))
+((6600 84494 940648000) :DELETE (2 :STALE T))
+((6600 84500 142657000) :INSERT (3 :CELL NIL))
+((6600 84500 142672000) :INSERT (3 :CELL-TYPE :CODE))
+((6600 84500 142676000) :INSERT (3 :CELL-LANGUAGE :COMMON-LISP))
+((6600 84500 142678000) :INSERT (3 :CONTENTS ""))
+((6600 84500 142687000) :INSERT (3 :RESULT ""))
+((6600 84508 780257000) :CHANGE ((3 :CONTENTS "") (3 :CONTENTS "(+ 2 3)")))
+((6600 84508 781198000) :CHANGE
+ ((3 :RESULT "")
+  (3 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . "INTEGER") (:VALUE . "5"))))))))
+((6600 84508 781245000) :DELETE (3 :STALE T))
+((6600 84567 623099000) :CHANGE
+ ((2 :CONTENTS
+   "(:p \"Welcome to CL Notebook. The Notebook-style editor for Common Lisp.\")
+(:p \"This is a\" (:code \"markup\") \"cell. You can edit its code by clicking on it.\")")
+  (2 :CONTENTS
+   "(:p \"Welcome to CL Notebook. The Notebook-style editor for Common Lisp.\")
+(:p \"This is a \" (:code \"markup\") \" cell. You can edit its code by clicking on it.\")
+(:p \"Below is a \" (:code \"code\") \" cell. It currently evaluates to \" (:code \"5\"))")))
+((6600 84567 636724000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Welcome to CL Notebook. The Notebook-style editor for Common Lisp.</p><p>This is a<code>markup</code>cell. You can edit its code by clicking on it.</p>"))))))
+  (2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Welcome to CL Notebook. The Notebook-style editor for Common Lisp.</p><p>This is a <code>markup</code> cell. You can edit its code by clicking on it.</p><p>Below is a <code>code</code> cell. It currently evaluates to <code>5</code></p>"))))))))
+((6600 84567 636751000) :DELETE (2 :STALE T))
+((6600 84574 857389000) :CHANGE
+ ((2 :CONTENTS
+   "(:p \"Welcome to CL Notebook. The Notebook-style editor for Common Lisp.\")
+(:p \"This is a \" (:code \"markup\") \" cell. You can edit its code by clicking on it.\")
+(:p \"Below is a \" (:code \"code\") \" cell. It currently evaluates to \" (:code \"5\"))")
+  (2 :CONTENTS
+   "(:p \"Welcome to CL Notebook. The Notebook-style editor for Common Lisp.\")
+(:p \"This is a \" (:code \"markup\") \" cell. You can edit its code by clicking on it.\")
+(:p \"Below is a \" (:code \"code\") \" cell. It currently evaluates to the integer\" (:code \"5\"))")))
+((6600 84574 875495000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Welcome to CL Notebook. The Notebook-style editor for Common Lisp.</p><p>This is a <code>markup</code> cell. You can edit its code by clicking on it.</p><p>Below is a <code>code</code> cell. It currently evaluates to <code>5</code></p>"))))))
+  (2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Welcome to CL Notebook. The Notebook-style editor for Common Lisp.</p><p>This is a <code>markup</code> cell. You can edit its code by clicking on it.</p><p>Below is a <code>code</code> cell. It currently evaluates to the integer<code>5</code></p>"))))))))
+((6600 84574 875549000) :DELETE (2 :STALE T))
+((6600 84578 89576000) :CHANGE
+ ((2 :CONTENTS
+   "(:p \"Welcome to CL Notebook. The Notebook-style editor for Common Lisp.\")
+(:p \"This is a \" (:code \"markup\") \" cell. You can edit its code by clicking on it.\")
+(:p \"Below is a \" (:code \"code\") \" cell. It currently evaluates to the integer\" (:code \"5\"))")
+  (2 :CONTENTS
+   "(:p \"Welcome to CL Notebook. The Notebook-style editor for Common Lisp.\")
+(:p \"This is a \" (:code \"markup\") \" cell. You can edit its code by clicking on it.\")
+(:p \"Below is a \" (:code \"code\") \" cell. It currently evaluates to the integer \" (:code \"5\"))")))
+((6600 84578 106604000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Welcome to CL Notebook. The Notebook-style editor for Common Lisp.</p><p>This is a <code>markup</code> cell. You can edit its code by clicking on it.</p><p>Below is a <code>code</code> cell. It currently evaluates to the integer<code>5</code></p>"))))))
+  (2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Welcome to CL Notebook. The Notebook-style editor for Common Lisp.</p><p>This is a <code>markup</code> cell. You can edit its code by clicking on it.</p><p>Below is a <code>code</code> cell. It currently evaluates to the integer <code>5</code></p>"))))))))
+((6600 84578 106635000) :DELETE (2 :STALE T))
+((6600 84581 55622000) :INSERT (4 :CELL NIL))
+((6600 84581 55640000) :INSERT (4 :CELL-TYPE :CODE))
+((6600 84581 55644000) :INSERT (4 :CELL-LANGUAGE :COMMON-LISP))
+((6600 84581 55647000) :INSERT (4 :CONTENTS ""))
+((6600 84581 55650000) :INSERT (4 :RESULT ""))
+((6600 84585 631064000) :CHANGE ((4 :CELL-TYPE :CODE) (4 :CELL-TYPE :MARKUP)))
+((6600 84623 995129000) :CHANGE
+ ((4 :CONTENTS "")
+  (4 :CONTENTS
+   "(:p \"You can change its value by clicking on it, changing its contents, then hitting \" (:code \"Ctrl+Enter\"))")))
+((6600 84624 19890000) :CHANGE
+ ((4 :RESULT "")
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>You can change its value by clicking on it, changing its contents, then hitting <code>Ctrl+Enter</code></p>"))))))))
+((6600 84624 19933000) :DELETE (4 :STALE T))
+((6600 84639 560597000) :CHANGE
+ ((4 :CONTENTS
+   "(:p \"You can change its value by clicking on it, changing its contents, then hitting \" (:code \"Ctrl+Enter\"))")
+  (4 :CONTENTS
+   "(:p \"You can change its value by clicking on it, changing its contents, then hitting \" (:code \"Ctrl+Enter\")\". (Go ahead and try it).\")")))
+((6600 84639 578212000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>You can change its value by clicking on it, changing its contents, then hitting <code>Ctrl+Enter</code></p>"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>You can change its value by clicking on it, changing its contents, then hitting <code>Ctrl+Enter</code>. (Go ahead and try it).</p>"))))))))
+((6600 84639 578249000) :DELETE (4 :STALE T))
+((6600 84653 331613000) :CHANGE
+ ((4 :CONTENTS
+   "(:p \"You can change its value by clicking on it, changing its contents, then hitting \" (:code \"Ctrl+Enter\")\". (Go ahead and try it).\")")
+  (4 :CONTENTS
+   "(:p \"You can change its value by clicking on it, changing its contents, then hitting \" (:code \"Ctrl+Enter\")\".\" (:i \"(Go ahead and try it)\"))")))
+((6600 84653 354323000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>You can change its value by clicking on it, changing its contents, then hitting <code>Ctrl+Enter</code>. (Go ahead and try it).</p>"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>You can change its value by clicking on it, changing its contents, then hitting <code>Ctrl+Enter</code>.<i>(Go ahead and try it)</i></p>"))))))))
+((6600 84653 354364000) :DELETE (4 :STALE T))
+((6600 84658 977035000) :CHANGE
+ ((4 :CONTENTS
+   "(:p \"You can change its value by clicking on it, changing its contents, then hitting \" (:code \"Ctrl+Enter\")\".\" (:i \"(Go ahead and try it)\"))")
+  (4 :CONTENTS
+   "(:p \"You can change its value by clicking on it, changing its contents, then hitting \" (:code \"Ctrl+Enter\")\". \" (:i \"(Go ahead and try it)\"))")))
+((6600 84658 995001000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>You can change its value by clicking on it, changing its contents, then hitting <code>Ctrl+Enter</code>.<i>(Go ahead and try it)</i></p>"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>You can change its value by clicking on it, changing its contents, then hitting <code>Ctrl+Enter</code>. <i>(Go ahead and try it)</i></p>"))))))))
+((6600 84658 995036000) :DELETE (4 :STALE T))
+((6600 84666 309328000) :INSERT (5 :CELL NIL))
+((6600 84666 309347000) :INSERT (5 :CELL-TYPE :CODE))
+((6600 84666 309351000) :INSERT (5 :CELL-LANGUAGE :COMMON-LISP))
+((6600 84666 309355000) :INSERT (5 :CONTENTS ""))
+((6600 84666 309359000) :INSERT (5 :RESULT ""))
+((6600 84757 577031000) :CHANGE
+ ((4 :CONTENTS
+   "(:p \"You can change its value by clicking on it, changing its contents, then hitting \" (:code \"Ctrl+Enter\")\". \" (:i \"(Go ahead and try it)\"))")
+  (4 :CONTENTS
+   "(:p \"You can change its value by clicking on it, changing its contents, then hitting \" (:code \"Ctrl+Enter\")\". \" (:i \"(Go ahead and try it)\"))
+(:p \"At the bottom of this book are controls to let you add new \" (:code \"cell\") \"s and open other \" (:code \"book\") \"s.\" (:i \"(If you open a nonexistent file using the Open interface, a new book will be created there.)\"))")))
+((6600 84757 596472000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>You can change its value by clicking on it, changing its contents, then hitting <code>Ctrl+Enter</code>. <i>(Go ahead and try it)</i></p>"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>You can change its value by clicking on it, changing its contents, then hitting <code>Ctrl+Enter</code>. <i>(Go ahead and try it)</i></p><p>At the bottom of this book are controls to let you add new <code>cell</code>s and open other <code>book</code>s.<i>(If you open a nonexistent file using the Open interface, a new book will be created there.)</i></p>"))))))))
+((6600 84757 596500000) :DELETE (4 :STALE T))
+((6600 84763 708667000) :CHANGE
+ ((4 :CONTENTS
+   "(:p \"You can change its value by clicking on it, changing its contents, then hitting \" (:code \"Ctrl+Enter\")\". \" (:i \"(Go ahead and try it)\"))
+(:p \"At the bottom of this book are controls to let you add new \" (:code \"cell\") \"s and open other \" (:code \"book\") \"s.\" (:i \"(If you open a nonexistent file using the Open interface, a new book will be created there.)\"))")
+  (4 :CONTENTS
+   "(:p \"You can change its value by clicking on it, changing its contents, then hitting \" (:code \"Ctrl+Enter\")\". \" (:i \"(Go ahead and try it)\"))
+(:p \"At the bottom of this book are controls to let you add new \" (:code \"cell\") \"s and open other \" (:code \"book\") \"s. \" (:i \"(If you open a nonexistent file using the Open interface, a new book will be created there.)\"))")))
+((6600 84763 727669000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>You can change its value by clicking on it, changing its contents, then hitting <code>Ctrl+Enter</code>. <i>(Go ahead and try it)</i></p><p>At the bottom of this book are controls to let you add new <code>cell</code>s and open other <code>book</code>s.<i>(If you open a nonexistent file using the Open interface, a new book will be created there.)</i></p>"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>You can change its value by clicking on it, changing its contents, then hitting <code>Ctrl+Enter</code>. <i>(Go ahead and try it)</i></p><p>At the bottom of this book are controls to let you add new <code>cell</code>s and open other <code>book</code>s. <i>(If you open a nonexistent file using the Open interface, a new book will be created there.)</i></p>"))))))))
+((6600 84763 727699000) :DELETE (4 :STALE T))
+((6600 84799 383740000) :CHANGE
+ ((4 :CONTENTS
+   "(:p \"You can change its value by clicking on it, changing its contents, then hitting \" (:code \"Ctrl+Enter\")\". \" (:i \"(Go ahead and try it)\"))
+(:p \"At the bottom of this book are controls to let you add new \" (:code \"cell\") \"s and open other \" (:code \"book\") \"s. \" (:i \"(If you open a nonexistent file using the Open interface, a new book will be created there.)\"))")
+  (4 :CONTENTS
+   "(:p \"You can change its value by clicking on it, changing its contents, then hitting \" (:code \"Ctrl+Enter\")\". \" (:i \"(Go ahead and try it)\"))
+(:p \"At the bottom of this book are controls to let you add new \" (:code \"cell\") \"s and open other \" (:code \"book\") \"s. \" (:i \"(If you open a nonexistent file using the Open interface, a new book will be created there.)\"))
+(:p \"In the following cells is a sampling of what you can do with CL Notebook.\")")))
+((6600 84799 400244000) :CHANGE
+ ((4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>You can change its value by clicking on it, changing its contents, then hitting <code>Ctrl+Enter</code>. <i>(Go ahead and try it)</i></p><p>At the bottom of this book are controls to let you add new <code>cell</code>s and open other <code>book</code>s. <i>(If you open a nonexistent file using the Open interface, a new book will be created there.)</i></p>"))))))
+  (4 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>You can change its value by clicking on it, changing its contents, then hitting <code>Ctrl+Enter</code>. <i>(Go ahead and try it)</i></p><p>At the bottom of this book are controls to let you add new <code>cell</code>s and open other <code>book</code>s. <i>(If you open a nonexistent file using the Open interface, a new book will be created there.)</i></p><p>In the following cells is a sampling of what you can do with CL Notebook.</p>"))))))))
+((6600 84799 400275000) :DELETE (4 :STALE T))
+((6600 84835 863826000) :CHANGE
+ ((2 :CONTENTS
+   "(:p \"Welcome to CL Notebook. The Notebook-style editor for Common Lisp.\")
+(:p \"This is a \" (:code \"markup\") \" cell. You can edit its code by clicking on it.\")
+(:p \"Below is a \" (:code \"code\") \" cell. It currently evaluates to the integer \" (:code \"5\"))")
+  (2 :CONTENTS
+   "(:p \"Welcome to \" (:a :href \"https://github.com/inaimathi/cl-notebook\" \"CL Notebook\") \". The Notebook-style editor for Common Lisp.\")
+(:p \"This is a \" (:code \"markup\") \" cell. You can edit its code by clicking on it.\")
+(:p \"Below is a \" (:code \"code\") \" cell. It currently evaluates to the integer \" (:code \"5\"))")))
+((6600 84835 876549000) :CHANGE
+ ((2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Welcome to CL Notebook. The Notebook-style editor for Common Lisp.</p><p>This is a <code>markup</code> cell. You can edit its code by clicking on it.</p><p>Below is a <code>code</code> cell. It currently evaluates to the integer <code>5</code></p>"))))))
+  (2 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Welcome to <a href='https://github.com/inaimathi/cl-notebook'>CL Notebook</a>. The Notebook-style editor for Common Lisp.</p><p>This is a <code>markup</code> cell. You can edit its code by clicking on it.</p><p>Below is a <code>code</code> cell. It currently evaluates to the integer <code>5</code></p>"))))))))
+((6600 84835 876577000) :DELETE (2 :STALE T))
+((6600 84865 953606000) :CHANGE
+ ((5 :CONTENTS "") (5 :CONTENTS "(values :multiple :value :cells)")))
+((6600 84865 954395000) :CHANGE
+ ((5 :RESULT "")
+  (5 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES ((:TYPE . "KEYWORD") (:VALUE . ":MULTIPLE"))
+      ((:TYPE . "KEYWORD") (:VALUE . ":VALUE"))
+      ((:TYPE . "KEYWORD") (:VALUE . ":CELLS"))))))))
+((6600 84865 954422000) :DELETE (5 :STALE T))
+((6600 84872 875455000) :INSERT (6 :CELL NIL))
+((6600 84872 875477000) :INSERT (6 :CELL-TYPE :CODE))
+((6600 84872 875482000) :INSERT (6 :CELL-LANGUAGE :COMMON-LISP))
+((6600 84872 875487000) :INSERT (6 :CONTENTS ""))
+((6600 84872 875491000) :INSERT (6 :RESULT ""))
+((6600 84882 432364000) :CHANGE
+ ((6 :CONTENTS "") (6 :CONTENTS "(format t \"Standard-output display\")")))
+((6600 84882 433324000) :CHANGE
+ ((6 :RESULT "")
+  (6 :RESULT
+   (((:STDOUT . "Standard-output display") (:WARNINGS)
+     (:VALUES ((:TYPE . "NULL") (:VALUE . "NIL"))))))))
+((6600 84882 433368000) :DELETE (6 :STALE T))
+((6600 84887 796877000) :INSERT (7 :CELL NIL))
+((6600 84887 796899000) :INSERT (7 :CELL-TYPE :CODE))
+((6600 84887 796904000) :INSERT (7 :CELL-LANGUAGE :COMMON-LISP))
+((6600 84887 796909000) :INSERT (7 :CONTENTS ""))
+((6600 84887 796913000) :INSERT (7 :RESULT ""))
+((6600 84898 790639000) :CHANGE
+ ((7 :CONTENTS "") (7 :CONTENTS "(error-cells :foo :bar :baz")))
+((6600 84898 792163000) :CHANGE
+ ((7 :RESULT "")
+  (7 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . ERROR)
+       (:VALUE (CL-NOTEBOOK::CONDITION-TYPE . "END-OF-FILE") (:FORM . "NIL")
+        (:STREAM . "#<SB-IMPL::STRING-INPUT-STREAM {1008768013}>")))))))))
+((6600 84898 792216000) :DELETE (7 :STALE T))
+((6600 84908 275498000) :INSERT (8 :CELL NIL))
+((6600 84908 275540000) :INSERT (8 :CELL-TYPE :CODE))
+((6600 84908 275546000) :INSERT (8 :CELL-LANGUAGE :COMMON-LISP))
+((6600 84908 275550000) :INSERT (8 :CONTENTS ""))
+((6600 84908 275554000) :INSERT (8 :RESULT ""))
+((6601 5428 548695000) :CHANGE ((8 :CELL-TYPE :CODE) (8 :CELL-TYPE :MARKUP)))
+((6601 5488 345152000) :CHANGE
+ ((8 :CONTENTS "")
+  (8 :CONTENTS "(:h1 \"Here's a heading\")
+(:h2 \"And a smaller one\")
+(:h3 \"And a canvas :p\")
+(:canvas :style \"border: 1px solid #000;\")")))
+((6601 5488 363531000) :CHANGE
+ ((8 :RESULT "")
+  (8 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<h1>Here's a heading</h1><h2>And a smaller one</h2><h3>And a canvas :p</h3><canvas style='border: 1px solid #000;'></canvas>"))))))))
+((6601 5488 363586000) :DELETE (8 :STALE T))
+((6601 5494 201228000) :INSERT (9 :CELL NIL))
+((6601 5494 201251000) :INSERT (9 :CELL-TYPE :CODE))
+((6601 5494 201257000) :INSERT (9 :CELL-LANGUAGE :COMMON-LISP))
+((6601 5494 201262000) :INSERT (9 :CONTENTS ""))
+((6601 5494 201267000) :INSERT (9 :RESULT ""))
+((6601 5499 349433000) :CHANGE
+ ((9 :CELL-TYPE :CODE) (9 :CELL-TYPE :PARENSCRIPT)))
+((6601 5535 855197000) :CHANGE
+ ((9 :CONTENTS "")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")")))
+((6601 5535 856219000) :CHANGE
+ ((9 :RESULT "")
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');"))))))))
+((6601 5535 856262000) :DELETE (9 :STALE T))
+((6601 5540 697054000) :INSERT (9 :NOISE :VERBOSE))
+((6601 5543 338414000) :DELETE (9 :NOISE :VERBOSE))
+((6601 5632 775323000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")")))
+((6601 5632 777379000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';"))))))))
+((6601 5632 777423000) :DELETE (9 :STALE T))
+((6601 5636 99514000) :INSERT (9 :NOISE :VERBOSE))
+((6601 5972 386622000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))")))
+((6601 5972 390722000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};"))))))))
+((6601 5972 390762000) :DELETE (9 :STALE T))
+((6601 5990 451450000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw! (by-selector \"#demo-canvas\"))")))
+((6601 5990 453183000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawbang(bySelector('#demo-canvas'));"))))))))
+((6601 5990 453214000) :DELETE (9 :STALE T))
+((6601 5992 181593000) :CHANGE
+ ((8 :CONTENTS "(:h1 \"Here's a heading\")
+(:h2 \"And a smaller one\")
+(:h3 \"And a canvas :p\")
+(:canvas :style \"border: 1px solid #000;\")")
+  (8 :CONTENTS "(:h1 \"Here's a heading\")
+(:h2 \"And a smaller one\")
+(:h3 \"And a canvas :p\")
+(:canvas :id \"demo-canvas\" :style \"border: 1px solid #000;\")")))
+((6601 5992 200523000) :CHANGE
+ ((8 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<h1>Here's a heading</h1><h2>And a smaller one</h2><h3>And a canvas :p</h3><canvas style='border: 1px solid #000;'></canvas>"))))))
+  (8 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<h1>Here's a heading</h1><h2>And a smaller one</h2><h3>And a canvas :p</h3><canvas id='demo-canvas' style='border: 1px solid #000;'></canvas>"))))))))
+((6601 5992 200563000) :DELETE (8 :STALE T))
+((6601 6007 296796000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw! (by-selector \"#demo-canvas\"))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw! (by-selector \"#demo-canvas\"))")))
+((6601 6007 298824000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawbang(bySelector('#demo-canvas'));"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawbang(bySelector('#demo-canvas'));"))))))))
+((6601 6007 298866000) :DELETE (9 :STALE T))
+((6601 6021 510042000) :CHANGE
+ ((8 :CONTENTS "(:h1 \"Here's a heading\")
+(:h2 \"And a smaller one\")
+(:h3 \"And a canvas :p\")
+(:canvas :id \"demo-canvas\" :style \"border: 1px solid #000;\")")
+  (8 :CONTENTS "(:h1 \"Here's a heading\")
+(:h2 \"And a smaller one\")
+(:h3 \"And a canvas :p\")
+(:canvas :id \"demo-canvas\" :style \"border: 1px solid #000;\")")))
+((6601 6021 527597000) :CHANGE
+ ((8 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<h1>Here's a heading</h1><h2>And a smaller one</h2><h3>And a canvas :p</h3><canvas id='demo-canvas' style='border: 1px solid #000;'></canvas>"))))))
+  (8 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<h1>Here's a heading</h1><h2>And a smaller one</h2><h3>And a canvas :p</h3><canvas id='demo-canvas' style='border: 1px solid #000;'></canvas>"))))))))
+((6601 6021 527640000) :DELETE (8 :STALE T))
+((6601 6023 617831000) :CHANGE
+ ((8 :CONTENTS "(:h1 \"Here's a heading\")
+(:h2 \"And a smaller one\")
+(:h3 \"And a canvas :p\")
+(:canvas :id \"demo-canvas\" :style \"border: 1px solid #000;\")")
+  (8 :CONTENTS "(:h1 \"Here's a heading\")
+(:h2 \"And a smaller one\")
+(:h3 \"And a canvas :p\")
+(:canvas :id \"demo-canvas\" :style \"border: 1px solid #000;\")")))
+((6601 6023 634111000) :CHANGE
+ ((8 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<h1>Here's a heading</h1><h2>And a smaller one</h2><h3>And a canvas :p</h3><canvas id='demo-canvas' style='border: 1px solid #000;'></canvas>"))))))
+  (8 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<h1>Here's a heading</h1><h2>And a smaller one</h2><h3>And a canvas :p</h3><canvas id='demo-canvas' style='border: 1px solid #000;'></canvas>"))))))))
+((6601 6023 634141000) :DELETE (8 :STALE T))
+((6601 6023 742163000) :CHANGE
+ ((8 :CONTENTS "(:h1 \"Here's a heading\")
+(:h2 \"And a smaller one\")
+(:h3 \"And a canvas :p\")
+(:canvas :id \"demo-canvas\" :style \"border: 1px solid #000;\")")
+  (8 :CONTENTS "(:h1 \"Here's a heading\")
+(:h2 \"And a smaller one\")
+(:h3 \"And a canvas :p\")
+(:canvas :id \"demo-canvas\" :style \"border: 1px solid #000;\")")))
+((6601 6023 757788000) :CHANGE
+ ((8 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<h1>Here's a heading</h1><h2>And a smaller one</h2><h3>And a canvas :p</h3><canvas id='demo-canvas' style='border: 1px solid #000;'></canvas>"))))))
+  (8 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<h1>Here's a heading</h1><h2>And a smaller one</h2><h3>And a canvas :p</h3><canvas id='demo-canvas' style='border: 1px solid #000;'></canvas>"))))))))
+((6601 6023 757821000) :DELETE (8 :STALE T))
+((6601 6026 225541000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw! (by-selector \"#demo-canvas\"))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw! (by-selector \"#demo-canvas\"))")))
+((6601 6026 227581000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawbang(bySelector('#demo-canvas'));"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawbang(bySelector('#demo-canvas'));"))))))))
+((6601 6026 227633000) :DELETE (9 :STALE T))
+((6601 6047 781746000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw! (by-selector \"#demo-canvas\"))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(console.log (by-selector \"#demo-canvas\"))")))
+((6601 6047 785724000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawbang(bySelector('#demo-canvas'));"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+console.log(bySelector('#demo-canvas'));"))))))))
+((6601 6047 785775000) :DELETE (9 :STALE T))
+((6601 6057 649315000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(console.log (by-selector \"#demo-canvas\"))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw! (by-selector \"#demo-canvas\"))")))
+((6601 6057 651382000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+console.log(bySelector('#demo-canvas'));"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawbang(bySelector('#demo-canvas'));"))))))))
+((6601 6057 651430000) :DELETE (9 :STALE T))
+((6601 6068 655396000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw! (by-selector \"#demo-canvas\"))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw! (by-selector \"#demo-canvas\"))")))
+((6601 6068 657378000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawbang(bySelector('#demo-canvas'));"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawbang(bySelector('#demo-canvas'));"))))))))
+((6601 6068 657416000) :DELETE (9 :STALE T))
+((6601 6085 347130000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw! (by-selector \"#demo-canvas\"))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw! (by-selector \"#demo-canvas\"))")))
+((6601 6085 349904000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawbang(bySelector('#demo-canvas'));"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawbang(bySelector('#demo-canvas'));"))))))))
+((6601 6085 349958000) :DELETE (9 :STALE T))
+((6601 6185 768076000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw! (canvas)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw! (by-selector \"#demo-canvas\"))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 30 30 10 0)")))
+((6601 6185 770572000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawbang(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawbang(bySelector('#demo-canvas'));"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawThingbang(bySelector('#demo-canvas'), 30, 30, 10, 0);"))))))))
+((6601 6185 770621000) :DELETE (9 :STALE T))
+((6601 6194 541153000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 30 30 10 0)")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 30 30 50 0)")))
+((6601 6194 544854000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawThingbang(bySelector('#demo-canvas'), 30, 30, 10, 0);"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawThingbang(bySelector('#demo-canvas'), 30, 30, 50, 0);"))))))))
+((6601 6194 544905000) :DELETE (9 :STALE T))
+((6601 6202 662304000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 30 30 50 0)")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 20 20 50 0)")))
+((6601 6202 665136000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawThingbang(bySelector('#demo-canvas'), 30, 30, 50, 0);"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawThingbang(bySelector('#demo-canvas'), 20, 20, 50, 0);"))))))))
+((6601 6202 665185000) :DELETE (9 :STALE T))
+((6601 6210 845026000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 20 20 50 0)")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)")))
+((6601 6210 848703000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawThingbang(bySelector('#demo-canvas'), 20, 20, 50, 0);"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, 0);"))))))))
+((6601 6210 848756000) :DELETE (9 :STALE T))
+((6601 6226 14578000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)")))
+((6601 6226 17127000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    return ctx.stroke();
+};
+drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, 0);"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, 0);"))))))))
+((6601 6226 17195000) :DELETE (9 :STALE T))
+((6601 6227 202069000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)")))
+((6601 6227 204086000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, 0);"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, 0);"))))))))
+((6601 6227 204152000) :DELETE (9 :STALE T))
+((6601 62808 806862000) :INSERT (10 :CELL NIL))
+((6601 62808 806887000) :INSERT (10 :CELL-TYPE :CODE))
+((6601 62808 806894000) :INSERT (10 :CELL-LANGUAGE :COMMON-LISP))
+((6601 62808 806900000) :INSERT (10 :CONTENTS ""))
+((6601 62808 806905000) :INSERT (10 :RESULT ""))
+((6601 62902 593898000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle)
+    (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 angle)))")))
+((6601 62902 598034000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, 0);"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, 0);
+var angle = 0;
+function tickbang() {
+    ++angle;
+    return drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, angle);
+};"))))))))
+((6601 62902 598082000) :DELETE (9 :STALE T))
+((6601 62909 379860000) :CHANGE
+ ((10 :CONTENTS "")
+  (10 :CONTENTS "(defvar tick-interval
+  (set-interval (lambda () (tick!)) 40))")))
+((6601 62909 384189000) :CHANGE
+ ((10 :RESULT "")
+  (10 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CL-NOTEBOOK::CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "undefined function: TICK!"))
+      ((CL-NOTEBOOK::CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "undefined function: SET-INTERVAL")))
+     (:VALUES
+      ((:TYPE . ERROR)
+       (:VALUE (CL-NOTEBOOK::CONDITION-TYPE . "UNDEFINED-FUNCTION")
+        (:FORM
+         . "(DEFVAR TICK-INTERVAL (SET-INTERVAL (LAMBDA () (TICK!)) 40))")
+        (:NAME . "SET-INTERVAL")))))))))
+((6601 62909 384227000) :DELETE (10 :STALE T))
+((6601 62940 244539000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+(draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle)
+    (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 angle)))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+;; (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle)
+    (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 angle)))")))
+((6601 62940 247002000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, 0);
+var angle = 0;
+function tickbang() {
+    ++angle;
+    return drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, angle);
+};"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    ++angle;
+    return drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, angle);
+};"))))))))
+((6601 62940 247042000) :DELETE (9 :STALE T))
+((6601 62955 568035000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+;; (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle)
+    (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 angle)))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+;; (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle)
+    (console.log \"TICK\")
+    (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 angle)))")))
+((6601 62955 572893000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    ++angle;
+    return drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, angle);
+};"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    ++angle;
+    console.log('TICK');
+    return drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, angle);
+};"))))))))
+((6601 62955 572927000) :DELETE (9 :STALE T))
+((6601 62966 106198000) :CHANGE
+ ((10 :CELL-TYPE :CODE) (10 :CELL-TYPE :PARENSCRIPT)))
+((6601 62966 107833000) :CHANGE
+ ((10 :RESULT
+   (((:STDOUT . "")
+     (:WARNINGS
+      ((CL-NOTEBOOK::CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "undefined function: TICK!"))
+      ((CL-NOTEBOOK::CONDITION-TYPE . "SIMPLE-STYLE-WARNING")
+       (:ERROR-MESSAGE . "undefined function: SET-INTERVAL")))
+     (:VALUES
+      ((:TYPE . ERROR)
+       (:VALUE (CL-NOTEBOOK::CONDITION-TYPE . "UNDEFINED-FUNCTION")
+        (:FORM
+         . "(DEFVAR TICK-INTERVAL (SET-INTERVAL (LAMBDA () (TICK!)) 40))")
+        (:NAME . "SET-INTERVAL")))))))
+  (10 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "var tickInterval = setInterval(function () {
+    return tickbang();
+}, 40);"))))))))
+((6601 62966 107873000) :DELETE (10 :STALE T))
+((6601 62984 531478000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+;; (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle)
+    (console.log \"TICK\")
+    (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 angle)))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+;; (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle 0.01)
+    (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 angle)))")))
+((6601 62984 532872000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    ++angle;
+    console.log('TICK');
+    return drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, angle);
+};"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    angle += 0.01;
+    return drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, angle);
+};"))))))))
+((6601 62984 532904000) :DELETE (9 :STALE T))
+((6601 62995 426434000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+;; (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle 0.01)
+    (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 angle)))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+;; (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle 0.01)
+    (draw-thing! (by-selector \"#demo-canvas\") 30 30 30 angle)))")))
+((6601 62995 428980000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    angle += 0.01;
+    return drawThingbang(bySelector('#demo-canvas'), 20, 20, 30, angle);
+};"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    angle += 0.01;
+    return drawThingbang(bySelector('#demo-canvas'), 30, 30, 30, angle);
+};"))))))))
+((6601 62995 429019000) :DELETE (9 :STALE T))
+((6601 63000 694786000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+;; (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle 0.01)
+    (draw-thing! (by-selector \"#demo-canvas\") 30 30 30 angle)))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+;; (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle 0.01)
+    (draw-thing! (by-selector \"#demo-canvas\") 40 40 30 angle)))")))
+((6601 63000 698394000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    angle += 0.01;
+    return drawThingbang(bySelector('#demo-canvas'), 30, 30, 30, angle);
+};"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    angle += 0.01;
+    return drawThingbang(bySelector('#demo-canvas'), 40, 40, 30, angle);
+};"))))))))
+((6601 63000 698429000) :DELETE (9 :STALE T))
+((6601 63005 274317000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+;; (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle 0.01)
+    (draw-thing! (by-selector \"#demo-canvas\") 40 40 30 angle)))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+;; (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle 0.01)
+    (draw-thing! (by-selector \"#demo-canvas\") 50 50 30 angle)))")))
+((6601 63005 277034000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    angle += 0.01;
+    return drawThingbang(bySelector('#demo-canvas'), 40, 40, 30, angle);
+};"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    angle += 0.01;
+    return drawThingbang(bySelector('#demo-canvas'), 50, 50, 30, angle);
+};"))))))))
+((6601 63005 277070000) :DELETE (9 :STALE T))
+((6601 63071 306743000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+;; (draw-thing! (by-selector \"#demo-canvas\") 20 20 30 0)
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle 0.01)
+    (draw-thing! (by-selector \"#demo-canvas\") 50 50 30 angle)))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle 0.01)
+    (draw-thing! (by-selector \"#demo-canvas\") 50 50 30 angle)))")))
+((6601 63071 309194000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    angle += 0.01;
+    return drawThingbang(bySelector('#demo-canvas'), 50, 50, 30, angle);
+};"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    angle += 0.01;
+    return drawThingbang(bySelector('#demo-canvas'), 50, 50, 30, angle);
+};"))))))))
+((6601 63071 309228000) :DELETE (9 :STALE T))
+((6601 63095 332783000) :CHANGE ((9 :NOISE :VERBOSE) (9 :NOISE :SILENT)))
+((6601 63147 9044000) :CHANGE
+ ((9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle 0.01)
+    (draw-thing! (by-selector \"#demo-canvas\") 50 50 30 angle)))")
+  (9 :CONTENTS
+   ";; This is a parenscript cell. It'll get interpreted as client-side JavaScript.
+;; If you set the cell noise from `silent` to `verbose` above, you'll see its
+;; JavaScript output in the result box below.
+
+(console.log \"This will show up in your console\")
+
+(defvar *text* \"This is a client-side variable\")
+
+(console.log \"Also, fuck it, lets write to that canvas.\")
+
+(defun draw-thing! (canvas x y size angle)
+  (let ((ctx (chain canvas (get-context \"2d\"))))
+    (ctx.clear-rect 0 0 (@ canvas width) (@ canvas height))
+    (ctx.save)
+    (setf (@ ctx line-width) .1
+          (@ ctx font) \"1px mono\"
+          (@ ctx fill-style) :red)
+    (ctx.translate x y)
+    (ctx.rotate angle)
+    (ctx.scale size size)
+    (ctx.begin-path)
+    (ctx.move-to -.75 1)
+    (ctx.line-to 0 -1)
+    (ctx.line-to .75 1)
+    (ctx.close-path)
+    (ctx.stroke)
+    (ctx.restore)))
+
+(let ((angle 0))
+  (defun tick! ()
+    (incf angle 0.01)
+    (draw-thing! (by-selector \"#demo-canvas\") 50 50 30 angle)))")))
+((6601 63147 11012000) :CHANGE
+ ((9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    angle += 0.01;
+    return drawThingbang(bySelector('#demo-canvas'), 50, 50, 30, angle);
+};"))))))
+  (9 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE . "console.log('This will show up in your console');
+var TEXT = 'This is a client-side variable';
+console.log('Also, fuck it, lets write to that canvas.');
+function drawThingbang(canvas, x, y, size, angle) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.lineWidth = 0.1;
+    ctx.font = '1px mono';
+    ctx.fillStyle = 'red';
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(size, size);
+    ctx.beginPath();
+    ctx.moveTo(-0.75, 1);
+    ctx.lineTo(0, -1);
+    ctx.lineTo(0.75, 1);
+    ctx.closePath();
+    ctx.stroke();
+    return ctx.restore();
+};
+var angle = 0;
+function tickbang() {
+    angle += 0.01;
+    return drawThingbang(bySelector('#demo-canvas'), 50, 50, 30, angle);
+};"))))))))
+((6601 63147 11046000) :DELETE (9 :STALE T))
+((6601 63150 205317000) :INSERT (11 :CELL NIL))
+((6601 63150 205334000) :INSERT (11 :CELL-TYPE :CODE))
+((6601 63150 205338000) :INSERT (11 :CELL-LANGUAGE :COMMON-LISP))
+((6601 63150 205341000) :INSERT (11 :CONTENTS ""))
+((6601 63150 205343000) :INSERT (11 :RESULT ""))
+((6601 63159 387916000) :CHANGE ((11 :CELL-TYPE :CODE) (11 :CELL-TYPE :MARKUP)))
+((6601 63218 118817000) :CHANGE
+ ((11 :CONTENTS "")
+  (11 :CONTENTS
+   "(:p \"Below, you can see the \\\"Export As\\\" menu. By default, you can use it to export this book as a Lisp or HTML file.\"")))
+((6601 63218 119890000) :CHANGE
+ ((11 :RESULT "")
+  (11 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . ERROR)
+       (:VALUE (CL-NOTEBOOK::CONDITION-TYPE . "END-OF-FILE")
+        (:STREAM . "#<SB-IMPL::STRING-INPUT-STREAM {100A62FF03}>")))))))))
+((6601 63218 119922000) :DELETE (11 :STALE T))
+((6601 63221 666853000) :CHANGE
+ ((11 :CONTENTS
+   "(:p \"Below, you can see the \\\"Export As\\\" menu. By default, you can use it to export this book as a Lisp or HTML file.\"")
+  (11 :CONTENTS
+   "(:p \"Below, you can see the \\\"Export As\\\" menu. By default, you can use it to export this book as a Lisp or HTML file.\")")))
+((6601 63221 678969000) :CHANGE
+ ((11 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . ERROR)
+       (:VALUE (CL-NOTEBOOK::CONDITION-TYPE . "END-OF-FILE")
+        (:STREAM . "#<SB-IMPL::STRING-INPUT-STREAM {100A62FF03}>")))))))
+  (11 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Below, you can see the \"Export As\" menu. By default, you can use it to export this book as a Lisp or HTML file.</p>"))))))))
+((6601 63221 678996000) :DELETE (11 :STALE T))
+((6601 63321 297539000) :CHANGE
+ ((11 :CONTENTS
+   "(:p \"Below, you can see the \\\"Export As\\\" menu. By default, you can use it to export this book as a Lisp or HTML file.\")")
+  (11 :CONTENTS
+   "(:p \"Below, you can see the \\\"Export As\\\" menu. By default, you can use it to export this book as a Lisp or HTML file.\")
+(:p \"Be sure to check out other config notebooks in \" (:code \"~/.cl-notebook/books\") \" to see more of what you can do here.\")")))
+((6601 63321 309174000) :CHANGE
+ ((11 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Below, you can see the \"Export As\" menu. By default, you can use it to export this book as a Lisp or HTML file.</p>"))))))
+  (11 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Below, you can see the \"Export As\" menu. By default, you can use it to export this book as a Lisp or HTML file.</p><p>Be sure to check out other config notebooks in <code>~/.cl-notebook/books</code> to see more of what you can do here.</p>"))))))))((6601 67244 993167000) :CHANGE
+ ((7 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . ERROR)
+       (:VALUE (CONDITION-TYPE . "END-OF-FILE") (:FORM . "NIL")
+        (:STREAM . "#<SB-IMPL::STRING-INPUT-STREAM {1008768013}>")))))))
+  (7 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . ERROR)
+       (:VALUE (CONDITION-TYPE . "END-OF-FILE") (:FORM . "NIL")
+        (:STREAM . "#<SB-IMPL::STRING-INPUT-STREAM {1007F67193}>")))))))))
