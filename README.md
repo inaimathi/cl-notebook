@@ -99,54 +99,6 @@ TODO - patches welcome, since I'm not a Windows user
 #### Notebook Exporters
 #### Cell Compilers
 
-#### Thoughts
-- Charts need to support
-	- Being saved to a pure HTML+CSS (no javascript) file
-	- Resizing naturally with larger or smaller screen sizes
-	- Data sets large enough that not all x-axis labels will fit
-	- Print support is a nice-to-have, but conflicts heavily with the previous goal
-- SVG can work for charts; CSS selectors work the same way as with regular HTML entities AND it can take % dimensions specifications. We basically have no other options for line/pie/doghnut charts.
-
-- Do we want to provide a straight-up scratch REPL for each user?
-	- No I don't think so, but we need additional logging buffers. Maybe one per notebook so that incremental debugging is a bit easier.
-- Do we want to differentiate between "someone forked a book" and "someone started a new book"? Right now, there's no difference, but we may want to treat forks differently for multi-user purposes later on.
-
-#### Features (in priority order by section)
-####### Back-end
-- Really REALLY need tags. Named checkpoints that you can jump to in book history.
-	- Implemented as part of `:fact-base`, now we need to add the proper interface here (this includes a thing for adding checkpoints, and an addition to the history slider to let it specifically jump to tagged points, so this is really both a back-end thing and a front-end thing)
-- Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
-	- Suddenly more relevant because we definitely want incremental updates for proper `quicklisp` use
-- Put together better storage for charts
-	- Is this even possible? Sure, as long as we're ok with deferring computation until display-time. Storing the full HTML output is harder on disk use though. As in "noticeably"; the `BGG corpus charts` article weighs `80mb` on disk, and no other notebook has even cracked `2mb` yet.
-- Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
-	- Really, what we want here is automatic resolution. When a cell is evaluated, see where its defined values are used, and re-evaluate any cells that apply.
-- Let user configure where to check for a `quicklisp` folder (by default, check `~/quicklisp`, `~/.cl-notebook/quicklisp` and `quicklisp` in CWD) (Note that this task might be made unnecessary by `qlot` use)
-
-####### Front-end
-- Things I still kinda want:
-	- transpose-sexp
-	- slurp-sexp (forward/backward)
-	- barf-sexp (forward/backward)
-    not sure whether we've got the available keybingings for it though, unless there's some way of stealing them from the underlying browser.
-- Add a `run-tests` option to the main menu. Have it evaluate all test cells in the current notebook. Maybe have a dedicated tests output display (or that additional logging buffer I keep kinda wanting)
-- Already customizing the commonlisp mode all to hell; just go the whole nine and put in the proper Lisp-specific labels instead of this `variable-3`/`string-2` shit.
-- Update to the latest version of `CodeMirror`
-- Complete on local-scope symbols (such as those introduced by `let`, `let*`, `flet`, `labels`, `macrolet`) at a higher priority than global symbols
-- Handle completion and arg-hints of symbols with package names (for example, `alexandria:hash-table-alist`)
-- Forked notebook entries should be grouped with their parents in the open menu. Guess you could pull out parent relationships at load-time? Or fuck around with parsing filenames?
-- For general use, we'll want to expose customizable keybindings somehow. A session-keyed config page would work fine.
-
-####### Multi-user related
-- Moving cells around isn't propagated to other users. It should be, just like any other front-end edit.
-- If you join a book in the middle of an already running computation, you currently aren't notified of this. Figure something out.
-- Authentication should be a thing. OAuth from GitGoogFaceHooExchange, possibly along with a local password/admin system.
-- Saving user preferences should be a thing. Per user might be the right thing, but a `local storage` solution migh get us most of the way to this (and may actually be better if a single user tends to use a notebook from multiple devices).
-- Give users an interface to upload new notebooks from their local environments to the notebook instances' local (really, may as well give them arbitrary disk access since this _is_ a remote programming environment, but we might also consider restricting uploads to some known folder in `~/.cl-notebook/`)
-- Each user should be associated with a color. Show a halo around the cell other users' are editing (as well as an approximate cursor) in realtime
-- When a notebook is forked, it should create a copy of its package for the fork to use (so that users working on different forks of the same book don't clobber each others in-image changes). Does `qlot` give us any of this for free?
-- Move to a multi-threaded model with a cell-evaluation work-queue to make multi-user development easier (this involves both a thread-coordination subsystem, and a front-end interfaceto manage multiple threads)
-
 ## License
 
 [AGPL3](https://www.gnu.org/licenses/agpl-3.0.html) (also found in the included copying.txt)
