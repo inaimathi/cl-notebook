@@ -113,16 +113,10 @@ TODO - patches welcome, since I'm not a Windows user
 
 #### Features (in priority order by section)
 ####### Back-end
-- Exports for projects, not just .lisp files (and the .lisp files should do something intelligent about the `package` forms).
-	- Look into [compression options](http://www.cliki.net/compression) for the project part (it'll have to be handled as multiple files)
-- Get `buildapp` working properly with this
-	- Give the user a one-button interaction that turns a given notebook into a binary.
-- Get poor-man's profiling built into cell results (use `local-time` timestamps for start/end time of operations; compute duration)
 - Really REALLY need tags. Named checkpoints that you can jump to in book history.
 	- Implemented as part of `:fact-base`, now we need to add the proper interface here (this includes a thing for adding checkpoints, and an addition to the history slider to let it specifically jump to tagged points, so this is really both a back-end thing and a front-end thing)
 - Use `make-broadcast-stream` and some buffering-foo to send partial `*standard-output*` results from evaluations as they arrive. Replace them with evaluation results once those are available.
 	- Suddenly more relevant because we definitely want incremental updates for proper `quicklisp` use
-- If there are no existing notebooks, we should write a default scratch book with some initial how-to instructions
 - Put together better storage for charts
 	- Is this even possible? Sure, as long as we're ok with deferring computation until display-time. Storing the full HTML output is harder on disk use though. As in "noticeably"; the `BGG corpus charts` article weighs `80mb` on disk, and no other notebook has even cracked `2mb` yet.
 - Add cell dependencies (child cells get evaluated whenever the parent is evaluated)
