@@ -107,8 +107,6 @@ TODO - patches welcome, since I'm not a Windows user
 
 Do whatever you like, BUT afford the same freedoms to anyone you give this software or derivative works (yes, this includes the new stuff you do) to, and anyone you expose it to as a service.
 
-This project includes a copy of `quicklisp.lisp` for ease of use. The [`quicklisp` beta](http://www.quicklisp.org/beta/) is released under an [Expat-like license](http://www.quicklisp.org/beta/#license).
-
 This project uses [CodeMirror](http://codemirror.net/) as a front-end editor. CodeMirror [is released](http://codemirror.net/#community) under the [MIT Expat license](http://codemirror.net/LICENSE).
 
 ## Credits
