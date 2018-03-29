@@ -2991,3 +2991,82 @@ function tickbang() {
       ((:TYPE . ERROR)
        (:VALUE (CONDITION-TYPE . "END-OF-FILE") (:FORM . "NIL")
         (:STREAM . "#<SB-IMPL::STRING-INPUT-STREAM {1007F67193}>")))))))))
+((6602 12824 50361000) :CHANGE
+ ((7 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . ERROR)
+       (:VALUE (CONDITION-TYPE . "END-OF-FILE") (:FORM . "NIL")
+        (:STREAM . "#<SB-IMPL::STRING-INPUT-STREAM {1007F67193}>")))))))
+  (7 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . ERROR)
+       (:VALUE (CONDITION-TYPE . "END-OF-FILE") (:FORM . "NIL")
+        (:STREAM . "#<SB-IMPL::STRING-INPUT-STREAM {1009C59C53}>")))))))))
+((6602 12830 130690000) :INSERT (12 :CELL NIL))
+((6602 12830 130704000) :INSERT (12 :CELL-TYPE :CODE))
+((6602 12830 130706000) :INSERT (12 :CELL-LANGUAGE :COMMON-LISP))
+((6602 12830 130711000) :INSERT (12 :CONTENTS ""))
+((6602 12830 130714000) :INSERT (12 :RESULT ""))
+((6602 12833 75210000) :INSERT (13 :CELL-ORDER (2 3 4 5 6 7 8 9 10 11 12)))
+((6602 12835 439734000) :DELETE (13 :CELL-ORDER (2 3 4 5 6 7 8 9 10 11 12)))
+((6602 12835 439807000) :INSERT (14 :CELL-ORDER (2 3 4 5 6 7 8 9 10 12 11)))
+((6602 12841 793693000) :CHANGE ((12 :CELL-TYPE :CODE) (12 :CELL-TYPE :MARKUP)))
+((6602 12845 345285000) :CHANGE
+ ((12 :CONTENTS "")
+  (12 :CONTENTS
+   "(bar-graph '((\"one\" . 32) (\"two\" . 78) (\"three\" . 12)) :title \"Test Bar Graph\")")))
+((6602 12845 355285000) :CHANGE
+ ((12 :RESULT "")
+  (12 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<div class='chart'><div class='title'>Test Bar Graph</div><div class='bar-graph'><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 59%; '></div><div class='spacer' style='height: 41%; '></div><div class='label' style='white-space: nowrap; '>one (32)</div></div><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 0%; '></div><div class='spacer' style='height: 100%; '></div><div class='label' style='white-space: nowrap; '>two (78)</div></div><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 85%; '></div><div class='spacer' style='height: 15%; '></div><div class='label' style='white-space: nowrap; '>three (12)</div></div></div></div>"))))))))
+((6602 12845 355309000) :DELETE (12 :STALE T))
+((6602 12908 751207000) :CHANGE
+ ((12 :CONTENTS
+   "(bar-graph '((\"one\" . 32) (\"two\" . 78) (\"three\" . 12)) :title \"Test Bar Graph\")")
+  (12 :CONTENTS
+   "(:p \"Basic bar charts, implemented in the \" (:a :href \"#book=%2Fhome%2Finaimathi%2F.cl-notebook%2Fbooks%2Fcharts\" (:code \"charts\")) \" book.\")
+
+(bar-graph '((\"one\" . 32) (\"two\" . 78) (\"three\" . 12)) :title \"Test Bar Graph\")")))
+((6602 12908 761492000) :CHANGE
+ ((12 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<div class='chart'><div class='title'>Test Bar Graph</div><div class='bar-graph'><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 59%; '></div><div class='spacer' style='height: 41%; '></div><div class='label' style='white-space: nowrap; '>one (32)</div></div><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 0%; '></div><div class='spacer' style='height: 100%; '></div><div class='label' style='white-space: nowrap; '>two (78)</div></div><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 85%; '></div><div class='spacer' style='height: 15%; '></div><div class='label' style='white-space: nowrap; '>three (12)</div></div></div></div>"))))))
+  (12 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Basic bar charts, implemented in the <a href='#book=%2Fhome%2Finaimathi%2F.cl-notebook%2Fbooks%2Fcharts'><code>charts</code></a> book.</p><div class='chart'><div class='title'>Test Bar Graph</div><div class='bar-graph'><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 59%; '></div><div class='spacer' style='height: 41%; '></div><div class='label' style='white-space: nowrap; '>one (32)</div></div><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 0%; '></div><div class='spacer' style='height: 100%; '></div><div class='label' style='white-space: nowrap; '>two (78)</div></div><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 85%; '></div><div class='spacer' style='height: 15%; '></div><div class='label' style='white-space: nowrap; '>three (12)</div></div></div></div>"))))))))
+((6602 12908 761513000) :DELETE (12 :STALE T))
+((6602 12918 847811000) :CHANGE
+ ((12 :CONTENTS
+   "(:p \"Basic bar charts, implemented in the \" (:a :href \"#book=%2Fhome%2Finaimathi%2F.cl-notebook%2Fbooks%2Fcharts\" (:code \"charts\")) \" book.\")
+
+(bar-graph '((\"one\" . 32) (\"two\" . 78) (\"three\" . 12)) :title \"Test Bar Graph\")")
+  (12 :CONTENTS
+   "(:p \"Basic bar charts, implemented in the \" (:a :href \"#book=%2Fhome%2Finaimathi%2F.cl-notebook%2Fbooks%2Fcharts\" :target \"_blank\" (:code \"charts\")) \" book.\")
+
+(bar-graph '((\"one\" . 32) (\"two\" . 78) (\"three\" . 12)) :title \"Test Bar Graph\")")))
+((6602 12918 862598000) :CHANGE
+ ((12 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Basic bar charts, implemented in the <a href='#book=%2Fhome%2Finaimathi%2F.cl-notebook%2Fbooks%2Fcharts'><code>charts</code></a> book.</p><div class='chart'><div class='title'>Test Bar Graph</div><div class='bar-graph'><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 59%; '></div><div class='spacer' style='height: 41%; '></div><div class='label' style='white-space: nowrap; '>one (32)</div></div><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 0%; '></div><div class='spacer' style='height: 100%; '></div><div class='label' style='white-space: nowrap; '>two (78)</div></div><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 85%; '></div><div class='spacer' style='height: 15%; '></div><div class='label' style='white-space: nowrap; '>three (12)</div></div></div></div>"))))))
+  (12 :RESULT
+   (((:STDOUT . "") (:WARNINGS)
+     (:VALUES
+      ((:TYPE . "string")
+       (:VALUE
+        . "<p>Basic bar charts, implemented in the <a href='#book=%2Fhome%2Finaimathi%2F.cl-notebook%2Fbooks%2Fcharts' target='_blank'><code>charts</code></a> book.</p><div class='chart'><div class='title'>Test Bar Graph</div><div class='bar-graph'><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 59%; '></div><div class='spacer' style='height: 41%; '></div><div class='label' style='white-space: nowrap; '>one (32)</div></div><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 0%; '></div><div class='spacer' style='height: 100%; '></div><div class='label' style='white-space: nowrap; '>two (78)</div></div><div class='bar' style='width: 29.333334%; margin: 1.6666666%; '><div class='hider' style='height: 85%; '></div><div class='spacer' style='height: 15%; '></div><div class='label' style='white-space: nowrap; '>three (12)</div></div></div></div>"))))))))
+((6602 12918 862627000) :DELETE (12 :STALE T))
