@@ -9,23 +9,19 @@
 # This is now a pre-beta
 #### Use it at your own risk, and expect occasional, minor explosions
 
-## Dependencies
-
-`alexandria`, `anaphora`, `cl-fad`, `closer-mop`, `optima`, `local-time`, `fact-base`, `session-token`, `house`
-
 ## Usage
-
-### Binary
-
-Download [this](http://static.inaimathi.ca/cl-notebook-binaries/), run it (if you downloaded the tarball instead of the naked binary, unpack it first, obviously)
-
-_At the moment, we've only got binaries for 64-bit Linux. Submissions for other architectures welcome._
 
 ### With [`quicklisp`](http://www.quicklisp.org/beta/)
 
 - Install a Common Lisp (I suggest [`sbcl`](http://www.sbcl.org/platform-table.html))
 - Install [`quicklisp`](http://www.quicklisp.org/beta/)
 - Hop into a Lisp and do `(ql:quickload :cl-notebook)`, followed by `(cl-notebook:main)`
+
+### Binary
+
+Download [this](http://static.inaimathi.ca/cl-notebook-binaries/), run it (if you downloaded the tarball instead of the naked binary, unpack it first, obviously)
+
+_At the moment, we've only got binaries for 64-bit Linux. Submissions for other architectures welcome._
 
 ### With [`roswell`](https://github.com/roswell/roswell) and [`qlot`](https://github.com/fukamachi/qlot)
 
