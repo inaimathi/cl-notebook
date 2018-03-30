@@ -37,10 +37,13 @@
              ((= 9 key-code)
               (chain event (prevent-default))
               (chain elem (focus))
-              (setf (@ elem value) (common-prefix-of val (chain fnames (concat dirnames)))))
-             ((and (= 13 key-code) (member? val fnames))
+              (let ((completed (common-prefix-of val (chain fnames (concat dirnames)))))
+                (setf (@ elem value) completed)
+                (when (chain completed (ends-with "/"))
+                  (filesystem! (by-selector ".filesystem-view") completed))))
+             ((and (= key-code 13) (member? val fnames))
               (setf (@ window location href) (+ "/#book=" val)))
-             ((and (= 13 key-code) (member? dval dirnames))
+             ((and (member? key-code (list 13 47)) (member? dval dirnames))
               (filesystem! (by-selector ".filesystem-view") dval))
              ((and (= 13 key-code))
               (new-book val))
@@ -51,15 +54,7 @@
                :filter? f))
              ((not (= 0 (@ event char-code)))
               (unless (and (= 0 (length (@ filtered :directories))) (= 0 (length (@ filtered :files))))
-                (render-filesystem! (by-selector ".filesystem-view") filtered)
-                (cond
-                  ((and (= (length (@ filtered :directories)) 1)
-                        (= (length (@ filtered :files)) 0))
-                   (setf (@ elem value) (@ filtered :directories 0 :string))
-                   (filesystem! (by-selector ".filesystem-view") (@ filtered :directories 0 :string)))
-                  ((and (= (length (@ filtered :directories)) 0)
-                        (= (length (@ filtered :files)) 1))
-                   (setf (@ window location href) (+ "/#book=" (@ filtered :files 0 :string))))))))))
+                (render-filesystem! (by-selector ".filesystem-view") filtered))))))
        200))
 
     (defun filesystem-directory-click (directory)
@@ -70,7 +65,7 @@
       (who-ps-html
        (:div :class "notebook-selector"
              (:ul :class "loaded-books-list")
-             (:input :class "filesystem-input" :onkeypress "filesystemInputChange(event, this)")
+             (:input :class "filesystem-input" :onkeydown "filesystemInputChange(event, this)")
              (:span :class "filesystem-view"))))
 
     (defun file-template (file)
