@@ -259,6 +259,12 @@
 			  (lambda (mirror)
 			    (unless (chain mirror (something-selected))
 			      (chain mirror (exec-command 'show-arg-hint))))))
+        (chain mirror (on 'change
+                          (lambda (mirror)
+                            (let ((elem (by-cell-id (@ cell id))))
+                              (if (= (chain mirror (get-value)) (@ cell contents))
+                                  (chain elem class-list (remove "stale"))
+                                  (chain elem class-list (add "stale")))))))
 	(unless (= (@ cell type) "markup")
 	  (chain mirror (on 'change
 			    (lambda (mirror change)
