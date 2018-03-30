@@ -25,7 +25,6 @@ _At the moment, we've only got binaries for 64-bit Linux. Submissions for other 
 
 - Install a Common Lisp (I suggest [`sbcl`](http://www.sbcl.org/platform-table.html))
 - Install [`quicklisp`](http://www.quicklisp.org/beta/)
-- Clone the [`house` server](https://github.com/Inaimathi/house), the [`fact-base` triple-store](https://github.com/Inaimathi/fact-base) and [this repo](https://github.com/Inaimathi/cl-notebook) into your `~quicklisp/local-projects.` directory.
 - Hop into a Lisp and do `(ql:quickload :cl-notebook)`, followed by `(cl-notebook:main)`
 
 ### With [`roswell`](https://github.com/roswell/roswell) and [`qlot`](https://github.com/fukamachi/qlot)
