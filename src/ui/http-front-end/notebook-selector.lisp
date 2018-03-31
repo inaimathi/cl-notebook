@@ -129,6 +129,7 @@
         (get-loaded-books!
          (by-selector elem ".loaded-books-list")
          (@ *notebook* id))
+        (chain (by-selector elem ".filesystem-input") (focus))
         (get/json "/cl-notebook/system/home-path" (create)
                   (lambda (initial-dir)
                     (setf (@ (by-selector elem ".filesystem-input") value) initial-dir)

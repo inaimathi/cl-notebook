@@ -196,6 +196,17 @@
     (defun cell-editor-contents (cell-id)
       (chain (cell-mirror cell-id) (get-value)))
 
+    (defun eval-ps-cell (cell)
+      (let* ((res (window.eval (@ cell result 0 values 0 value)))
+             (tp (typeof res)))
+        (unless (= tp "undefined")
+          (chain
+           cell result
+           (push (create
+                  :stdout "" :warnings nil
+                  :values (list
+                           (create :type tp :value (+ "" res)))))))))
+
     (defun mirror! (text-area &key (extra-keys (create)) (line-wrapping? t))
       (let ((options
 	     (create
@@ -374,15 +385,7 @@
 				  do (return c))))
         (map (lambda (cell)
                (when (= :parenscript (@ cell cell-type))
-                 (let ((ev-res (window.eval (@ cell result 0 values 0 value))))
-                   (chain
-                    cell result
-                    (push (create
-                           :stdout "" :warnings nil
-                           :values (list
-                                    (create
-                                     :type (typeof ev-res)
-                                     :value (+ "" ev-res)))))))))
+                 (eval-ps-cell cell)))
              (notebook-cells *notebook*))
 	(dom-set
 	 (by-selector "#notebook")
@@ -446,21 +449,12 @@
 	  (hide-thread-controls!)
 	  (when (relevant-event? res)
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
-              (console.log "CELL" cell)
 	      (setf (@ cell contents) (@ res contents)
 		    (@ cell result) (@ res result))
 	      (delete (@ cell stale))
 	      (chain (by-cell-id (@ res cell)) class-list (remove "stale"))
               (when (= :parenscript (@ cell cell-type))
-                (let ((ev-res (window.eval (@ cell result 0 values 0 value))))
-                  (chain
-                   cell result
-                   (push (create
-                          :stdout "" :warnings nil
-                          :values (list
-                                   (create
-                                    :type (typeof ev-res)
-                                    :value (+ "" ev-res))))))))
+                (eval-ps-cell cell))
 	      (dom-replace-cell-value! cell))))
 	'finished-package-eval
 	(lambda (res)
@@ -577,10 +571,13 @@
        (hide-thread-controls!)
        (hide-macro-expansion!)
        (chain
-	(by-selector "body")
-	(add-event-listener
-	 :keyup (key-listener
-		 <esc> (esc-pressed))))
+        (by-selector "body")
+        (add-event-listener
+         :keydown (key-listener
+                   <esc> (esc-pressed)
+                   "O" (when ctrl?
+                         (toggle-open-book-menu)
+                         (chain event (prevent-default))))))
 
        (unless (get-page-hash)
          (get/json
