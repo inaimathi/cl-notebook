@@ -14,7 +14,7 @@
    #+clisp #:clos
    #:class-slots #:slot-definition-name)
   (:shadowing-import-from #:fact-base #:lookup)
-  (:export :bar-graph :draw-bar-graph :main :str :htm :create :@ :chain :define-css))
+  (:export :bar-graph :draw-bar-graph :main :str :htm :who-ps-html :create :@ :chain :define-css))
 
 (in-package #:cl-notebook)
 
