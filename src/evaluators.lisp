@@ -45,7 +45,7 @@ It's treated differently in export situations."
           (handler-case
 	      (list
 	       (alist
-		:type "string"
+		:type "js-code"
 		:value (apply #'ps* (read-all contents))))
 	    (error (e)
 	      (list (alist :type 'error :value (front-end-error nil e))))))))

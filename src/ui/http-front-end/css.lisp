@@ -57,9 +57,9 @@
      (".notebook-arg-hint .modifier" :font-style oblique)
 
      (.cells :list-style-type none :padding 0px :margin 0px :margin-bottom 20%)
-     (".cells .cell" :padding 5px :margin-bottom 10px :border-top "3px solid transparent" :background-color "#fff")
+     (".cells .cell" :padding 5px :margin-bottom 10px :border-top "3px solid transparent" :background-color "#eee")
      (".cells .cell.stale" :border "2px solid orange")
-     (".cells .cell.code" :background-color "#eee")
+     (".cells .cell.markup" :background-color "#fff")
 
      (".cell .controls"
       :display none :position absolute :margin-top -41px :padding 5px :padding-right 10px

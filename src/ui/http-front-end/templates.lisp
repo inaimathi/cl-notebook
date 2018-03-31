@@ -81,23 +81,6 @@
 		 (:silent "")
 		 (t (normal-result-template result)))))))
 
-    (defun cell-ps-result-template (noise result)
-      (let ((val (@ result 0 values 0 value))
-            (skippable? (lambda (ln)
-                          (or (chain ln (starts-with " "))
-                              (chain ln (starts-with "	"))))))
-        (who-ps-html
-         (:pre (case noise
-                 (:terse
-                  (join
-                   (rest
-                    (loop for ln in (lines val)
-                       if (not (skippable? ln))
-                       collect "  ..." and collect ln))
-                   #\newline))
-                 (:silent "")
-                 (otherwise val))))))
-
     (defun cell-markup-result-template (result)
       (if result
 	  (let ((val (@ result 0 values 0 value)))
@@ -111,11 +94,7 @@
       (with-slots (cell-type result noise stale) cell
         (case cell-type
           (:markup (cell-markup-result-template result))
-          (:parenscript (cell-ps-result-template noise result))
           (otherwise (result-template noise result :stale? stale)))))
-
-    (defun cell-ps-template (cell)
-      (who-ps-html (:span :class "cell-value" (cell-value-template cell))))
 
     (defun cell-markup-template (cell)
       (who-ps-html
@@ -163,7 +142,6 @@
                 (:textarea :class "cell-contents" :language (or language "commonlisp") contents)
                 (case (@ cell cell-type)
                   (:markup (cell-markup-template cell))
-                  (:parenscript (cell-ps-template cell))
                   (otherwise (cell-code-template cell)))))))
 
     (defun show-thread-controls! (&optional (notice "Processing"))

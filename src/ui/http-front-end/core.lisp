@@ -122,8 +122,6 @@
     ;; cl-notebook specific events
     (defun reload-addon-resources! (resource-type resource-name)
       (console.log "RELOADING" resource-type resource-name "(TODO - be surgical about this)")
-      ;; (get "/js/notebook-addons.js" (create)
-      ;;      (lambda (res) (window.eval res)))
       (dom-set
        (by-selector "#cl-notebook-front-end-addons")
        (who-ps-html
@@ -374,6 +372,18 @@
 		      :package (loop for (a b c) in fs
 				  when (equal b "notebookPackage")
 				  do (return c))))
+        (map (lambda (cell)
+               (when (= :parenscript (@ cell cell-type))
+                 (let ((ev-res (window.eval (@ cell result 0 values 0 value))))
+                   (chain
+                    cell result
+                    (push (create
+                           :stdout "" :warnings nil
+                           :values (list
+                                    (create
+                                     :type (typeof ev-res)
+                                     :value (+ "" ev-res)))))))))
+             (notebook-cells *notebook*))
 	(dom-set
 	 (by-selector "#notebook")
 	 (notebook-template *notebook*))
@@ -384,9 +394,7 @@
 	       (with-slots (id cell-type) cell
 		 (setup-cell-mirror! cell)
 		 (when (= :markup cell-type)
-		   (hide! (by-cell-id id ".CodeMirror")))
-                 (when (= :parenscript cell-type)
-                   (window.eval (@ cell result 0 values 0 value)))))
+		   (hide! (by-cell-id id ".CodeMirror")))))
 	     (notebook-cells *notebook*))))
 
     (defun relevant-event? (ev)
@@ -438,12 +446,21 @@
 	  (hide-thread-controls!)
 	  (when (relevant-event? res)
 	    (let ((cell (notebook-cell *notebook* (@ res cell))))
+              (console.log "CELL" cell)
 	      (setf (@ cell contents) (@ res contents)
 		    (@ cell result) (@ res result))
 	      (delete (@ cell stale))
 	      (chain (by-cell-id (@ res cell)) class-list (remove "stale"))
               (when (= :parenscript (@ cell cell-type))
-                (window.eval (@ cell result 0 values 0 value)))
+                (let ((ev-res (window.eval (@ cell result 0 values 0 value))))
+                  (chain
+                   cell result
+                   (push (create
+                          :stdout "" :warnings nil
+                          :values (list
+                                   (create
+                                    :type (typeof ev-res)
+                                    :value (+ "" ev-res))))))))
 	      (dom-replace-cell-value! cell))))
 	'finished-package-eval
 	(lambda (res)
