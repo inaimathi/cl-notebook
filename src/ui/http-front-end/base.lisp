@@ -53,10 +53,17 @@
 
     ;; basic timeout/interval stuff
     (defvar *intervals-and-timeouts* (create))
+
+    (defun clear-all-delays! ()
+      (map
+       (lambda (v) (clear-timeout v) (clear-interval v))
+       *intervals-and-timeouts*)
+      (setf *intervals-and-timeouts* (create)))
     (defun clear-delay! (name)
       ($aif (@ *intervals-and-timeouts* name)
             (progn (clear-timeout it) (clear-interval it)))
       nil)
+
     (defun interval! (name fn delay)
       (clear-delay! name)
       (setf (@ *intervals-and-timeouts* name)

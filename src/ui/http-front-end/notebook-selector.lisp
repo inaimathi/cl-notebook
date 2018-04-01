@@ -114,7 +114,6 @@
       (get/json
        "/cl-notebook/loaded-books" (create)
        (lambda (dat)
-         (console.log "GOT LOADED BOOKS!" dat)
          (dom-set
           elem
           (join

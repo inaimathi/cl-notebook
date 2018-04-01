@@ -392,6 +392,7 @@
 	(set-page-hash (create :book id))))
 
     (defun notebook! (raw)
+      (clear-all-delays!)
       (let* ((fs (@ raw facts)))
 	(setf *notebook*
 	      (create :facts fs :objects (notebook-condense fs)
