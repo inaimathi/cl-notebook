@@ -311,6 +311,20 @@
     (defun notebook-facts (notebook) (@ notebook facts))
     (defun notebook-objects (notebook) (@ notebook objects))
 
+    (defun notebook-cell-ordering! (notebook new-order)
+      (let ((id (or (loop for (a b c) in (notebook-facts notebook)
+                       when (= b 'cell-order) do (return a))
+                    -1)))
+        (setf
+         (@ notebook facts)
+         (chain
+          (list (list id 'cell-order new-order))
+          (concat
+           (filter
+            (lambda (fact) (not (= (@ fact 1) 'cell-order)))
+            (notebook-facts notebook))))
+         (aref (@ notebook objects) id) (create id id cell-order new-order))))
+
     (defun notebook-cell-ordering (notebook)
       (let ((ord (loop for (a b c) in (notebook-facts notebook)
 		    when (= b 'cell-order) do (return c)))
@@ -506,8 +520,14 @@
 	'reorder-cells
 	(lambda (res)
 	  (when (relevant-event? res)
-	    ;; TODO change order here to support proper multi-user noting
-	    (console.log "Changed cell order" res)))
+            (unless (equal? (@ res new-order) (notebook-cell-ordering *notebook*))
+              (let* ((ord (@ res new-order))
+                     (cs (loop for n in ord
+                            collect (by-cell-id n)))
+                     (elem (by-selector "#notebook .cells")))
+                (dom-empty! elem)
+                (loop for c in cs do (chain elem (append-child c)))
+                (notebook-cell-ordering! *notebook* ord)))))
 
 	'new-book
 	(lambda (res)

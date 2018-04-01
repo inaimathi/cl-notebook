@@ -93,12 +93,12 @@
 
       (defun reorder-cells (ev)
 	(prevent ev)
-	(let ((ord (obj->string
-		    (loop for elem in (by-selector-all ".cell")
-		       collect (parse-int (chain elem (get-attribute :cell-id)))))))
+	(let ((ord (loop for elem in (by-selector-all ".cell")
+		       collect (parse-int (chain elem (get-attribute :cell-id))))))
+          (notebook-cell-ordering! *notebook* ord)
 	  (post "/cl-notebook/notebook/reorder-cells"
 		(create :book (notebook-id *notebook*)
-			:cell-order ord))))
+			:cell-order (obj->string ord)))))
 
       (defun system/macroexpand-1 (expression callback)
 	(post "/cl-notebook/system/macroexpand-1"

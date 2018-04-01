@@ -51,6 +51,21 @@
 
     (defun join (strings &optional (separator "")) (chain strings (join separator)))
 
+    ;; basic timeout/interval stuff
+    (defvar *intervals-and-timeouts* (create))
+    (defun clear-delay! (name)
+      ($aif (@ *intervals-and-timeouts* name)
+            (progn (clear-timeout it) (clear-interval it)))
+      nil)
+    (defun interval! (name fn delay)
+      (clear-delay! name)
+      (setf (@ *intervals-and-timeouts* name)
+            (set-interval fn delay)))
+    (defun timeout! (name fn delay)
+      (clear-delay! name)
+      (setf (@ *intervals-and-timeouts* name)
+            (set-interval fn delay)))
+
     ;; basic hash/array stuff
     (defun vals (obj) (map identity obj))
     (defun keys (obj) (map (lambda (v k) k) obj))
@@ -146,6 +161,9 @@
       (let ((object (if b a document))
             (selector (or b a)))
         (chain object (query-selector-all selector))))
+
+    (defun dom-empty! (elem)
+      (setf (@ elem inner-h-t-m-l) ""))
 
     (defun dom-empty? (elem)
       (string= "" (@ elem inner-h-t-m-l)))
