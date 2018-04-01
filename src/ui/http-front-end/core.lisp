@@ -305,8 +305,8 @@
     (defun notebook-name (notebook) (@ notebook name))
     (defun notebook-package (notebook) (@ notebook package))
     (defun notebook-id (notebook) (@ notebook id))
-    (defun set-notebook-name (notebook new-name) (setf (@ notebook name) new-name))
-    (defun set-notebook-package (notebook new-package) (setf (@ notebook package) new-package))
+    (defun notebook-name! (notebook new-name) (setf (@ notebook name) new-name))
+    (defun notebook-package! (notebook new-package) (setf (@ notebook package) new-package))
 
     (defun notebook-facts (notebook) (@ notebook facts))
     (defun notebook-objects (notebook) (@ notebook objects))
@@ -485,7 +485,7 @@
 		(err (@ res result)))
 	    (when (relevant-event? res)
 	      (dom-replace (by-selector ".book-package") (notebook-package-template new-package err))
-	      (set-notebook-package *notebook* new-package)
+	      (notebook-package! *notebook* new-package)
 	      (setup-package-mirror!)
 	      (if err
 		  (show-title-input)
@@ -541,7 +541,7 @@
 		(new-name (@ res new-name)))
 	    (when (relevant-event? res)
 	      (dom-replace (by-selector ".book-title") (notebook-title-template new-name))
-	      (set-notebook-name *notebook* new-name)
+	      (notebook-name! *notebook* new-name)
 	      (hide-title-input)))))))
 
     (defvar *warning-filter*
