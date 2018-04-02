@@ -8,14 +8,23 @@
 
 (defpsmacro key-listener (&body key/body-pairs)
   `(lambda (event)
-     (let (,@+mod-keys+ 
+     (let (,@+mod-keys+
 	   ,@+key-codes+
 	   (key-code (or (@ event key-code) (@ event which))))
-       (cond 
+       (cond
 	 ,@(loop for (key body) on key/body-pairs by #'cddr
-	      collect `((= key-code ,(if (stringp key) `(chain ,key (char-code-at 0)) key)) 
+	      collect `((= key-code ,(if (stringp key) `(chain ,key (char-code-at 0)) key))
 			,body))))))
 
 (defpsmacro $aif (test if-true &optional if-false)
   `(let ((it ,test))
      (if it ,if-true ,if-false)))
+
+(defpsmacro with-captured-log (var-name &body body)
+  (with-gensyms (old-console)
+    `(let* ((,old-console console.log)
+            (,var-name (list)))
+       (setf console.log (lambda (&rest args) (chain ,var-name (push (join args)))))
+       (try
+        (progn ,@body)
+        (:finally (setf console.log ,old-console))))))

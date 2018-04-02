@@ -197,21 +197,19 @@
       (chain (cell-mirror cell-id) (get-value)))
 
     (defun eval-ps-cell (cell)
-      (try
-       (let* ((res (window.eval (@ cell result 0 values 0 value)))
-              (tp (typeof res)))
-         (unless (= tp "undefined")
-           (chain
-            cell result
-            (push (create
-                   :stdout "" :warnings nil
-                   :values (list
-                            (create :type tp :value (+ "" res))))))))
-       (:catch (err)
-         (chain cell result
-                (push (create
-                       :stdout "" :warnings nil
-                       :values (list (create :type "error" :value (list err.message)))))))))
+      (with-captured-log log-output
+        (chain cell result
+               (push (try
+                      (let* ((res (window.eval (@ cell result 0 values 0 value)))
+                             (tp (typeof res)))
+                        ()
+                        (create
+                         :stdout (join log-output #\newline) :warnings nil
+                         :values (list (create :type tp :value (+ "" res)))))
+                      (:catch (err)
+                        (create
+                         :stdout (join log-output #\newline) :warnings nil
+                         :values (list (create :type "error" :value (list err.message))))))))))
 
     (defun mirror! (text-area &key (extra-keys (create)) (line-wrapping? t))
       (let ((options
