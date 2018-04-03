@@ -24,7 +24,10 @@
   (with-gensyms (old-console)
     `(let* ((,old-console console.log)
             (,var-name (list)))
-       (setf console.log (lambda (&rest args) (chain ,var-name (push (join args)))))
+       (setf
+        console.log
+        (lambda (&rest args)
+          (chain ,var-name (push (join (map obj->string args))))))
        (try
         (progn ,@body)
         (:finally (setf console.log ,old-console))))))
