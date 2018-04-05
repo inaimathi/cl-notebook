@@ -39,15 +39,27 @@
    (loaded-books!)))
 
 ;;;;;;;;;; Server-side hint hooks
-(define-json-handler (cl-notebook/system/complete) ((partial :string) (package :keyword))
-  (let ((p (string-upcase partial))
-	(res))
-    (do-symbols (s package)
-      (when (alexandria:starts-with-subseq p (symbol-name s))
-	(push s res)))
-    (sort (mapcar (lambda (s) (string-downcase (symbol-name s)))
-		  (remove-duplicates res))
-	  #'< :key #'length)))
+(defun get-completions (partial package)
+  (let* ((split (cl-ppcre:split "::?" partial))
+         (match (cl-ppcre:scan-to-strings "::?" partial))
+         (partial (string-downcase (or (second split) partial)))
+         (package (if (cdr split)
+                      (or (find-package (read-from-string (first split))) package)
+                      package)))
+    (when package
+      (sort
+       (remove-duplicates
+        (if (string= ":" match)
+            (loop for s being the external-symbols of package
+               for n = (string-downcase (symbol-name s))
+               when (alexandria:starts-with-subseq partial n) collect n)
+            (loop for s being the symbols of package
+               for n = (string-downcase (symbol-name s))
+               when (alexandria:starts-with-subseq partial n) collect n)))
+       #'< :key #'length))))
+
+(define-json-handler (cl-notebook/system/complete) ((partial :string) (package :package))
+  (get-completions partial package))
 
 (define-handler (cl-notebook/system/macroexpand-1 :content-type "plain/text") ((expression :string))
   (format nil "~s" (macroexpand-1 (read-from-string expression))))
@@ -55,7 +67,7 @@
 (define-handler (cl-notebook/system/macroexpand :content-type "plain/text") ((expression :string))
   (format nil "~s" (macroexpand (read-from-string expression))))
 
-(define-json-handler (cl-notebook/system/arg-hint) ((name :string) (package :keyword))
+(define-json-handler (cl-notebook/system/arg-hint) ((name :string) (package :package))
   (multiple-value-bind (sym-name fresh?) (intern (string-upcase name) package)
     (if (fboundp sym-name)
 	(hash :args (labels ((->names (thing)

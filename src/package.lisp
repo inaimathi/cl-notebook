@@ -31,6 +31,10 @@
     :type-expression `(get-notebook! ,parameter)
     :type-assertion  `(typep ,parameter 'notebook))
 
+(define-http-type (:package)
+    :type-expression `(or (find-package ,parameter) (find-package (house::->keyword ,parameter)))
+    :type-assertion `(not (null ,parameter)))
+
 (define-http-type (:existing-filepath)
     :type-expression `(pathname ,parameter)
     :type-assertion `(cl-fad:file-exists-p ,parameter))
