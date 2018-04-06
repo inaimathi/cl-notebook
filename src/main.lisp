@@ -57,7 +57,7 @@ Only useful during the build process, where its called with an --eval flag."
             (format t "   quicklisp already loaded...~%")
             (progn
               (format t "   Loading quicklisp from ~s...~%" *ql*)
-              (load (merge-pathnames "setup.lisp" ql-dir))))
+              (load (merge-pathnames "setup.lisp" *ql*))))
 
 	(in-package :cl-notebook)
 	(format t "Loading config books...~%")
