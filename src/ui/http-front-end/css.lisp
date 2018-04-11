@@ -73,8 +73,8 @@
 
      (".cell blockquote" :font-style oblique :border-left "2px solid #eee" :padding 10px)
 
-     (".cell:hover" :border-top "3px solid #ccc" :z-index 15)
-     (".cell:hover .controls" :display block)
+     (".cell:hover, .cell.focused" :border-top "3px solid #ccc" :z-index 15)
+     (".cell:hover .controls, .cell.focused .controls" :display block)
 
      (.result :border "1px solid #ccc" :background-color "#fff" :list-style-type none :margin 0px :margin-top 5px :padding 0px :white-space pre-wrap)
      (.stdout :margin 0px :padding 5px :color "#8b2252" :background-color "#efefef")

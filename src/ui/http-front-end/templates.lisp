@@ -137,6 +137,7 @@
       (with-slots (id cell-type language contents stale) cell
           (who-ps-html
            (:li :class (+ "cell " cell-type (if stale " stale" "")) :id (+ "cell-" id) :cell-id id
+                :onmousedown (+ "focusCell(" id ")") :onmouseenter "unfocusCells()"
                 :ondragend "reorderCells(event)" :draggable "true"
                 (cell-controls-template cell)
                 (:textarea :class "cell-contents" :language (or language "commonlisp") contents)

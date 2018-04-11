@@ -344,6 +344,16 @@
     (defun notebook-cell (notebook id)
       (aref notebook :objects id))
 
+    (defun unfocus-cells ()
+      (loop for c in (by-selector-all ".cell.focused")
+         do (chain c class-list (remove "focused"))))
+
+    (defun focus-cell (cell-id)
+      (let ((cell (by-cell-id cell-id)))
+        (unless (chain cell class-list (contains "focused"))
+          (unfocus-cells)
+          (chain (by-cell-id cell-id) class-list (add "focused")))))
+
     (defun setup-package-mirror! ()
       (mirror!
        (by-selector ".book-package textarea")
