@@ -60,6 +60,7 @@
      (".cells .cell" :padding 5px :margin-bottom 10px :border-top "3px solid transparent" :background-color "#eee")
      (".cells .cell.stale" :border "2px solid orange")
      (".cells .cell.markup" :background-color "#fff")
+     (".cells .cell .cell-value" :display block :min-height 30px)
 
      (".cell .controls"
       :display none :position absolute :margin-top -41px :padding 5px :padding-right 10px
