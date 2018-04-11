@@ -9,34 +9,6 @@
 (define-json-handler (cl-notebook/notebook/current) ((book :notebook))
   (hash :facts (current book) :history-size (total-entries book) :id (notebook-id book)))
 
-(defun fork-at! (book index)
-  (let* ((old-path (file-name book))
-         (new-path (make-unique-name-in
-                    (make-pathname :directory (pathname-directory old-path))
-                    (format nil "~a.4k" (file-namestring old-path))))
-         (new (load-notebook! (fork-at book index :file-name new-path)))
-         (new-name (format nil "Fork of '~a'" (notebook-name book))))
-    (rename-notebook! new new-name)
-    (register-notebook! new)
-    (publish-update! new 'new-book :book-name new-name)
-    new))
-
-(define-json-handler (cl-notebook/notebook/fork-at) ((book :notebook) (index :integer))
-  (let ((new (fork-at! book index)))
-    (hash :facts (current new) :history-size (total-entries new) :id (notebook-id new) :book-name (notebook-name new))))
-
-(defun reorder-cells! (book cell-order)
-  (awhen (first (lookup book :b :cell-order))
-    (delete! book it))
-  (insert-new! book :cell-order cell-order)
-  (write! book)
-  (publish-update! book 'reorder-cells :new-order cell-order)
-  book)
-
-(define-json-handler (cl-notebook/notebook/reorder-cells) ((book :notebook) (cell-order :json))
-  (reorder-cells! book cell-order)
-  :ok)
-
 (define-json-handler (cl-notebook/notebook/new) ((path :nonexistent-file))
   (let ((book (new-notebook! path)))
     (write! book)

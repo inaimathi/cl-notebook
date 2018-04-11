@@ -63,6 +63,13 @@
                          ordered-ids)))
     (concatenate 'list ordered-ids unordered-ids)))
 
+(defun reorder-cells! (book cell-order)
+  (awhen (first (lookup book :b :cell-order))
+    (delete! book it))
+  (insert-new! book :cell-order cell-order)
+  (write! book)
+  book)
+
 (defun notebook-cell (book cell-id)
   (cons (cons :id cell-id)
         (for-all `(,cell-id ?k ?v)
@@ -143,6 +150,17 @@ If the new name passed in is the same as the books' current name, we don't inser
     (unless same?
       (change! book name-fact (list (first name-fact) :notebook-name new-name)))
     (values book (not same?))))
+
+(defun fork-at! (book index)
+  (let* ((old-path (file-name book))
+         (new-path (make-unique-name-in
+                    (make-pathname :directory (pathname-directory old-path))
+                    (format nil "~a.4k" (file-namestring old-path))))
+         (new (load-notebook! (fork-at book index :file-name new-path)))
+         (new-name (format nil "Fork of '~a'" (notebook-name book))))
+    (rename-notebook! new new-name)
+    (register-notebook! new)
+    new))
 
 ;;;;;;;;;; Notebooks table and related functions
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
