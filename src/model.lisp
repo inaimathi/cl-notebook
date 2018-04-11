@@ -139,6 +139,7 @@
 	    (if package-fact ;; TODO - remove conditional eventually. All notebooks should have such facts.
 		(change! book package-fact (list (first package-fact) :notebook-package new-package))
 		(insert-new! book :notebook-package new-package))
+            (write! book)
 	    (values book t))))))
 
 (defmethod rename-notebook! ((book notebook) (new-name string))
@@ -148,7 +149,8 @@ If the new name passed in is the same as the books' current name, we don't inser
   (let* ((name-fact (first (lookup book :b :notebook-name)))
 	 (same? (equal (third name-fact) new-name)))
     (unless same?
-      (change! book name-fact (list (first name-fact) :notebook-name new-name)))
+      (change! book name-fact (list (first name-fact) :notebook-name new-name))
+      (write! book))
     (values book (not same?))))
 
 (defun fork-at! (book index)

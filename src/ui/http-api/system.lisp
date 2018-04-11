@@ -23,7 +23,7 @@
                  (p (hash :string (namestring f)
                           :path-type (first dir)
                           :directory (rest dir)
-                          :name (pathname-name f))))
+                          :name (format nil "~a.~a" (pathname-name f) (pathname-type f)))))
             (if (cl-fad:directory-pathname-p f)
                 (push p dirs)
                 (push p files))))
