@@ -14,6 +14,7 @@
                 ((:file "package")
                  (:file "model")
                  (:file "util")
+                 (:file "publish-update")
 
                  (:module
                   ui :components
