@@ -1,8 +1,5 @@
 (in-package #:cl-notebook)
 
-; Basic server-side definitions and handlers
-;;;;; HTTP Handlers
-;;;;;;;;;; Cell-level hooks
 (define-json-handler (cl-notebook/notebook/eval-to-cell) ((book :notebook) (cell-id :integer) (contents :string))
   (let ((cont-fact (first (lookup book :a cell-id :b :contents)))
 	(val-fact (first (lookup book :a cell-id :b :result)))
