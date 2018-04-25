@@ -400,6 +400,13 @@
 	(setup-package-mirror!)
 	(set-page-hash (create :book id))))
 
+    (defvar *notebook-loaded-hook*
+      (lambda (book) (console.log "FINISHED LOADING" book)))
+
+    (defun book-ready (callback)
+      (setf *notebook-loaded-hook* callback)
+      nil)
+
     (defun notebook! (raw)
       (clear-all-delays!)
       (let* ((fs (@ raw facts)))
@@ -428,7 +435,8 @@
 		 (setup-cell-mirror! cell)
 		 (when (= :markup cell-type)
 		   (hide! (by-cell-id id ".CodeMirror")))))
-	     (notebook-cells *notebook*))))
+	     (notebook-cells *notebook*))
+        (funcall *notebook-loaded-hook* *notebook*)))
 
     (defun relevant-event? (ev)
       (and (in-present?) (equal (notebook-id *notebook*) (@ ev book))))
