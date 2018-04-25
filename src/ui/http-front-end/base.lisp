@@ -22,6 +22,18 @@
             res)
           (loop for elem in thing collect (fn elem))))
 
+    (defun copy-list (list)
+      (map identity list))
+
+    (defun sort (list comparison &key (key identity))
+      (chain (copy-list list)
+             (sort (lambda (a b)
+                     (let ((a^ (key a))
+                           (b^ (key b)))
+                       (cond ((comparison a^ b^) -1)
+                             ((comparison b^ a^) 1)
+                             (t 0)))))))
+
     (defun fold (fn memo thing)
       (let ((m memo))
         (if (object? thing)
