@@ -34,6 +34,9 @@
                              ((comparison b^ a^) 1)
                              (t 0)))))))
 
+    (defun reverse (list)
+      (chain (copy-list list) (reverse)))
+
     (defun fold (fn memo thing)
       (let ((m memo))
         (if (object? thing)
