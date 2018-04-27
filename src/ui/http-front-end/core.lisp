@@ -401,7 +401,7 @@
 	(set-page-hash (create :book id))))
 
     (defvar *notebook-loaded-hook*
-      (lambda (book) (console.log "FINISHED LOADING" book)))
+      (lambda () (console.log "FINISHED LOADING BOOK")))
 
     (defun book-ready (callback)
       (setf *notebook-loaded-hook* callback)
@@ -436,7 +436,7 @@
 		 (when (= :markup cell-type)
 		   (hide! (by-cell-id id ".CodeMirror")))))
 	     (notebook-cells *notebook*))
-        (funcall *notebook-loaded-hook* *notebook*)))
+        (funcall *notebook-loaded-hook*)))
 
     (defun relevant-event? (ev)
       (and (in-present?) (equal (notebook-id *notebook*) (@ ev book))))

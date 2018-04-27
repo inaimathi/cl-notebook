@@ -143,6 +143,8 @@
     (defun dom-ready (callback)
       (chain document (add-event-listener "DOMContentLoaded" callback)))
 
+    (defun book-ready (callback) (dom-ready callback))
+
     (defun remove-all-event-handlers (elem)
       (let ((clone (chain elem (clone-node t))))
         (chain elem parent-node (replace-child clone elem))
