@@ -131,17 +131,15 @@
       (lambda (string) (regex-match regex string)))
 
     ;; basic DOM/event stuff
-    (defun sheet-text (sheet &optional (predicate identity))
-      (if (number? sheet)
-          (sheet-text (aref (@ document style-sheets) sheet) predicate)
-          (join
-           (loop for rule in (@ sheet css-rules)
-              for text = (@ rule css-text)
-              when (predicate text) collect text)
-           #\newline)))
+    (defun add-listener! (elem event-name fn)
+      (cond ((@ elem add-event-listener)
+             (chain elem (add-event-listener event-name fn)))
+            ((@ elem attach-event)
+             (chain elem attach-event (+ "on" event-name) fn))
+            (t (setf (aref elem (+ "on" event-name)) fn))))
 
     (defun dom-ready (callback)
-      (chain document (add-event-listener "DOMContentLoaded" callback)))
+      (add-listener! document "DOMContentLoaded" callback))
 
     (defun book-ready (callback) (dom-ready callback))
 
