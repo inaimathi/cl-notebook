@@ -267,7 +267,12 @@
 							 (chain *macro-expansion-mirror*
 								(set-value res)))))
 					   "Ctrl-Space" (lambda (mirror)
-							  (console.log "TOKEN: " (token-type-at-cursor :right mirror)))))))
+							  (console.log "TOKEN: " (token-type-at-cursor :right mirror)))
+					   "Ctrl-Delete" (lambda (mirror)
+							   (kill-cell cell-id)
+							   (let ((prev (get-cell-before *notebook* cell-id)))
+							     (when prev
+							       (show-editor (@ prev id)))))))))
 	(setf (@ cell editor) mirror)
 	(chain mirror (on 'cursor-activity
 			  (lambda (mirror)
@@ -353,6 +358,16 @@
         (unless (chain cell class-list (contains "focused"))
           (unfocus-cells)
           (chain (by-cell-id cell-id) class-list (add "focused")))))
+
+    (defun get-cell-after (notebook cell-id)
+      (loop for (a b) on (notebook-cells notebook)
+	 if (and a (= (@ a id) cell-id))
+	 return b))
+
+    (defun get-cell-before (notebook cell-id)
+      (loop for (a b) on (notebook-cells notebook)
+	 if (and b (= (@ b id) cell-id))
+	 return a))
 
     (defun setup-package-mirror! ()
       (mirror!
@@ -621,7 +636,12 @@
                    <esc> (esc-pressed)
                    "O" (when ctrl?
                          (toggle-open-book-menu)
-                         (chain event (prevent-default))))))
+                         (chain event (prevent-default)))
+		   "?" (when ctrl?
+			 (console.log "TODO" :show-help-here))
+		   <space> (when ctrl?
+			     (new-cell)
+			     (chain event (prevent-default))))))
 
        (unless (get-page-hash)
          (get/json
