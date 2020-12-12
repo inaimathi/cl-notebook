@@ -1,6 +1,8 @@
 # cl-notebook
 ##### A notebook-style in-browser editor for Common Lisp.
 
+[![Build Status](https://travis-ci.org/inaimathi/cl-notebook.svg?branch=master)](https://travis-ci.org/inaimathi/cl-notebook)
+
 > Tools, of course, can be the subtlest of traps.
 > One day I know I must smash the ~~emerald~~ Emacs.
 >
