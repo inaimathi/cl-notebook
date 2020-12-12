@@ -1,10 +1,10 @@
 ;;;; cl-notebook.asd
 
 (asdf:defsystem #:cl-notebook
-  :serial t
   :description "A notebook-style in-browser editor for Common Lisp"
   :author "Inaimathi <leo.zovic@gmail.com>"
   :license "AGPL3"
+  :serial t
   :depends-on (#+sbcl #:sb-introspect #:qlot
 	       #:alexandria #:anaphora #:cl-fad #:closer-mop
 	       #:cl-who #:cl-css #:parenscript
@@ -36,5 +36,19 @@
                  (:file "evaluators")
                  (:file "exporters")
 
-
                  (:file "main")))))
+
+(asdf:defsystem #:cl-notebook-test
+  :description "Test suite for :cl-notebook"
+  :author "Inaimathi <leo.zovic@gmail.com>"
+  :license "AGPL3"
+  :serial t
+  :depends-on (#:cl-notebook #:test-utils)
+  :defsystem-depends-on (#:prove-asdf)
+  :components ((:module
+		test :components
+		((:file "package")
+		 (:test-file "cl-notebook"))))
+  :perform (test-op
+	    :after (op c)
+	    (funcall (intern #.(string :run) :prove) c)))
