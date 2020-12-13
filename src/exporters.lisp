@@ -48,6 +48,9 @@
      (:head
       (:title (str (notebook-name book)))
       (:script :type "text/javascript" (str *base-js*))
+      (:script
+       :type "text/javascript"
+       (parenscript:ps (defun book-ready (callback) (dom-ready callback))))
 
       (:style :type "text/css" :media "screen"
               (fmt
