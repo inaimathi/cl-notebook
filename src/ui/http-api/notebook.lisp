@@ -23,7 +23,10 @@
   (hash :facts (current book) :history-size (total-entries book) :id (notebook-id book)))
 
 (define-json-handler (cl-notebook/notebook/new) ((path :nonexistent-file))
-  (let ((book (new-notebook! path)))
+  (let* ((book (new-notebook! path))
+	 (cell-id (new-cell! book :cell-type :code :cell-language :common-lisp))
+	 (cont-fact (first (lookup book :a cell-id :b :contents))))
+    (change! book cont-fact (list cell-id :contents ";;; TODO - awesome things"))
     (write! book)
     (publish-update! book 'new-book :book-name (notebook-name book))
     (hash :facts (current book) :history-size (total-entries book) :id (notebook-id book))))
