@@ -38,7 +38,7 @@
 
                  (:file "main")))))
 
-(asdf:defsystem #:cl-notebook-test
+(asdf:defsystem #:cl-notebook/test
   :description "Test suite for :cl-notebook"
   :author "Inaimathi <leo.zovic@gmail.com>"
   :license "AGPL3"

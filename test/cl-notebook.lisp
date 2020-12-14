@@ -1,4 +1,4 @@
-(in-package #:cl-notebook-test)
+(in-package #:cl-notebook/test)
 
 (tests
  (is (+ 2 3) 5 "Addition works")
