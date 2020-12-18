@@ -5,7 +5,7 @@
   :author "Inaimathi <leo.zovic@gmail.com>"
   :license "AGPL3"
   :serial t
-  :depends-on (#+sbcl #:sb-introspect #:qlot
+  :depends-on (#+sbcl #:sb-introspect #:qlot #:quri
 	       #:alexandria #:anaphora #:cl-fad #:closer-mop
 	       #:cl-who #:cl-css #:parenscript
 	       #:house #:fact-base)

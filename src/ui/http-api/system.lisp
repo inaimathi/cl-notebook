@@ -15,7 +15,7 @@
 (define-json-handler (cl-notebook/system/home-path) ()
   (namestring (user-homedir-pathname)))
 
-(define-json-handler (cl-notebook/system/ls) ((dir :existing-directory))
+(define-json-handler (cl-notebook/system/ls) ((dir >>existing-directory))
   (let ((dirs nil)
         (files nil))
     (loop for f in (cl-fad:list-directory dir)
@@ -29,8 +29,7 @@
                 (push p files))))
     (hash :files (nreverse files) :directories (nreverse dirs))))
 
-(define-handler (cl-notebook/source :close-socket? nil) ()
-  (subscribe! :cl-notebook-updates sock))
+(define-channel (cl-notebook/source) () t)
 
 (define-json-handler (cl-notebook/loaded-books) ()
   (mapcar
@@ -58,16 +57,16 @@
                when (alexandria:starts-with-subseq partial n) collect n)))
        #'< :key #'length))))
 
-(define-json-handler (cl-notebook/system/complete) ((partial :string) (package :package))
+(define-json-handler (cl-notebook/system/complete) ((partial >>string) (package >>package))
   (get-completions partial package))
 
-(define-handler (cl-notebook/system/macroexpand-1 :content-type "plain/text") ((expression :string))
+(define-handler (cl-notebook/system/macroexpand-1 :content-type "plain/text") ((expression >>string))
   (format nil "~s" (macroexpand-1 (read-from-string expression))))
 
-(define-handler (cl-notebook/system/macroexpand :content-type "plain/text") ((expression :string))
+(define-handler (cl-notebook/system/macroexpand :content-type "plain/text") ((expression >>string))
   (format nil "~s" (macroexpand (read-from-string expression))))
 
-(define-json-handler (cl-notebook/system/arg-hint) ((name :string) (package :package))
+(define-json-handler (cl-notebook/system/arg-hint) ((name >>string) (package >>package))
   (multiple-value-bind (sym-name fresh?) (intern (string-upcase name) package)
     (if (fboundp sym-name)
 	(hash :args (labels ((->names (thing)
