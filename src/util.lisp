@@ -71,7 +71,7 @@
 ;;;;; Error-related
 (defun instance->alist (instance)
   (loop for s in (closer-mop:class-slots (class-of instance))
-     for slot-name = (slot-definition-name s)
+     for slot-name = (closer-mop:slot-definition-name s)
      when (slot-boundp instance slot-name)
      collect (cons (intern (symbol-name slot-name) :keyword)
 		   (slot-value instance slot-name))))
